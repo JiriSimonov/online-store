@@ -1,0 +1,1 @@
+export type RoutesObj = Record<string, () => void>;
