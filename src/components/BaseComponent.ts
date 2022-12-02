@@ -1,16 +1,10 @@
-interface BaseComponentProps {
-  tag?: keyof HTMLElementTagNameMap;
-  className?: string;
-  text?: string;
-  parent?: HTMLElement;
-}
-
+import { BaseComponentProps } from '../interfaces/interfaces';
 export class BaseComponent {
   protected node: HTMLElement;
   constructor({ tag = 'div', className = '', text = '', parent }: BaseComponentProps = {}) {
     this.node = document.createElement(tag);
-    this.node.className = className;
-    this.node.textContent = text;
+    if (className) this.node.className = className;
+    if (text) this.node.textContent = text;
     if (parent) parent.append(this.node);
   }
 
@@ -19,39 +13,12 @@ export class BaseComponent {
   }
 
   appendEl(children: HTMLElement | BaseComponent | BaseComponent[]) {
-    if (children instanceof HTMLElement) {
-      this.node.append(children);
-    }
-    if (children instanceof BaseComponent) {
-      this.node.append(children.getNode());
-    }
-    if (Array.isArray(children)) {
-      this.node.append(...children.map((e) => e.getNode()));
-    }
+    if (children instanceof HTMLElement) this.node.append(children);
+    if (children instanceof BaseComponent) this.node.append(children.getNode());
+    if (Array.isArray(children)) this.node.append(...children.map((e) => e.getNode()));
   }
 
-  /* appendComponent(component: BaseComponent) {
-    this.node.append(component.getNode());
+  destroy(): void {
+    this.node.remove();
   }
-
-  appendComponents(arr: BaseComponent[]) {
-    arr.forEach((e) => {
-      this.appendComponent(e);
-    });
-  } */
 }
-
-/* 
-export class Element {
-  constructor(parent, tag, className, content) {
-    const element = document.createElement(tag ?? 'div');
-    if (className) element.className = className;
-    element.textContent = content;
-    parent.append(element);
-    this.el = element;
-  }
-
-  destroy() {
-    this.el.remove();
-  }
-} */
