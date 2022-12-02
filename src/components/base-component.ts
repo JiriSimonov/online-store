@@ -1,11 +1,15 @@
 import { BaseComponentProps } from '../interfaces/interfaces';
-export class BaseComponent {
+
+export default class BaseComponent {
   protected node: HTMLElement;
-  constructor({ tag = 'div', className = '', text = '', parent }: BaseComponentProps = {}) {
-    this.node = document.createElement(tag);
-    if (className) this.node.className = className;
-    if (text) this.node.textContent = text;
-    if (parent) parent.append(this.node);
+
+  constructor(props: BaseComponentProps) {
+    const node = document.createElement(props.tag ?? 'div');
+    const { className, text, parent } = props;
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    if (parent) parent.append(node);
+    this.node = node;
   }
 
   getNode<T extends HTMLElement = HTMLElement>(): T {

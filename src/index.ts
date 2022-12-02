@@ -1,4 +1,4 @@
-import { BaseComponent } from './components/BaseComponent';
+import { BaseComponent } from './components/base-component';
 import { Router } from './utils/router';
 class App extends BaseComponent {
   private router: Router | null;
