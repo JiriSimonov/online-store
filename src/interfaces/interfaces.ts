@@ -1,5 +1,5 @@
 export interface BaseComponentProps {
-  readonly tag: keyof HTMLElementTagNameMap;
+  readonly tag?: keyof HTMLElementTagNameMap;
   className?: string;
   text?: string;
   parent?: HTMLElement;
