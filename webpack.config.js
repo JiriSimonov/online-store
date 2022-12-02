@@ -16,7 +16,9 @@ const getTemplate = (title, lang) => `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
   </head>
-  <body></body>
+  <body>
+    <div class="root" id="root"></div>
+  </body>
 </html>`;
 
 const config = {
@@ -37,7 +39,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      templateContent: getTemplate(),
+      templateContent: getTemplate('Keyboards Store', 'en'),
       fileName: 'index.html',
     }),
 
