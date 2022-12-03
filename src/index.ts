@@ -1,6 +1,7 @@
 import BaseComponent from './components/base-component';
 import Footer from './components/footer';
 import Router from './utils/router';
+import './assets/style.scss';
 
 class App extends BaseComponent {
   private router: Router | null;

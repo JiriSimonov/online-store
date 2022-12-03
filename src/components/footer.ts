@@ -1,3 +1,4 @@
+import Anchor from './anchor';
 import BaseComponent from './base-component';
 
 export default class Footer extends BaseComponent {
@@ -20,10 +21,27 @@ export default class Footer extends BaseComponent {
     this.wrapper = new BaseComponent({ className: 'container' });
     this.contentWrapper = new BaseComponent({ className: 'footer__wrapper' });
     this.year = new BaseComponent({ className: 'footer__year', text: '2022' });
-    this.logo = new BaseComponent({ tag: 'a', className: 'footer__logo' });
+    this.logo = new Anchor({
+      tag: 'a',
+      className: 'footer__logo',
+      href: 'https://rs.school/js/',
+      target: '_blank',
+    });
     this.linkWrapper = new BaseComponent({ className: 'footer__links' });
-    this.linkOne = new BaseComponent({ tag: 'a', className: 'footer__logo', text: 'ссылка' });
-    this.linkTwo = new BaseComponent({ tag: 'a', className: 'footer__logo', text: 'ссылка' });
+    this.linkOne = new Anchor({
+      tag: 'a',
+      className: 'footer__link',
+      text: '@EternalRival',
+      href: 'https://github.com/EternalRival',
+      target: '_blank',
+    });
+    this.linkTwo = new Anchor({
+      tag: 'a',
+      className: 'footer__link',
+      text: '@JiriSimonov',
+      href: 'https://github.com/JiriSimonov',
+      target: '_blank',
+    });
   }
 
   render() {
