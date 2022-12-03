@@ -1,0 +1,50 @@
+
+@import './_vars.scss';
+
+.footer {
+  margin-top: 400px;
+  border-top-right-radius: 25px;
+  border-top-left-radius: 25px;
+  background-color: $black;
+
+  &__wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    gap: 20px;
+    padding: 50px 30px;
+    text-align: center;
+    user-select: none;
+  }
+
+  &__links {
+    display: flex;
+    gap: 20px;
+  }
+
+  &__link,
+  &__logo {
+    &:hover {
+      opacity: .6;
+      transition: .3s linear;
+    }
+  } 
+
+  &__link,
+  &__year {
+    font-size: 16px;
+    font-weight: 400;
+    text-decoration: none;
+    color: $white;
+  }
+
+  &__logo {
+    display: block;
+    width: 100px;
+    height: 50px;
+    background-image: url('./images/footer-logo.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+}
