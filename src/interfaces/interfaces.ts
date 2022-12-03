@@ -10,4 +10,10 @@ export interface AnchorProps extends BaseComponentProps {
   label?: string;
 }
 
+export interface ProductCardProps extends BaseComponentProps {
+  title?: string;
+  price?: number;
+  isAvailable?: boolean;
+}
+
 export type RoutesObj = Record<string, () => void>;

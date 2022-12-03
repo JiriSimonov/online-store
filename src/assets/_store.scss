@@ -1,0 +1,77 @@
+
+@import './_vars.scss';
+
+.store {
+
+  text-align: center;
+
+  &__title {
+    font-size: 36px;
+    font-weight: 500;
+    user-select: none;
+  }
+
+  &__filter {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid $border-gray;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: .3s linear;
+    user-select: none;
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin: 10px 0;
+    padding: 10px 0;
+    list-style: none;
+  }
+  
+  &__item {
+    position: relative;
+    padding: 20px;
+    border-radius: 13px;
+    background-color: $white;
+    text-align: initial;
+    user-select: none;
+  }
+
+  &__card-title {
+    margin-top: 80px;
+    font-size: 25px;
+    font-weight: 700;
+    color: $black;
+  }
+
+  &__card-price {
+    font-size: 25px;
+    font-weight: 400;
+    color: $blue;
+  }
+
+  &__card-av {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 400;
+    color: $white;
+    background-color: transparent;
+    &_true {
+      background-color: $green;
+    }
+    &_false {
+      background-color: $light-gray;
+    }
+  }
+}

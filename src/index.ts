@@ -1,6 +1,7 @@
 import BaseComponent from './components/base-component';
 import Router from './utils/router';
 import Footer from './components/footer';
+import Store from './components/store';
 import Header from './components/header';
 import './assets/style.scss';
 
@@ -24,7 +25,8 @@ class App extends BaseComponent {
 
   renderStore() {
     this.currentPage?.destroy();
-    const store = new BaseComponent({ className: 'container-store' });
+    const store = new Store();
+    store.render();
     this.currentPage = store;
     this.appendEl(store);
   }
