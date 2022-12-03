@@ -24,12 +24,42 @@ export default class Store extends BaseComponent {
     this.showFiltersBtn = new BaseComponent({ tag: 'button', className: 'store__filter', text: 'Фильтры' });
     this.storeList = new StoreContent();
     this.storeItems = [
-      new ProductCard({ title: 'test', price: 7000, isAvailable: true }),
-      new ProductCard({ title: 'test', price: 2500, isAvailable: false }),
-      new ProductCard({ title: 'test', price: 7000, isAvailable: true }),
-      new ProductCard({ title: 'test', price: 2500, isAvailable: false }),
-      new ProductCard({ title: 'test', price: 2500, isAvailable: true }),
-      new ProductCard({ title: 'test', price: 13500, isAvailable: false }),
+      new ProductCard({
+        title: 'test',
+        price: 7000,
+        isAvailable: true,
+        switchType: 'br',
+      }),
+      new ProductCard({
+        title: 'test',
+        price: 2500,
+        isAvailable: false,
+        switchType: 'ss',
+      }),
+      new ProductCard({
+        title: 'test',
+        price: 7000,
+        isAvailable: true,
+        switchType: 'b',
+      }),
+      new ProductCard({
+        title: 'test',
+        price: 2500,
+        isAvailable: false,
+        switchType: 'br',
+      }),
+      new ProductCard({
+        title: 'test',
+        price: 2500,
+        isAvailable: true,
+        switchType: 'ss',
+      }),
+      new ProductCard({
+        title: 'test',
+        price: 13500,
+        isAvailable: false,
+        switchType: 'r',
+      }),
     ];
   }
 
@@ -38,6 +68,5 @@ export default class Store extends BaseComponent {
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.storeList]);
     this.storeList.appendEl(this.storeItems);
-    console.log(this.storeItems);
   }
 }

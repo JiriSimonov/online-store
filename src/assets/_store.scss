@@ -74,4 +74,50 @@
       background-color: $light-gray;
     }
   }
+
+  .switch {
+    margin: 10px 0;
+    padding: 0;
+    list-style: none;
+
+    &__item {
+      padding: 10px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: transparent;
+      border: 1px solid transparent;
+      font-size: 16px;
+      font-weight: 400;
+      color: $white;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .br {
+      background-color: $brown;
+    }
+
+    .b {
+      background-color: $b;
+    }
+
+    .cl {
+      background-image: $cl;
+    }
+
+    .sr {
+      background-image: $sr;
+    }
+
+    .r {
+      background-color: $r;
+    }
+
+    .ss {
+      background-image: $ss;
+    }
+
+  }
+
 }
