@@ -1,5 +1,6 @@
 import BaseComponent from './components/base-component';
-import { Router } from './utils/router';
+import Footer from './components/footer';
+import Router from './utils/router';
 
 class App extends BaseComponent {
   private router: Router | null;
@@ -28,6 +29,7 @@ class App extends BaseComponent {
 
   runApp() {
     const root = document.getElementById('root');
+    const footer = new Footer();
     if (root) {
       this.router = new Router({
         '': () => this.renderHome(),
@@ -35,6 +37,8 @@ class App extends BaseComponent {
         store: () => this.renderStore(),
       });
       root.append(this.node);
+      footer.render();
+      root?.append(footer.getNode());
     }
   }
 }
