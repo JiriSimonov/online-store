@@ -1,6 +1,7 @@
 import BaseComponent from './components/base-component';
-import Footer from './components/footer';
 import Router from './utils/router';
+import Footer from './components/footer';
+import Header from './components/header';
 import './assets/style.scss';
 
 class App extends BaseComponent {
@@ -31,6 +32,9 @@ class App extends BaseComponent {
   runApp() {
     const root = document.getElementById('root');
     const footer = new Footer();
+    const header = new Header();
+    header.render();
+    root?.append(header.getNode());
     if (root) {
       this.router = new Router({
         '': () => this.renderHome(),

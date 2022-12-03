@@ -2,7 +2,6 @@
 @import './_vars.scss';
 
 .footer {
-  margin-top: 400px;
   border-top-right-radius: 25px;
   border-top-left-radius: 25px;
   background-color: $black;
@@ -12,7 +11,7 @@
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     gap: 20px;
-    padding: 50px 30px;
+    padding: 50px 0;
     text-align: center;
     user-select: none;
   }
@@ -40,6 +39,7 @@
 
   &__logo {
     display: block;
+    margin-left: auto;
     width: 100px;
     height: 50px;
     background-image: url('./images/footer-logo.svg');
