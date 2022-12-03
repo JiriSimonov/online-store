@@ -3,7 +3,7 @@ import { AnchorProps } from '../interfaces/interfaces';
 
 export default class extends BaseComponent {
   constructor(props: AnchorProps) {
-    super(props);
+    super(Object.assign(props, { tag: 'a' }));
     const { href, target, label } = props;
     const node = this.node as HTMLAnchorElement;
 
