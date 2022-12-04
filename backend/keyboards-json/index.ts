@@ -3,18 +3,9 @@ import path = require('path');
 
 const sourceJSON: {} = require('./src/source.json');
 
-const outPath = path.resolve(__dirname, 'out', 'keyboards.json');
-/*
-'Cherry MX Red'
-  'Cherry MX Silent Red'
-  'Cherry MX RGB Brown'
+const outPathTest = path.resolve(__dirname, 'out', 'keyboards.json');
+const outPathDev = path.resolve('src', 'data', 'keyboards.json');
 
-  
-  'Cherry MX RGB Speed Silver'
-  'Gateron CAP v2 Crystal Speed Silver'
-  'Cherry MX RGB Clear'
-
-*/
 enum SwitchShorts {
   'Cherry MX RGB Brown' = 'BR',
   'Cherry MX Brown' = 'BR',
@@ -122,9 +113,7 @@ interface KeyboardProps {
   brands: string[];
   features: string[];
 }
-/*
-  
- */
+
 function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
   const getManufacturer = (title: string): string => {
     const head = (title || '').split(' ')[0];
@@ -169,9 +158,10 @@ function getKeyboardList(source: { [s: string]: SourceKeyboardProps }): Keyboard
   return Object.values(source).map(getKeyboard);
 }
 
-export default async (): Promise<void> => {
-  await fs.mkdir(path.dirname(outPath), { recursive: true });
+export default async (): Promise<void[]> => {
+  await fs.mkdir(path.dirname(outPathTest), { recursive: true });
+  await fs.mkdir(path.dirname(outPathDev), { recursive: true });
   const list = getKeyboardList(sourceJSON);
-  console.log(new Set(list.map((v) => v.switches.map((c) => c.title)).flat()));
-  return fs.writeFile(outPath, JSON.stringify(list));
+  // console.log(new Set(list.map((v) => v.switches.map((c) => c.title)).flat()));
+  return Promise.all([outPathTest, outPathDev].map((v) => fs.writeFile(v, JSON.stringify(list))));
 };
