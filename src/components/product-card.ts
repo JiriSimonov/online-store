@@ -1,5 +1,4 @@
-import { SwitchProps } from '../../backend/keyboards-json/index';
-import { ProductCardProps } from '../interfaces/interfaces';
+import { SwitchProps, KeyboardProps } from '../../backend/keyboards-json/index';
 import BaseComponent from './base-component';
 import ProductImage from './product-img';
 import SwitchComponent from './switch-component';
@@ -22,24 +21,18 @@ export default class ProductCard extends BaseComponent {
 
   private switchModal: SwitchModal;
 
-  constructor(props: ProductCardProps) {
+  constructor(props: KeyboardProps) {
     super({ tag: 'li', className: 'store__item' });
-    const {
-      title,
-      price,
-      isAvailable,
-      switchTypes,
-    } = props;
     this.ProductImage = new ProductImage({});
     this.appendEl(this.ProductImage);
     this.cardTitle = new BaseComponent({
       tag: 'h3',
       className: 'store__card-title',
-      text: title,
+      text: props.title,
       parent: this.node,
     });
     this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
-    this.switchArr = switchTypes;
+    this.switchArr = props.switches;
     this.switchItem = this.switchArr.map((item) => new SwitchComponent(item));
     this.switchItem.forEach((e) => {
       e.getNode().addEventListener('mouseover', () => {
@@ -52,12 +45,12 @@ export default class ProductCard extends BaseComponent {
     this.switchList.appendEl(this.switchItem);
     this.cardPrice = new BaseComponent({
       className: 'store__card-price',
-      text: `от ${price} ₽`,
+      text: `от ${props.minPrice} ₽`,
       parent: this.node,
     });
     this.isAvialable = new BaseComponent({
-      className: `${isAvailable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
-      text: `${isAvailable ? 'В наличии' : 'Нет в наличии'}`,
+      className: `${props.isAvailable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
+      text: `${props.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
       parent: this.node,
     });
     this.switchModal = new SwitchModal();

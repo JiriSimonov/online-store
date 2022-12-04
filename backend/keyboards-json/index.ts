@@ -85,13 +85,13 @@ interface SourceSwitchProps {
   preorderDate?: null;
   stockStatus?: string;
 }
-export interface SwitchProps { // ЗДЕСЬ ЧИНИТЬ НАДО!!!!!!!!!!!!!!!!!!!!!!!!!!
-  id?: number;
-  title?: string;
-  short?: string;
-  quantity?: number;
-  isAvailable?: boolean;
-  manufacturer?: string;
+export interface SwitchProps {
+  id: number;
+  title: string;
+  short: string;
+  quantity: number;
+  isAvailable: boolean;
+  manufacturer: string;
 }
 
 interface SourceKeyboardProps {
