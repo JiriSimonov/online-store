@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import { ProductCardProps } from '../interfaces/interfaces';
 import BaseComponent from './base-component';
 import ProductImage from './product-img';
@@ -13,6 +14,8 @@ export default class ProductCard extends BaseComponent {
 
   private switchItem: SwitchComponent[];
 
+  private switchArr: string[]; // для теста отрисовки разных свичей
+
   private cardPrice: BaseComponent;
 
   private isAvialable: BaseComponent;
@@ -25,7 +28,7 @@ export default class ProductCard extends BaseComponent {
       title,
       price,
       isAvailable,
-      switchType,
+      // switchType,
     } = props;
     this.ProductImage = new ProductImage();
     this.appendEl(this.ProductImage);
@@ -36,10 +39,8 @@ export default class ProductCard extends BaseComponent {
       parent: this.node,
     });
     this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
-    this.switchItem = [
-      new SwitchComponent({ title: switchType, isAvailable }),
-      new SwitchComponent({ title: switchType, isAvailable }),
-      new SwitchComponent({ title: switchType, isAvailable })];
+    this.switchArr = ['br', 'bl', 'cl', 'sr'];
+    this.switchItem = this.switchArr.map((item) => new SwitchComponent({ title: `${item}`, isAvailable, parent: this.node }));
     this.switchItem.forEach((e) => {
       e.getNode().addEventListener('mouseover', () => {
         this.node.classList.add('store__item_is-open');

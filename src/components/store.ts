@@ -25,8 +25,8 @@ export default class Store extends BaseComponent {
     this.storeList = new StoreContent();
     this.storeItems = [
       new ProductCard({
-        title: 'test',
-        price: 7000,
+        title: 'Leopold FC750R SP Stick Point Gray/Blue',
+        price: 11990,
         isAvailable: true,
         switchType: 'br',
       }),

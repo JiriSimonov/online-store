@@ -45,11 +45,20 @@
   }
 
   &__img {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     margin-top: 80px;
     width: 100%;
     height: 400px; // убрать
     border-radius: 13px;
     outline: 2px solid red;
+    &_left,
+    &_mid,
+    &_right {
+      display: block;
+      width: auto;
+      height: auto;
+    }
   }
 
   &__card-title {
