@@ -1,5 +1,4 @@
-/* import { SwitchProps } from '../../backend/keyboards-json/index'; */
-
+// DOM Interfaces
 export interface BaseComponentProps {
   readonly tag?: keyof HTMLElementTagNameMap;
   className?: string;
@@ -25,3 +24,23 @@ export interface ProductImgProps {
 }
 
 export type RoutesObj = Record<string, () => void>;
+
+// JSON Interfaces
+export interface SwitchProps {
+  id: number;
+  title: string;
+  short: string;
+  quantity: number;
+  isAvailable: boolean;
+  manufacturer: string;
+}
+export interface KeyboardProps {
+  id: number;
+  title: string;
+  minPrice: number;
+  isAvailable: boolean;
+  switches: SwitchProps[];
+  size: string;
+  brands: string[];
+  features: string[];
+}

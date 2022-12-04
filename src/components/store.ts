@@ -1,4 +1,4 @@
-import { KeyboardProps } from '../../backend/keyboards-json/index';
+import { KeyboardProps } from '../interfaces/interfaces';
 // import Anchor from './anchor';
 import BaseComponent from './base-component';
 import ProductCard from './product-card';

@@ -1,4 +1,4 @@
-import { SwitchProps, KeyboardProps } from '../../backend/keyboards-json/index';
+import { SwitchProps, KeyboardProps } from '../interfaces/interfaces';
 import BaseComponent from './base-component';
 import ProductImage from './product-img';
 import SwitchComponent from './switch-component';

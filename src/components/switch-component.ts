@@ -1,4 +1,4 @@
-import { SwitchProps } from '../../backend/keyboards-json/index';
+import { SwitchProps } from '../interfaces/interfaces';
 import BaseComponent from './base-component';
 
 export default class SwitchComponent extends BaseComponent {
