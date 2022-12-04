@@ -30,7 +30,7 @@ export default class ProductCard extends BaseComponent {
       isAvailable,
       // switchType,
     } = props;
-    this.ProductImage = new ProductImage();
+    this.ProductImage = new ProductImage({});
     this.appendEl(this.ProductImage);
     this.cardTitle = new BaseComponent({
       tag: 'h3',

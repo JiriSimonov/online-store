@@ -17,4 +17,10 @@ export interface ProductCardProps extends BaseComponentProps {
   switchType?: string;
 }
 
+export interface ProductImgProps {
+  left?: string;
+  mid?: string;
+  right?: string;
+}
+
 export type RoutesObj = Record<string, () => void>;
