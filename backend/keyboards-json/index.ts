@@ -90,6 +90,7 @@ interface SwitchProps {
   title: string;
   short: string;
   quantity: number;
+  isAvailable: boolean;
   manufacturer: string;
 }
 
@@ -133,6 +134,7 @@ function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
     id,
     title,
     quantity,
+    isAvailable: quantity > 0,
     manufacturer: getManufacturer(title),
     short,
   };
