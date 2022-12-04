@@ -12,9 +12,9 @@
 
   &__filter {
     padding: 10px;
-    width: 100%;
     border: 1px solid $border-gray;
     border-radius: 25px;
+    width: 100%;
     font-size: 18px;
     font-weight: 500;
     cursor: pointer;
@@ -26,12 +26,30 @@
     }
   }
 
+  .store__content {
+    // display: flex;
+    // justify-content: space-between;
+    // align-self: flex-start;
+    gap: 20px;
+    margin: 40px 0 20px 0;
+  }
+
+  .filters {
+    display: none;
+    border: 2px red solid;
+    width: 320px;
+    height: 500px;
+    visibility: hidden;
+    transform: .3s linear;
+  }
+
   &__list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 40px;
-    margin: 10px 0;
-    padding: 10px 0;
+    margin: 0;
+    padding: 0;
     list-style: none;
   }
 
@@ -39,8 +57,8 @@
     position: relative;
     padding: 20px;
     border-radius: 13px;
-    background-color: $white;
     text-align: initial;
+    background-color: $white;
     user-select: none;
   }
 
@@ -48,11 +66,12 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin-top: 80px;
+    border-radius: 13px;
     width: 100%;
     height: 400px; // убрать
-    border-radius: 13px;
     background-repeat: no-repeat;
     background-position: center;
+
     &_left,
     &_mid,
     &_right {
@@ -107,17 +126,17 @@
     &__item {
       position: relative;
       padding: 10px;
+      border-radius: 50%;
+      border: 2px solid $white;
       width: 20px;
       height: 20px;
-      border-radius: 50%;
-      background-color: transparent;
-      border: 2px solid $white;
       font-size: 16px;
       font-weight: 400;
       color: $white;
       text-align: center;
       text-transform: uppercase;
       cursor: pointer;
+      background-color: transparent;
       transition: .3s linear;
       z-index: 3;
 
@@ -244,9 +263,9 @@
     left: 0;
     display: none;
     padding: 20px;
+    border-radius: 13px;
     width: calc(100% - 40px);
     height: calc(100% - 40px);
-    border-radius: 13px;
     background-color: $modal-bg;
     color: $white;
     transition: .4s linear;
@@ -263,6 +282,14 @@
   &__item_is-open {
     .modal {
       display: initial;
+      visibility: visible;
+    }
+  }
+
+  .store__wrapper_is-open {
+    .filters {
+      display: flex;
+      flex-direction: column;
       visibility: visible;
     }
   }
