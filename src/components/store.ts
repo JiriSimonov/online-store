@@ -1,4 +1,4 @@
-import { KeyboardProps } from '../../backend/keyboards-json/index';
+import { KeyboardProps } from '../interfaces/interfaces';
 // import Anchor from './anchor';
 import BaseComponent from './base-component';
 import ProductCard from './product-card';
@@ -26,12 +26,7 @@ export default class Store extends BaseComponent {
     this.title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
     this.showFiltersBtn = new BaseComponent({ tag: 'button', className: 'store__filter', text: 'Фильтры' });
     this.storeList = new StoreContent();
-    this.storeItems = keyboardsList.map((item: KeyboardProps) => new ProductCard({
-      title: item.title,
-      price: item.minPrice,
-      isAvailable: item.isAvailable,
-      switchTypes: item.switches,
-    }));
+    this.storeItems = keyboardsList.map((item: KeyboardProps) => new ProductCard(item));
   }
 
   render() {

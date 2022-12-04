@@ -1,5 +1,6 @@
 import fs = require('fs/promises');
 import path = require('path');
+import { SwitchProps, KeyboardProps } from '../../src/interfaces/interfaces';
 
 const sourceJSON: {} = require('./src/source.json');
 
@@ -85,14 +86,6 @@ interface SourceSwitchProps {
   preorderDate?: null;
   stockStatus?: string;
 }
-export interface SwitchProps { // ЗДЕСЬ ЧИНИТЬ НАДО!!!!!!!!!!!!!!!!!!!!!!!!!!
-  id?: number;
-  title?: string;
-  short?: string;
-  quantity?: number;
-  isAvailable?: boolean;
-  manufacturer?: string;
-}
 
 interface SourceKeyboardProps {
   id: number;
@@ -103,16 +96,6 @@ interface SourceKeyboardProps {
   size: string;
   manufacturer: string[];
   props: { Фичи?: string[] };
-}
-export interface KeyboardProps {
-  id: number;
-  title: string;
-  minPrice: number;
-  isAvailable: boolean;
-  switches: SwitchProps[];
-  size: string;
-  brands: string[];
-  features: string[];
 }
 
 function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
