@@ -1,7 +1,10 @@
+import { KeyboardProps } from '../../backend/keyboards-json/index';
 // import Anchor from './anchor';
 import BaseComponent from './base-component';
 import ProductCard from './product-card';
 import StoreContent from './store-content';
+
+const keyboardsList = require('../data/keyboards.json');
 
 export default class Store extends BaseComponent {
   private title: BaseComponent;
@@ -23,44 +26,12 @@ export default class Store extends BaseComponent {
     this.title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
     this.showFiltersBtn = new BaseComponent({ tag: 'button', className: 'store__filter', text: 'Фильтры' });
     this.storeList = new StoreContent();
-    this.storeItems = [
-      new ProductCard({
-        title: 'Leopold FC750R SP Stick Point Gray/Blue',
-        price: 11990,
-        isAvailable: true,
-        switchType: 'br',
-      }),
-      new ProductCard({
-        title: 'test',
-        price: 2500,
-        isAvailable: false,
-        switchType: 'ss',
-      }),
-      new ProductCard({
-        title: 'test',
-        price: 7000,
-        isAvailable: true,
-        switchType: 'b',
-      }),
-      new ProductCard({
-        title: 'test',
-        price: 2500,
-        isAvailable: false,
-        switchType: 'br',
-      }),
-      new ProductCard({
-        title: 'test',
-        price: 2500,
-        isAvailable: true,
-        switchType: 'ss',
-      }),
-      new ProductCard({
-        title: 'test',
-        price: 13500,
-        isAvailable: false,
-        switchType: 'r',
-      }),
-    ];
+    this.storeItems = keyboardsList.map((item: KeyboardProps) => new ProductCard({
+      title: item.title,
+      price: item.minPrice,
+      isAvailable: item.isAvailable,
+      switchTypes: item.switches,
+    }));
   }
 
   render() {

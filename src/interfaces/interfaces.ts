@@ -1,3 +1,5 @@
+import { SwitchProps } from '../../backend/keyboards-json/index';
+
 export interface BaseComponentProps {
   readonly tag?: keyof HTMLElementTagNameMap;
   className?: string;
@@ -13,8 +15,8 @@ export interface AnchorProps extends BaseComponentProps {
 export interface ProductCardProps extends BaseComponentProps {
   title?: string;
   price?: number;
-  isAvailable?: boolean;
-  switchType?: string;
+  isAvailable: boolean;
+  switchTypes: SwitchProps[];
 }
 
 export interface ProductImgProps {

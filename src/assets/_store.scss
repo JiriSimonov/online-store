@@ -28,7 +28,7 @@
 
   &__list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 40px;
     margin: 10px 0;
     padding: 10px 0;
@@ -135,32 +135,31 @@
       }
     }
 
-    .br {
+    .BR {
       background-color: $brown;
     }
 
-    .b {
+    .B {
       background-color: $b;
     }
 
-    .cl {
+    .CL {
       background-image: $cl;
     }
 
-    .sr {
+    .SR {
       background-image: $sr;
     }
 
-    .r {
+    .R {
       background-color: $r;
     }
 
-    .ss {
+    .SS {
       background-image: $ss;
     }
 
     .switch__item_false {
-      border-color: $sw-disabled-bg;
       background: $sw-disabled-bg;
       background-image: none;
       color: $sw-disabled-txt;
