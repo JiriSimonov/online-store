@@ -10,23 +10,35 @@ export default class ProductImage extends BaseComponent {
 
   constructor(props: ProductImgProps) {
     super({ className: 'store__img' });
-    const { left, mid, right } = props;
+    const { mid, right } = props;
     this.left = new BaseComponent({ className: 'store__img store__img_left' });
-    /*  this.left.getNode().style.backgroundImage = 'url(../assets/images/keyboards/test-left.jpg)';
-    this.node.style.backgroundImage = 'url(../assets/images/keyboards/test-left.jpg)'; */
     this.mid = new BaseComponent({ className: 'store__img store__img_mid' });
-    this.mid.getNode().style.backgroundImage = '';
     this.right = new BaseComponent({ className: 'store__img store__img_right' });
-    this.right.getNode().style.backgroundImage = '';
     this.appendEl([this.left, this.mid, this.right]);
-    this.left.getNode().addEventListener('mouseover', () => {});
-    this.left.getNode().addEventListener('mouseout', () => {});
-    this.mid.getNode().addEventListener('mouseover', () => {});
-    this.mid.getNode().addEventListener('mouseout', () => {});
-    this.right.getNode().addEventListener('mouseover', () => {});
-    this.right.getNode().addEventListener('mouseout', () => {});
+    this.mid.getNode().addEventListener('mouseover', () => {
+      this.node.style.backgroundImage = this.mid.getNode().style.backgroundImage;
+    });
+    this.mid.getNode().addEventListener('mouseout', () => {
+      import('../assets/images/keyboards/test-left.jpg').then((v) => {
+        Object.assign(this.node.style, { backgroundImage: `url(${v.default})` });
+      });
+    });
+    this.right.getNode().addEventListener('mouseover', () => {
+      this.node.style.backgroundImage = this.right.getNode().style.backgroundImage;
+    });
+    this.right.getNode().addEventListener('mouseout', () => {
+      import('../assets/images/keyboards/test-left.jpg').then((v) => {
+        Object.assign(this.node.style, { backgroundImage: `url(${v.default})` });
+      });
+    });
     import('../assets/images/keyboards/test-left.jpg').then((v) => {
       Object.assign(this.node.style, { backgroundImage: `url(${v.default})` });
+    });
+    import('../assets/images/keyboards/test-mid.jpg').then((v) => {
+      Object.assign(this.mid.getNode().style, { backgroundImage: `url(${v.default})` });
+    });
+    import('../assets/images/keyboards/test-right.jpg').then((v) => {
+      Object.assign(this.right.getNode().style, { backgroundImage: `url(${v.default})` });
     });
   }
 }

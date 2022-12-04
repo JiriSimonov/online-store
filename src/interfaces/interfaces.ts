@@ -18,7 +18,6 @@ export interface ProductCardProps extends BaseComponentProps {
 }
 
 export interface ProductImgProps {
-  left?: string;
   mid?: string;
   right?: string;
 }
