@@ -1,5 +1,6 @@
 import Anchor from './anchor';
 import BaseComponent from './base-component';
+import Button from './button';
 
 export default class Header extends BaseComponent {
   private container: BaseComponent;
@@ -21,7 +22,13 @@ export default class Header extends BaseComponent {
     this.controls = new BaseComponent({ className: 'header__controls' });
     this.logo = new Anchor({ className: 'header__logo', text: 'Keyboards Store', href: './' });
     this.search = new BaseComponent({ tag: 'button', className: 'header__search' });
-    this.cart = new BaseComponent({ tag: 'button', className: 'header__cart' });
+    this.cart = new Button({
+      tag: 'button',
+      className: 'header__cart',
+      onclick: () => {
+        window.location.hash = '#cart';
+      },
+    });
   }
 
   render() {

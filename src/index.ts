@@ -4,6 +4,7 @@ import Footer from './components/footer';
 import Store from './components/store';
 import Header from './components/header';
 import './assets/style.scss';
+import Home from './components/home-page/home-page';
 
 class App extends BaseComponent {
   private router: Router | null;
@@ -18,7 +19,7 @@ class App extends BaseComponent {
 
   renderHome() {
     this.currentPage?.destroy();
-    const home = new BaseComponent({ className: 'container-home' });
+    const home = new Home();
     this.currentPage = home;
     this.appendEl(home);
   }
