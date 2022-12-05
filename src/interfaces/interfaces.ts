@@ -9,5 +9,9 @@ export interface AnchorProps extends BaseComponentProps {
   target?: string;
   label?: string;
 }
+export interface ButtonProps extends BaseComponentProps {
+  value?: string;
+  onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+}
 
 export type RoutesObj = Record<string, () => void>;
