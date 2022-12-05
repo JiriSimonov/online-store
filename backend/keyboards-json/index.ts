@@ -2,7 +2,8 @@ import fs = require('fs/promises');
 import path = require('path');
 import { SwitchProps, KeyboardProps } from '../../src/interfaces/interfaces';
 
-const sourceJSON: {} = require('./src/source.json');
+const PRODUCTS: {} = require('./src/source.json');
+const IMAGES: {} = require('./src/keyboard-images.json');
 
 const outPathTest = path.resolve(__dirname, 'out', 'keyboards.json');
 const outPathDev = path.resolve('src', 'data', 'keyboards.json');
@@ -110,7 +111,7 @@ function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
         return head;
     }
   };
-  const { id, quantity } = sourceSwitch;
+  const { id, quantity, price } = sourceSwitch;
   const title = sourceSwitch.switch;
   const short = SwitchShorts[title as keyof typeof SwitchShorts];
   return {
@@ -120,6 +121,7 @@ function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
     isAvailable: quantity > 0,
     manufacturer: getManufacturer(title),
     short,
+    price,
   };
 }
 
@@ -143,10 +145,83 @@ function getKeyboardList(source: { [s: string]: SourceKeyboardProps }): Keyboard
   return Object.values(source).map(getKeyboard);
 }
 
+function downloadImages(imagesList: {}, keyboardList: KeyboardProps[]) {
+  // todo ! keyboardList.map()
+}
+
 export default async (): Promise<void[]> => {
   await fs.mkdir(path.dirname(outPathTest), { recursive: true });
   await fs.mkdir(path.dirname(outPathDev), { recursive: true });
-  const list = getKeyboardList(sourceJSON);
+  const list = getKeyboardList(PRODUCTS);
   // console.log(new Set(list.map((v) => v.switches.map((c) => c.title)).flat()));
+  downloadImages(IMAGES, list);
   return Promise.all([outPathTest, outPathDev].map((v) => fs.writeFile(v, JSON.stringify(list))));
 };
+
+/* не вижу способа автоматически добраться до DOM и парсить через него без сторонних библиотек
+function getSourcePage(url: string): Promise<string> {
+  return new Promise((res): void => {
+    let data = '';
+    https.get(url, (msg): void => {
+      msg.on('data', (chunk): void => { data += chunk; });
+      msg.on('end', (): void => res(data));
+    }).on('error', (): never => { throw new Error('getSourcePage > Request failed! Check URL'); });
+  });
+}
+
+async function getKeyboardImages(keyboardId: number) {
+  const url = 'https://geekboards.ru/collection/keyboards';
+  const page = await getSourcePage(url);
+
+  // temp
+  const filePath = path.resolve(__dirname, `${keyboardId}.html`);
+  await fs.writeFile(filePath, page);
+  cp.execFile(`open ${filePath}`);
+}
+getKeyboardImages(getKeyboardList(sourceJSON)[0].id);
+*/
+
+/* ts */
+/* const getURLs = (id: number | string): string[] => {
+  const selector = `.product_id_${id} .product-card__slider-img`;
+  const list: NodeListOf<HTMLImageElement> = document.querySelectorAll(selector);
+  return [...list].map((node): string => node.src);
+};
+
+const getImagesList = (obj: { [s: string]: SourceKeyboardProps }): [string, string[]][] => {
+  const keys = Object.keys(obj);
+  return keys.map((id): [string, string[]] => [id, getURLs(id)]);
+};
+
+const keyboardImages = getImagesList(PRODUCTS);
+
+const snatch = (list: { [key: string]: string[] }) => {
+  const json = JSON.stringify(list, null, '\t');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+  a.download = 'keyboard-images.json';
+  a.click();
+};
+
+snatch(Object.fromEntries(keyboardImages)); */
+
+/* js
+{
+  const selector
+  const getURLs=id=>{
+  const selector = `.product_id_${id} .product-card__slider-img`
+    return [...document.querySelectorAll(selector)].map(v=>v.src)}
+
+  const keyboardImages = Object.keys(PRODUCTS).map(id=>[id,getURLs(id)])
+
+  const snatch=list=>{
+    const json = JSON.stringify(list, null, '\t')
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([json], {type: "application/json"}))
+    a.download='keyboard-images.json'
+    a.click();
+  }
+
+  snatch(Object.fromEntries(keyboardImages))
+}
+*/
