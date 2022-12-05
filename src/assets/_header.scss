@@ -45,4 +45,15 @@
   &__cart {
     background-image: url('./icons/cart.svg');
   }
+
+  &__input {
+    display: none;
+    visibility: hidden;
+    transition: .3s linear;
+  }
+
+  &__input_is-open {
+    display: initial;
+    visibility: visible;
+  }
 }
