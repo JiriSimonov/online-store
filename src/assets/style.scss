@@ -1,6 +1,7 @@
 // https://codeguide.maxgraph.ru/ --- порядок свойств
 
 @import './header.scss';
+@import './styles/home/home';
 @import './store.scss';
 @import './_footer.scss';
 @import './_vars.scss';
@@ -18,7 +19,6 @@ body {
 }
 
 .container {
-  width: 100%;
   margin: 0 auto;
   padding: 0 40px;
   max-width: 1520px;

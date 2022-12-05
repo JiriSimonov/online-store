@@ -1,5 +1,7 @@
 import Anchor from './anchor';
 import BaseComponent from './base-component';
+import Button from './button';
+import Input from './input';
 
 export default class Header extends BaseComponent {
   private container: BaseComponent;
@@ -14,6 +16,10 @@ export default class Header extends BaseComponent {
 
   private cart: BaseComponent;
 
+  private cartCount: BaseComponent;
+
+  private searchInput: Input;
+
   constructor() {
     super({ tag: 'header', className: 'header' });
     this.container = new BaseComponent({ className: 'container' });
@@ -21,13 +27,23 @@ export default class Header extends BaseComponent {
     this.controls = new BaseComponent({ className: 'header__controls' });
     this.logo = new Anchor({ className: 'header__logo', text: 'Keyboards Store', href: './' });
     this.search = new BaseComponent({ tag: 'button', className: 'header__search' });
-    this.cart = new BaseComponent({ tag: 'button', className: 'header__cart' });
+    this.cart = new Button({
+      className: 'header__cart',
+      onclick: () => {
+        window.location.hash = '#cart';
+      },
+    });
+    this.cartCount = new BaseComponent({ className: 'cart__count' });
+    this.searchInput = new Input({ className: 'header__input' });
+    this.search.getNode().addEventListener('click', () => {
+      this.searchInput.getNode().classList.toggle('header__input_is-open');
+    });
   }
 
   render() {
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.logo, this.controls]);
-    this.controls.appendEl([this.search, this.cart]);
+    this.controls.appendEl([this.searchInput, this.search, this.cart, this.cartCount]);
   }
 }

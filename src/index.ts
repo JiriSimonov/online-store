@@ -4,6 +4,8 @@ import Footer from './components/footer';
 import Store from './components/store';
 import Header from './components/header';
 import './assets/style.scss';
+import Home from './components/home-page/home-page';
+import Cart from './components/cart/cart';
 
 class App extends BaseComponent {
   private router: Router | null;
@@ -18,7 +20,7 @@ class App extends BaseComponent {
 
   renderHome() {
     this.currentPage?.destroy();
-    const home = new BaseComponent({ className: 'container-home' });
+    const home = new Home();
     this.currentPage = home;
     this.appendEl(home);
   }
@@ -27,6 +29,13 @@ class App extends BaseComponent {
     this.currentPage?.destroy();
     const store = new Store();
     store.render();
+    this.currentPage = store;
+    this.appendEl(store);
+  }
+
+  renderCart() {
+    this.currentPage?.destroy();
+    const store = new Cart();
     this.currentPage = store;
     this.appendEl(store);
   }
@@ -42,6 +51,7 @@ class App extends BaseComponent {
         '': () => this.renderHome(),
         home: () => this.renderHome(),
         store: () => this.renderStore(),
+        cart: () => this.renderCart(),
       });
       root.append(this.node);
       footer.render();
