@@ -10,6 +10,14 @@ export interface AnchorProps extends BaseComponentProps {
   target?: string;
   label?: string;
 }
+export interface ButtonProps extends BaseComponentProps {
+  value?: string;
+  onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+}
+export interface InputProps extends BaseComponentProps {
+  value?: string; // todo заменить и/или добавить необходимое
+  onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any; // todo заменить и/или добавить необходимое
+}
 
 /* export interface ProductCardProps extends BaseComponentProps {
   title?: string;
