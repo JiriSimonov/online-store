@@ -174,21 +174,22 @@ async function getKeyboardImages(keyboardId: number) {
 }
 getKeyboardImages(getKeyboardList(sourceJSON)[0].id);
 */
-/* ts
-const getURLs = (id: number | string): string[] => {
-  const selector = `.product_id_${id} .product-card__slider-img`
+
+/* ts */
+/* const getURLs = (id: number | string): string[] => {
+  const selector = `.product_id_${id} .product-card__slider-img`;
   const list: NodeListOf<HTMLImageElement> = document.querySelectorAll(selector);
   return [...list].map((node): string => node.src);
 };
 
-const getImagesList = (obj: { [s: string]: SourceKeyboardProps }) => {
+const getImagesList = (obj: { [s: string]: SourceKeyboardProps }): [string, string[]][] => {
   const keys = Object.keys(obj);
-  return keys.map((id) => ({ [id]: getURLs(id) }));
+  return keys.map((id): [string, string[]] => [id, getURLs(id)]);
 };
 
 const keyboardImages = getImagesList(PRODUCTS);
 
-const snatch = (list: { [key: string]: string[] }[]) => {
+const snatch = (list: { [key: string]: string[] }) => {
   const json = JSON.stringify(list, null, '\t');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
@@ -196,17 +197,16 @@ const snatch = (list: { [key: string]: string[] }[]) => {
   a.click();
 };
 
-snatch(keyboardImages);
-*/
+snatch(Object.fromEntries(keyboardImages)); */
 
-/*
+/* js
 {
   const selector
   const getURLs=id=>{
   const selector = `.product_id_${id} .product-card__slider-img`
     return [...document.querySelectorAll(selector)].map(v=>v.src)}
 
-  const keyboardImages = Object.keys(PRODUCTS).map(id=>({[id]:getURLs(id)}))
+  const keyboardImages = Object.keys(PRODUCTS).map(id=>[id,getURLs(id)])
 
   const snatch=list=>{
     const json = JSON.stringify(list, null, '\t')
@@ -216,6 +216,6 @@ snatch(keyboardImages);
     a.click();
   }
 
-  snatch(keyboardImages)
+  snatch(Object.fromEntries(keyboardImages))
 }
- */
+*/
