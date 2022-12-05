@@ -111,7 +111,7 @@ function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
         return head;
     }
   };
-  const { id, quantity } = sourceSwitch;
+  const { id, quantity, price } = sourceSwitch;
   const title = sourceSwitch.switch;
   const short = SwitchShorts[title as keyof typeof SwitchShorts];
   return {
@@ -121,6 +121,7 @@ function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
     isAvailable: quantity > 0,
     manufacturer: getManufacturer(title),
     short,
+    price,
   };
 }
 

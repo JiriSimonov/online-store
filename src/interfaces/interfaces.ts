@@ -41,6 +41,7 @@ export interface SwitchProps {
   quantity: number;
   isAvailable: boolean;
   manufacturer: string; // Cherry Gateron Varmilo...
+  price?: number;
 }
 export interface KeyboardProps {
   id: number;
