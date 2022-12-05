@@ -3,6 +3,7 @@ import path = require('path');
 import { SwitchProps, KeyboardProps } from '../../src/interfaces/interfaces';
 
 const PRODUCTS: {} = require('./src/source.json');
+const IMAGES: {} = require('./src/keyboard-images.json');
 
 const outPathTest = path.resolve(__dirname, 'out', 'keyboards.json');
 const outPathDev = path.resolve('src', 'data', 'keyboards.json');
@@ -143,12 +144,16 @@ function getKeyboardList(source: { [s: string]: SourceKeyboardProps }): Keyboard
   return Object.values(source).map(getKeyboard);
 }
 
+function downloadImages(imagesList: {}, keyboardList: KeyboardProps[]) {
+  // todo ! keyboardList.map()
+}
+
 export default async (): Promise<void[]> => {
   await fs.mkdir(path.dirname(outPathTest), { recursive: true });
   await fs.mkdir(path.dirname(outPathDev), { recursive: true });
   const list = getKeyboardList(PRODUCTS);
   // console.log(new Set(list.map((v) => v.switches.map((c) => c.title)).flat()));
-
+  downloadImages(IMAGES, list);
   return Promise.all([outPathTest, outPathDev].map((v) => fs.writeFile(v, JSON.stringify(list))));
 };
 
