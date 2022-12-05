@@ -1,5 +1,9 @@
 import BaseComponent from './components/base-component';
-import { Router } from './utils/router';
+import Router from './utils/router';
+import Footer from './components/footer';
+import Store from './components/store';
+import Header from './components/header';
+import './assets/style.scss';
 
 class App extends BaseComponent {
   private router: Router | null;
@@ -21,13 +25,18 @@ class App extends BaseComponent {
 
   renderStore() {
     this.currentPage?.destroy();
-    const store = new BaseComponent({ className: 'container-store' });
+    const store = new Store();
+    store.render();
     this.currentPage = store;
     this.appendEl(store);
   }
 
   runApp() {
     const root = document.getElementById('root');
+    const footer = new Footer();
+    const header = new Header();
+    header.render();
+    root?.append(header.getNode());
     if (root) {
       this.router = new Router({
         '': () => this.renderHome(),
@@ -35,6 +44,8 @@ class App extends BaseComponent {
         store: () => this.renderStore(),
       });
       root.append(this.node);
+      footer.render();
+      root?.append(footer.getNode());
     }
   }
 }

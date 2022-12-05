@@ -1,0 +1,25 @@
+// https://codeguide.maxgraph.ru/ --- порядок свойств
+
+@import './header.scss';
+@import './store.scss';
+@import './_footer.scss';
+@import './_vars.scss';
+
+body {
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  background-color: $grey;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 40px;
+  max-width: 1520px;
+}

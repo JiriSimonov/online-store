@@ -1,6 +1,6 @@
 import { RoutesObj } from '../interfaces/interfaces';
 
-export class Router {
+export default class Router {
   constructor(private readonly routes: RoutesObj) {
     window.addEventListener('hashchange', this.onHashChangeHandler);
     this.onHashChangeHandler();
