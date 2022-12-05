@@ -35,7 +35,7 @@ export default class Store extends BaseComponent {
     this.filters = new Filters();
     this.showFiltersBtn.getNode().addEventListener('click', () => {
       this.wrapper.getNode().classList.toggle('store__wrapper_is-open');
-    });
+    }); // refactor Base -> Button
   }
 
   render() {

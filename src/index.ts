@@ -5,6 +5,7 @@ import Store from './components/store';
 import Header from './components/header';
 import './assets/style.scss';
 import Home from './components/home-page/home-page';
+import Cart from './components/cart/cart';
 
 class App extends BaseComponent {
   private router: Router | null;
@@ -32,6 +33,13 @@ class App extends BaseComponent {
     this.appendEl(store);
   }
 
+  renderCart() {
+    this.currentPage?.destroy();
+    const store = new Cart();
+    this.currentPage = store;
+    this.appendEl(store);
+  }
+
   runApp() {
     const root = document.getElementById('root');
     const footer = new Footer();
@@ -43,6 +51,7 @@ class App extends BaseComponent {
         '': () => this.renderHome(),
         home: () => this.renderHome(),
         store: () => this.renderStore(),
+        cart: () => this.renderCart(),
       });
       root.append(this.node);
       footer.render();
