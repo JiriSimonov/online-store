@@ -1,12 +1,16 @@
-import fs = require('fs/promises');
+import fsp = require('fs/promises');
+import fs = require('fs');
 import path = require('path');
+import https = require('https');
 import { SwitchProps, KeyboardProps } from '../../src/interfaces/interfaces';
 
-const PRODUCTS: {} = require('./src/source.json');
-const IMAGES: {} = require('./src/keyboard-images.json');
+type Pair<T> = [T, T];
 
-const outPathTest = path.resolve(__dirname, 'out', 'keyboards.json');
-const outPathDev = path.resolve('src', 'data', 'keyboards.json');
+const PRODUCTS: SourceKeyboardList = require('./src/source.json');
+const IMAGES: SourceImagesList = require('./src/keyboard-images.json');
+
+const keyboardJsonPath = path.resolve(__dirname, 'out', 'keyboards.json');
+const imagesDir = path.resolve(__dirname, 'out', 'images');
 
 enum SwitchShorts {
   'Cherry MX RGB Brown' = 'BR',
@@ -98,6 +102,12 @@ interface SourceKeyboardProps {
   manufacturer: string[];
   props: { Фичи?: string[] };
 }
+interface SourceKeyboardList {
+  [key: string]: SourceKeyboardProps;
+}
+interface SourceImagesList {
+  [index: string]: string[];
+}
 
 function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
   const getManufacturer = (title: string): string => {
@@ -145,83 +155,41 @@ function getKeyboardList(source: { [s: string]: SourceKeyboardProps }): Keyboard
   return Object.values(source).map(getKeyboard);
 }
 
-function downloadImages(imagesList: {}, keyboardList: KeyboardProps[]) {
-  // todo ! keyboardList.map()
-}
-
-export default async (): Promise<void[]> => {
-  await fs.mkdir(path.dirname(outPathTest), { recursive: true });
-  await fs.mkdir(path.dirname(outPathDev), { recursive: true });
-  const list = getKeyboardList(PRODUCTS);
-  // console.log(new Set(list.map((v) => v.switches.map((c) => c.title)).flat()));
-  downloadImages(IMAGES, list);
-  return Promise.all([outPathTest, outPathDev].map((v) => fs.writeFile(v, JSON.stringify(list))));
-};
-
-/* не вижу способа автоматически добраться до DOM и парсить через него без сторонних библиотек
-function getSourcePage(url: string): Promise<string> {
-  return new Promise((res): void => {
-    let data = '';
-    https.get(url, (msg): void => {
-      msg.on('data', (chunk): void => { data += chunk; });
-      msg.on('end', (): void => res(data));
-    }).on('error', (): never => { throw new Error('getSourcePage > Request failed! Check URL'); });
+function download(dir: string, name: string, url: string): Promise<string> {
+  return new Promise((res, rej) => {
+    const filePath = path.resolve(dir, name + path.extname(url));
+    https.get(url, (msg) => {
+      if (msg.statusCode === 200) {
+        const stream = fs.createWriteStream(filePath);
+        stream.on('finish', () => {
+          msg.unpipe(stream);
+          stream.close();
+          res(filePath);
+        });
+        msg.pipe(stream);
+      } else {
+        rej(new Error(url));
+      }
+    });
   });
 }
 
-async function getKeyboardImages(keyboardId: number) {
-  const url = 'https://geekboards.ru/collection/keyboards';
-  const page = await getSourcePage(url);
+async function downloadImages(dir = imagesDir) {
+  const getData = (id: number, url: string, i: number): Pair<string> => [`${id}-${i + 1}`, url];
+  const getList = (id: number): Pair<string>[] => IMAGES[id].map((url, i) => getData(id, url, i));
 
-  // temp
-  const filePath = path.resolve(__dirname, `${keyboardId}.html`);
-  await fs.writeFile(filePath, page);
-  cp.execFile(`open ${filePath}`);
+  await fsp.mkdir(dir, { recursive: true });
+
+  const list = getKeyboardList(PRODUCTS).flatMap((kb) => getList(kb.id));
+
+  return Promise.allSettled(list.map((data) => download(dir, ...data)));
 }
-getKeyboardImages(getKeyboardList(sourceJSON)[0].id);
-*/
 
-/* ts */
-/* const getURLs = (id: number | string): string[] => {
-  const selector = `.product_id_${id} .product-card__slider-img`;
-  const list: NodeListOf<HTMLImageElement> = document.querySelectorAll(selector);
-  return [...list].map((node): string => node.src);
-};
+async function generateKeyboardJSON(outputPath = keyboardJsonPath): Promise<void> {
+  await fsp.mkdir(path.dirname(outputPath), { recursive: true });
+  const list = getKeyboardList(PRODUCTS);
 
-const getImagesList = (obj: { [s: string]: SourceKeyboardProps }): [string, string[]][] => {
-  const keys = Object.keys(obj);
-  return keys.map((id): [string, string[]] => [id, getURLs(id)]);
-};
-
-const keyboardImages = getImagesList(PRODUCTS);
-
-const snatch = (list: { [key: string]: string[] }) => {
-  const json = JSON.stringify(list, null, '\t');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
-  a.download = 'keyboard-images.json';
-  a.click();
-};
-
-snatch(Object.fromEntries(keyboardImages)); */
-
-/* js
-{
-  const selector
-  const getURLs=id=>{
-  const selector = `.product_id_${id} .product-card__slider-img`
-    return [...document.querySelectorAll(selector)].map(v=>v.src)}
-
-  const keyboardImages = Object.keys(PRODUCTS).map(id=>[id,getURLs(id)])
-
-  const snatch=list=>{
-    const json = JSON.stringify(list, null, '\t')
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([json], {type: "application/json"}))
-    a.download='keyboard-images.json'
-    a.click();
-  }
-
-  snatch(Object.fromEntries(keyboardImages))
+  return fsp.writeFile(outputPath, JSON.stringify(list));
 }
-*/
+
+export { downloadImages, generateKeyboardJSON };
