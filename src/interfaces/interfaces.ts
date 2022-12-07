@@ -37,7 +37,6 @@ export interface SwitchProps {
   price?: number;
 }
 export interface SwitchDecriptionProps {
-  id: string; // BR, B, BL...
   title: string; // cherry mx rgb blue, gateron cap v2 crystal red...
   props: string[];
   description: string;

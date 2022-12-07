@@ -1,5 +1,9 @@
 import { SwitchProps } from '../../interfaces/interfaces';
 import BaseComponent from '../elements/base-component';
+import { getSwitchData, setSwitchImage } from '../../utils/get-switch-data';
+
+console.log(getSwitchData('CBR', 'props'));
+console.log(setSwitchImage('CBR', document.body));
 
 export default class SwitchComponent extends BaseComponent {
   constructor(props: SwitchProps) {

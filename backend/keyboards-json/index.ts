@@ -3,6 +3,7 @@ import fs = require('fs');
 import path = require('path');
 import https = require('https');
 import { SwitchProps, KeyboardProps, SwitchDecriptionProps } from '../../src/interfaces/interfaces';
+import { SwitchShorts } from '../../src/interfaces/enums';
 
 type Pair<T> = [T, T];
 
@@ -14,72 +15,6 @@ const keyboardJsonPath = path.resolve(__dirname, 'out', 'keyboards.json');
 const switchesJsonPath = path.resolve(__dirname, 'out', 'switches.json');
 const imagesDir = path.resolve(__dirname, 'out', 'images');
 
-enum SwitchShorts {
-  'akko cs jelly pink' = 'AJP',
-  'akko cs jelly purple' = 'AJR',
-  'cherry mx black' = 'BL',
-  'cherry mx blue' = 'B',
-  'cherry mx brown' = 'BR',
-  'cherry mx clear' = 'CL',
-  'cherry mx silent red' = 'SR',
-  'cherry mx speed silver' = 'SS',
-  'cherry mx red' = 'R',
-  'cherry mx rgb' = 'R',
-  'cherry mx rgb black' = 'BL',
-  'cherry mx rgb blue' = 'B',
-  'cherry mx rgb brown' = 'BR',
-  'cherry mx rgb clear' = 'CL',
-  'cherry mx rgb red' = 'R',
-  'cherry mx rgb silent red' = 'SR',
-  'cherry mx rgb speed silver' = 'SS',
-  'cherry mx silent black' = 'SB',
-  'cherry mx green' = 'GR',
-  'garmilo ec v2 iris' = 'EIR',
-  'garmilo ec v2 violet' = 'EV',
-  'gateron cap v2 crystal brown' = 'CBR',
-  'gateron cap v2 crystal blue' = 'CB',
-  'gateron cap v2 crystal red' = 'CR',
-  'gateron cap v2 crystal yellow' = 'CY',
-  'gateron cap v2 crystal silent red' = 'CSR',
-  'gateron cap v2 crystal speed silver' = 'CSS',
-  'gateron g pro red' = 'GPR',
-  'gateron g pro brown' = 'GPBR',
-  'gateron g pro blue' = 'GPB',
-  'gateron g pro 2 silver' = 'GPS',
-  'gateron g pro 2 white' = 'GPW',
-  'gateron g pro 2 yellow' = 'GPY',
-  'gateron g pro 2 red' = 'GPR',
-  'gateron g pro 2 brown' = 'GPBR',
-  'gateron g pro yellow' = 'GPY',
-  'gateron low profile blue' = 'GLB',
-  'gateron low profile brown' = 'GLBR',
-  'gateron low profile red' = 'GLR',
-  'kailh prestige red' = 'KPR',
-  'kailh prestige clicky' = 'KPC',
-  'keychron optical low profile brown' = 'KBR',
-  'keychron optical low profile red' = 'KLR',
-  'keychron optical low profile mint' = 'KLM',
-  'keychron optical low profile banana' = 'KLN',
-  'keychron optical low profile blue' = 'KLB',
-  'novelkeys x kailh box crystal navy' = 'NA',
-  'novelkeys x kailh box crystal royal' = 'KRO',
-  'topre 45g' = 'T',
-  'topre 45g silent' = 'TS',
-  'topre 30g' = 'T',
-  'topre variable' = 'TV',
-  'topre variable silent' = 'TVS',
-  'ttc speed silver' = 'TSS',
-  'varmilo ec v2 jasmine' = 'EJ',
-  'varmilo ec v2 iris' = 'EIR',
-  'varmilo ec v2 violet' = 'EV',
-  'varmilo ec daisy v2' = 'ED',
-  'varmilo ec sakura v2' = 'ES',
-  'varmilo ec rose v2' = 'ER',
-  'varmilo ec ivy v2' = 'EI',
-  'zeal pc tealios v2' = 'TE',
-  'zeal pc zilents v2 67g' = 'ZI',
-  'zeal pc zealios v2 67g' = 'ZE',
-}
 interface SourceSwitchProps {
   id: number;
   product_id?: number;
