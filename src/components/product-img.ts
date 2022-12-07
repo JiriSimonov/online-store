@@ -31,7 +31,6 @@ export default class ProductImage extends BaseComponent {
 
       this.appendEl(this.images);
     };
-
     render(imageImports);
   }
 }
