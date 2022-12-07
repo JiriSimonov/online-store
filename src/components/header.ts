@@ -1,7 +1,7 @@
-import Anchor from './anchor';
-import BaseComponent from './base-component';
-import Button from './button';
-import Input from './input';
+import Anchor from './elements/anchor';
+import BaseComponent from './elements/base-component';
+import Button from './elements/button';
+import Input from './elements/input';
 
 export default class Header extends BaseComponent {
   private container: BaseComponent;

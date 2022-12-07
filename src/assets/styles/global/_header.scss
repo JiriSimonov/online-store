@@ -1,5 +1,5 @@
 
-@import './_vars.scss';
+@import 'vars';
 
 .header {
   background-color: $white;
@@ -37,13 +37,13 @@
       opacity: .6;
     }
   }
-  
+
   &__search {
-    background-image: url('./icons/search.svg');
+    background-image: url('../../icons/search.svg');
   }
 
   &__cart {
-    background-image: url('./icons/cart.svg');
+    background-image: url('../../icons/cart.svg');
   }
 
   &__input {

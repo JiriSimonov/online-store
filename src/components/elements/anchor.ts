@@ -1,5 +1,5 @@
 import BaseComponent from './base-component';
-import { AnchorProps } from '../interfaces/interfaces';
+import { AnchorProps } from '../../interfaces/interfaces';
 
 export default class Anchor extends BaseComponent {
   constructor(props: AnchorProps) {

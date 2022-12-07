@@ -1,4 +1,4 @@
-import BaseComponent from './base-component';
+import BaseComponent from '../elements/base-component';
 
 export default class SwitchModal extends BaseComponent {
   private modalTitle: BaseComponent;

@@ -1,5 +1,5 @@
 import BaseComponent from './base-component';
-import { ButtonProps } from '../interfaces/interfaces';
+import { ButtonProps } from '../../interfaces/interfaces';
 
 export default class Button extends BaseComponent {
   constructor(props: ButtonProps) {
