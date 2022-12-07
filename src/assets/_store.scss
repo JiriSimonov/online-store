@@ -34,16 +34,6 @@
     margin: 40px 0 20px 0;
   }
 
-  .filters {
-    display: none;
-    flex-shrink: 0;
-    border: 2px red solid;
-    width: 320px;
-    height: 500px;
-    visibility: hidden;
-    transform: .3s linear;
-  }
-
   &__list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -289,14 +279,6 @@
   &__item_is-open {
     .modal {
       display: initial;
-      visibility: visible;
-    }
-  }
-
-  .store__wrapper_is-open {
-    .filters {
-      display: flex;
-      flex-direction: column;
       visibility: visible;
     }
   }
