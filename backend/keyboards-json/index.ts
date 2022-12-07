@@ -109,6 +109,10 @@ interface SourceImagesList {
   [index: string]: string[];
 }
 
+function getKBfileName(id: number, i: number): string {
+  return `${id}-${i + 1}`;
+}
+
 function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
   const getManufacturer = (title: string): string => {
     const head = (title || '').split(' ')[0];
@@ -148,6 +152,7 @@ function getKeyboard(sourceKeyboard: SourceKeyboardProps): KeyboardProps {
     size,
     brands: sourceKeyboard.manufacturer,
     features: sourceKeyboard.props?.Фичи || [],
+    images: IMAGES[id].map((_, i) => getKBfileName(id, i)),
   };
 }
 
@@ -175,7 +180,7 @@ function download(dir: string, name: string, url: string): Promise<string> {
 }
 
 async function downloadImages(dir = imagesDir) {
-  const getData = (id: number, url: string, i: number): Pair<string> => [`${id}-${i + 1}`, url];
+  const getData = (id: number, url: string, i: number): Pair<string> => [getKBfileName(id, i), url];
   const getList = (id: number): Pair<string>[] => IMAGES[id].map((url, i) => getData(id, url, i));
 
   await fsp.mkdir(dir, { recursive: true });
