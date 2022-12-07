@@ -23,7 +23,7 @@ export default class ProductCard extends BaseComponent {
 
   constructor(props: KeyboardProps) {
     super({ tag: 'li', className: 'store__item' });
-    this.ProductImage = new ProductImage({});
+    this.ProductImage = new ProductImage(props.images);
     this.appendEl(this.ProductImage);
     this.cardTitle = new BaseComponent({
       tag: 'h3',
