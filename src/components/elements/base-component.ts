@@ -1,4 +1,4 @@
-import { BaseComponentProps } from '../interfaces/interfaces';
+import { BaseComponentProps } from '../../interfaces/interfaces';
 
 export default class BaseComponent {
   protected node: HTMLElement;

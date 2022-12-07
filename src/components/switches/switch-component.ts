@@ -1,5 +1,5 @@
-import { SwitchProps } from '../interfaces/interfaces';
-import BaseComponent from './base-component';
+import { SwitchProps } from '../../interfaces/interfaces';
+import BaseComponent from '../elements/base-component';
 
 export default class SwitchComponent extends BaseComponent {
   constructor(props: SwitchProps) {

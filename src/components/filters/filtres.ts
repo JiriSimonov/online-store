@@ -1,4 +1,4 @@
-import BaseComponent from '../base-component';
+import BaseComponent from '../elements/base-component';
 import Filter from './filter';
 
 export default class Filters extends BaseComponent {

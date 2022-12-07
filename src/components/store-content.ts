@@ -1,4 +1,4 @@
-import BaseComponent from './base-component';
+import BaseComponent from './elements/base-component';
 
 export default class StoreContent extends BaseComponent {
   constructor() {
