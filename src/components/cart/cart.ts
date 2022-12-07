@@ -1,5 +1,5 @@
-import BaseComponent from '../base-component';
-import Button from '../button';
+import BaseComponent from '../elements/base-component';
+import Button from '../elements/button';
 
 export default class Cart extends BaseComponent {
   private container: BaseComponent;

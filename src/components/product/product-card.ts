@@ -1,8 +1,8 @@
-import { SwitchProps, KeyboardProps } from '../interfaces/interfaces';
-import BaseComponent from './base-component';
+import { SwitchProps, KeyboardProps } from '../../interfaces/interfaces';
+import BaseComponent from '../elements/base-component';
 import ProductImage from './product-img';
-import SwitchComponent from './switch-component';
-import SwitchModal from './switch-modal';
+import SwitchComponent from '../switches/switch-component';
+import SwitchModal from '../switches/switch-modal';
 
 export default class ProductCard extends BaseComponent {
   private ProductImage: ProductImage;
@@ -32,7 +32,7 @@ export default class ProductCard extends BaseComponent {
       parent: this.node,
     });
     this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
-    this.switchArr = props.switches;
+    this.switchArr = props.switches.filter((item) => item.short);
     this.switchItem = this.switchArr.map((item) => new SwitchComponent(item));
     this.switchItem.forEach((e) => {
       e.getNode().addEventListener('mouseover', () => {

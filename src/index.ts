@@ -1,9 +1,9 @@
-import BaseComponent from './components/base-component';
+import BaseComponent from './components/elements/base-component';
 import Router from './utils/router';
 import Footer from './components/footer';
 import Store from './components/store';
 import Header from './components/header';
-import './assets/style.scss';
+import './assets/styles/global/style.scss';
 import Home from './components/home-page/home-page';
 import Cart from './components/cart/cart';
 

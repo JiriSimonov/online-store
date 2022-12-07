@@ -1,5 +1,5 @@
-import Anchor from './anchor';
-import BaseComponent from './base-component';
+import Anchor from './elements/anchor';
+import BaseComponent from './elements/base-component';
 
 export default class Footer extends BaseComponent {
   private wrapper: BaseComponent;

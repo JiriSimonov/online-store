@@ -1,7 +1,7 @@
 import { KeyboardProps } from '../interfaces/interfaces';
-import BaseComponent from './base-component';
+import BaseComponent from './elements/base-component';
 import Filters from './filters/filtres';
-import ProductCard from './product-card';
+import ProductCard from './product/product-card';
 import StoreContent from './store-content';
 
 const keyboardsList = require('../data/keyboards.json');

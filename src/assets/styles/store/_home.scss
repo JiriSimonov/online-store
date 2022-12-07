@@ -1,4 +1,4 @@
-@import '../../vars';
+@import '../global/vars';
 
 .main {
   display: flex;
@@ -9,7 +9,7 @@
 .home {
   flex-grow: 1;
   padding-top: 100px;
-  background: url('../assets/images/home-bg.jpg');
+  background: url('../../images/home-bg.jpg');
   background-repeat: no-repeat;
   background-position: center;
   text-align: center;

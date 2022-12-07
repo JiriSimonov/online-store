@@ -1,5 +1,5 @@
 import BaseComponent from './base-component';
-import { InputProps } from '../interfaces/interfaces';
+import { InputProps } from '../../interfaces/interfaces';
 
 export default class Input extends BaseComponent {
   constructor(props: InputProps) {
