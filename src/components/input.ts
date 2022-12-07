@@ -1,14 +1,13 @@
 import BaseComponent from './base-component';
 import { InputProps } from '../interfaces/interfaces';
 
-export default class extends BaseComponent {
+export default class Input extends BaseComponent {
   constructor(props: InputProps) {
     super(Object.assign(props, { tag: 'input' }));
-    const { value, onclick } = props; // todo изменить это под интерфейс
+    const { value } = props; // todo изменить при добавлении полей
 
     const node = this.node as HTMLInputElement;
 
-    if (value) node.value = value; // todo изменить это под интерфейс
-    if (onclick) node.onclick = onclick; // todo изменить это под интерфейс
+    if (value) node.value = value;
   }
 }
