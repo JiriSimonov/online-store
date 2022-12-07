@@ -15,21 +15,15 @@ export interface ButtonProps extends BaseComponentProps {
   onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
 }
 export interface InputProps extends BaseComponentProps {
-  value?: string; // todo заменить и/или добавить необходимое
-  onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+  value?: string;
 }
-// todo заменить и/или добавить необходимое str - 19;
+
 /* export interface ProductCardProps extends BaseComponentProps {
   title?: string;
   price?: number;
   isAvailable: boolean;
   switchTypes: SwitchProps[];
 } */
-
-export interface ProductImgProps {
-  mid?: string;
-  right?: string;
-}
 
 export type RoutesObj = Record<string, () => void>;
 

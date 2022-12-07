@@ -1,7 +1,7 @@
 import BaseComponent from './base-component';
 import { ButtonProps } from '../interfaces/interfaces';
 
-export default class extends BaseComponent {
+export default class Button extends BaseComponent {
   constructor(props: ButtonProps) {
     super(Object.assign(props, { tag: 'button' }));
     const { value, onclick } = props;
