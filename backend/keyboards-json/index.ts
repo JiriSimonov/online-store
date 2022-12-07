@@ -85,7 +85,7 @@ interface SourceSwitchProps {
   price?: number;
   quantity: number;
   switch: string;
-  switchHandle?: string;
+  switchHandle: string;
   layout?: string;
   visible?: boolean;
   preorderDate?: null;
@@ -125,7 +125,8 @@ function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
         return head;
     }
   };
-  const { id, quantity, price } = sourceSwitch;
+  const { quantity, price } = sourceSwitch;
+  const id = sourceSwitch.switchHandle;
   const title = sourceSwitch.switch;
   const short = SwitchShorts[title as keyof typeof SwitchShorts];
   return {

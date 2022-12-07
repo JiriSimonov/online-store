@@ -29,7 +29,7 @@ export type RoutesObj = Record<string, () => void>;
 
 // JSON Interfaces
 export interface SwitchProps {
-  id: number;
+  id: string;
   title: string; // Cherry MX RGB Blue, Gateron Cap V2 Crystal Red...
   short: string; // BR, B, BL...
   quantity: number;
