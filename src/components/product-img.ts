@@ -18,7 +18,7 @@ export default class ProductImage extends BaseComponent {
       const fulfilled = promises.filter((p): p is PromiseFulfilledResult<ImagePath> => p.status === 'fulfilled');
 
       this.images = fulfilled.map((v, i, a) => {
-        const component = new BaseComponent({ className: 'store__img store__img_left' }); // todo 🌼: посмотри нужны ли этим спанодивам классы вообще (store__img_left). если не нужны, почисть ненужно
+        const component = new BaseComponent({ className: 'store__img' });
         const node = component.getNode();
 
         if (i === 0) setImage(v.value.default);

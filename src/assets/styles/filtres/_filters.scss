@@ -11,6 +11,7 @@
   transform: .3s linear;
   list-style: none;
   text-align: initial;
+
   .filter {
     &__title {
       margin: 0;
@@ -28,5 +29,11 @@
     flex-direction: column;
     gap: 20px;
     visibility: visible;
+  }
+
+  @media (max-width: 1401px) {
+    .store__list {
+      grid-template-columns: repeat(1, 1fr);
+    }
   }
 }
