@@ -2,79 +2,83 @@ import fsp = require('fs/promises');
 import fs = require('fs');
 import path = require('path');
 import https = require('https');
-import { SwitchProps, KeyboardProps } from '../../src/interfaces/interfaces';
+import { SwitchProps, KeyboardProps, SwitchDecriptionProps } from '../../src/interfaces/interfaces';
 
 type Pair<T> = [T, T];
 
 const PRODUCTS: SourceKeyboardList = require('./src/source.json');
-const IMAGES: SourceImagesList = require('./src/keyboard-images.json');
+const KEYBOARD_IMAGES: SourceImagesList = require('./src/keyboard-images.json');
+const SWITCHES: SourceSwitchList = require('./src/switches.json');
 
 const keyboardJsonPath = path.resolve(__dirname, 'out', 'keyboards.json');
+const switchesJsonPath = path.resolve(__dirname, 'out', 'switches.json');
 const imagesDir = path.resolve(__dirname, 'out', 'images');
 
 enum SwitchShorts {
-  'Cherry MX RGB Brown' = 'BR',
-  'Cherry MX Brown' = 'BR',
-  'Cherry MX Blue' = 'B',
-  'Cherry MX RGB Blue' = 'B',
-  'Cherry MX RGB Black' = 'BL',
-  'Cherry MX Black' = 'BL',
-  'Cherry MX RGB Clear' = 'CL',
-  'Cherry MX Clear' = 'CL',
-  'Cherry MX RGB Silent Red' = 'SR',
-  'Cherry MX Silent Red' = 'SR',
-  'Cherry MX RGB Red' = 'R',
-  'Cherry MX Red' = 'R',
-  'Cherry MX Speed Silver' = 'SS',
-  'Cherry MX RGB Speed Silver' = 'SS',
-  'Cherry MX Silent Black' = 'SB',
-  'Gateron CAP V2 Crystal Brown' = 'CBR',
-  'Gateron CAP V2 Crystal Blue' = 'CB',
-  'Gateron CAP V2 Crystal Red' = 'CR',
-  'Gateron CAP V2 Crystal Yellow' = 'CY',
-  'Gateron CAP V2 Crystal Silent Red' = 'CSR',
-  'Gateron CAP V2 Crystal Speed Silver' = 'CSS',
-  'Gateron CAP v2 Crystal Speed Silver' = 'CSS',
-  'Cherry MX Green' = 'GR',
-  'Varmilo EC Daisy V2' = 'ED',
-  'Varmilo EC Sakura V2' = 'ES',
-  'Varmilo EC Rose V2' = 'ER',
-  'Varmilo EC Ivy V2' = 'EI',
-  'Gateron G Pro Red' = 'GPR',
-  'Gateron G Pro Brown' = 'GPBR',
-  'Gateron G Pro Blue' = 'GPB',
-  'Kailh Prestige Red' = 'KPR',
-  'Kailh Prestige Clicky' = 'KPC',
-  'Gateron G Pro 2 Silver' = 'GPS',
-  'Gateron G Pro 2 White' = 'GPW',
-  'Gateron G Pro 2 Yellow' = 'GPY',
-  'Gateron G Pro 2 Red' = 'GPR',
-  'Gateron G Pro 2 Brown' = 'GPBR',
-  'Varmilo EC V2 Iris' = 'EIR',
-  'Varmilo EC V2 Violet' = 'EV',
-  'TTC Speed Silver' = 'TSS',
-  'Keychron Optical Low Profile Brown' = 'KBR',
-  'Keychron Optical Low Profile Red' = 'KLR',
-  'Keychron Optical Low Profile Mint' = 'KLM',
-  'Keychron Optical Low Profile Banana' = 'KLN',
-  'Keychron Optical Low Profile Blue' = 'KLB',
-  'Topre 45g' = 'T',
-  'Topre 45g Silent' = 'TS',
-  'Topre 30g' = 'T',
-  'Topre Variable' = 'TV',
-  'Topre Variable Silent' = 'TVS',
-  'Gateron G Pro Yellow' = 'GPY',
-  'Zeal PC Zilents V2 67g' = 'ZI',
-  'Zeal PC Tealios V2' = 'TE',
-  'Zeal PC Zealios v2 67g' = 'ZE',
-  'Novelkeys X Kailh BOX Crystal Navy' = 'NA',
-  'Novelkeys X Kailh BOX Crystal Royal' = 'KRO',
-  'Gateron Low Profile Blue' = 'GLB',
-  'Gateron Low Profile Brown' = 'GLBR',
-  'Gateron Low Profile Red' = 'GLR',
-  'Akko CS Jelly Pink' = 'AJP',
-  'Akko CS Jelly Purple' = 'AJR',
-  'Varmilo EC V2 Jasmine' = 'EJ',
+  'akko cs jelly pink' = 'AJP',
+  'akko cs jelly purple' = 'AJR',
+  'cherry mx black' = 'BL',
+  'cherry mx blue' = 'B',
+  'cherry mx brown' = 'BR',
+  'cherry mx clear' = 'CL',
+  'cherry mx silent red' = 'SR',
+  'cherry mx speed silver' = 'SS',
+  'cherry mx red' = 'R',
+  'cherry mx rgb' = 'R',
+  'cherry mx rgb black' = 'BL',
+  'cherry mx rgb blue' = 'B',
+  'cherry mx rgb brown' = 'BR',
+  'cherry mx rgb clear' = 'CL',
+  'cherry mx rgb red' = 'R',
+  'cherry mx rgb silent red' = 'SR',
+  'cherry mx rgb speed silver' = 'SS',
+  'cherry mx silent black' = 'SB',
+  'cherry mx green' = 'GR',
+  'garmilo ec v2 iris' = 'EIR',
+  'garmilo ec v2 violet' = 'EV',
+  'gateron cap v2 crystal brown' = 'CBR',
+  'gateron cap v2 crystal blue' = 'CB',
+  'gateron cap v2 crystal red' = 'CR',
+  'gateron cap v2 crystal yellow' = 'CY',
+  'gateron cap v2 crystal silent red' = 'CSR',
+  'gateron cap v2 crystal speed silver' = 'CSS',
+  'gateron g pro red' = 'GPR',
+  'gateron g pro brown' = 'GPBR',
+  'gateron g pro blue' = 'GPB',
+  'gateron g pro 2 silver' = 'GPS',
+  'gateron g pro 2 white' = 'GPW',
+  'gateron g pro 2 yellow' = 'GPY',
+  'gateron g pro 2 red' = 'GPR',
+  'gateron g pro 2 brown' = 'GPBR',
+  'gateron g pro yellow' = 'GPY',
+  'gateron low profile blue' = 'GLB',
+  'gateron low profile brown' = 'GLBR',
+  'gateron low profile red' = 'GLR',
+  'kailh prestige red' = 'KPR',
+  'kailh prestige clicky' = 'KPC',
+  'keychron optical low profile brown' = 'KBR',
+  'keychron optical low profile red' = 'KLR',
+  'keychron optical low profile mint' = 'KLM',
+  'keychron optical low profile banana' = 'KLN',
+  'keychron optical low profile blue' = 'KLB',
+  'novelkeys x kailh box crystal navy' = 'NA',
+  'novelkeys x kailh box crystal royal' = 'KRO',
+  'topre 45g' = 'T',
+  'topre 45g silent' = 'TS',
+  'topre 30g' = 'T',
+  'topre variable' = 'TV',
+  'topre variable silent' = 'TVS',
+  'ttc speed silver' = 'TSS',
+  'varmilo ec v2 jasmine' = 'EJ',
+  'varmilo ec v2 iris' = 'EIR',
+  'varmilo ec v2 violet' = 'EV',
+  'varmilo ec daisy v2' = 'ED',
+  'varmilo ec sakura v2' = 'ES',
+  'varmilo ec rose v2' = 'ER',
+  'varmilo ec ivy v2' = 'EI',
+  'zeal pc tealios v2' = 'TE',
+  'zeal pc zilents v2 67g' = 'ZI',
+  'zeal pc zealios v2 67g' = 'ZE',
 }
 interface SourceSwitchProps {
   id: number;
@@ -108,6 +112,13 @@ interface SourceKeyboardList {
 interface SourceImagesList {
   [index: string]: string[];
 }
+interface SourceSwitchList {
+  [index: string]: {
+    src: string;
+    props: string[];
+    description: string;
+  };
+}
 
 function getKBfileName(id: number, i: number): string {
   return `${id}-${i + 1}`;
@@ -126,16 +137,14 @@ function getSwitch(sourceSwitch: SourceSwitchProps): SwitchProps {
     }
   };
   const { quantity, price } = sourceSwitch;
-  const id = sourceSwitch.switchHandle;
   const title = sourceSwitch.switch;
-  const short = SwitchShorts[title as keyof typeof SwitchShorts];
+  const id = SwitchShorts[title?.toLowerCase() as keyof typeof SwitchShorts];
   return {
     id,
     title,
     quantity,
     isAvailable: quantity > 0,
     manufacturer: getManufacturer(title),
-    short,
     price,
   };
 }
@@ -153,12 +162,21 @@ function getKeyboard(sourceKeyboard: SourceKeyboardProps): KeyboardProps {
     size,
     brands: sourceKeyboard.manufacturer,
     features: sourceKeyboard.props?.Фичи || [],
-    images: IMAGES[id].map((_, i) => getKBfileName(id, i)),
+    images: KEYBOARD_IMAGES[id].map((_, i) => getKBfileName(id, i)),
   };
 }
-
 function getKeyboardList(source: { [s: string]: SourceKeyboardProps }): KeyboardProps[] {
   return Object.values(source).map(getKeyboard);
+}
+
+function getSwitchesList(source: SourceSwitchList): { [key: string]: SwitchDecriptionProps } {
+  const entries = Object.entries(source);
+  const kek = entries.map((entry) => {
+    const [title, value] = entry;
+    const id = SwitchShorts[title as keyof typeof SwitchShorts];
+    return [id, { title, props: value.props, description: value.description }];
+  });
+  return Object.fromEntries(kek);
 }
 
 function download(dir: string, name: string, url: string): Promise<string> {
@@ -180,9 +198,23 @@ function download(dir: string, name: string, url: string): Promise<string> {
   });
 }
 
-async function downloadImages(dir = imagesDir) {
+export async function downloadSwitchImages(dir = imagesDir) {
+  await fsp.mkdir(dir, { recursive: true });
+
+  const list: Pair<string>[] = Object.keys(SWITCHES).map((v): Pair<string> => {
+    const key = v as keyof typeof SwitchShorts;
+    return [SwitchShorts[key], SWITCHES[key].src];
+  });
+
+  return Promise.allSettled(list.map((data) => download(dir, ...data)));
+}
+
+export async function downloadKeyboardImages(dir = imagesDir) {
   const getData = (id: number, url: string, i: number): Pair<string> => [getKBfileName(id, i), url];
-  const getList = (id: number): Pair<string>[] => IMAGES[id].map((url, i) => getData(id, url, i));
+  const getList = (id: number): Pair<string>[] => {
+    const list = KEYBOARD_IMAGES[id];
+    return list.map((url, i) => getData(id, url, i));
+  };
 
   await fsp.mkdir(dir, { recursive: true });
 
@@ -191,11 +223,16 @@ async function downloadImages(dir = imagesDir) {
   return Promise.allSettled(list.map((data) => download(dir, ...data)));
 }
 
-async function generateKeyboardJSON(outputPath = keyboardJsonPath): Promise<void> {
+export async function generateKeyboardJSON(outputPath = keyboardJsonPath): Promise<void> {
   await fsp.mkdir(path.dirname(outputPath), { recursive: true });
   const list = getKeyboardList(PRODUCTS);
 
   return fsp.writeFile(outputPath, JSON.stringify(list));
 }
 
-export { downloadImages, generateKeyboardJSON };
+export async function generateSwitchJSON(outputPath = switchesJsonPath): Promise<void> {
+  await fsp.mkdir(path.dirname(outputPath), { recursive: true });
+  const list = getSwitchesList(SWITCHES);
+
+  return fsp.writeFile(outputPath, JSON.stringify(list));
+}
