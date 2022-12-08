@@ -3,20 +3,13 @@ import { SwitchDecriptionProps } from '../interfaces/interfaces';
 type SwitchJson = {
   [id: string]: SwitchDecriptionProps;
 };
+type SwitchProp = string | string[];
 
 const switchJson: SwitchJson = require('../data/switches.json');
 
-export function getSwitchData(id: keyof SwitchJson, prop: keyof SwitchDecriptionProps): string {
+export function getSwitchData(id: keyof SwitchJson, prop: keyof SwitchDecriptionProps): SwitchProp {
   if (!(id in switchJson)) throw new Error('❌Wrong id in getSwitchData');
-  switch (prop) {
-    case 'title':
-    case 'description':
-      return switchJson[id][prop];
-    case 'props':
-      return switchJson[id][prop].join('\n');
-    default:
-      return prop;
-  }
+  return switchJson[id][prop];
 }
 
 export function setSwitchImage(id: keyof SwitchJson, node: HTMLElement) {
