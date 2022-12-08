@@ -26,7 +26,7 @@ export default class SwitchModal extends BaseComponent {
       tag: 'h2',
       className: 'modal__title',
       parent: this.node,
-      text: getSwitchData(id, 'title'),
+      text: getSwitchData(id, 'title') as string,
     });
 
     this.modalAviable = new BaseComponent({
@@ -59,7 +59,7 @@ export default class SwitchModal extends BaseComponent {
       tag: 'p',
       className: 'modal__description',
       parent: this.node,
-      text: getSwitchData(id, 'description'),
+      text: getSwitchData(id, 'description') as string,
     });
   }
 }
