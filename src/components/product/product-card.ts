@@ -19,7 +19,7 @@ export default class ProductCard extends BaseComponent {
 
   private isAvialable: BaseComponent;
 
-  private switchModal: SwitchModal;
+  private switchModal: SwitchModal | null | undefined;
 
   constructor(props: KeyboardProps) {
     super({ tag: 'li', className: 'store__item' });
@@ -34,14 +34,6 @@ export default class ProductCard extends BaseComponent {
     this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
     this.switchArr = props.switches.filter((item) => item.id);
     this.switchItem = this.switchArr.map((item) => new SwitchComponent(item));
-    this.switchItem.forEach((e) => {
-      e.getNode().addEventListener('mouseover', () => {
-        this.node.classList.add('store__item_is-open');
-      });
-      e.getNode().addEventListener('mouseout', () => {
-        this.node.classList.remove('store__item_is-open');
-      });
-    });
     this.switchList.appendEl(this.switchItem);
     this.cardPrice = new BaseComponent({
       className: 'store__card-price',
@@ -53,7 +45,16 @@ export default class ProductCard extends BaseComponent {
       text: `${props.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
       parent: this.node,
     });
-    this.switchModal = new SwitchModal();
-    this.appendEl(this.switchModal);
+    this.switchList.getNode().addEventListener('mouseover', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains('switch__item')) {
+        this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
+        this.appendEl(this.switchModal);
+        target.addEventListener('mouseout', () => {
+          this.switchModal?.destroy();
+          this.switchModal = null;
+        });
+      }
+    });
   }
 }
