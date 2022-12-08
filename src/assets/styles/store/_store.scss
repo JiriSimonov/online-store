@@ -106,8 +106,8 @@
   .switch {
     display: grid;
     grid-template-columns: repeat(6, 44px);
+    grid-template-rows: repeat(3, 50px);
     align-items: center;
-    height: 150px;
     gap: 2px;
     margin: 10px 0;
     padding: 0;
@@ -155,7 +155,7 @@
     .CBL{background-color: $modal-bg}        // cherry mx black
     .CB{background-color: $b}                // cherry mx blue
     .CBR{background-color: $brown}           // cherry mx brown
-    .CCL{background-color: $cl}              // cherry mx silent red
+    .CCL{background-image: $cl}              // cherry mx silent red
     .CSR{background-color: #00ff00}        // cherry mx speed silver
     .CSS{background-color: #00ff00}        // cherry mx red
     .R{background-color: #00ff00}          // cherry mx clear
@@ -340,7 +340,9 @@
       margin-right: 10px;
       width: 64px;
       height: 100px;
-      background-color: red;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 64px 60px;
       float: left;
     }
   }
