@@ -25,4 +25,8 @@ export default class BaseComponent {
   destroy(): void {
     this.node.remove();
   }
+
+  setStyleAttr(...props: [keyof CSSStyleDeclaration, string][]) {
+    Object.assign(this.node.style, Object.fromEntries(props));
+  }
 }

@@ -68,7 +68,7 @@ snatch(Object.fromEntries(keyboardImages));
 
 </details>
 <details>
-  <summary><b>js</b></summary>
+  <summary><b>js keyboard images</b></summary>
 
 ```js
 {
@@ -88,6 +88,33 @@ snatch(Object.fromEntries(keyboardImages));
   }
 
   snatch(Object.fromEntries(keyboardImages))
+}
+```
+
+</details>
+<details>
+  <summary><b>js switches</b></summary>
+
+```js
+{
+  const switches = document.querySelectorAll('.filter-switcher-tooltip');
+  const switchesData = [...switches].reduce((p, c) => {
+    const { src } = c.querySelector('img');
+    const title = c.querySelector('.filter-switcher-tooltip__title').textContent;
+    const props = c.querySelector('p:nth-child(2)').innerHTML.split('<br>');
+    const description = c.querySelector('p:nth-child(3)').innerText.trim();
+    p[title] = { src, props, description };
+    return p;
+  }, {});
+  const snatch = (list) => {
+    const json = JSON.stringify(list, null, '\t');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+    a.download = 'keyboard-images.json';
+    a.click();
+  };
+
+  snatch(switchesData);
 }
 ```
 
