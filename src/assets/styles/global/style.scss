@@ -1,5 +1,6 @@
 // https://codeguide.maxgraph.ru/ --- порядок свойств
 
+@import 'fonts';
 @import 'header';
 @import '../store/home';
 @import '../filtres/filters';
@@ -17,6 +18,7 @@ body {
   justify-content: space-between;
   min-height: 100vh;
   background-color: $grey;
+  font-family: 'Nunito', monospace;
 }
 
 .container {

@@ -5,8 +5,9 @@
   text-align: center;
 
   &__title {
-    font-size: 36px;
-    font-weight: 500;
+    font-size: 48px;
+    font-family: 'Nunito-Bold', monospace;
+    font-weight: 700;
     user-select: none;
   }
 
@@ -52,7 +53,7 @@
     border-radius: 13px;
     text-align: initial;
     background-color: $white;
-    user-select: none;
+    font-family: 'Nunito', monospace;
   }
 
   &__img {
@@ -72,6 +73,7 @@
     font-size: 25px;
     font-weight: 700;
     color: $black;
+    user-select: initial;
   }
 
   &__card-price {
@@ -90,6 +92,7 @@
     font-weight: 400;
     color: $white;
     background-color: transparent;
+    user-select: none;
 
     &_true {
       background-color: $green;
@@ -112,12 +115,16 @@
 
     &__item {
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin: 0 auto;
       padding: 10px;
       border-radius: 50%;
       border: 2px solid $white;
       width: 20px;
       height: 20px;
+      font-family: 'Anonymous', monospace;
       font-size: 16px;
       font-weight: 400;
       color: $white;
@@ -127,6 +134,7 @@
       background-color: transparent;
       transition: .3s linear;
       z-index: 3;
+      user-select: none;
 
       &::before {
         content: '';
