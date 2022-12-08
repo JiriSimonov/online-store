@@ -1,5 +1,6 @@
 import { KeyboardProps } from '../interfaces/interfaces';
 import BaseComponent from './elements/base-component';
+import Button from './elements/button';
 import Filters from './filters/filtres';
 import ProductCard from './product/product-card';
 import StoreContent from './store-content';
@@ -28,14 +29,14 @@ export default class Store extends BaseComponent {
     this.container = new BaseComponent({ className: 'container' });
     this.wrapper = new BaseComponent({ className: 'store__wrapper' });
     this.title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
-    this.showFiltersBtn = new BaseComponent({ tag: 'button', className: 'store__filter', text: 'Фильтры' });
+    this.showFiltersBtn = new Button({ className: 'store__filter', text: 'Фильтры' });
     this.contentWrapper = new BaseComponent({ className: 'store__content' });
     this.storeList = new StoreContent();
     this.storeItems = keyboardsList.map((item: KeyboardProps) => new ProductCard(item));
     this.filters = new Filters();
     this.showFiltersBtn.getNode().addEventListener('click', () => {
       this.wrapper.getNode().classList.toggle('store__wrapper_is-open');
-    }); // refactor Base -> Button
+    });
   }
 
   render() {
