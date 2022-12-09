@@ -3,6 +3,7 @@ import BaseComponent from '../elements/base-component';
 import ProductImage from './product-img';
 import SwitchComponent from '../switches/switch-component';
 import SwitchModal from '../switches/switch-modal';
+import Button from '../elements/button';
 
 export default class ProductCard extends BaseComponent {
   private ProductImage: ProductImage;
@@ -14,6 +15,12 @@ export default class ProductCard extends BaseComponent {
   private switchItem: SwitchComponent[];
 
   private switchArr: SwitchProps[];
+
+  private priceWrapper: BaseComponent;
+
+  private cardCopy: Button;
+
+  private cardBtn: BaseComponent;
 
   private cardPrice: BaseComponent;
 
@@ -35,11 +42,14 @@ export default class ProductCard extends BaseComponent {
     this.switchArr = props.switches.filter((item) => item.id);
     this.switchItem = this.switchArr.map((item) => new SwitchComponent(item));
     this.switchList.appendEl(this.switchItem);
+    this.priceWrapper = new BaseComponent({ className: 'store__card-wrapper', parent: this.node });
     this.cardPrice = new BaseComponent({
       className: 'store__card-price',
       text: `от ${props.minPrice} ₽`,
-      parent: this.node,
+      parent: this.priceWrapper.getNode(),
     });
+    this.cardCopy = new Button({ className: 'store__card-copy', parent: this.cardTitle.getNode() });
+    this.cardBtn = new Button({ className: 'store__card-btn', parent: this.priceWrapper.getNode(), text: 'Добавить в корзину' });
     this.isAvialable = new BaseComponent({
       className: `${props.isAvailable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
       text: `${props.isAvailable ? 'В наличии' : 'Нет в наличии'}`,

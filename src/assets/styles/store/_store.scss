@@ -70,6 +70,8 @@
   }
 
   &__card-title {
+    display: flex;
+    align-items: center;
     font-size: 25px;
     font-weight: 700;
     color: $black;
@@ -100,6 +102,40 @@
 
     &_false {
       background-color: $light-gray;
+    }
+  }
+
+  &__card-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__card-copy {
+    margin-left: 10px;
+    padding: 10px;
+    border: none;
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    background-image: url('../../icons/copy.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+  }
+
+  &__card-btn {
+    padding: 8px;
+    border: 2px solid transparent;
+    border-radius: 13px;
+    background-color: $blue;
+    font-size: 16px;
+    color: $white;
+    cursor: pointer;
+    transition: .3s linear;
+
+    &:hover {
+      background-color: $eir;
     }
   }
 
