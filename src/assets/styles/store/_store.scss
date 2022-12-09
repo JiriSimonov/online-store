@@ -140,6 +140,7 @@
   }
 
   .switch {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(6, 44px);
     grid-template-rows: repeat(3, 50px);
@@ -285,6 +286,7 @@
 
     .ED {
       background-color: $ed;
+      color: $modal-bg;
     }
 
     .ES {
