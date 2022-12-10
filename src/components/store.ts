@@ -4,8 +4,9 @@ import Filters from './filters/filtres';
 import ProductCard from './product/product-card';
 import StoreContent from './store-content';
 import { KeyboardProps } from '../interfaces/interfaces';
+import { getKeyboardsList } from '../utils/get-keyboards-data';
 
-const keyboardsList = require('../data/keyboards.json');
+const keyboardsList: KeyboardProps[] = getKeyboardsList();
 
 export default class Store extends BaseComponent {
   private title: BaseComponent;
