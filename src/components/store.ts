@@ -32,10 +32,15 @@ export default class Store extends BaseComponent {
     this.showFiltersBtn = new Button({ className: 'store__filter', text: 'Фильтры' });
     this.contentWrapper = new BaseComponent({ className: 'store__content' });
     this.storeList = new StoreContent();
-    this.storeItems = keyboardsList.map((item: KeyboardProps) => new ProductCard(item));
     this.filters = new Filters();
+    this.storeItems = keyboardsList.map((item: KeyboardProps) => new ProductCard(item));
     this.showFiltersBtn.getNode().addEventListener('click', () => {
       this.wrapper.getNode().classList.toggle('store__wrapper_is-open');
+      if (this.wrapper.getNode().classList.contains('store__wrapper_is-open')) {
+        this.contentWrapper.getNode().prepend(this.filters.getNode());
+      } else {
+        this.filters.destroy();
+      }
     });
   }
 
@@ -43,7 +48,7 @@ export default class Store extends BaseComponent {
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
-    this.contentWrapper.appendEl([this.filters, this.storeList]);
+    this.contentWrapper.appendEl(this.storeList);
     this.storeList.appendEl(this.storeItems);
   }
 }

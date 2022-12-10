@@ -70,6 +70,8 @@
   }
 
   &__card-title {
+    display: flex;
+    align-items: center;
     font-size: 25px;
     font-weight: 700;
     color: $black;
@@ -103,7 +105,42 @@
     }
   }
 
+  &__card-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__card-copy {
+    margin-left: 10px;
+    padding: 10px;
+    border: none;
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    background-image: url('../../icons/copy.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+  }
+
+  &__card-btn {
+    padding: 8px;
+    border: 2px solid transparent;
+    border-radius: 13px;
+    background-color: $blue;
+    font-size: 16px;
+    color: $white;
+    cursor: pointer;
+    transition: .3s linear;
+
+    &:hover {
+      background-color: $eir;
+    }
+  }
+
   .switch {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(6, 44px);
     grid-template-rows: repeat(3, 50px);
@@ -150,36 +187,6 @@
       }
     }
 
-    .AJP{background-color: #00ff00}        // akko cs jelly pink
-    .AJR{background-color: #00ff00}        // akko cs jelly purple
-    .CSR{background-color: #00ff00}        // cherry mx speed silver
-    .R{background-color: #00ff00}          // cherry mx clear
-    .CRY{background-color: #00ff00}        // gateron cap v2 crystal yellow
-    .CRSS{background-color: #00ff00}       // gateron cap v2 crystal speed silver
-    .PS2{background-color: #00ff00}        // gateron g pro 2 silver
-    .PW2{background-color: #00ff00}        // gateron g pro 2 white
-    .PY2{background-color: #00ff00}        // gateron g pro 2 yellow
-    .PY{background-color: #00ff00}         // gateron g pro yellow
-    .KPC{background-color: #00ff00}        // kailh prestige clicky
-    .KLM{background-color: #00ff00}        // keychron optical low profile mint
-    .KLN{background-color: #00ff00}        // keychron optical low profile banana
-    .NA{background-color: #00ff00}         // novelkeys x kailh box crystal navy
-    .KRO{background-color: #00ff00}        // novelkeys x kailh box crystal royal
-    .T4{background-color: #00ff00}         // topre 45g
-    .T3{background-color: #00ff00}         // topre 30g
-    .TV{background-color: #00ff00}         // topre variable
-    .TSS{background-color: #00ff00}        // ttc speed silver
-    .EJ{background-color: #00ff00}         // varmilo ec v2 jasmine
-    .EIR{background-color: #00ff00}        // varmilo ec v2 iris
-    .EV{background-color: #00ff00}         // varmilo ec v2 violet
-    .ED{background-color: #00ff00}         // varmilo ec daisy v2
-    .ES{background-color: #00ff00}         // varmilo ec sakura v2
-    .ER{background-color: #00ff00}         // varmilo ec rose v2
-    .EI{background-color: #00ff00}         // varmilo ec ivy v2
-    .TE{background-color: #00ff00}         // zeal pc tealios v2
-    .ZI{background-color: #00ff00}         // zeal pc zilents v2 67g
-    .ZE{background-color: #00ff00}         // zeal pc zealios v2 67g
-
     .BR,
     .CBR,
     .BR2,
@@ -203,7 +210,8 @@
     .CL,
     .CCL,
     .T4S,
-    .TVS {
+    .TVS,
+    .EJ {
       background-image: $cl;
     }
 
@@ -211,7 +219,8 @@
       background-image: $sr;
     }
 
-    .R {
+    .R,
+    .AJP {
       background-color: $r;
     }
 
@@ -227,7 +236,10 @@
     .PR2,
     .KPR,
     .KLR,
-    .LR {
+    .LR,
+    .CSR,
+    .PS2,
+    .TSS {
       background-color: $cr;
     }
 
@@ -239,7 +251,9 @@
       background-image: $csr;
     }
 
-    .CSS {
+    .CSS,
+    .CRSS,
+    .PW2 {
       background-image: $css;
     }
 
@@ -247,11 +261,16 @@
       background-color: $gr;
     }
 
-    .ED {
+    .ED,
+    .CRY,
+    .PY2,
+    .PY,
+    .KLN {
       background-color: $ed;
+      color: $modal-bg;
     }
 
-    .ES {
+    .ES { 
       background-color: $es;
     }
 
@@ -259,7 +278,8 @@
       background-color: $er;
     }
 
-    .EI {
+    .EI,
+    .KLM {
       background-color: $ei;
     }
 
@@ -280,11 +300,18 @@
       background-color: $kpc;
     }
 
-    .EIR {
+    .EIR,
+    .TE,
+    .ZI,
+    .ZE,
+    .EV,
+    .AJR {
       background-color: $eir;
     }
 
-    .EV {
+    .EV,
+    .NA,
+    .KRO {
       background-color: $ev;
     }
 
@@ -294,6 +321,12 @@
 
     .GPY {
       background-color: $gpy;
+    }
+
+    .T4,
+    .T3,
+    .TV {
+      background-color: $topre;
     }
 
     .switch__item_false {
