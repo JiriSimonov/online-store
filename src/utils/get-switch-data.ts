@@ -1,6 +1,6 @@
 import { SwitchDecriptionProps } from '../interfaces/interfaces';
 
-type SwitchJson = {
+export type SwitchJson = {
   [id: string]: SwitchDecriptionProps;
 };
 type SwitchProp = string | string[];
@@ -17,4 +17,7 @@ export function setSwitchImage(id: keyof SwitchJson, node: HTMLElement) {
   import(`../assets/images/switches/${id}.webp`).then((image) => {
     Object.assign(node.style, { backgroundImage: `url(${image.default})` });
   });
+}
+export function getSwitchJson(): SwitchJson {
+  return switchJson;
 }
