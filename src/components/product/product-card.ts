@@ -49,6 +49,13 @@ export default class ProductCard extends BaseComponent {
       parent: this.priceWrapper.getNode(),
     });
     this.cardCopy = new Button({ className: 'store__card-copy', parent: this.cardTitle.getNode() });
+    this.cardCopy.getNode().onclick = () => {
+      navigator.clipboard.writeText(props.title);
+      this.cardCopy.getNode().classList.add('store__card-copy_clicked');
+      setTimeout(() => {
+        this.cardCopy.getNode().classList.remove('store__card-copy_clicked');
+      }, 1000);
+    };
     this.cardBtn = new Button({ className: 'store__card-btn', parent: this.priceWrapper.getNode(), text: 'Добавить в корзину' });
     this.isAvialable = new BaseComponent({
       className: `${props.isAvailable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
