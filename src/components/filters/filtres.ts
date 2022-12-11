@@ -1,6 +1,11 @@
 import BaseComponent from '../elements/base-component';
 import Filter from './filter';
+import AvFilter from './av-filter';
 import SwitchFilter from './switch-filter';
+import BrandFilter from './brand-filter';
+import SizeFilter from './size-filter';
+import FeaturesFilter from './features-filter';
+import Button from '../elements/button';
 
 export default class Filters extends BaseComponent {
   switchFilter: SwitchFilter;
@@ -13,19 +18,23 @@ export default class Filters extends BaseComponent {
 
   featuresFilter: Filter;
 
+  clearFilters: Button;
+
   constructor() {
     super({ tag: 'ul', className: 'filters' });
-    this.availableFilter = new Filter('Наличие');
+    this.availableFilter = new AvFilter();
     this.switchFilter = new SwitchFilter();
-    this.manufacturerFiler = new Filter('Бренд');
-    this.sizeFilter = new Filter('Размер');
-    this.featuresFilter = new Filter('Фичи');
+    this.manufacturerFiler = new BrandFilter();
+    this.sizeFilter = new SizeFilter();
+    this.featuresFilter = new FeaturesFilter();
+    this.clearFilters = new Button({ className: 'filter__clear', text: 'Очистить фильтры' });
     this.appendEl([
       this.availableFilter,
       this.switchFilter,
       this.manufacturerFiler,
       this.sizeFilter,
       this.featuresFilter,
+      this.clearFilters,
     ]);
   }
 }
