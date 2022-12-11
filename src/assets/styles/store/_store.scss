@@ -75,7 +75,7 @@
     font-size: 25px;
     font-weight: 700;
     color: $black;
-    user-select: initial;
+    user-select: none;
   }
 
   &__card-price {
@@ -119,9 +119,15 @@
     height: 10px;
     background-color: transparent;
     background-image: url('../../icons/copy.svg');
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
+    transition: background .3s linear;
+  }
+
+  &__card-copy_clicked {
+    background-image: url('../../icons/copy-check.png');    
   }
 
   &__card-btn {
@@ -378,4 +384,10 @@
       float: left;
     }
   }
+
+  &__copy-helper {
+    display: none;
+    visibility: hidden;
+  }
+
 }

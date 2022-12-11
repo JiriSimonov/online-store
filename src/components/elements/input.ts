@@ -8,6 +8,7 @@ export default class Input extends BaseComponent {
 
     const node = this.node as HTMLInputElement;
 
-    if (value) node.value = value;
+    // if (value) node.value = value;
+    if (value) node.setAttribute('value', value);
   }
 }
