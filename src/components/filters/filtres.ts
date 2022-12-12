@@ -6,6 +6,7 @@ import BrandFilter from './brand-filter';
 import SizeFilter from './size-filter';
 import FeaturesFilter from './features-filter';
 import Button from '../elements/button';
+import ProductsListState from '../../states/goods-state';
 
 export default class Filters extends BaseComponent {
   switchFilter: SwitchFilter;
@@ -20,9 +21,9 @@ export default class Filters extends BaseComponent {
 
   clearFilters: Button;
 
-  constructor() {
+  constructor(private productsState: ProductsListState) {
     super({ tag: 'ul', className: 'filters' });
-    this.availableFilter = new AvFilter();
+    this.availableFilter = new AvFilter(productsState);
     this.switchFilter = new SwitchFilter();
     this.manufacturerFiler = new BrandFilter();
     this.sizeFilter = new SizeFilter();

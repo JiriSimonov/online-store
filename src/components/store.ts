@@ -5,6 +5,7 @@ import ProductCard from './product/product-card';
 import StoreContent from './store-content';
 import { KeyboardProps } from '../interfaces/interfaces';
 import { getKeyboardsList } from '../utils/get-keyboards-data';
+import ProductsListState from '../states/goods-state';
 
 const keyboardsList: KeyboardProps[] = getKeyboardsList();
 
@@ -25,7 +26,7 @@ export default class Store extends BaseComponent {
 
   private filters: Filters;
 
-  constructor() {
+  constructor(private productsState: ProductsListState) {
     super({ tag: 'section', className: 'store' });
     this.container = new BaseComponent({ className: 'container' });
     this.wrapper = new BaseComponent({ className: 'store__wrapper' });
@@ -33,7 +34,7 @@ export default class Store extends BaseComponent {
     this.showFiltersBtn = new Button({ className: 'store__filter', text: 'Фильтры' });
     this.contentWrapper = new BaseComponent({ className: 'store__content' });
     this.storeList = new StoreContent();
-    this.filters = new Filters();
+    this.filters = new Filters(this.productsState);
     this.storeItems = keyboardsList.map((item: KeyboardProps) => new ProductCard(item));
     this.showFiltersBtn.getNode().addEventListener('click', () => {
       this.wrapper.getNode().classList.toggle('store__wrapper_is-open');
@@ -45,11 +46,20 @@ export default class Store extends BaseComponent {
     });
   }
 
+  update = (state: KeyboardProps[]) => {
+    this.storeItems = state.map((item: KeyboardProps) => new ProductCard(item));
+    this.storeList.getNode().replaceChildren();
+    this.storeList.appendEl(this.storeItems);
+    console.log(this.productsState.get());
+  };
+
   render() {
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl(this.storeList);
     this.storeList.appendEl(this.storeItems);
+    this.productsState.add(this.update);
+    this.update(this.productsState.get());
   }
 }
