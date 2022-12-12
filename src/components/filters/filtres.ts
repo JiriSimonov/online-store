@@ -24,11 +24,21 @@ export default class Filters extends BaseComponent {
   constructor(private productsState: ProductsListState) {
     super({ tag: 'ul', className: 'filters' });
     this.availableFilter = new AvFilter(productsState);
-    this.switchFilter = new SwitchFilter();
-    this.manufacturerFiler = new BrandFilter();
-    this.sizeFilter = new SizeFilter();
-    this.featuresFilter = new FeaturesFilter();
+    this.switchFilter = new SwitchFilter(productsState);
+    this.manufacturerFiler = new BrandFilter(productsState);
+    this.sizeFilter = new SizeFilter(productsState);
+    this.featuresFilter = new FeaturesFilter(productsState);
     this.clearFilters = new Button({ className: 'filter__clear', text: 'Очистить фильтры' });
+    this.clearFilters.getNode().onclick = () => {
+      productsState.set({
+        search: '',
+        inStock: false,
+        brand: '',
+        switchType: '',
+        size: '',
+        features: '',
+      });
+    };
     this.appendEl([
       this.availableFilter,
       this.switchFilter,

@@ -24,6 +24,8 @@ export default class Store extends BaseComponent {
 
   private storeItems: ProductCard[];
 
+  private notFound: BaseComponent;
+
   private filters: Filters;
 
   constructor(private productsState: ProductsListState) {
@@ -33,6 +35,7 @@ export default class Store extends BaseComponent {
     this.title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
     this.showFiltersBtn = new Button({ className: 'store__filter', text: 'Фильтры' });
     this.contentWrapper = new BaseComponent({ className: 'store__content' });
+    this.notFound = new BaseComponent({ className: 'store__not-found', text: 'Нет результатов' });
     this.storeList = new StoreContent();
     this.filters = new Filters(this.productsState);
     this.storeItems = keyboardsList.map((item: KeyboardProps) => new ProductCard(item));
@@ -50,7 +53,7 @@ export default class Store extends BaseComponent {
     this.storeItems = state.map((item: KeyboardProps) => new ProductCard(item));
     this.storeList.getNode().replaceChildren();
     this.storeList.appendEl(this.storeItems);
-    console.log(this.productsState.get());
+    if (this.storeItems.length === 0) this.storeList.appendEl(this.notFound);
   };
 
   render() {
