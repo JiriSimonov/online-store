@@ -2,6 +2,7 @@ import Anchor from './elements/anchor';
 import BaseComponent from './elements/base-component';
 import Button from './elements/button';
 import Input from './elements/input';
+import ProductsListState from '../states/goods-state';
 
 export default class Header extends BaseComponent {
   private container: BaseComponent;
@@ -20,7 +21,7 @@ export default class Header extends BaseComponent {
 
   private searchInput: Input;
 
-  constructor() {
+  constructor(private productsState: ProductsListState) {
     super({ tag: 'header', className: 'header' });
     this.container = new BaseComponent({ className: 'container' });
     this.wrapper = new BaseComponent({ className: 'header__wrapper' });
@@ -37,6 +38,10 @@ export default class Header extends BaseComponent {
     this.searchInput = new Input({ className: 'header__input' });
     this.search.getNode().addEventListener('click', () => {
       this.searchInput.getNode().classList.toggle('header__input_is-open');
+      this.searchInput.getNode().addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        productsState.set({ search: target.value });
+      });
     });
   }
 

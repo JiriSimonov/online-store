@@ -20,7 +20,7 @@ export default class ProductCard extends BaseComponent {
 
   private cardCopy: Button;
 
-  private cardBtn: BaseComponent;
+  private cardBtn: BaseComponent | undefined;
 
   private cardPrice: BaseComponent;
 
@@ -50,13 +50,21 @@ export default class ProductCard extends BaseComponent {
     });
     this.cardCopy = new Button({ className: 'store__card-copy', parent: this.cardTitle.getNode() });
     this.cardCopy.getNode().onclick = () => {
-      navigator.clipboard.writeText(props.title);
-      this.cardCopy.getNode().classList.add('store__card-copy_clicked');
-      setTimeout(() => {
-        this.cardCopy.getNode().classList.remove('store__card-copy_clicked');
-      }, 1000);
+      if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(props.title);
+        this.cardCopy.getNode().classList.add('store__card-copy_success');
+        setTimeout(() => {
+          this.cardCopy.getNode().classList.remove('store__card-copy_success');
+        }, 1000);
+      } else {
+        navigator.clipboard.writeText(props.title);
+        this.cardCopy.getNode().classList.add('store__card-copy_fail');
+        setTimeout(() => {
+          this.cardCopy.getNode().classList.remove('store__card-copy_fail');
+        }, 1000);
+      } // TODO refactor
     };
-    this.cardBtn = new Button({ className: 'store__card-btn', parent: this.priceWrapper.getNode(), text: 'Добавить в корзину' });
+    if (props.isAvailable) this.cardBtn = new Button({ className: 'store__card-btn', parent: this.priceWrapper.getNode(), text: 'Добавить в корзину' });
     this.isAvialable = new BaseComponent({
       className: `${props.isAvailable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
       text: `${props.isAvailable ? 'В наличии' : 'Нет в наличии'}`,

@@ -52,3 +52,8 @@ export interface KeyboardProps {
   features: string[]; // ФЫЧЫ
   images: string[]; // 123456-1, 123456-2, 123456-3
 }
+
+export interface ProductsFilterProps {
+  search: string;
+  inStock: boolean;
+}
