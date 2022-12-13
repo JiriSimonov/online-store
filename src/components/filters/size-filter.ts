@@ -1,36 +1,23 @@
 import BaseComponent from '../elements/base-component';
 import Filter from './filter';
 import Button from '../elements/button';
+import ProductsListState from '../../states/goods-state';
+
+const btns = ['100%', '90%', '80%', '70%', '65%', '60%', '40%', '20%'];
 
 export default class SizeFilter extends Filter {
   private filterWrapper: BaseComponent;
 
-  private oh: Button; // 100
+  private buttons: Button[];
 
-  private nt: Button; // 90
-
-  private et: Button; // 80
-
-  private sf: Button; // 75
-
-  private sixf: Button; // 65
-
-  private sixt: Button; // 60
-
-  private ft: Button; // 40
-
-  private tw: Button; // 20
-
-  constructor() {
-    super('Наличие');
+  constructor(private productsState: ProductsListState) {
+    super('Размер');
     this.filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-    this.oh = new Button({ className: 'filter__btn', text: '100%', parent: this.filterWrapper.getNode() });
-    this.nt = new Button({ className: 'filter__btn', text: '90%', parent: this.filterWrapper.getNode() });
-    this.et = new Button({ className: 'filter__btn', text: '80%', parent: this.filterWrapper.getNode() });
-    this.sf = new Button({ className: 'filter__btn', text: '70%', parent: this.filterWrapper.getNode() });
-    this.sixf = new Button({ className: 'filter__btn', text: '65%', parent: this.filterWrapper.getNode() });
-    this.sixt = new Button({ className: 'filter__btn', text: '60%', parent: this.filterWrapper.getNode() });
-    this.ft = new Button({ className: 'filter__btn', text: '40%', parent: this.filterWrapper.getNode() });
-    this.tw = new Button({ className: 'filter__btn', text: '20%', parent: this.filterWrapper.getNode() });
+    this.buttons = btns.map((item) => new Button({ className: 'filter__btn', text: item, parent: this.filterWrapper.getNode() }));
+    this.buttons.map((item) => item.getNode().addEventListener('click', () => {
+      this.buttons.map((elem) => elem.getNode().classList.remove('active'));
+      item.getNode().classList.add('active');
+      productsState.set({ size: item.getNode().textContent as string });
+    }));
   }
 }

@@ -56,4 +56,9 @@ export interface KeyboardProps {
 export interface ProductsFilterProps {
   search: string;
   inStock: boolean;
+  brand: string;
+  manufacturer: string;
+  size: string;
+  features: string;
+  switchType?: string;
 }
