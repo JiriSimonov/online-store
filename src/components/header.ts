@@ -15,9 +15,11 @@ export default class Header extends BaseComponent {
 
   private search: BaseComponent;
 
-  private cart: BaseComponent;
+  private cartPrice: BaseComponent;
 
   private cartCount: BaseComponent;
+
+  private cart: BaseComponent;
 
   private searchInput: Input;
 
@@ -34,7 +36,8 @@ export default class Header extends BaseComponent {
         window.location.hash = '#cart';
       },
     });
-    this.cartCount = new BaseComponent({ className: 'cart__count' });
+    this.cartCount = new BaseComponent({ tag: 'span', className: 'header__count', text: '0' });
+    this.cartPrice = new BaseComponent({ tag: 'span', className: 'header__price', text: '0' });
     this.searchInput = new Input({ className: 'header__input' });
     this.search.getNode().addEventListener('click', () => {
       this.searchInput.getNode().classList.toggle('header__input_is-open');
@@ -49,6 +52,7 @@ export default class Header extends BaseComponent {
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.logo, this.controls]);
-    this.controls.appendEl([this.searchInput, this.search, this.cart, this.cartCount]);
+    this.controls.appendEl([this.searchInput, this.search, this.cart, this.cartPrice]);
+    this.cart.appendEl(this.cartCount);
   }
 }

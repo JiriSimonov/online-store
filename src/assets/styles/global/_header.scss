@@ -21,6 +21,7 @@
   &__controls {
     margin-left: auto;
     display: flex;
+    align-items: center;
     gap: 20px;
   }
 
@@ -43,6 +44,7 @@
   }
 
   &__cart {
+    position: relative;
     background-image: url('../../icons/cart.svg');
   }
 
@@ -55,5 +57,25 @@
   &__input_is-open {
     display: initial;
     visibility: visible;
+  }
+
+  &__count {
+    position: absolute;
+    top: -10px;
+    left: 25px;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  &__price {
+    position: relative;
+    padding-right: 30px;
+    font-size: 20px;
+    font-weight: 500;
+    &:before {
+      content: '₽';
+      position: absolute;
+      left: 20px;
+    }
   }
 }
