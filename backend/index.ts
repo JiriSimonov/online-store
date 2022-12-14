@@ -3,4 +3,8 @@
 
 import { sourceJsonController as source } from './reassemble-json';
 
-source.reassembleKeyboards();
+// source.reassembleKeyboardsJson();
+
+// source.downloadKeyboardImages();
+
+// source.getSwitches();

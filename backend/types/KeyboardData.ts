@@ -6,6 +6,7 @@ export interface KeyboardData {
   manufacturer: string[];
   size: string;
   minPrice: number;
+  images: string[];
 }
 
 export interface KeyboardSwitchData {

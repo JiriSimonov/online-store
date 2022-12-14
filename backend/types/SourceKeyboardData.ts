@@ -17,6 +17,7 @@ export interface SourceKeyboard {
   preorderHash: object;
   disabledHash: object;
 }
+
 export interface SourceKeyboardVariant {
   id: number;
   product_id: number;
@@ -65,4 +66,16 @@ export interface SourceKeyboardProps {
   'Частота опроса'?: string[];
   'Внутренняя память'?: string[];
   'Артикул'?: string[];
+}
+
+export interface SourceImagesList {
+  [index: string]: string[];
+}
+
+export interface SourceSwitchList {
+  [index: string]: {
+    src: string;
+    props: string[];
+    description: string;
+  };
 }
