@@ -228,6 +228,10 @@ class SourceJsonController {
 
 export const sourceJsonController = new SourceJsonController(Object.values(PRODUCTS));
 
+// TODO: генерация описания свичей (json)
+// TODO: загрузка картинок свичей (имя===id)
+// TODO: остальное
+
 /*
 sourceJsonController.getSourceTypes();
 
