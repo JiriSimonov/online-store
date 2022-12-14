@@ -16,6 +16,7 @@ export interface ButtonProps extends BaseComponentProps {
 }
 export interface InputProps extends BaseComponentProps {
   value?: string;
+  type?: string;
 }
 
 /* export interface ProductCardProps extends BaseComponentProps {

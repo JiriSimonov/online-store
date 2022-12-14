@@ -1,0 +1,159 @@
+@import '../global/vars';
+
+.cart {
+  &__item {
+    padding: 100px;
+    background-color: $white;
+
+    .count-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-radius: 5px;
+      max-width: 100px;
+      background-color: $grey;
+      overflow: hidden;
+
+      &__dec,
+      &__inc {
+        border: none;
+        border-radius: 5px;
+        width: 40px;
+        height: 30px;
+        font-size: 16px;
+        font-weight: 400;
+        background-color: transparent;
+        cursor: pointer;
+        transition: .3s linear;
+
+        &:hover {
+          color: $white;
+        }
+      }
+
+      &__dec {
+        padding-bottom: 4px;
+      }
+
+      &__dec:hover {
+        background-color: $r;
+      }
+
+      &__inc:hover {
+        background-color: $green;
+      }
+    }
+  }
+
+  &__order {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 13px;
+    background-color: $blue;
+    font-size: 18px;
+    font-weight: 500;
+    color: $white;
+    box-shadow: 0 4px 16px rgb(0 131 241 / 50%);
+    cursor: pointer;
+    transition: .3s linear;
+
+    &:hover {
+      background-color: $black;
+      color: $white;
+    }
+  }
+
+  &-price {
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+
+    &__text,
+    &__total {
+      font-size: 24px;
+      color: $black;
+    }
+
+    &__text {
+      user-select: none;
+    }
+
+    &__total {
+      position: relative;
+      padding-right: 20px;
+
+      &:before {
+        content: '₽';
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
+}
+
+.promo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__form {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; 
+  }
+
+  &__btn, &__submit-btn {
+    padding: 5px;
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: .3s linear;
+  }
+
+  &__submit-btn {
+    padding: 10px 15px;
+    border-radius: 13px;
+    background-color: $white;
+    box-shadow: 0 4px 16px rgb(20 20 21/ 25%);
+
+    &:hover {
+      background-color: $black;
+      color: $white;
+    }
+  }
+
+  &__input {
+    padding: 10px;
+    border: 1px solid $grey;
+    border-radius: 13px;
+    background-color: $white;
+    box-shadow: 0 4px 16px rgb(20 20 21/ 25%);
+  }
+}
+
+.modal {
+
+  &__overlay {
+    
+  }
+
+  &__content {
+    max-width: 650px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+}
