@@ -104,5 +104,7 @@ dist
 .tern-port
 
 #custom
+.vscode
 *.js
-backend/keyboards-json/out
+backend/out
+backend-old
