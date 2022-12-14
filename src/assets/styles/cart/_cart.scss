@@ -137,7 +137,7 @@
 .modal {
 
   &__overlay {
-    
+
   }
 
   &__content {
@@ -147,6 +147,7 @@
   &__form {
     display: flex;
     flex-direction: column;
+    gap: 20px;
     align-items: flex-start;
   }
 
@@ -154,6 +155,19 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    font-size: 18px;
+    font-weight: 400;
+    color: $black;
+  }
+
+  &__input {
+    padding: 8px 10px 8px 0;
+    border: 2px solid red;
+    border-radius: 5px;
+    background-color: transparent;
+    text-indent: 8px;
+    font-size: 16px;
+    font-weight: 400px;
   }
 
 }

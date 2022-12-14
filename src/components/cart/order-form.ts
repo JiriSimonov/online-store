@@ -1,6 +1,6 @@
 import BaseComponent from '../elements/base-component';
 import Button from '../elements/button';
-import Input from '../elements/input';
+import { FormField } from '../elements/form-field';
 
 export default class OrderForm extends BaseComponent {
   private modalOverlay: BaseComponent;
@@ -9,39 +9,23 @@ export default class OrderForm extends BaseComponent {
 
   private modalForm: BaseComponent;
 
-  private modalNameLabel: BaseComponent;
+  private nameField: FormField;
 
-  private modalName: Input;
+  private phoneField: FormField;
 
-  private modalPhoneLabel: BaseComponent;
+  private addressField: FormField;
 
-  private modalPhone: Input;
-
-  private modalAddressLabel: BaseComponent;
-
-  private modalAddress: Input;
-
-  private modalEmailLabel: BaseComponent;
-
-  private modalEmail: Input;
+  private emailField: FormField;
 
   private card: BaseComponent;
 
-  private cardNumberLabel: BaseComponent;
+  private cardNumber: FormField;
 
-  private cardNumber: Input;
+  private cardMonth: FormField;
 
-  private cardMonthLabel: BaseComponent;
+  private cardYear: FormField;
 
-  private cardMonth: Input;
-
-  private cardYearLabel: BaseComponent;
-
-  private cardYear: Input;
-
-  private cardCVVLabel: BaseComponent;
-
-  private cardCVV: Input;
+  private cardCVV: FormField;
 
   private modalSubmit: Button;
 
@@ -50,50 +34,68 @@ export default class OrderForm extends BaseComponent {
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
     this.modalContent = new BaseComponent({ className: 'modal__content' });
     this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
-    this.modalNameLabel = new BaseComponent({ tag: 'label', className: 'modal__label', text: 'Имя Фамилия' });
-    this.modalName = new Input({ className: 'modal__name', type: 'text' });
-    this.modalPhoneLabel = new BaseComponent({ tag: 'label', className: 'modal__label', text: 'Телефон' });
-    this.modalPhone = new Input({ className: 'modal__phone', type: 'number' });
-    this.modalAddressLabel = new BaseComponent({ tag: 'label', className: 'modal__label', text: 'Адрес доставки' });
-    this.modalAddress = new Input({ className: 'modal__address', type: 'text' });
-    this.modalPhone = new Input({ className: 'modal__phone', type: 'tel' });
-    this.modalEmailLabel = new BaseComponent({ tag: 'label', className: 'modal__label', text: 'E-mail' });
-    this.modalEmail = new Input({ className: 'modal__email', type: 'email' });
+    this.nameField = new FormField({ className: 'modal', text: 'Имя Фамилия' });
+    this.phoneField = new FormField(
+      {
+        className: 'modal',
+        text: 'Телефон',
+        type: 'tel',
+        placeholder: '+798238622',
+        pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+      },
+    );
+    this.addressField = new FormField({
+      className: 'modal',
+      text: 'Адрес доставки',
+      placeholder: 'Кукушкина 5 дом 10',
+    });
+    this.emailField = new FormField({
+      className: 'modal',
+      text: 'E-mail',
+      type: 'email',
+      placeholder: 'kotopes@mail.ru',
+    });
     this.card = new BaseComponent({ className: 'card' });
-    this.cardNumberLabel = new BaseComponent({ tag: 'label', className: 'modal__label' });
-    this.cardNumber = new Input({ className: 'modal__email', type: 'number' });
-    this.cardMonthLabel = new BaseComponent({ tag: 'label', className: 'modal__label' });
-    this.cardMonth = new Input({ className: 'modal__email', type: 'number' });
-    this.cardYearLabel = new BaseComponent({ tag: 'label', className: 'modal__label' });
-    this.cardYear = new Input({ className: 'modal__email', type: 'number' });
-    this.cardCVVLabel = new BaseComponent({ tag: 'label', className: 'modal__label' });
-    this.cardCVV = new Input({ className: 'modal__email', type: 'number' });
+    this.cardNumber = new FormField({
+      className: 'modal',
+      text: 'Номер карты',
+      type: 'number',
+      placeholder: '3333-4444-5555-6666',
+    });
+    this.cardMonth = new FormField({
+      className: 'modal',
+      type: 'number',
+      placeholder: '12',
+    });
+    this.cardYear = new FormField({
+      className: 'modal',
+      type: 'number',
+      placeholder: '23',
+    });
+    this.cardCVV = new FormField({
+      className: 'modal',
+      text: 'Код на обратной стороне',
+      type: 'number',
+      placeholder: '123',
+    });
     this.modalSubmit = new Button({ className: 'modal__submit', text: 'Заказать' });
     // render
     this.appendEl(this.modalOverlay);
     this.modalOverlay.appendEl(this.modalContent);
     this.modalContent.appendEl(this.modalForm);
-    this.modalNameLabel.appendEl(this.modalName);
-    this.modalAddressLabel.appendEl(this.modalAddress);
-    this.modalPhoneLabel.appendEl(this.modalPhone);
-    this.modalEmailLabel.appendEl(this.modalEmail);
-    this.cardNumberLabel.appendEl(this.cardNumber);
-    this.cardMonthLabel.appendEl(this.cardMonth);
-    this.cardYearLabel.appendEl(this.cardYear);
-    this.cardCVVLabel.appendEl(this.cardCVV);
     this.card.appendEl([
-      this.cardNumberLabel,
-      this.cardMonthLabel,
-      this.cardYearLabel,
-      this.cardCVVLabel,
+      this.cardNumber,
+      this.cardMonth,
+      this.cardYear,
+      this.cardCVV,
     ]);
     this.modalForm.appendEl([
-      this.modalNameLabel,
-      this.modalPhoneLabel,
-      this.modalAddressLabel,
-      this.modalEmailLabel,
-      this.modalSubmit,
+      this.nameField,
+      this.phoneField,
+      this.addressField,
+      this.emailField,
       this.card,
+      this.modalSubmit,
     ]);
   }
 }
