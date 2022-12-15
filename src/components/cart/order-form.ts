@@ -34,7 +34,7 @@ export default class OrderForm extends BaseComponent {
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
     this.modalContent = new BaseComponent({ className: 'modal__content' });
     this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
-    this.nameField = new FormField({ className: 'modal', text: 'Имя Фамилия' });
+    this.nameField = new FormField({ className: 'modal', text: 'Имя Фамилия', placeholder: 'Вася Пупкин' });
     this.phoneField = new FormField(
       {
         className: 'modal',
@@ -78,7 +78,14 @@ export default class OrderForm extends BaseComponent {
       type: 'number',
       placeholder: '123',
     });
-    this.modalSubmit = new Button({ className: 'modal__submit', text: 'Заказать' });
+    this.modalSubmit = new Button({
+      className: 'modal__submit',
+      text: 'Заказать',
+      onclick: () => {
+        this.destroy();
+        window.location.hash = '#store';
+      },
+    });
     // render
     this.appendEl(this.modalOverlay);
     this.modalOverlay.appendEl(this.modalContent);

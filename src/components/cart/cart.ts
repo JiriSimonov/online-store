@@ -30,7 +30,7 @@ export default class Cart extends BaseComponent {
 
   private orderBtn: Button;
 
-  private orderForm: OrderForm;
+  private orderForm: OrderForm | undefined;
 
   constructor() {
     super({ tag: 'section', className: 'cart' });
@@ -56,10 +56,10 @@ export default class Cart extends BaseComponent {
     this.cartPriceTotal = new BaseComponent({ tag: 'span', className: 'cart-price__total', text: '1000' });
     this.cartList = new CartList();
     this.cartItems = [new CartItem(), new CartItem()];
-    this.orderForm = new OrderForm();
     this.orderBtn.getNode().onclick = () => {
+      this.orderForm = new OrderForm();
+      this.wrapper.appendEl(this.orderForm);
     };
-    this.wrapper.appendEl(this.orderForm);
   }
 
   render() {

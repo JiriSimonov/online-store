@@ -18,5 +18,6 @@ export default class Input extends BaseComponent {
     if (type) node.setAttribute('type', type);
     if (placeholder) node.setAttribute('placeholder', placeholder);
     if (pattern) node.setAttribute('pattern', pattern);
+    node.setAttribute('required', 'true');
   }
 }
