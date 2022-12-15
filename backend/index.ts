@@ -1,10 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
-/* import path = require('path'); */
 
-import { sourceJsonController as source } from './reassemble-json';
+import { sourceBuilder } from './reassemble-json';
 
-// source.reassembleKeyboardsJson();
-
-// source.downloadKeyboardImages();
-
-// source.getSwitches();
+sourceBuilder.buildAll();

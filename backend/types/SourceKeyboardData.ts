@@ -72,10 +72,12 @@ export interface SourceImagesList {
   [index: string]: string[];
 }
 
+export interface SourceSwitch {
+  src: string;
+  props: string[];
+  description: string;
+}
+
 export interface SourceSwitchList {
-  [index: string]: {
-    src: string;
-    props: string[];
-    description: string;
-  };
+  [index: string]: SourceSwitch;
 }

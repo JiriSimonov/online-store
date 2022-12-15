@@ -1,6 +1,9 @@
 ## TODO
 
+### добавить картинки получение метод
+
 ### формат данных обязательно должен включать
+
     Имя/брэнд товара.
     Категорию товара.
     Описание товара.
@@ -8,7 +11,10 @@
     Количество товара на складе
     Не менее двух фотографий товара.
 
-```json 
+<details>
+  <summary><b>Пример</b></summary>
+
+```json
 {
   "id": 1,
   "title": "iPhone 9",
@@ -29,6 +35,8 @@
   ]
 }
 ```
+
+</details>
 
 > Не вижу способа автоматически добраться до DOM и парсить через него без сторонних библиотек, поэтому накидал скрипты для браузера 😢
 
@@ -61,7 +69,7 @@ getKeyboardImages(getKeyboardList(sourceJSON)[0].id);
 </details>
 
 <details>
-  <summary><b>ts</b></summary>
+  <summary><b>получение списка ссылок изображений</b></summary>
 
 ```ts
 const getURLs = (id: number | string): string[] => {
@@ -88,10 +96,6 @@ const snatch = (list: { [key: string]: string[] }) => {
 snatch(Object.fromEntries(keyboardImages));
 ```
 
-</details>
-<details>
-  <summary><b>js keyboard images</b></summary>
-
 ```js
 {
   const selector
@@ -114,8 +118,9 @@ snatch(Object.fromEntries(keyboardImages));
 ```
 
 </details>
+
 <details>
-  <summary><b>js switches</b></summary>
+  <summary><b>получение оригинала описания фильтров</b></summary>
 
 ```js
 {
@@ -132,11 +137,144 @@ snatch(Object.fromEntries(keyboardImages));
     const json = JSON.stringify(list, null, '\t');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
-    a.download = 'keyboard-images.json';
+    a.download = 'switches.json';
     a.click();
   };
 
   snatch(switchesData);
+}
+```
+
+</details>
+
+<details>
+  <summary><b>Для проверки массива на опциональность некоторых полей (временное)</b></summary>
+
+```ts
+getSourceTypes(source): void {
+  const data = { keyboard: { variants: null, props: null } };
+
+  // data.keyboard = source.reduce((acc, keyboard) => {
+  //   Object.entries(keyboard).forEach((v) => {
+  //     const [key, value] = v;
+  //     if (key in acc) return;
+  //     acc[key] = typeof value;
+  //   });
+  //   return acc;
+  // }, {});
+  // data.keyboard.props = source.reduce((acc, keyboard) => {
+  //   Object.entries(keyboard.props).forEach((v) => {
+  //     const [key, value] = v;
+  //     Object.assign(acc, { [key]: typeof value });
+  //   });
+  //   return acc;
+  // }, {});
+  // data.keyboard.variants = source
+  //   .flatMap((v) => v.variants)
+  //   .reduce((acc, keyboard) => {
+  //     Object.entries(keyboard).forEach((v) => {
+  //       const [key, value] = v;
+
+  //       Object.assign(acc, { [key]: typeof value });
+  //     });
+  //     return acc;
+  //   }, {});
+  
+  const props = [
+    'Материал клавиш',
+    'Конструкция',
+    'Размер',
+    'Цифровой блок',
+    'Мультимедийные функции',
+    'Совместимость с MAC OS',
+    'Подсветка',
+    'Отсоединяемый кабель',
+    'Длина кабеля',
+    'USB-хаб',
+    'Интерфейс',
+    'Размеры (ДxШxВ)',
+    'Вес',
+    'Гарантия',
+    'Профиль кейкапов',
+    'Фичи',
+    'Диоды',
+    'Бренд',
+    'Светодиоды',
+    'Тип раскладки',
+    'Количество клавиш',
+    'Страна производства',
+    'Тип разъема',
+    'Стабилизаторы',
+    'Цвет',
+    'Частота опроса',
+    'Внутренняя память',
+    'Артикул',
+  ];
+  const keyboardprops = [
+    'id',
+    'title',
+    'variants',
+    'props',
+    'manufacturer',
+    'group',
+    'size',
+    'minVisiblePrice',
+    'hasDifferentPricesByQuantity',
+    'canonical_collection',
+    'instockHash',
+    'preorderHash',
+    'disabledHash',
+  ];
+  const variantprops = [
+    'id',
+    'product_id',
+    'sku',
+    'externalVariantId',
+    'title',
+    'price',
+    'quantity',
+    'switch',
+    'switchHandle',
+    'layout',
+    'visible',
+    'preorderDate',
+    'stockStatus',
+    'model',
+    'backlit',
+    'switchBrand',
+  ];
+
+  const propsCounter = source.reduce((p, c) => {
+    keyboardprops.forEach((v) => {
+      if (v in c) {
+        if (v in p) p[v]++;
+        else p[v] = 1;
+      }
+    });
+    return p;
+  }, {});
+  const propspropsCounter = source.reduce((p, c) => {
+    props.forEach((v) => {
+      if (v in c.props) {
+        if (v in p) p[v]++;
+        else p[v] = 1;
+      }
+    });
+    return p;
+  }, {});
+  const variantsCounter = source
+    .flatMap((v) => v.variants)
+    .reduce((p, c) => {
+      variantprops.forEach((v) => {
+        if (v in c) {
+          if (v in p) p[v]++;
+          else p[v] = 1;
+        }
+      });
+      return p;
+    }, {});
+
+  console.log(source.flatMap((v) => v.variants).length);
 }
 ```
 

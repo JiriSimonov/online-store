@@ -48,3 +48,13 @@ export interface KeyboardProperties {
   'Внутренняя память'?: string[];
   'Артикул'?: string[];
 }
+
+export interface SwitchDescription {
+  title: string;
+  props: string[];
+  description: string;
+}
+
+export interface SwitchDescriptionList {
+  [id: string]: SwitchDescription;
+}
