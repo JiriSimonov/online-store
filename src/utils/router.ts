@@ -1,7 +1,9 @@
 import { RoutesObj } from '../interfaces/interfaces';
 
 export default class Router {
-  constructor(private readonly routes: RoutesObj) {
+  constructor(
+    private readonly routes: RoutesObj,
+    private errorCallback: () => void,) {
     window.addEventListener('hashchange', this.onHashChangeHandler);
     this.onHashChangeHandler();
   }

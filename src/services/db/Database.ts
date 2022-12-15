@@ -51,7 +51,7 @@ class Database {
 
 export const DB = new Database(keyboardsJson, switchesJson);
 
-/* console.log(DB); */
+console.log(DB);
 
 // ? почему удаление этого ни на что не повлияло?
 /*

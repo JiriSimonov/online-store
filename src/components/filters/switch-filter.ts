@@ -40,23 +40,22 @@ export default class SwitchFilter extends Filter {
         productsState.set({ switchType: target.textContent as string });
       } // TODO REFACTOR
     }));
-    // this.switchWrapper.getNode().addEventListener('mouseover', (e) => {
-    //   const target = e.target as HTMLElement;
-    //   if (target.classList.contains('switch__item')) {
-    //     target.setAttribute('id', 'open');
-    //     this.modalWrapper = new BaseComponent({ className: 'switch__modal' });
-    //     this.switchModal
-    //= new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
-    //     target.append(this.modalWrapper.getNode());
-    //     this.modalWrapper.appendEl(this.switchModal);
-    //     target.addEventListener('mouseout', () => {
-    //       target.removeAttribute('id');
-    //       this.modalWrapper?.destroy();
-    //       this.modalWrapper = null;
-    //       this.switchModal?.destroy();
-    //       this.switchModal = null;
-    //     });
-    //   }
-    // }); // TODO модалка перебивает свич и не дает зацепить нужный элемент
+    this.switchWrapper.getNode().addEventListener('mouseover', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains('switch__item')) {
+        target.setAttribute('id', 'open');
+        this.modalWrapper = new BaseComponent({ className: 'switch__modal' });
+        this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
+        target.append(this.modalWrapper.getNode());
+        this.modalWrapper.appendEl(this.switchModal);
+        target.addEventListener('mouseout', () => {
+          target.removeAttribute('id');
+          this.modalWrapper?.destroy();
+          this.modalWrapper = null;
+          this.switchModal?.destroy();
+          this.switchModal = null;
+        });
+      }
+    }); // TODO модалка перебивает свич и не дает зацепить нужный элемент
   }
 }
