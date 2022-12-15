@@ -42,6 +42,7 @@ export default class Header extends BaseComponent {
     this.search.getNode().addEventListener('click', () => {
       this.searchInput.getNode().classList.toggle('header__input_is-open');
       this.searchInput.getNode().addEventListener('input', (e) => {
+        if (window.location.hash !== '#store') window.location.hash = '#store';
         const target = e.target as HTMLInputElement;
         productsState.set({ search: target.value });
       });

@@ -1,0 +1,217 @@
+@import '../global/vars';
+
+.cart {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item {
+    padding: 100px;
+    background-color: $white;
+
+    .count-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-radius: 5px;
+      max-width: 100px;
+      background-color: $grey;
+      overflow: hidden;
+
+      &__dec,
+      &__inc {
+        border: none;
+        border-radius: 5px;
+        width: 40px;
+        height: 30px;
+        font-size: 16px;
+        font-weight: 400;
+        background-color: transparent;
+        cursor: pointer;
+        outline: none;
+        transition: .3s linear;
+
+        &:hover {
+          color: $white;
+        }
+      }
+
+      &__dec {
+        padding-bottom: 4px;
+      }
+
+      &__dec:hover,
+      &__dec:focus {
+        background-color: $r;
+      }
+
+      &__inc:hover,
+      &__inc:focus {
+        background-color: $green;
+      }
+    }
+  }
+
+  &__order {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 13px;
+    background-color: $blue;
+    font-size: 18px;
+    font-weight: 500;
+    color: $white;
+    box-shadow: 0 4px 16px rgb(0 131 241 / 50%);
+    cursor: pointer;
+    transition: .3s linear;
+
+    &:hover {
+      background-color: $black;
+      color: $white;
+    }
+  }
+
+  &-price {
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+
+    &__text,
+    &__total {
+      font-size: 24px;
+      color: $black;
+    }
+
+    &__text {
+      user-select: none;
+    }
+
+    &__total {
+      position: relative;
+      padding-right: 20px;
+
+      &:before {
+        content: '₽';
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
+}
+
+.promo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__form {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; 
+  }
+
+  &__btn, &__submit-btn {
+    padding: 5px;
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: .3s linear;
+  }
+
+  &__submit-btn {
+    padding: 10px 15px;
+    border-radius: 13px;
+    background-color: $white;
+    box-shadow: 0 4px 16px rgb(20 20 21/ 25%);
+
+    &:hover {
+      background-color: $black;
+      color: $white;
+    }
+  }
+
+  &__input {
+    padding: 10px;
+    border: 1px solid $grey;
+    border-radius: 13px;
+    background-color: $white;
+    box-shadow: 0 4px 16px rgb(20 20 21/ 25%);
+  }
+}
+
+.modal {
+
+  &__overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    transition: all .3s linear;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+  }
+
+  &__content {
+    width: 30%;
+    padding: 40px 60px;
+    border-radius: 13px;
+    background-color: $white;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 18px;
+    font-weight: 400;
+    color: $black;
+    user-select: none;
+  }
+
+  &__input {
+    padding: 8px 10px 8px 0;
+    border: 2px solid red;
+    border-radius: 5px;
+    background-color: transparent;
+    text-indent: 8px;
+    font-size: 16px;
+    font-weight: 400px;
+  }
+
+  &__submit {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 23px;
+    background-color: $white;
+    font-size: 18px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgb(20 20 21/ 25%);
+    cursor: pointer;
+    transition: .3s linear;
+
+    &:hover {
+      background-color: $black;
+      color: $white;
+    }
+  }
+
+}

@@ -40,9 +40,10 @@ class App extends BaseComponent {
 
   renderCart() {
     this.currentPage?.destroy();
-    const store = new Cart();
-    this.currentPage = store;
-    this.appendEl(store);
+    const cart = new Cart();
+    this.currentPage = cart;
+    cart.render();
+    this.appendEl(cart);
   }
 
   runApp() {

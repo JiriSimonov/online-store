@@ -1,12 +1,36 @@
 import BaseComponent from '../elements/base-component';
 import Button from '../elements/button';
+import CartItem from './cart-item';
+import CartList from './cart-list';
+import PromoForm from './cart-promo';
+import OrderForm from './order-form';
 
 export default class Cart extends BaseComponent {
   private container: BaseComponent;
 
   private wrapper: BaseComponent;
 
+  private cartList: CartList;
+
+  private cartItems: CartItem[];
+
   private cartButton: Button;
+
+  private CartPromoWrapper: BaseComponent;
+
+  private cartPromoBtn: Button;
+
+  private cartPromoForm: PromoForm;
+
+  private cartPriceWrapper: BaseComponent;
+
+  private cartPriceText: BaseComponent;
+
+  private cartPriceTotal: BaseComponent;
+
+  private orderBtn: Button;
+
+  private orderForm: OrderForm | undefined;
 
   constructor() {
     super({ tag: 'section', className: 'cart' });
@@ -19,8 +43,33 @@ export default class Cart extends BaseComponent {
       },
       text: 'Продолжить покупки',
     });
+    this.orderBtn = new Button({ className: 'cart__order', text: 'Продолжить оформление' });
+    this.CartPromoWrapper = new BaseComponent({ className: 'promo' });
+    this.cartPromoBtn = new Button({ className: 'promo__btn', text: 'Есть промокод?' });
+    this.cartPromoForm = new PromoForm();
+    this.cartPromoBtn.getNode().onclick = () => {
+      this.cartPromoBtn.getNode().setAttribute('disabled', 'true');
+      this.CartPromoWrapper.appendEl(this.cartPromoForm);
+    };
+    this.cartPriceWrapper = new BaseComponent({ className: 'cart-price' });
+    this.cartPriceText = new BaseComponent({ tag: 'span', className: 'cart-price__text', text: 'Итог' });
+    this.cartPriceTotal = new BaseComponent({ tag: 'span', className: 'cart-price__total', text: '1000' });
+    this.cartList = new CartList();
+    this.cartItems = [new CartItem(), new CartItem()];
+    this.orderBtn.getNode().onclick = () => {
+      this.orderForm = new OrderForm();
+      this.wrapper.appendEl(this.orderForm);
+    };
+  }
+
+  render() {
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
-    this.wrapper.appendEl(this.cartButton);
+    this.wrapper.appendEl([this.cartList, this.cartButton]);
+    this.cartList.appendEl(this.cartItems);
+    this.wrapper.appendEl([this.CartPromoWrapper, this.cartPriceWrapper]);
+    this.CartPromoWrapper.appendEl(this.cartPromoBtn);
+    this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
+    this.wrapper.appendEl(this.orderBtn);
   }
 }

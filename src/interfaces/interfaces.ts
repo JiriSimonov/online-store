@@ -16,6 +16,14 @@ export interface ButtonProps extends BaseComponentProps {
 }
 export interface InputProps extends BaseComponentProps {
   value?: string;
+  type?: string;
+  pattern?: string;
+  placeholder?: string;
+}
+
+export interface FormFieldProps extends InputProps {
+  className: string;
+  text?: string;
 }
 
 export type RoutesObj = Record<string, () => void>;
