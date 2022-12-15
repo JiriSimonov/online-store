@@ -7,7 +7,7 @@ export default class ProductImage extends BaseComponent {
     super({ className: 'store__img' });
     type ImagePath = { default: string }; // todo 🌼: посмотри чем можно заменить. это вставляется как T в PromiseFulfilledResult<T>, чтоб достучаться к полю default, т.к. без default мы получаем это - https://i.imgur.com/aO2HXtC.png
 
-    const imageImports = imageList.map((v): Promise<ImagePath> => import(`../../assets/images/keyboards/${v}.webp`));
+    const imageImports = imageList.map((v): Promise<ImagePath> => import(`../../assets/images/keyboards/104645894-1.webp`));
 
     const render = async (input: Promise<ImagePath>[]): Promise<void> => {
       const setImage = (src: string): void => {
