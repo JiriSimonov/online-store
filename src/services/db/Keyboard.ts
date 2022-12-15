@@ -24,4 +24,16 @@ export class Keyboard {
     this.images = keyboard.images;
     Object.seal(this.switches);
   }
+
+  get isAvailable() {
+    return this.switches.some((v) => v.isAvailable);
+  }
+
+  get features() {
+    return this.properties.Фичи || [];
+  }
+
+  get brands() {
+    return this.manufacturer;
+  }
 }

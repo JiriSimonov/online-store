@@ -2,12 +2,11 @@ import Filter from './filter';
 import SwitchComponent from '../switches/switch-component';
 import BaseComponent from '../elements/base-component';
 import SwitchModal from '../switches/switch-modal';
-import { getAllSwitchesList } from '../../utils/get-keyboards-data';
-import { SwitchProps } from '../../interfaces/interfaces';
 import Button from '../elements/button';
 import ProductsListState from '../../states/goods-state';
+import { DB } from '../../services/db/Database';
 
-const switchesList: SwitchProps[] = getAllSwitchesList();
+// TODO 🌼 расхардкодить
 const switchBtns = ['Cherry', 'Gateron', 'Varmilo', 'Keychron', 'Kailh', 'TTC', 'Topre', 'Akko'];
 
 export default class SwitchFilter extends Filter {
@@ -33,7 +32,7 @@ export default class SwitchFilter extends Filter {
       item.getNode().classList.add('active');
       productsState.set({ manufacturer: item.getNode().textContent as string });
     }));
-    this.switchArr = switchesList.map((item) => new SwitchComponent(item));
+    this.switchArr = DB.switches.map((item) => new SwitchComponent(item));
     this.switchWrapper.appendEl(this.switchArr);
     this.switchArr.map((item) => item.getNode().addEventListener('click', (e) => {
       const target = e.target as HTMLElement;

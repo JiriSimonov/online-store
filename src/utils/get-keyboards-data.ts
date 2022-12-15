@@ -1,26 +1,28 @@
-import { KeyboardProps, SwitchProps } from '../interfaces/interfaces';
+// * к удалению
+// import { KeyboardSwitchData } from '../interfaces/database';
+// import { Keyboard } from '../services/db/Keyboard';
 
-const keyboardsJson: KeyboardProps[] = require('../data/keyboards.json');
+// const keyboardsJson: Keyboard[] = require('../data/keyboards.json');
 
-const currentSwitchesData /* : SwitchProps[] */ = keyboardsJson
-  .flatMap((keyboard): SwitchProps[] => keyboard.switches)
-  .reduce((acc: { [key: string]: SwitchProps }, item: SwitchProps) => {
-    if (!item.id) return acc;
+// const currentSwitchesData /* : SwitchProps[] */ = keyboardsJson
+//   .flatMap((keyboard): KeyboardSwitchData[] => keyboard.switches)
+//   .reduce((acc: { [key: string]: KeyboardSwitchData }, item: KeyboardSwitchData) => {
+//     if (!item.id) return acc;
 
-    if (!(item.id in acc)) return Object.assign(acc, { [item.id]: item });
+//     if (!(item.id in acc)) return Object.assign(acc, { [item.id]: item });
 
-    if (!item.quantity) {
-      acc[item.id].quantity += item.quantity;
-      acc[item.id].isAvailable = true;
-    }
+//     if (!item.quantity) {
+//       acc[item.id].quantity += item.quantity;
+//       acc[item.id].isAvailable = true;
+//     }
 
-    return acc;
-  }, {});
+//     return acc;
+//   }, {});
 
-export function getKeyboardsList(): KeyboardProps[] {
-  return keyboardsJson;
-}
+// export function getKeyboardsList(): Keyboard[] {
+//   return keyboardsJson;
+// }
 
-export function getAllSwitchesList(): SwitchProps[] {
-  return Object.values(currentSwitchesData);
-}
+// export function getAllSwitchesList(): KeyboardSwitchData[] {
+//   return Object.values(currentSwitchesData);
+// }

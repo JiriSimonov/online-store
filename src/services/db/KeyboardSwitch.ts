@@ -5,7 +5,7 @@ import { KeyboardSwitchData } from '../../interfaces/database';
 export class KeyboardSwitch {
   readonly id: string;
   readonly title: string;
-  readonly quantity: number;
+  quantity: number;
   readonly manufacturer: string;
   readonly price: number;
   readonly eid?: string;
@@ -17,5 +17,13 @@ export class KeyboardSwitch {
     this.manufacturer = keyboardSwitch.manufacturer;
     this.price = keyboardSwitch.price;
     if (keyboardSwitch.eid) this.eid = keyboardSwitch.eid;
+  }
+
+  get isAvailable() {
+    return this.quantity > 0;
+  }
+
+  changeQuantity(number: number) {
+    this.quantity += number;
   }
 }

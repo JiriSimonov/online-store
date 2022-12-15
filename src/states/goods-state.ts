@@ -1,14 +1,15 @@
-import { ProductsFilterProps, KeyboardProps } from '../interfaces/interfaces';
+import { ProductsFilterProps } from '../interfaces/interfaces';
+import { Keyboard } from '../services/db/Keyboard';
 import Observable from '../services/observer';
 
-export default class ProductsListState extends Observable<KeyboardProps[]> {
+export default class ProductsListState extends Observable<Keyboard[]> {
   private goodsItems;
 
   private goodsItemsFiltred;
 
   private goodsProps: Partial<ProductsFilterProps>;
 
-  constructor(initialVal: KeyboardProps[]) {
+  constructor(initialVal: Keyboard[]) {
     super();
     this.goodsItems = initialVal;
     this.goodsItemsFiltred = initialVal;

@@ -3,11 +3,9 @@ import Button from './elements/button';
 import Filters from './filters/filtres';
 import ProductCard from './product/product-card';
 import StoreContent from './store-content';
-import { KeyboardProps } from '../interfaces/interfaces';
-import { getKeyboardsList } from '../utils/get-keyboards-data';
 import ProductsListState from '../states/goods-state';
-
-const keyboardsList: KeyboardProps[] = getKeyboardsList();
+import { Keyboard } from '../services/db/Keyboard';
+import { DB } from '../services/db/Database';
 
 export default class Store extends BaseComponent {
   private title: BaseComponent;
@@ -38,7 +36,7 @@ export default class Store extends BaseComponent {
     this.notFound = new BaseComponent({ className: 'store__not-found', text: 'Нет результатов' });
     this.storeList = new StoreContent();
     this.filters = new Filters(this.productsState);
-    this.storeItems = keyboardsList.map((item: KeyboardProps) => new ProductCard(item));
+    this.storeItems = DB.keyboards.map((item: Keyboard) => new ProductCard(item));
     this.showFiltersBtn.getNode().addEventListener('click', () => {
       this.wrapper.getNode().classList.toggle('store__wrapper_is-open');
       if (this.wrapper.getNode().classList.contains('store__wrapper_is-open')) {
@@ -49,8 +47,8 @@ export default class Store extends BaseComponent {
     });
   }
 
-  update = (state: KeyboardProps[]) => {
-    this.storeItems = state.map((item: KeyboardProps) => new ProductCard(item));
+  update = (state: Keyboard[]) => {
+    this.storeItems = state.map((item: Keyboard) => new ProductCard(item));
     this.storeList.getNode().replaceChildren();
     this.storeList.appendEl(this.storeItems);
     if (this.storeItems.length === 0) this.storeList.appendEl(this.notFound);
