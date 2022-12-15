@@ -105,6 +105,8 @@ dist
 
 #custom
 .vscode
-*.js
+src/**/*.js
+backend/**/*.js
 backend/out
 backend-old
+temp.md

@@ -1,5 +1,3 @@
-// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -22,7 +20,7 @@ const getTemplate = (title, lang) => `<!DOCTYPE html>
 </html>`;
 
 const config = {
-  entry: './src/index.ts',
+  entry: path.resolve(__dirname, 'src', 'index.ts'),
   output: {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
@@ -30,9 +28,7 @@ const config = {
   },
   devServer: {
     static: { directory: path.resolve('dist') },
-    open: {
-      app: { name: 'chrome', arguments: ['--incognito'] },
-    },
+    open: { app: { name: 'chrome', arguments: ['--incognito'] } },
     host: 'localhost',
     hot: true,
     compress: true,
@@ -42,37 +38,16 @@ const config = {
       templateContent: getTemplate('Keyboards Store', 'en'),
       fileName: 'index.html',
     }),
-
-    // Add your plugins here
-    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
   ],
   module: {
     rules: [
-      {
-        test: /\.(ts|tsx)$/i,
-        loader: 'ts-loader',
-        exclude: ['/node_modules/'],
-      },
-      {
-        test: /\.css$/i,
-        use: [stylesHandler, 'css-loader'],
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: [stylesHandler, 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|webp)$/i,
-        type: 'asset',
-      },
-
-      // Add your rules for custom modules here
-      // Learn more about loaders from https://webpack.js.org/loaders/
+      { test: /\.(ts|tsx)$/i, loader: 'ts-loader', exclude: ['/node_modules/'] },
+      { test: /\.css$/i, use: [stylesHandler, 'css-loader'] },
+      { test: /\.s[ac]ss$/i, use: [stylesHandler, 'css-loader', 'sass-loader'] },
+      { test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|webp)$/i, type: 'asset' },
     ],
   },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
-  },
+  resolve: { extensions: ['.tsx', '.ts', '.jsx', '.js', '...'] },
 };
 
 module.exports = () => {
