@@ -24,6 +24,7 @@ export interface InputProps extends BaseComponentProps {
 export interface FormFieldProps extends InputProps {
   className: string;
   text?: string;
+  modificator?: string;
 }
 
 export type RoutesObj = Record<string, () => void>;

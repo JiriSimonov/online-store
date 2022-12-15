@@ -59,13 +59,14 @@ export default class Cart extends BaseComponent {
     this.orderBtn.getNode().onclick = () => {
       this.orderForm = new OrderForm();
       this.wrapper.appendEl(this.orderForm);
+      document.body.classList.add('no-scroll');
     };
   }
 
   render() {
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
-    this.wrapper.appendEl([this.cartList, this.cartButton]);
+    this.wrapper.appendEl([this.cartButton, this.cartList]);
     this.cartList.appendEl(this.cartItems);
     this.wrapper.appendEl([this.CartPromoWrapper, this.cartPriceWrapper]);
     this.CartPromoWrapper.appendEl(this.cartPromoBtn);

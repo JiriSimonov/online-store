@@ -1,13 +1,13 @@
 import BaseComponent from './components/elements/base-component';
 import Router from './utils/router';
-import Footer from './components/footer';
 import Store from './components/store';
 import Header from './components/header';
-import './assets/styles/global/style.scss';
+import Footer from './components/footer';
 import Home from './components/home-page/home-page';
 import Cart from './components/cart/cart';
 import ProductsListState from './states/goods-state';
 import { DB } from './services/db/Database'; // ! 👈 убрать после тестов
+import './assets/styles/global/style.scss';
 
 class App extends BaseComponent {
   private router: Router | null;
