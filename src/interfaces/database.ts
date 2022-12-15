@@ -1,4 +1,4 @@
-// по возможности не изменять. лучше используй Partial/Pick и т.п.
+// * по возможности не изменять. лучше используй Partial/Pick и т.п.
 
 export interface KeyboardData {
   id: number;
