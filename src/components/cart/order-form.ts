@@ -57,24 +57,26 @@ export default class OrderForm extends BaseComponent {
     });
     this.card = new BaseComponent({ className: 'card' });
     this.cardNumber = new FormField({
+      modificator: 'small',
       className: 'modal',
-      text: 'Номер карты',
       type: 'number',
       placeholder: '3333-4444-5555-6666',
     });
     this.cardMonth = new FormField({
+      modificator: 'small',
       className: 'modal',
       type: 'number',
       placeholder: '12',
     });
     this.cardYear = new FormField({
+      modificator: 'small',
       className: 'modal',
       type: 'number',
       placeholder: '23',
     });
     this.cardCVV = new FormField({
+      modificator: 'small',
       className: 'modal',
-      text: 'Код на обратной стороне',
       type: 'number',
       placeholder: '123',
     });
@@ -83,7 +85,8 @@ export default class OrderForm extends BaseComponent {
       text: 'Заказать',
       onclick: () => {
         this.destroy();
-        window.location.hash = '#store';
+        // window.location.hash = '#store';
+        document.body.classList.remove('no-scroll');
       },
     });
     // render
