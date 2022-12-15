@@ -7,6 +7,7 @@ import Home from './components/home-page/home-page';
 import Cart from './components/cart/cart';
 import ProductsListState from './states/goods-state';
 import { DB } from './services/db/Database'; // ! 👈 убрать после тестов
+import { Error } from './utils/error';
 import './assets/styles/global/style.scss';
 
 class App extends BaseComponent {
@@ -46,6 +47,14 @@ class App extends BaseComponent {
     this.appendEl(cart);
   }
 
+  renderError() {
+    this.currentPage?.destroy();
+		const error = new Error();
+		this.currentPage = error;
+    error.render();
+		this.appendEl(error);
+  }
+
   runApp() {
     const root = document.getElementById('root');
     const footer = new Footer();
@@ -58,11 +67,11 @@ class App extends BaseComponent {
         home: () => this.renderHome(),
         store: () => this.renderStore(),
         cart: () => this.renderCart(),
-      });
+      }, () => this.renderError());
       root.append(this.node);
-      footer.render();
-      root?.append(footer.getNode());
     }
+    footer.render();
+    root?.append(footer.getNode());
   }
 }
 
