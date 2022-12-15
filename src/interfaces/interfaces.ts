@@ -18,16 +18,20 @@ export interface InputProps extends BaseComponentProps {
   value?: string;
 }
 
-/* export interface ProductCardProps extends BaseComponentProps {
-  title?: string;
-  price?: number;
-  isAvailable: boolean;
-  switchTypes: SwitchProps[];
-} */
-
 export type RoutesObj = Record<string, () => void>;
 
-// JSON Interfaces
+export interface ProductsFilterProps {
+  search: string;
+  inStock: boolean;
+  brand: string;
+  manufacturer: string;
+  size: string;
+  features: string;
+  switchType?: string;
+}
+
+// * к удалению 👇
+/*
 export interface SwitchProps {
   id: string; // BR, B, BL...
   title: string; // Cherry MX RGB Blue, Gateron Cap V2 Crystal Red...
@@ -52,13 +56,10 @@ export interface KeyboardProps {
   features: string[]; // ФЫЧЫ
   images: string[]; // 123456-1, 123456-2, 123456-3
 }
-
-export interface ProductsFilterProps {
-  search: string;
-  inStock: boolean;
-  brand: string;
-  manufacturer: string;
-  size: string;
-  features: string;
-  switchType?: string;
+export interface ProductCardProps extends BaseComponentProps {
+  title?: string;
+  price?: number;
+  isAvailable: boolean;
+  switchTypes: SwitchProps[];
 }
+*/

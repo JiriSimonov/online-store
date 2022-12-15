@@ -1,9 +1,10 @@
-import { SwitchProps, KeyboardProps } from '../../interfaces/interfaces';
 import BaseComponent from '../elements/base-component';
 import ProductImage from './product-img';
 import SwitchComponent from '../switches/switch-component';
 import SwitchModal from '../switches/switch-modal';
 import Button from '../elements/button';
+import { Keyboard } from '../../services/db/Keyboard';
+import { KeyboardSwitch } from '../../services/db/KeyboardSwitch';
 
 export default class ProductCard extends BaseComponent {
   private ProductImage: ProductImage;
@@ -14,7 +15,7 @@ export default class ProductCard extends BaseComponent {
 
   private switchItem: SwitchComponent[];
 
-  private switchArr: SwitchProps[];
+  private switchArr: KeyboardSwitch[];
 
   private priceWrapper: BaseComponent;
 
@@ -28,7 +29,7 @@ export default class ProductCard extends BaseComponent {
 
   private switchModal: SwitchModal | null | undefined;
 
-  constructor(props: KeyboardProps) {
+  constructor(props: Keyboard) {
     super({ tag: 'li', className: 'store__item' });
     this.ProductImage = new ProductImage(props.images);
     this.appendEl(this.ProductImage);
@@ -39,7 +40,7 @@ export default class ProductCard extends BaseComponent {
       parent: this.node,
     });
     this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
-    this.switchArr = props.switches.filter((item) => item.id);
+    this.switchArr = props.switches.filter((item) => item.id !== 'null');
     this.switchItem = this.switchArr.map((item) => new SwitchComponent(item));
     this.switchList.appendEl(this.switchItem);
     this.priceWrapper = new BaseComponent({ className: 'store__card-wrapper', parent: this.node });

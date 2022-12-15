@@ -1,4 +1,3 @@
-import { KeyboardProps } from './interfaces/interfaces';
 import BaseComponent from './components/elements/base-component';
 import Router from './utils/router';
 import Footer from './components/footer';
@@ -7,21 +6,19 @@ import Header from './components/header';
 import './assets/styles/global/style.scss';
 import Home from './components/home-page/home-page';
 import Cart from './components/cart/cart';
-import { getKeyboardsList } from './utils/get-keyboards-data';
 import ProductsListState from './states/goods-state';
-
-const keyboardsList: KeyboardProps[] = getKeyboardsList();
+import { DB } from './services/db/Database'; // ! 👈 убрать после тестов
 
 class App extends BaseComponent {
   private router: Router | null;
 
-  private productsListState:ProductsListState;
+  private productsListState: ProductsListState;
 
   private currentPage: BaseComponent | null;
 
   constructor() {
     super({ tag: 'main', className: 'main' });
-    this.productsListState = new ProductsListState(keyboardsList);
+    this.productsListState = new ProductsListState(DB.keyboards);
     this.router = null;
     this.currentPage = null;
   }

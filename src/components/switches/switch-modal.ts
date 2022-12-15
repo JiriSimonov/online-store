@@ -1,4 +1,4 @@
-import { getSwitchData } from '../../utils/get-switch-data';
+import { DB } from '../../services/db/Database';
 import BaseComponent from '../elements/base-component';
 
 export default class SwitchModal extends BaseComponent {
@@ -20,7 +20,7 @@ export default class SwitchModal extends BaseComponent {
       tag: 'h2',
       className: 'modal__title',
       parent: this.node,
-      text: getSwitchData(id, 'title') as string,
+      text: DB.getSwitchData(id, 'title') as string,
     });
 
     this.modalAvialable = new BaseComponent({
@@ -36,12 +36,12 @@ export default class SwitchModal extends BaseComponent {
     import (`../../assets/images/switches/${id}.webp`).then((url) => {
       this.modalImg.getNode().style.backgroundImage = `url(${url.default})`;
     });
-    this.modalStats = (getSwitchData(id, 'props') as string[]).map((item) => new BaseComponent({ className: 'modal__stats', text: item, parent: this.modalInfo.getNode() }));
+    this.modalStats = (DB.getSwitchData(id, 'props') as string[]).map((item) => new BaseComponent({ className: 'modal__stats', text: item, parent: this.modalInfo.getNode() }));
     this.modalDescription = new BaseComponent({
       tag: 'p',
       className: 'modal__description',
       parent: this.node,
-      text: getSwitchData(id, 'description') as string,
+      text: DB.getSwitchData(id, 'description') as string,
     });
   }
 }
