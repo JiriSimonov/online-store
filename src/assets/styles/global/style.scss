@@ -1,0 +1,32 @@
+// https://codeguide.maxgraph.ru/ --- порядок свойств
+
+@import 'fonts';
+@import 'header';
+@import '../store/home';
+@import '../filtres/filters';
+@import '../store/store';
+@import 'footer';
+@import 'vars';
+
+body {
+  margin: 0;
+}
+
+button {
+  user-select: none;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  background-color: $grey;
+  font-family: 'Nunito', monospace;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 40px;
+  max-width: 1520px;
+}

@@ -1,0 +1,57 @@
+@import '../global/vars';
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.home {
+  flex-grow: 1;
+  padding-top: 100px;
+  background: url('../../images/home-bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  &__wrapper {
+    margin: auto;
+    padding: 100px 40px;
+    border-radius: 13px;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  &__title,
+  &__text {
+    margin: 0 auto 20px auto;
+    max-width: 800px;
+    color: $modal-bg;
+    user-select: none;
+  }
+
+  &__text {
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  &__button {
+    padding: 15px 25px;
+    border-radius: 13px;
+    font-size: 18px;
+    font-weight: 500;
+    color: $modal-bg;
+    background-color: $cy;
+    cursor: pointer;
+    transition: .3s linear;
+    &:hover,
+    &:focus {
+      background-color: rgba(0, 0, 0, 0.7);
+      color: $cy;
+    }
+  }
+}

@@ -1,0 +1,81 @@
+
+@import 'vars';
+
+.header {
+  background-color: $white;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    user-select: none;
+  }
+
+  &__logo {
+    font-size: 36px;
+    font-weight: 500;
+    text-decoration: none;
+    color: $black;
+  }
+
+  &__controls {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__search,
+  &__cart {
+    padding: 15px;
+    border: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: .3s linear;
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+  &__search {
+    background-image: url('../../icons/search.svg');
+  }
+
+  &__cart {
+    position: relative;
+    background-image: url('../../icons/cart.svg');
+  }
+
+  &__input {
+    display: none;
+    visibility: hidden;
+    transition: .3s linear;
+  }
+
+  &__input_is-open {
+    display: initial;
+    visibility: visible;
+  }
+
+  &__count {
+    position: absolute;
+    top: -10px;
+    left: 25px;
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  &__price {
+    position: relative;
+    padding-right: 30px;
+    font-size: 20px;
+    font-weight: 500;
+    &:before {
+      content: '₽';
+      position: absolute;
+      left: 20px;
+    }
+  }
+}
