@@ -33,9 +33,8 @@ export default class SwitchModal extends BaseComponent {
       parent: this.node,
     });
     this.modalImg = new BaseComponent({ className: 'modal__img', parent: this.modalInfo.getNode() });
-    import (`../../assets/images/switches/AJP.webp`).then((url) => {
-      this.modalImg.getNode().style.backgroundImage = `url(${url.default})`;
-    });
+    this.modalImg.getNode().style.backgroundImage = `url('assets/images/switches/${id}.webp')`;
+    
     this.modalStats = (DB.getSwitchData(id, 'props') as string[]).map((item) => new BaseComponent({ className: 'modal__stats', text: item, parent: this.modalInfo.getNode() }));
     this.modalDescription = new BaseComponent({
       tag: 'p',
