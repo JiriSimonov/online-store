@@ -32,7 +32,7 @@ export default class SwitchFilter extends Filter {
       item.getNode().classList.add('active');
       productsState.set({ manufacturer: item.getNode().textContent as string });
     }));
-    this.switchArr = DB.switches.map((item) => new SwitchComponent(item));
+    this.switchArr = DB.switches.filter((item) => item.id !== 'null').map((item) => new SwitchComponent(item));
     this.switchWrapper.appendEl(this.switchArr);
     this.switchArr.map((item) => item.getNode().addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
