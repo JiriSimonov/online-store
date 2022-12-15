@@ -69,9 +69,9 @@ class App extends BaseComponent {
         cart: () => this.renderCart(),
       }, () => this.renderError());
       root.append(this.node);
-      footer.render();
-      root?.append(footer.getNode());
     }
+    footer.render();
+    root?.append(footer.getNode());
   }
 }
 
