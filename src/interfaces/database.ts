@@ -1,3 +1,5 @@
+// по возможности не изменять. лучше используй Partial/Pick и т.п.
+
 export interface KeyboardData {
   id: number;
   title: string;
@@ -17,7 +19,7 @@ export interface KeyboardSwitchData {
   price: number;
   eid?: string;
 }
-// id title quantity manufacturer price
+
 export interface KeyboardProperties {
   'Материал клавиш'?: string[];
   'Конструкция'?: string[];

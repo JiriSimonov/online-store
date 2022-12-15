@@ -12,7 +12,7 @@ import {
 } from './types/SourceKeyboardData';
 import {
   KeyboardData, KeyboardSwitchData, SwitchDescription, SwitchDescriptionList,
-} from './types/KeyboardData';
+} from '../src/interfaces/database';
 import { SwitchShorts } from '../src/interfaces/enums';
 import { download, showSettledResult } from './utils';
 
