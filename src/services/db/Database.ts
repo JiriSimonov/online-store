@@ -2,16 +2,15 @@ import { KeyboardData, SwitchDescription, SwitchDescriptionList } from '../../in
 import { Keyboard } from './Keyboard';
 import { KeyboardSwitch } from './KeyboardSwitch';
 
-/* const switchesJson: SwitchDescriptionList = require('../../data/switches.json');
-const keyboardsJson: KeyboardData[] = require('../../data/keyboards.json');
- */
 import switchesJson = require('../../data/switches.json');
 import keyboardsJson = require('../../data/keyboards.json');
 
-class Database {
-  readonly keyboards: Keyboard[];
+type CartList = [Keyboard, KeyboardSwitch, number][];
+type CartMap = Map<string, number>;
 
-  readonly cart?: [Keyboard, KeyboardSwitch, number][];
+class Database {
+  #CART_KEY = 'kekboards__cart';
+  readonly keyboards: Keyboard[];
 
   constructor(keyboards: KeyboardData[], readonly descriptions: SwitchDescriptionList) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
@@ -52,21 +51,81 @@ class Database {
     return this.descriptions[id][prop];
   }
 
-  get CartPriceSum() {
-    return;
+  get cartPriceSum() {
+    return this.cart.reduce((sum, item) => {
+      const [, keyboardSwitch, quantity] = item;
+      return sum + keyboardSwitch.price * quantity;
+    }, 0);
   }
-  get CartKolichestrvoTovarov() {
-    return;
+  get cartProductsQuantity() {
+    let sum = 0;
+    this.load().forEach((quantity) => (sum += quantity));
+    return sum;
   }
 
-  /* 
-  getKeyboard(id) {
-    return DB.keyboards.find((item) => item.id === id);
+  getKeyboard(id: number, list: Keyboard[] = this.keyboards): Keyboard {
+    const value: Keyboard | undefined = list.find((item) => item.id === id);
+    if (!value) throw new Error(`Keyboard ${id} not found in this list!`);
+    return value;
   }
 
-  getProduct(id: Pick<Keyboard, 'id'>, id: Pick<KeyboardSwitch, 'id'>): [Keyboard, KeyboardSwitch] {
-    return [DB.keyboards[id], DB.keyboards[id]];
-  } */
+  getSwitch(id: string, list: KeyboardSwitch[] = this.switches): KeyboardSwitch {
+    const value: KeyboardSwitch | undefined = list.find((item) => item.id === id);
+    if (!value) throw new Error(`Switch ${id} not found in this list!`);
+    return value;
+  }
+
+  getProduct(keyboardId: number, switchId: string): [Keyboard, KeyboardSwitch] {
+    const keyboard: Keyboard = this.getKeyboard(keyboardId);
+    return [keyboard, keyboard.getSwitch(switchId)];
+  }
+
+  private save(cart: CartMap) {
+    localStorage.setItem(
+      this.#CART_KEY,
+      JSON.stringify(cart, (_, v) => (v instanceof Map ? Array.from(v) : v)),
+    );
+  }
+  private load(): CartMap {
+    const data = localStorage.getItem(this.#CART_KEY);
+    return data ? JSON.parse(data, (k, v) => (k === '' ? new Map(v) : v)) : new Map();
+  }
+
+  private convertCart(cart: CartList): CartMap;
+  private convertCart(cart: CartMap): CartList;
+  private convertCart(cart: CartMap | CartList): CartList | CartMap {
+    if (cart instanceof Map) {
+      return Array.from(cart, (item) => {
+        const [key, quantity] = item;
+        const [keyboardId, switchId] = key.split('-');
+        return [...this.getProduct(+keyboardId, switchId), quantity];
+      });
+    }
+    return new Map(
+      cart.map((tuple) => {
+        const [keyboard, keyboardSwitch, quantity] = tuple;
+        return [`${keyboard.id}-${keyboardSwitch.id}`, quantity];
+      }),
+    );
+  }
+
+  get cart(): [Keyboard, KeyboardSwitch, number][] {
+    return this.convertCart(this.load());
+  }
+
+  addToCart(product: [Keyboard, KeyboardSwitch], quantity: number) {
+    const [keyboard, keyboardSwitch] = product;
+    const cart = this.load();
+    cart.set(`${keyboard.id}-${keyboardSwitch.id}`, quantity);
+    this.save(cart);
+  }
+
+  removeFromCart(product: [Keyboard, KeyboardSwitch]) {
+    const [keyboard, keyboardSwitch] = product;
+    const cart = this.load();
+    cart.delete(`${keyboard.id}-${keyboardSwitch.id}`);
+    this.save(cart);
+  }
 }
 
 export const DB = new Database(
@@ -75,6 +134,7 @@ export const DB = new Database(
 );
 
 console.log(DB);
+console.log('DB.cart', DB);
 
 // ? почему удаление этого ни на что не повлияло?
 /*
