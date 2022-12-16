@@ -2,8 +2,11 @@ import { KeyboardData, SwitchDescription, SwitchDescriptionList } from '../../in
 import { Keyboard } from './Keyboard';
 import { KeyboardSwitch } from './KeyboardSwitch';
 
-const switchesJson: SwitchDescriptionList = require('../../data/switches.json');
+/* const switchesJson: SwitchDescriptionList = require('../../data/switches.json');
 const keyboardsJson: KeyboardData[] = require('../../data/keyboards.json');
+ */
+import switchesJson = require('../../data/switches.json');
+import keyboardsJson = require('../../data/keyboards.json');
 
 class Database {
   readonly keyboards: Keyboard[];
@@ -47,15 +50,16 @@ class Database {
   getSwitchData(id: string, prop: keyof SwitchDescription): string | string[] {
     if (!(id in this.descriptions)) throw new Error('❌Wrong id in getSwitchData');
     return this.descriptions[id][prop];
-
   }
 
-  get CartPriceSum() { 
-    
+  get CartPriceSum() {
+    return;
   }
-  get CartKolichestrvoTovarov(){ }
-  
-/* 
+  get CartKolichestrvoTovarov() {
+    return;
+  }
+
+  /* 
   getKeyboard(id) {
     return DB.keyboards.find((item) => item.id === id);
   }
@@ -65,7 +69,10 @@ class Database {
   } */
 }
 
-export const DB = new Database(keyboardsJson, switchesJson);
+export const DB = new Database(
+  keyboardsJson as KeyboardData[],
+  switchesJson as SwitchDescriptionList,
+);
 
 console.log(DB);
 

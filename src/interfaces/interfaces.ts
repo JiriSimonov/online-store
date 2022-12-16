@@ -12,7 +12,7 @@ export interface AnchorProps extends BaseComponentProps {
 }
 export interface ButtonProps extends BaseComponentProps {
   value?: string;
-  onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => any;
+  onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => never; // todo: типизировать ретурн, когда понадобится
 }
 export interface InputProps extends BaseComponentProps {
   value?: string;
