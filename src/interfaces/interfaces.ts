@@ -27,6 +27,11 @@ export interface FormFieldProps extends InputProps {
   modificator?: string;
 }
 
+export interface DescriptionFieldProps {
+  key: string;
+  value: string;
+}
+
 export type RoutesObj = Record<string, () => void>;
 
 export interface ProductsFilterProps {
