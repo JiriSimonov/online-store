@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 import path = require('path');
 import fsp = require('fs/promises');
 import {

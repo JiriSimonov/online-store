@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { KeyboardData, SwitchDescription, SwitchDescriptionList } from '../../interfaces/database';
 import { Keyboard } from './Keyboard';
 import { KeyboardSwitch } from './KeyboardSwitch';
@@ -8,6 +7,8 @@ const keyboardsJson: KeyboardData[] = require('../../data/keyboards.json');
 
 class Database {
   readonly keyboards: Keyboard[];
+
+  readonly cart?: [Keyboard, KeyboardSwitch, number][];
 
   constructor(keyboards: KeyboardData[], readonly descriptions: SwitchDescriptionList) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
@@ -46,12 +47,27 @@ class Database {
   getSwitchData(id: string, prop: keyof SwitchDescription): string | string[] {
     if (!(id in this.descriptions)) throw new Error('❌Wrong id in getSwitchData');
     return this.descriptions[id][prop];
+
   }
+
+  get CartPriceSum() { 
+    
+  }
+  get CartKolichestrvoTovarov(){ }
+  
+/* 
+  getKeyboard(id) {
+    return DB.keyboards.find((item) => item.id === id);
+  }
+
+  getProduct(id: Pick<Keyboard, 'id'>, id: Pick<KeyboardSwitch, 'id'>): [Keyboard, KeyboardSwitch] {
+    return [DB.keyboards[id], DB.keyboards[id]];
+  } */
 }
 
 export const DB = new Database(keyboardsJson, switchesJson);
 
-/* console.log(DB); */
+console.log(DB);
 
 // ? почему удаление этого ни на что не повлияло?
 /*

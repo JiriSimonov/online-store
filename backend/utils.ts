@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import path = require('path');
 import fs = require('fs');
 import https = require('https');
