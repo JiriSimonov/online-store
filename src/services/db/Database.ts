@@ -12,6 +12,8 @@ class Database {
   #CART_KEY = 'kekboards__cart';
   readonly keyboards: Keyboard[];
 
+  readonly cart?: [Keyboard, KeyboardSwitch, number][];
+
   constructor(keyboards: KeyboardData[], readonly descriptions: SwitchDescriptionList) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
     Object.seal(this.keyboards);
@@ -134,7 +136,7 @@ export const DB = new Database(
 );
 
 console.log(DB);
-console.log('DB.cart', DB);
+// console.log('DB.cart', DB);
 
 // ? почему удаление этого ни на что не повлияло?
 /*
