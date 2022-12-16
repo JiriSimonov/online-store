@@ -5,15 +5,18 @@ export interface BaseComponentProps {
   text?: string;
   parent?: HTMLElement;
 }
+
 export interface AnchorProps extends BaseComponentProps {
   href?: string;
   target?: string;
   label?: string;
 }
+
 export interface ButtonProps extends BaseComponentProps {
   value?: string;
   onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => void; // todo: типизировать ретурн, когда понадобится
 }
+
 export interface InputProps extends BaseComponentProps {
   value?: string;
   type?: string;

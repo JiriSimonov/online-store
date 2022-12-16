@@ -1,3 +1,5 @@
+import { Keyboard } from './../../services/db/Keyboard';
+import { DB } from './../../services/db/Database';
 import BaseComponent from '../elements/base-component';
 import Button from '../elements/button';
 import CartItem from './cart-item';
@@ -53,9 +55,9 @@ export default class Cart extends BaseComponent {
     };
     this.cartPriceWrapper = new BaseComponent({ className: 'cart-price' });
     this.cartPriceText = new BaseComponent({ tag: 'span', className: 'cart-price__text', text: 'Итог' });
-    this.cartPriceTotal = new BaseComponent({ tag: 'span', className: 'cart-price__total', text: '1000' });
+    this.cartPriceTotal = new BaseComponent({ tag: 'span', className: 'cart-price__total', text: `${DB.cartPriceSum}` });
     this.cartList = new CartList();
-    this.cartItems = [new CartItem(), new CartItem()];
+    this.cartItems = [...DB.cart.map((item) => new CartItem(...item))];
     this.orderBtn.getNode().onclick = () => {
       this.orderForm = new OrderForm();
       this.wrapper.appendEl(this.orderForm);

@@ -5,6 +5,7 @@ import SwitchModal from '../switches/switch-modal';
 import Button from '../elements/button';
 import { Keyboard } from '../../services/db/Keyboard';
 import { KeyboardSwitch } from '../../services/db/KeyboardSwitch';
+import { DB } from '../../services/db/Database';
 
 export default class ProductCard extends BaseComponent {
   private ProductImage: ProductImage;
@@ -65,7 +66,10 @@ export default class ProductCard extends BaseComponent {
         }, 1000);
       } // TODO refactor
     };
-    if (props.isAvailable) this.cardBtn = new Button({ className: 'store__card-btn', parent: this.priceWrapper.getNode(), text: 'Добавить в корзину' });
+    if (props.isAvailable) this.cardBtn = new Button({ className: 'store__card-btn', parent: this.priceWrapper.getNode(), text: 'Добавить в корзину', onclick: () => {
+      DB.addToCart([props, props.switches.find((item) => item.isAvailable) ?? props.switches[0]], 1);
+    }
+  });
     this.isAvialable = new BaseComponent({
       className: `${props.isAvailable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
       text: `${props.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
