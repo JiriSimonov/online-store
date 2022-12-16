@@ -1,7 +1,3 @@
-export interface SourceKeyboardList {
-  [key: string]: SourceKeyboard;
-}
-
 export interface SourceKeyboard {
   id: number;
   title: string;
