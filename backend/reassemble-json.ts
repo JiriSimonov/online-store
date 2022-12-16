@@ -1,26 +1,26 @@
-/* eslint-disable import/prefer-default-export */
-
 import path = require('path');
 import fsp = require('fs/promises');
 import {
   SourceImagesList,
   SourceKeyboard,
-  SourceKeyboardList,
   SourceKeyboardVariant,
   SourceSwitch,
   SourceSwitchList,
 } from './types/SourceKeyboardData';
 import {
-  KeyboardData, KeyboardSwitchData, SwitchDescription, SwitchDescriptionList,
+  KeyboardData,
+  KeyboardSwitchData,
+  SwitchDescription,
+  SwitchDescriptionList,
 } from '../src/interfaces/database';
 import { SwitchShorts } from '../src/interfaces/enums';
 import { download, showSettledResult } from './utils';
 
 type Pair<T> = [T, T];
 
-const PRODUCTS: SourceKeyboardList = require('./src/source.json');
-const KEYBOARD_IMAGES: SourceImagesList = require('./src/keyboard-images.json');
-const SWITCHES: SourceSwitchList = require('./src/switches.json');
+import PRODUCTS = require('./src/source.json');
+import KEYBOARD_IMAGES = require('./src/keyboard-images.json');
+import SWITCHES = require('./src/switches.json');
 
 class SourceBuilder {
   private keyboardsJsonPath = path.resolve(__dirname, 'out', 'keyboards.json');
@@ -146,7 +146,11 @@ class SourceBuilder {
   }
 }
 
-export const sourceBuilder = new SourceBuilder(Object.values(PRODUCTS), KEYBOARD_IMAGES, SWITCHES);
+export const sourceBuilder = new SourceBuilder(
+  Object.values(PRODUCTS) as SourceKeyboard[],
+  KEYBOARD_IMAGES as SourceImagesList,
+  SWITCHES,
+);
 
 // TODO: остальное
 // ? node --watch backend | npx tsc -w backend/index.ts

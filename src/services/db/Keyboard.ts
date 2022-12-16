@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/lines-between-class-members */
-/* eslint-disable import/prefer-default-export */
 import { KeyboardData, KeyboardProperties } from '../../interfaces/database';
 import { KeyboardSwitch } from './KeyboardSwitch';
 
@@ -35,5 +33,11 @@ export class Keyboard {
 
   get brands() {
     return this.manufacturer;
+  }
+
+  getSwitch(id: string): KeyboardSwitch {
+    const value: KeyboardSwitch | undefined = this.switches.find((item) => item.id === id);
+    if (!value) throw new Error(`Switch ${id} not found in ${this.title}'s switches!`);
+    return value;
   }
 }
