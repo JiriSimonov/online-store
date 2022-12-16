@@ -15,5 +15,5 @@
   "plugins": ["@typescript-eslint"],
   "root": true,
   "rules": { "@typescript-eslint/no-explicit-any": "error" },
-  "ignorePatterns": ["*.config.*"]
+  "ignorePatterns": ["*.js"]
 }

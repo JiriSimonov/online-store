@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/lines-between-class-members */
-/* eslint-disable import/prefer-default-export */
 import { KeyboardData, KeyboardProperties } from '../../interfaces/database';
 import { KeyboardSwitch } from './KeyboardSwitch';
 

@@ -1,13 +1,17 @@
-/* eslint-disable import/prefer-default-export */
 import { KeyboardData, SwitchDescription, SwitchDescriptionList } from '../../interfaces/database';
 import { Keyboard } from './Keyboard';
 import { KeyboardSwitch } from './KeyboardSwitch';
 
-const switchesJson: SwitchDescriptionList = require('../../data/switches.json');
+/* const switchesJson: SwitchDescriptionList = require('../../data/switches.json');
 const keyboardsJson: KeyboardData[] = require('../../data/keyboards.json');
+ */
+import switchesJson = require('../../data/switches.json');
+import keyboardsJson = require('../../data/keyboards.json');
 
 class Database {
   readonly keyboards: Keyboard[];
+
+  readonly cart?: [Keyboard, KeyboardSwitch, number][];
 
   constructor(keyboards: KeyboardData[], readonly descriptions: SwitchDescriptionList) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
@@ -47,9 +51,28 @@ class Database {
     if (!(id in this.descriptions)) throw new Error('❌Wrong id in getSwitchData');
     return this.descriptions[id][prop];
   }
+
+  get CartPriceSum() {
+    return;
+  }
+  get CartKolichestrvoTovarov() {
+    return;
+  }
+
+  /* 
+  getKeyboard(id) {
+    return DB.keyboards.find((item) => item.id === id);
+  }
+
+  getProduct(id: Pick<Keyboard, 'id'>, id: Pick<KeyboardSwitch, 'id'>): [Keyboard, KeyboardSwitch] {
+    return [DB.keyboards[id], DB.keyboards[id]];
+  } */
 }
 
-export const DB = new Database(keyboardsJson, switchesJson);
+export const DB = new Database(
+  keyboardsJson as KeyboardData[],
+  switchesJson as SwitchDescriptionList,
+);
 
 console.log(DB);
 
