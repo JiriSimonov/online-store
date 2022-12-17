@@ -1,5 +1,5 @@
 import { CartItem } from '../../interfaces/cart';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/db/db';
 import { BaseComponent } from '../elements/base-component';
 import { Button } from '../elements/button';
 import { CartItemElem } from './cart-item';

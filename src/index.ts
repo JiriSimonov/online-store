@@ -8,7 +8,7 @@ import { Footer } from './components/footer';
 import { Home } from './components/home-page/home-page';
 import { Cart } from './components/cart/cart';
 import { ProductsListState } from './states/goods-state';
-import { DB } from './services/db/database';
+import { DB } from './services/db/db';
 import { Error } from './utils/error';
 import './assets/styles/global/style.scss';
 
