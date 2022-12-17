@@ -70,10 +70,12 @@ export class Cart extends BaseComponent {
       text: `${DB.cartPriceSum}`,
     });
     this.cartList = new CartList();
-    this.cartItems = [...DB.cart.map((item) => {
-      const name: CartItem = { keyboard: item[0], keyboardSwitch: item[1], quantity: item[2] }; // TODO убрать костыль!
-      return new CartItemElem(name, this.cartPriceTotal);
-    })];
+    this.cartItems = [
+      ...DB.cart.map((item) => {
+        const name: CartItem = { keyboard: item[0], keyboardSwitch: item[1], quantity: item[2] }; // TODO убрать костыль!
+        return new CartItemElem(name, this.cartPriceTotal);
+      }),
+    ];
     this.orderBtn.getNode().onclick = () => {
       this.orderForm = new OrderForm();
       this.wrapper.appendEl(this.orderForm);
