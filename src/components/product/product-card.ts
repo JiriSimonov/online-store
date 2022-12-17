@@ -22,7 +22,7 @@ export class ProductCard extends BaseComponent {
 
   private cardCopy: Button;
 
-  private cardBtn: BaseComponent | undefined;
+  private cardBtn: BaseComponent;
 
   private cardPrice: BaseComponent;
 
@@ -69,18 +69,26 @@ export class ProductCard extends BaseComponent {
         }, 1000);
       } // TODO refactor
     };
-    if (props.isAvailable)
-      this.cardBtn = new Button({
-        className: 'store__card-btn',
-        parent: this.priceWrapper.getNode(),
-        text: 'Добавить в корзину',
-        onclick: () => {
-          DB.addToCart(
-            [props, props.switches.find((item) => item.isAvailable) ?? props.switches[0]],
-            1,
-          );
-        },
-      });
+    // TODO посмотреть вариант без создания кнопки!!!
+    this.cardBtn = new Button({ 
+      className: 'store__card-btn',
+      text: 'Добавить в корзину',
+      onclick: () => {
+        DB.addToCart(
+          [props, props.switches.find((item) => item.isAvailable) ?? props.switches[0]],
+          1,
+        );
+        this.cardBtn.getNode().textContent = 'Уже в корзине';
+        this.cardBtn.getNode().setAttribute('disabled', 'true');
+      },
+    })
+    if (props.isAvailable) {
+      if (DB.cart.some((item) => item[0] === props)) {
+        this.cardBtn.getNode().textContent = 'Уже в корзине';
+        this.cardBtn.getNode().setAttribute('disabled', 'true');
+      }
+      this.priceWrapper.appendEl(this.cardBtn);
+    }
     this.isAvialable = new BaseComponent({
       className: `${
         props.isAvailable
@@ -104,8 +112,8 @@ export class ProductCard extends BaseComponent {
         });
       }
     });
-    this.node.onclick = () => {
-      window.location.hash = `${props.id}`;
+    this.node.onclick = (e) => {
+      if (e.target !== this.cardBtn?.getNode()) window.location.hash = `${props.id}`;
     }
   }
 }

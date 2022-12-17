@@ -1,13 +1,14 @@
 // https://codeguide.maxgraph.ru/ --- порядок свойств
 
 @import 'fonts';
+@import 'vars';
 @import 'header';
 @import '../store/home';
 @import '../filtres/filters';
 @import '../store/store';
 @import '../cart/cart';
+@import '../product/product';
 @import 'footer';
-@import 'vars';
 
 body {
   margin: 0;
