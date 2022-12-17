@@ -112,6 +112,7 @@ export class CartItemElem extends BaseComponent {
       parent: this.stockWrapper.getNode(),
       onclick: () => {
         DB.removeFromCart([keyboard, keyboardSwitch]);
+        totalPrice.getNode().textContent = `${DB.cartPriceSum}`;
         this.destroy();
       },
     });

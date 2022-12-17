@@ -22,7 +22,7 @@ export class ProductCard extends BaseComponent {
 
   private cardCopy: Button;
 
-  private cardBtn: BaseComponent | undefined;
+  private cardBtn: BaseComponent;
 
   private cardPrice: BaseComponent;
 
@@ -30,21 +30,24 @@ export class ProductCard extends BaseComponent {
 
   private switchModal: SwitchModal | null | undefined;
 
+  private storeDescr: BaseComponent;
+
   constructor(props: Keyboard) {
     super({ tag: 'li', className: 'store__item' });
     this.ProductImage = new ProductImage(props.images);
     this.appendEl(this.ProductImage);
+    this.storeDescr = new BaseComponent({ className: 'store__description', parent: this.node });
     this.cardTitle = new BaseComponent({
       tag: 'h3',
       className: 'store__card-title',
       text: props.title,
-      parent: this.node,
+      parent: this.storeDescr.getNode(),
     });
-    this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
+    this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.storeDescr.getNode() });
     this.switchArr = props.switches.filter((item) => item.id !== 'null');
     this.switchItem = this.switchArr.map((item) => new SwitchComponent(item));
     this.switchList.appendEl(this.switchItem);
-    this.priceWrapper = new BaseComponent({ className: 'store__card-wrapper', parent: this.node });
+    this.priceWrapper = new BaseComponent({ className: 'store__card-wrapper', parent: this.storeDescr.getNode() });
     this.cardPrice = new BaseComponent({
       className: 'store__card-price',
       text: `от ${props.minPrice} ₽`,
@@ -66,18 +69,26 @@ export class ProductCard extends BaseComponent {
         }, 1000);
       } // TODO refactor
     };
-    if (props.isAvailable)
-      this.cardBtn = new Button({
-        className: 'store__card-btn',
-        parent: this.priceWrapper.getNode(),
-        text: 'Добавить в корзину',
-        onclick: () => {
-          DB.addToCart(
-            [props, props.switches.find((item) => item.isAvailable) ?? props.switches[0]],
-            1,
-          );
-        },
-      });
+    // TODO посмотреть вариант без создания кнопки!!!
+    this.cardBtn = new Button({ 
+      className: 'store__card-btn',
+      text: 'Добавить в корзину',
+      onclick: () => {
+        DB.addToCart(
+          [props, props.switches.find((item) => item.isAvailable) ?? props.switches[0]],
+          1,
+        );
+        this.cardBtn.getNode().textContent = 'Уже в корзине';
+        this.cardBtn.getNode().setAttribute('disabled', 'true');
+      },
+    })
+    if (props.isAvailable) {
+      if (DB.cart.some((item) => item[0] === props)) {
+        this.cardBtn.getNode().textContent = 'Уже в корзине';
+        this.cardBtn.getNode().setAttribute('disabled', 'true');
+      }
+      this.priceWrapper.appendEl(this.cardBtn);
+    }
     this.isAvialable = new BaseComponent({
       className: `${
         props.isAvailable
@@ -101,5 +112,8 @@ export class ProductCard extends BaseComponent {
         });
       }
     });
+    this.node.onclick = (e) => {
+      if (e.target !== this.cardBtn?.getNode()) window.location.hash = `${props.id}`;
+    }
   }
 }
