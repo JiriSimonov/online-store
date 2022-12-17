@@ -6,6 +6,7 @@ import { CartItemElem } from './cart-item';
 import { CartList } from './cart-list';
 import { PromoForm } from './cart-promo';
 import { OrderForm } from './order-form';
+import { ChangeView } from '../elements/change-view';
 
 export class Cart extends BaseComponent {
   private container: BaseComponent;
@@ -34,10 +35,14 @@ export class Cart extends BaseComponent {
 
   private orderForm: OrderForm | undefined;
 
+  private changeView: ChangeView;
+
   constructor() {
     super({ tag: 'section', className: 'cart' });
     this.container = new BaseComponent({ className: 'container' });
     this.wrapper = new BaseComponent({ className: 'cart__wrapper' });
+    this.changeView = new ChangeView();
+    this.wrapper.appendEl(this.changeView);
     this.cartButton = new Button({
       className: 'cart__btn',
       onclick: () => {
@@ -65,12 +70,10 @@ export class Cart extends BaseComponent {
       text: `${DB.cartPriceSum}`,
     });
     this.cartList = new CartList();
-    this.cartItems = [
-      ...DB.cart.map((item) => {
-        const name: CartItem = { keyboard: item[0], keyboardSwitch: item[1], quantity: item[2] };
-        return new CartItemElem(name, this.cartPriceTotal);
-      }),
-    ];
+    this.cartItems = [...DB.cart.map((item) => {
+      const name: CartItem = { keyboard: item[0], keyboardSwitch: item[1], quantity: item[2] }; // TODO убрать костыль!
+      return new CartItemElem(name, this.cartPriceTotal);
+    })];
     this.orderBtn.getNode().onclick = () => {
       this.orderForm = new OrderForm();
       this.wrapper.appendEl(this.orderForm);
