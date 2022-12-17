@@ -1,7 +1,7 @@
 import { KeyboardSwitch } from '../../services/db/KeyboardSwitch';
-import BaseComponent from '../elements/base-component';
+import { BaseComponent } from '../elements/base-component';
 
-export default class SwitchComponent extends BaseComponent {
+export class SwitchComponent extends BaseComponent {
   constructor(props: KeyboardSwitch) {
     super({ tag: 'li', className: 'switch__item' });
     const { id, isAvailable } = props;

@@ -1,13 +1,13 @@
-import BaseComponent from './elements/base-component';
-import Button from './elements/button';
-import Filters from './filters/filtres';
-import ProductCard from './product/product-card';
-import StoreContent from './store-content';
-import ProductsListState from '../states/goods-state';
+import { BaseComponent } from './elements/base-component';
+import { Button } from './elements/button';
+import { Filters } from './filters/filtres';
+import { ProductCard } from './product/product-card';
+import { StoreContent } from './store-content';
+import { ProductsListState } from '../states/goods-state';
 import { Keyboard } from '../services/db/Keyboard';
 import { DB } from '../services/db/Database';
 
-export default class Store extends BaseComponent {
+export class Store extends BaseComponent {
   private title: BaseComponent;
 
   private container: BaseComponent;

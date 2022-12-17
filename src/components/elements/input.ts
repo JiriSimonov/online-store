@@ -1,15 +1,10 @@
-import BaseComponent from './base-component';
+import { BaseComponent } from './base-component';
 import { InputProps } from '../../interfaces/interfaces';
 
-export default class Input extends BaseComponent {
+export class Input extends BaseComponent {
   constructor(props: InputProps) {
     super(Object.assign(props, { tag: 'input' }));
-    const {
-      value,
-      type,
-      placeholder,
-      pattern,
-    } = props;
+    const { value, type, placeholder, pattern } = props;
 
     const node = this.node as HTMLInputElement;
 

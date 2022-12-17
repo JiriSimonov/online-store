@@ -1,11 +1,11 @@
 import { DB } from './../services/db/Database';
-import Anchor from './elements/anchor';
-import BaseComponent from './elements/base-component';
-import Button from './elements/button';
-import Input from './elements/input';
-import ProductsListState from '../states/goods-state';
+import { Anchor } from './elements/anchor';
+import { BaseComponent } from './elements/base-component';
+import { Button } from './elements/button';
+import { Input } from './elements/input';
+import { ProductsListState } from '../states/goods-state';
 
-export default class Header extends BaseComponent {
+export class Header extends BaseComponent {
   private container: BaseComponent;
 
   private logo: BaseComponent;
@@ -37,8 +37,16 @@ export default class Header extends BaseComponent {
         window.location.hash = '#cart';
       },
     });
-    this.cartCount = new BaseComponent({ tag: 'span', className: 'header__count', text: `${DB.cartProductsQuantity}` });
-    this.cartPrice = new BaseComponent({ tag: 'span', className: 'header__price', text: `${DB.cartPriceSum}₽` });
+    this.cartCount = new BaseComponent({
+      tag: 'span',
+      className: 'header__count',
+      text: `${DB.cartProductsQuantity}`,
+    });
+    this.cartPrice = new BaseComponent({
+      tag: 'span',
+      className: 'header__price',
+      text: `${DB.cartPriceSum}₽`,
+    });
     this.searchInput = new Input({ className: 'header__input' });
     this.search.getNode().addEventListener('click', () => {
       this.searchInput.getNode().classList.toggle('header__input_is-open');

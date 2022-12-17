@@ -1,14 +1,14 @@
-import BaseComponent from '../elements/base-component';
-import Filter from './filter';
-import AvFilter from './av-filter';
-import SwitchFilter from './switch-filter';
-import BrandFilter from './brand-filter';
-import SizeFilter from './size-filter';
-import FeaturesFilter from './features-filter';
-import Button from '../elements/button';
-import ProductsListState from '../../states/goods-state';
+import { BaseComponent } from '../elements/base-component';
+import { Filter } from './filter';
+import { AvFilter } from './av-filter';
+import { SwitchFilter } from './switch-filter';
+import { BrandFilter } from './brand-filter';
+import { SizeFilter } from './size-filter';
+import { FeaturesFilter } from './features-filter';
+import { Button } from '../elements/button';
+import { ProductsListState } from '../../states/goods-state';
 
-export default class Filters extends BaseComponent {
+export class Filters extends BaseComponent {
   switchFilter: SwitchFilter;
 
   manufacturerFiler: Filter;

@@ -1,7 +1,7 @@
 import { DB } from '../../services/db/Database';
-import BaseComponent from '../elements/base-component';
+import { BaseComponent } from '../elements/base-component';
 
-export default class SwitchModal extends BaseComponent {
+export class SwitchModal extends BaseComponent {
   private modalTitle: BaseComponent;
 
   private modalAvialable: BaseComponent;
@@ -24,7 +24,9 @@ export default class SwitchModal extends BaseComponent {
     });
 
     this.modalAvialable = new BaseComponent({
-      className: `${isAvialable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
+      className: `${
+        isAvialable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'
+      }`,
       text: `${isAvialable ? 'В наличии' : 'Нет в наличии'}`,
       parent: this.node,
     });
@@ -32,10 +34,20 @@ export default class SwitchModal extends BaseComponent {
       className: 'modal__info',
       parent: this.node,
     });
-    this.modalImg = new BaseComponent({ className: 'modal__img', parent: this.modalInfo.getNode() });
+    this.modalImg = new BaseComponent({
+      className: 'modal__img',
+      parent: this.modalInfo.getNode(),
+    });
     this.modalImg.getNode().style.backgroundImage = `url('assets/images/switches/${id}.webp')`;
-    
-    this.modalStats = (DB.getSwitchData(id, 'props') as string[]).map((item) => new BaseComponent({ className: 'modal__stats', text: item, parent: this.modalInfo.getNode() }));
+
+    this.modalStats = (DB.getSwitchData(id, 'props') as string[]).map(
+      (item) =>
+        new BaseComponent({
+          className: 'modal__stats',
+          text: item,
+          parent: this.modalInfo.getNode(),
+        }),
+    );
     this.modalDescription = new BaseComponent({
       tag: 'p',
       className: 'modal__description',

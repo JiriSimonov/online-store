@@ -1,8 +1,8 @@
-import BaseComponent from '../elements/base-component';
-import Button from '../elements/button';
-import Input from '../elements/input';
+import { BaseComponent } from '../elements/base-component';
+import { Button } from '../elements/button';
+import { Input } from '../elements/input';
 
-export default class PromoForm extends BaseComponent {
+export class PromoForm extends BaseComponent {
   private promoLabel: BaseComponent;
 
   private promoInput: Input;

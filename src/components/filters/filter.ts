@@ -1,6 +1,6 @@
-import BaseComponent from '../elements/base-component';
+import { BaseComponent } from '../elements/base-component';
 
-export default class Filter extends BaseComponent {
+export class Filter extends BaseComponent {
   private filterTitle: BaseComponent;
 
   protected container: BaseComponent;
