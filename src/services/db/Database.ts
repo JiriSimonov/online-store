@@ -11,6 +11,10 @@ type CartMap = Map<string, number>;
 class Database {
   #CART_KEY = 'kekboards__cart';
   readonly keyboards: Keyboard[];
+  readonly promoList = new Map([
+    ['HESOYAM', 0.33],
+    ['IDKFA', 0.66],
+  ]);
 
   constructor(keyboards: KeyboardData[], readonly descriptions: SwitchDescriptionList) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
