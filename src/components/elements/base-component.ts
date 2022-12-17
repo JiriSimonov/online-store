@@ -1,7 +1,7 @@
 import { BaseComponentProps } from '../../interfaces/interfaces';
 
-export class BaseComponent {
-  protected node: HTMLElement;
+export class BaseComponent<T extends HTMLElement = HTMLElement> {
+  protected node: T;
 
   constructor(props: BaseComponentProps) {
     const node = document.createElement(props.tag ?? 'div');
@@ -12,11 +12,11 @@ export class BaseComponent {
       else node.textContent = text;
     }
     if (parent) parent.append(node);
-    this.node = node;
+    this.node = node as T;
   }
 
-  getNode<T extends HTMLElement = HTMLElement>(): T {
-    return this.node as T;
+  getNode() {
+    return this.node;
   }
 
   appendEl(children: HTMLElement | BaseComponent | BaseComponent[]) {

@@ -18,4 +18,8 @@ export class FormField extends BaseComponent {
       },
     );
   }
+
+  getInputNode() {
+    return this.fieldInput.getNode();
+  }
 }
