@@ -82,6 +82,11 @@
         &:hover {
           color: $white;
         }
+
+        &:disabled {
+          opacity: .5;
+          pointer-events: none;
+        }
       }
 
       &__dec {
@@ -101,6 +106,17 @@
       &__count {
         user-select: none;
       }
+    }
+  }
+
+  &__delete {
+    border: none;
+    cursor: pointer;
+    transition: .3s linear;
+
+    &:hover,
+    &:focus {
+      background-color: $black;
     }
   }
 
@@ -165,9 +181,8 @@
   }
 
   &__stock {
-    padding: 5px;
+    padding: 7px;
     border-radius: 5px;
-    max-width: 110px;
     font-size: 16px;
     font-weight: 400;
     color: $white;

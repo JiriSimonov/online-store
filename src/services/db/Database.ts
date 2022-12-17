@@ -12,8 +12,6 @@ class Database {
   #CART_KEY = 'kekboards__cart';
   readonly keyboards: Keyboard[];
 
-  readonly cart?: [Keyboard, KeyboardSwitch, number][];
-
   constructor(keyboards: KeyboardData[], readonly descriptions: SwitchDescriptionList) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
     Object.seal(this.keyboards);
