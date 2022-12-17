@@ -2,7 +2,7 @@ import { CartItem } from '../../interfaces/cart';
 import { BaseComponent } from '../elements/base-component';
 import { ProductImage } from '../product/product-img';
 import { Button } from '../elements/button';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/db/db';
 
 export class CartItemElem extends BaseComponent {
   private images: ProductImage;
@@ -42,7 +42,7 @@ export class CartItemElem extends BaseComponent {
         keyboardSwitch.quantity - this.currentNum
       }`;
       this.count.getNode().textContent = `${this.currentNum}`;
-      this.price.getNode().textContent = `${this.currentNum * keyboardSwitch.price}  ₽`;
+      this.price.getNode().textContent = `${this.currentNum * keyboardSwitch.price} ₽`;
       this.cartInc.getNode();
       totalPrice.getNode().textContent = `${DB.cartPriceSum}`;
       (this.cartDec.getNode() as HTMLButtonElement).disabled = this.currentNum < 1;

@@ -1,4 +1,4 @@
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/db/db';
 import { BaseComponent } from '../elements/base-component';
 
 export class SwitchModal extends BaseComponent {

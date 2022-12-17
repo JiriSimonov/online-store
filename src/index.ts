@@ -1,4 +1,4 @@
-import { Keyboard } from './services/db/Keyboard';
+import { Keyboard } from './services/db/keyboard';
 import { ProductPage } from './components/product-page/product-page';
 import { BaseComponent } from './components/elements/base-component';
 import { Router } from './utils/router';
@@ -8,7 +8,7 @@ import { Footer } from './components/footer';
 import { Home } from './components/home-page/home-page';
 import { Cart } from './components/cart/cart';
 import { ProductsListState } from './states/goods-state';
-import { DB } from './services/db/Database';
+import { DB } from './services/db/db';
 import { Error } from './utils/error';
 import './assets/styles/global/style.scss';
 
@@ -58,7 +58,8 @@ class App extends BaseComponent {
     console.log('in error');
   }
 
-  renderProductPage(keyboard: Keyboard) { // TODO ЭТО ОН!!!
+  renderProductPage(keyboard: Keyboard) {
+    // TODO ЭТО ОН!!!
     this.currentPage?.destroy();
     this.currentPage = new ProductPage(keyboard);
     this.appendEl(this.currentPage);
@@ -71,16 +72,22 @@ class App extends BaseComponent {
     header.render();
     root?.append(header.getNode());
     if (root) {
-      this.router = new Router({
-        '': () => this.renderHome(),
-        home: () => this.renderHome(),
-        store: () => this.renderStore(),
-        cart: () => this.renderCart(),
-        ...DB.keyboards.reduce((p, c) => Object.assign(p, {
-          [c.id]: () => this.renderProductPage(c)
-        }),
-          {} as { [key: string]: (id: string) => void })
-      }, () => this.renderError());
+      this.router = new Router(
+        {
+          '': () => this.renderHome(),
+          'home': () => this.renderHome(),
+          'store': () => this.renderStore(),
+          'cart': () => this.renderCart(),
+          ...DB.keyboards.reduce(
+            (p, c) =>
+              Object.assign(p, {
+                [c.id]: () => this.renderProductPage(c),
+              }),
+            {} as { [key: string]: (id: string) => void },
+          ),
+        },
+        () => this.renderError(),
+      );
       root.append(this.node);
     }
     footer.render();

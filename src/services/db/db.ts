@@ -1,5 +1,5 @@
 import { KeyboardData, SwitchDescription, SwitchDescriptionList } from '../../interfaces/database';
-import { Keyboard } from './Keyboard';
+import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
 import switchesJson = require('../../data/switches.json');
 import keyboardsJson = require('../../data/keyboards.json');
