@@ -1,6 +1,6 @@
 import { FormFieldProps } from '../../interfaces/interfaces';
-import BaseComponent from './base-component';
-import Input from './input';
+import { BaseComponent } from './base-component';
+import { Input } from './input';
 
 export class FormField extends BaseComponent {
   private fieldInput: Input;

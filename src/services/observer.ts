@@ -1,4 +1,4 @@
-export default class Observable<ListenerType> {
+export class Observable<ListenerType> {
   private listeners: ((params: ListenerType) => void)[];
 
   constructor() {

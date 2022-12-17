@@ -1,8 +1,8 @@
-import BaseComponent from '../elements/base-component';
-import Button from '../elements/button';
+import { BaseComponent } from '../elements/base-component';
+import { Button } from '../elements/button';
 import { FormField } from '../elements/form-field';
 
-export default class OrderForm extends BaseComponent {
+export class OrderForm extends BaseComponent {
   private modalOverlay: BaseComponent;
 
   private modalContent: BaseComponent;
@@ -34,16 +34,18 @@ export default class OrderForm extends BaseComponent {
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
     this.modalContent = new BaseComponent({ className: 'modal__content' });
     this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
-    this.nameField = new FormField({ className: 'modal', text: 'Имя Фамилия', placeholder: 'Вася Пупкин' });
-    this.phoneField = new FormField(
-      {
-        className: 'modal',
-        text: 'Телефон',
-        type: 'tel',
-        placeholder: '+798238622',
-        pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
-      },
-    );
+    this.nameField = new FormField({
+      className: 'modal',
+      text: 'Имя Фамилия',
+      placeholder: 'Вася Пупкин',
+    });
+    this.phoneField = new FormField({
+      className: 'modal',
+      text: 'Телефон',
+      type: 'tel',
+      placeholder: '+798238622',
+      pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+    });
     this.addressField = new FormField({
       className: 'modal',
       text: 'Адрес доставки',
@@ -93,12 +95,7 @@ export default class OrderForm extends BaseComponent {
     this.appendEl(this.modalOverlay);
     this.modalOverlay.appendEl(this.modalContent);
     this.modalContent.appendEl(this.modalForm);
-    this.card.appendEl([
-      this.cardNumber,
-      this.cardMonth,
-      this.cardYear,
-      this.cardCVV,
-    ]);
+    this.card.appendEl([this.cardNumber, this.cardMonth, this.cardYear, this.cardCVV]);
     this.modalForm.appendEl([
       this.nameField,
       this.phoneField,

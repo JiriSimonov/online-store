@@ -1,5 +1,5 @@
 import { DescriptionFieldProps } from './../../interfaces/interfaces';
-import BaseComponent from './base-component';
+import { BaseComponent } from './base-component';
 
 export class DescriptionField extends BaseComponent {
   private key: BaseComponent;

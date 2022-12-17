@@ -1,8 +1,8 @@
 import { ProductsFilterProps } from '../interfaces/interfaces';
 import { Keyboard } from '../services/db/Keyboard';
-import Observable from '../services/observer';
+import { Observable } from '../services/observer';
 
-export default class ProductsListState extends Observable<Keyboard[]> {
+export class ProductsListState extends Observable<Keyboard[]> {
   private goodsItems;
 
   private goodsItemsFiltred;
@@ -24,13 +24,15 @@ export default class ProductsListState extends Observable<Keyboard[]> {
 
   set(newVal: Partial<ProductsFilterProps>) {
     this.goodsProps = { ...this.goodsProps, ...newVal };
-    this.goodsItemsFiltred = this.goodsItems
-      .filter((item) => item.title.includes(this.goodsProps.search ? this.goodsProps.search : '')
-    && (this.goodsProps.inStock ? item.isAvailable : item)
-    && (item.title.includes(this.goodsProps.brand ? this.goodsProps.brand : ''))
-    && (item.brands.join(',').includes(this.goodsProps.brand ? this.goodsProps.brand : ''))
-    && (item.size.includes(this.goodsProps.size ? this.goodsProps.size : ''))
-    && (item.features.join(',').includes(this.goodsProps.features ? this.goodsProps.features : '')));
+    this.goodsItemsFiltred = this.goodsItems.filter(
+      (item) =>
+        item.title.includes(this.goodsProps.search ? this.goodsProps.search : '') &&
+        (this.goodsProps.inStock ? item.isAvailable : item) &&
+        item.title.includes(this.goodsProps.brand ? this.goodsProps.brand : '') &&
+        item.brands.join(',').includes(this.goodsProps.brand ? this.goodsProps.brand : '') &&
+        item.size.includes(this.goodsProps.size ? this.goodsProps.size : '') &&
+        item.features.join(',').includes(this.goodsProps.features ? this.goodsProps.features : ''),
+    );
     this.emit(this.goodsItemsFiltred);
   } // TODO пока хз как со свичами, не идет
 

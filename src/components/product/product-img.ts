@@ -1,6 +1,6 @@
-import BaseComponent from '../elements/base-component';
+import { BaseComponent } from '../elements/base-component';
 
-export default class ProductImage extends BaseComponent {
+export class ProductImage extends BaseComponent {
   private images: BaseComponent[] | undefined;
 
   constructor(imageList: string[]) {
