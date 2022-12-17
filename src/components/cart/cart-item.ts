@@ -1,7 +1,6 @@
 import { CartItem } from './../../interfaces/database';
 import BaseComponent from '../elements/base-component';
 import ProductImage from '../product/product-img';
-import CartCountBtn from './cart-count-btn';
 import Button from '../elements/button';
 import { DB } from '../../services/db/Database';
 

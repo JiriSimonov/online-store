@@ -1,5 +1,4 @@
 import { CartItem } from './../../interfaces/database';
-import { Keyboard } from './../../services/db/Keyboard';
 import { DB } from './../../services/db/Database';
 import BaseComponent from '../elements/base-component';
 import Button from '../elements/button';
