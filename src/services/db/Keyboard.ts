@@ -1,5 +1,5 @@
 import { KeyboardData, KeyboardProperties } from '../../interfaces/database';
-import { KeyboardSwitch } from './KeyboardSwitch';
+import { KeyboardSwitch } from './keyboard-switch';
 
 export class Keyboard {
   readonly id: number;

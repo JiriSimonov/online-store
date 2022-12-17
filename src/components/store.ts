@@ -5,7 +5,7 @@ import { ProductCard } from './product/product-card';
 import { StoreContent } from './store-content';
 import { ProductsListState } from '../states/goods-state';
 import { Keyboard } from '../services/db/Keyboard';
-import { DB } from '../services/db/Database';
+import { DB } from '../services/db/database';
 import { ChangeView } from './elements/change-view';
 
 export class Store extends BaseComponent {

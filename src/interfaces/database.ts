@@ -1,8 +1,5 @@
-import { KeyboardSwitch } from './../services/db/KeyboardSwitch';
 // * интерфейсы для классов Database, Keyboard, KeyboardSwitch
 // * по возможности не изменять. лучше используй Partial/Pick и т.п.
-
-import { Keyboard } from "../services/db/Keyboard";
 
 export interface KeyboardData {
   id: number;
@@ -63,10 +60,4 @@ export interface SwitchDescription {
 
 export interface SwitchDescriptionList {
   [id: string]: SwitchDescription;
-}
-
-export interface CartItem {
-  keyboard: Keyboard;
-  keyboardSwitch: KeyboardSwitch;
-  quantity: number
 }
