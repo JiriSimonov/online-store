@@ -4,8 +4,8 @@ import { SwitchComponent } from '../switches/switch-component';
 import { SwitchModal } from '../switches/switch-modal';
 import { Button } from '../elements/button';
 import { Keyboard } from '../../services/db/Keyboard';
-import { KeyboardSwitch } from '../../services/db/KeyboardSwitch';
-import { DB } from '../../services/db/Database';
+import { KeyboardSwitch } from '../../services/db/keyboard-switch';
+import { DB } from '../../services/db/database';
 
 export class ProductCard extends BaseComponent {
   private ProductImage: ProductImage;

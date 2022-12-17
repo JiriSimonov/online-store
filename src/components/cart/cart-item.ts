@@ -1,8 +1,8 @@
-import { CartItem } from './../../interfaces/database';
+import { CartItem } from '../../interfaces/cart';
 import { BaseComponent } from '../elements/base-component';
 import { ProductImage } from '../product/product-img';
 import { Button } from '../elements/button';
-import { DB } from '../../services/db/Database';
+import { DB } from '../../services/db/database';
 
 export class CartItemElem extends BaseComponent {
   private images: ProductImage;

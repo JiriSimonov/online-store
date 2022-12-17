@@ -1,10 +1,9 @@
 import { KeyboardData, SwitchDescription, SwitchDescriptionList } from '../../interfaces/database';
 import { Keyboard } from './Keyboard';
-import { KeyboardSwitch } from './KeyboardSwitch';
-
+import { KeyboardSwitch } from './keyboard-switch';
 import switchesJson = require('../../data/switches.json');
 import keyboardsJson = require('../../data/keyboards.json');
-import { emitter } from '../EventEmitter';
+import { emitter } from '../event-emitter';
 
 type CartList = [Keyboard, KeyboardSwitch, number][];
 type CartMap = Map<string, number>;
@@ -12,6 +11,10 @@ type CartMap = Map<string, number>;
 class Database {
   #CART_KEY = 'kekboards__cart';
   readonly keyboards: Keyboard[];
+  readonly promoList = new Map([
+    ['HESOYAM', 0.33],
+    ['IDKFA', 0.66],
+  ]);
 
   constructor(keyboards: KeyboardData[], readonly descriptions: SwitchDescriptionList) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
@@ -86,7 +89,7 @@ class Database {
       this.#CART_KEY,
       JSON.stringify(cart, (_, v) => (v instanceof Map ? Array.from(v) : v)),
     );
-    emitter.emit('kekboards__storage-saved')
+    emitter.emit('kekboards__storage-saved');
   }
   private load(): CartMap {
     const data = localStorage.getItem(this.#CART_KEY);

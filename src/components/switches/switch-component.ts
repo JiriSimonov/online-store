@@ -1,4 +1,4 @@
-import { KeyboardSwitch } from '../../services/db/KeyboardSwitch';
+import { KeyboardSwitch } from '../../services/db/keyboard-switch';
 import { BaseComponent } from '../elements/base-component';
 
 export class SwitchComponent extends BaseComponent {
