@@ -1,5 +1,5 @@
-import BaseComponent from './base-component';
-import Button from './button';
+import { BaseComponent } from './base-component';
+import { Button } from './button';
 
 export class ChangeView extends BaseComponent {
   private table: Button;
