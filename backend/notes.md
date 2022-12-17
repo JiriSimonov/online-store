@@ -128,7 +128,7 @@ snatch(Object.fromEntries(keyboardImages));
   const switchesData = [...switches].reduce((p, c) => {
     const { src } = c.querySelector('img');
     const title = c.querySelector('.filter-switcher-tooltip__title').textContent;
-    const props = c.querySelector('p:nth-child(2)').innerHTML.replace(/<\/?span>/g, '').split('<br>');
+    const props = c.querySelector('p:nth-child(2)').innerHTML.replace(/(<\/?span>)|(&nbsp;)/g, '').split('<br>');
     const description = c.querySelector('p:nth-child(3)').innerText.trim();
     p[title] = { src, props, description };
     return p;
