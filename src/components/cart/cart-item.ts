@@ -1,3 +1,4 @@
+import { FormField } from './../elements/form-field';
 import { CartItem } from '../../interfaces/cart';
 import { BaseComponent } from '../elements/base-component';
 import { ProductImage } from '../product/product-img';
@@ -21,9 +22,7 @@ export class CartItemElem extends BaseComponent {
 
   private countBtn: BaseComponent;
 
-  private count: BaseComponent;
-
-  private currentNum: number;
+  private countField: FormField;
 
   private cartDec: Button;
 
@@ -34,21 +33,7 @@ export class CartItemElem extends BaseComponent {
   constructor(product: CartItem, totalPrice: BaseComponent) {
     super({ tag: 'li', className: 'cart__item' });
     const { keyboard, keyboardSwitch, quantity } = product;
-    this.currentNum = quantity;
-    const printPrices = (diff = 0) => {
-      this.currentNum += diff;
-      DB.addToCart([keyboard, keyboardSwitch], this.currentNum);
-      this.inStock.getNode().textContent = `Осталось на складе: ${
-        keyboardSwitch.quantity - this.currentNum
-      }`;
-      this.count.getNode().textContent = `${this.currentNum}`;
-      this.price.getNode().textContent = `${this.currentNum * keyboardSwitch.price} ₽`;
-      this.cartInc.getNode();
-      totalPrice.getNode().textContent = `${DB.cartPriceSum}`;
-      (this.cartDec.getNode() as HTMLButtonElement).disabled = this.currentNum < 1;
-      (this.cartInc.getNode() as HTMLButtonElement).disabled =
-        this.currentNum === keyboardSwitch.quantity;
-    };
+    this.countField = new FormField({ className: 'count-btn', type: 'number', value: `${quantity}`, min: '0', max: `${keyboardSwitch.quantity}`, pattern: '[0-9]{2}' });
     this.images = new ProductImage(keyboard.images);
     this.wrapper = new BaseComponent({ className: 'cart__container' });
     this.title = new BaseComponent({
@@ -75,7 +60,7 @@ export class CartItemElem extends BaseComponent {
       className: 'cart__stock',
       text:
         keyboardSwitch.quantity > 0
-          ? `Осталось на складе: ${keyboardSwitch.quantity - 1}`
+          ? `Осталось на складе: ${keyboardSwitch.quantity - +this.countField.getInputNode().value}`
           : 'Нет в наличии',
       parent: this.stockWrapper.getNode(),
     });
@@ -83,28 +68,44 @@ export class CartItemElem extends BaseComponent {
       className: 'count-btn',
       parent: this.stockWrapper.getNode(),
     });
-    this.currentNum = quantity;
     this.cartDec = new Button({
       className: 'count-btn__dec',
       text: '-',
       parent: this.countBtn.getNode(),
       onclick: () => {
-        printPrices(-1);
-      },
+        this.countField.getInputNode().stepDown();
+        this.countField.getInputNode().dispatchEvent(new Event('input'));
+      }
     });
-    this.count = new BaseComponent({
-      tag: 'span',
-      className: 'count-btn__count',
-      text: `${quantity}`,
-      parent: this.countBtn.getNode(),
-    });
+    this.countBtn.appendEl(this.countField);
+    this.countField.getInputNode().oninput = (e) => {
+      if (e.target && e.target instanceof HTMLInputElement) {
+        if (+e.target.value > +e.target.max) e.target.value = e.target.max;
+        if (+e.target.value < +e.target.min) e.target.value = e.target.min;
+        DB.addToCart([keyboard, keyboardSwitch], +e.target.value);
+        this.inStock.getNode().textContent = `Осталось на складе: ${
+          keyboardSwitch.quantity - +e.target.value
+        }`;
+        this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
+        totalPrice.getNode().textContent = `${DB.cartPriceSum}`;
+        (this.cartDec.getNode() as HTMLButtonElement).disabled = +e.target.value < 1; // TODO посмотреть поведение после min max attr
+        (this.cartInc.getNode() as HTMLButtonElement).disabled =
+        +e.target.value === keyboardSwitch.quantity;
+      }
+    }
+    this.countField.getInputNode().onkeydown = (e) => {
+      if (e.target && e.target instanceof HTMLInputElement) {
+        if (['e','E', '-', '+', '.', ','].includes(e.key)) e.preventDefault();
+      }
+    }
     this.cartInc = new Button({
       className: 'count-btn__inc',
       text: '+',
       parent: this.countBtn.getNode(),
       onclick: () => {
-        printPrices(+1);
-      },
+        this.countField.getInputNode().stepUp();
+        this.countField.getInputNode().dispatchEvent(new Event('input'));
+      }
     });
     this.cartDelete = new Button({
       className: 'cart__stock cart__delete',
@@ -116,7 +117,7 @@ export class CartItemElem extends BaseComponent {
         this.destroy();
       },
     });
-    printPrices();
+    this.price.getNode().textContent = `${+this.countField.getInputNode().value * keyboardSwitch.price}₽`;
     this.appendEl(this.images);
     this.appendEl(this.wrapper);
   }

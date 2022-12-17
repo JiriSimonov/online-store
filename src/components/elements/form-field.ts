@@ -15,6 +15,8 @@ export class FormField extends BaseComponent {
         placeholder: props.placeholder,
         pattern: props.pattern,
         value: props.value,
+        min: props.min,
+        max: props.max,
       },
     );
   }
