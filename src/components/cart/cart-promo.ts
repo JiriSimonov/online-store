@@ -11,11 +11,20 @@ export class PromoForm extends BaseComponent {
 
   constructor() {
     super({ tag: 'form', className: 'promo__form' });
-    this.promoLabel = new BaseComponent({ tag: 'label', className: 'promo__label' });
-    this.promoInput = new Input({ className: 'promo__input', type: 'text' });
-    this.promoBtn = new Button({ className: 'promo__submit-btn', text: 'Применить' });
-
-    this.appendEl([this.promoLabel, this.promoBtn]);
-    this.promoLabel.appendEl(this.promoInput);
+    this.promoLabel = new BaseComponent({
+      tag: 'label',
+      className: 'promo__label',
+      parent: this.node,
+    });
+    this.promoInput = new Input({
+      className: 'promo__input',
+      type: 'text',
+      parent: this.promoLabel.getNode(),
+    });
+    this.promoBtn = new Button({
+      className: 'promo__submit-btn',
+      text: 'Применить',
+      parent: this.node,
+    });
   }
 }
