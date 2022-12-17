@@ -51,17 +51,17 @@ class App extends BaseComponent {
 
   renderError() {
     this.currentPage?.destroy();
-		const error = new Error();
-		this.currentPage = error;
+    const error = new Error();
+    this.currentPage = error;
     error.render();
-		this.appendEl(error);
+    this.appendEl(error);
     console.log('in error');
   }
 
   renderProductPage(keyboard: Keyboard) { // TODO ЭТО ОН!!!
     this.currentPage?.destroy();
     this.currentPage = new ProductPage(keyboard);
-    this.appendEl(this.currentPage);     
+    this.appendEl(this.currentPage);
   }
 
   runApp() {
@@ -76,14 +76,10 @@ class App extends BaseComponent {
         home: () => this.renderHome(),
         store: () => this.renderStore(),
         cart: () => this.renderCart(),
-        ...DB.keyboards.reduce((p, c) => {
-          Object.assign(p, { [c.id]: () => {
-          this.renderProductPage(c);
-          console.log(c.id);
-        }
-      });
-        return p;
-      }, {} as { [key: string]: (id: string) => void})
+        ...DB.keyboards.reduce((p, c) => Object.assign(p, {
+          [c.id]: () => this.renderProductPage(c)
+        }),
+          {} as { [key: string]: (id: string) => void })
       }, () => this.renderError());
       root.append(this.node);
     }

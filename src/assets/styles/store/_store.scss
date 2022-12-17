@@ -1,5 +1,3 @@
-@import '../global/vars';
-
 .store {
   text-align: center;
   transition: .3s linear;
@@ -145,6 +143,10 @@
 
     &:hover {
       background-color: $eir;
+    }
+
+    &:disabled {
+      pointer-events: none;
     }
   }
 
