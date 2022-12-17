@@ -30,21 +30,24 @@ export default class ProductCard extends BaseComponent {
 
   private switchModal: SwitchModal | null | undefined;
 
+  private storeDescr: BaseComponent;
+
   constructor(props: Keyboard) {
     super({ tag: 'li', className: 'store__item' });
     this.ProductImage = new ProductImage(props.images);
     this.appendEl(this.ProductImage);
+    this.storeDescr = new BaseComponent({ className: 'store__description', parent: this.node });
     this.cardTitle = new BaseComponent({
       tag: 'h3',
       className: 'store__card-title',
       text: props.title,
-      parent: this.node,
+      parent: this.storeDescr.getNode(),
     });
-    this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
+    this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.storeDescr.getNode() });
     this.switchArr = props.switches.filter((item) => item.id !== 'null');
     this.switchItem = this.switchArr.map((item) => new SwitchComponent(item));
     this.switchList.appendEl(this.switchItem);
-    this.priceWrapper = new BaseComponent({ className: 'store__card-wrapper', parent: this.node });
+    this.priceWrapper = new BaseComponent({ className: 'store__card-wrapper', parent: this.storeDescr.getNode() });
     this.cardPrice = new BaseComponent({
       className: 'store__card-price',
       text: `от ${props.minPrice} ₽`,
