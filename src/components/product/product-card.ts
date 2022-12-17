@@ -104,5 +104,8 @@ export class ProductCard extends BaseComponent {
         });
       }
     });
+    this.node.onclick = () => {
+      window.location.hash = `${props.id}`;
+    }
   }
 }
