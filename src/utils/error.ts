@@ -1,4 +1,4 @@
-import BaseComponent from "../components/elements/base-component";
+import { BaseComponent } from "../components/elements/base-component";
 
 export class Error extends BaseComponent {
   private title: BaseComponent;

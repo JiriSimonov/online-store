@@ -1,13 +1,13 @@
-import BaseComponent from '../elements/base-component';
-import ProductImage from './product-img';
-import SwitchComponent from '../switches/switch-component';
-import SwitchModal from '../switches/switch-modal';
-import Button from '../elements/button';
+import { BaseComponent } from '../elements/base-component';
+import { ProductImage } from './product-img';
+import { SwitchComponent } from '../switches/switch-component';
+import { SwitchModal } from '../switches/switch-modal';
+import { Button } from '../elements/button';
 import { Keyboard } from '../../services/db/Keyboard';
 import { KeyboardSwitch } from '../../services/db/KeyboardSwitch';
 import { DB } from '../../services/db/Database';
 
-export default class ProductCard extends BaseComponent {
+export class ProductCard extends BaseComponent {
   private ProductImage: ProductImage;
 
   private cardTitle: BaseComponent;
@@ -69,19 +69,34 @@ export default class ProductCard extends BaseComponent {
         }, 1000);
       } // TODO refactor
     };
-    if (props.isAvailable) this.cardBtn = new Button({ className: 'store__card-btn', parent: this.priceWrapper.getNode(), text: 'Добавить в корзину', onclick: () => {
-      DB.addToCart([props, props.switches.find((item) => item.isAvailable) ?? props.switches[0]], 1);
-    }
-  });
+    if (props.isAvailable)
+      this.cardBtn = new Button({
+        className: 'store__card-btn',
+        parent: this.priceWrapper.getNode(),
+        text: 'Добавить в корзину',
+        onclick: () => {
+          DB.addToCart(
+            [props, props.switches.find((item) => item.isAvailable) ?? props.switches[0]],
+            1,
+          );
+        },
+      });
     this.isAvialable = new BaseComponent({
-      className: `${props.isAvailable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
+      className: `${
+        props.isAvailable
+          ? 'store__card-av store__card-av_true'
+          : 'store__card-av store__card-av_false'
+      }`,
       text: `${props.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
       parent: this.node,
     });
     this.switchList.getNode().addEventListener('mouseover', (e) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('switch__item')) {
-        this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
+        this.switchModal = new SwitchModal(
+          target.textContent || '',
+          !target.classList.contains('switch__item_false'),
+        );
         this.appendEl(this.switchModal);
         target.addEventListener('mouseout', () => {
           this.switchModal?.destroy();

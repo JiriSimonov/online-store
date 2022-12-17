@@ -1,4 +1,4 @@
-import BaseComponent from "../elements/base-component";
+import { BaseComponent } from "../elements/base-component";
 
 export class ProductDescription extends BaseComponent {
   constructor() {

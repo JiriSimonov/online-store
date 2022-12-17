@@ -1,7 +1,7 @@
-import Anchor from './elements/anchor';
-import BaseComponent from './elements/base-component';
+import { Anchor } from './elements/anchor';
+import { BaseComponent } from './elements/base-component';
 
-export default class Footer extends BaseComponent {
+export class Footer extends BaseComponent {
   private wrapper: BaseComponent;
 
   private contentWrapper: BaseComponent;
@@ -12,9 +12,9 @@ export default class Footer extends BaseComponent {
 
   private linkWrapper: BaseComponent;
 
-  private linkOne:BaseComponent;
+  private linkOne: BaseComponent;
 
-  private linkTwo:BaseComponent;
+  private linkTwo: BaseComponent;
 
   constructor() {
     super({ tag: 'footer', className: 'footer' });
