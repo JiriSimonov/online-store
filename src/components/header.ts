@@ -46,7 +46,7 @@ export class Header extends BaseComponent {
     this.cartPrice = new BaseComponent({
       tag: 'span',
       className: 'header__price',
-      text: `${DB.cartPriceSum}₽`,
+      text: `${DB.cartPriceSum}`,
     });
     this.searchInput = new Input({ className: 'header__input' });
     this.search.getNode().addEventListener('click', () => {

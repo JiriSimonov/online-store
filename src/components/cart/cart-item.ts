@@ -42,7 +42,7 @@ export class CartItemElem extends BaseComponent {
         keyboardSwitch.quantity - this.currentNum
       }`;
       this.count.getNode().textContent = `${this.currentNum}`;
-      this.price.getNode().textContent = `${this.currentNum * keyboardSwitch.price}  ₽`;
+      this.price.getNode().textContent = `${this.currentNum * keyboardSwitch.price} ₽`;
       this.cartInc.getNode();
       totalPrice.getNode().textContent = `${DB.cartPriceSum}`;
       (this.cartDec.getNode() as HTMLButtonElement).disabled = this.currentNum < 1;
