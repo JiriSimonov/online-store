@@ -6,7 +6,7 @@ import { Footer } from './components/footer';
 import { Home } from './components/home-page/home-page';
 import { Cart } from './components/cart/cart';
 import { ProductsListState } from './states/goods-state';
-import { DB } from './services/db/Database'; // ! 👈 убрать после тестов
+import { DB } from './services/db/database'; // ! 👈 убрать после тестов
 import { Error } from './utils/error';
 import './assets/styles/global/style.scss';
 
@@ -49,10 +49,10 @@ class App extends BaseComponent {
 
   renderError() {
     this.currentPage?.destroy();
-		const error = new Error();
-		this.currentPage = error;
+    const error = new Error();
+    this.currentPage = error;
     error.render();
-		this.appendEl(error);
+    this.appendEl(error);
   }
 
   runApp() {
@@ -62,12 +62,15 @@ class App extends BaseComponent {
     header.render();
     root?.append(header.getNode());
     if (root) {
-      this.router = new Router({
-        '': () => this.renderHome(),
-        home: () => this.renderHome(),
-        store: () => this.renderStore(),
-        cart: () => this.renderCart(),
-      }, () => this.renderError());
+      this.router = new Router(
+        {
+          '': () => this.renderHome(),
+          'home': () => this.renderHome(),
+          'store': () => this.renderStore(),
+          'cart': () => this.renderCart(),
+        },
+        () => this.renderError(),
+      );
       root.append(this.node);
     }
     footer.render();

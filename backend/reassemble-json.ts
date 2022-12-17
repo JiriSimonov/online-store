@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import path = require('path');
 import fsp = require('fs/promises');
 import {
@@ -18,9 +19,9 @@ import { download, showSettledResult } from './utils';
 
 type Pair<T> = [T, T];
 
-import PRODUCTS = require('./src/source.json');
-import KEYBOARD_IMAGES = require('./src/keyboard-images.json');
-import SWITCHES = require('./src/switches.json');
+const PRODUCTS: SourceKeyboard[] = require('./src/source.json');
+const KEYBOARD_IMAGES: SourceImagesList = require('./src/keyboard-images.json');
+const SWITCHES: SourceSwitchList = require('./src/switches.json');
 
 class SourceBuilder {
   private keyboardsJsonPath = path.resolve(__dirname, 'out', 'keyboards.json');
@@ -39,9 +40,9 @@ class SourceBuilder {
 
   async buildAll(): Promise<void> {
     await this.buildKeyboardsJson();
-    await this.downloadKeyboardImages();
-    await this.downloadSwitchImages();
-    await this.buildSwitchesJson();
+    // await this.downloadKeyboardImages();
+    // await this.downloadSwitchImages();
+    // await this.buildSwitchesJson();
   }
 
   async buildKeyboardsJson(): Promise<void> {
@@ -89,7 +90,13 @@ class SourceBuilder {
     return {
       id,
       title: keyboard.title,
-      switches: keyboard.variants.map(SourceBuilder.convertVariant),
+      switches: keyboard.variants.reduce((acc, item) => {
+        const converted = SourceBuilder.convertVariant(item);
+        const duplicate = acc.find((v) => v.id === converted.id);
+        if (duplicate) duplicate.quantity += item.quantity;
+        else acc.push(converted);
+        return acc;
+      }, [] as KeyboardSwitchData[]),
       properties: keyboard.props,
       manufacturer: keyboard.manufacturer,
       minPrice: keyboard.minVisiblePrice,
@@ -146,11 +153,7 @@ class SourceBuilder {
   }
 }
 
-export const sourceBuilder = new SourceBuilder(
-  Object.values(PRODUCTS) as SourceKeyboard[],
-  KEYBOARD_IMAGES as SourceImagesList,
-  SWITCHES,
-);
+export const sourceBuilder = new SourceBuilder(Object.values(PRODUCTS), KEYBOARD_IMAGES, SWITCHES);
 
 // TODO: остальное
 // ? node --watch backend | npx tsc -w backend/index.ts

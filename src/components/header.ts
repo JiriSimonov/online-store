@@ -1,10 +1,10 @@
-import { DB } from './../services/db/Database';
+import { DB } from '../services/db/database';
 import { Anchor } from './elements/anchor';
 import { BaseComponent } from './elements/base-component';
 import { Button } from './elements/button';
 import { Input } from './elements/input';
 import { ProductsListState } from '../states/goods-state';
-import { emitter } from '../services/EventEmitter';
+import { emitter } from '../services/event-emitter';
 
 export class Header extends BaseComponent {
   private container: BaseComponent;
