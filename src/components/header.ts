@@ -4,6 +4,7 @@ import { BaseComponent } from './elements/base-component';
 import { Button } from './elements/button';
 import { Input } from './elements/input';
 import { ProductsListState } from '../states/goods-state';
+import { emitter } from '../services/EventEmitter';
 
 export class Header extends BaseComponent {
   private container: BaseComponent;
@@ -55,6 +56,10 @@ export class Header extends BaseComponent {
         const target = e.target as HTMLInputElement;
         productsState.set({ search: target.value });
       });
+    });
+    emitter.subscribe('kekboards__storage-saved', () => {
+      this.cartCount.getNode().textContent = `${DB.cartProductsQuantity}`;
+      this.cartPrice.getNode().textContent = `${DB.cartPriceSum}`;
     });
   }
 
