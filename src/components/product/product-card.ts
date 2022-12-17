@@ -3,7 +3,7 @@ import { ProductImage } from './product-img';
 import { SwitchComponent } from '../switches/switch-component';
 import { SwitchModal } from '../switches/switch-modal';
 import { Button } from '../elements/button';
-import { Keyboard } from '../../services/db/Keyboard';
+import { Keyboard } from '../../services/db/keyboard';
 import { KeyboardSwitch } from '../../services/db/keyboard-switch';
 import { DB } from '../../services/db/database';
 
@@ -43,11 +43,18 @@ export class ProductCard extends BaseComponent {
       text: props.title,
       parent: this.storeDescr.getNode(),
     });
-    this.switchList = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.storeDescr.getNode() });
+    this.switchList = new BaseComponent({
+      tag: 'ul',
+      className: 'switch',
+      parent: this.storeDescr.getNode(),
+    });
     this.switchArr = props.switches.filter((item) => item.id !== 'null');
     this.switchItem = this.switchArr.map((item) => new SwitchComponent(item));
     this.switchList.appendEl(this.switchItem);
-    this.priceWrapper = new BaseComponent({ className: 'store__card-wrapper', parent: this.storeDescr.getNode() });
+    this.priceWrapper = new BaseComponent({
+      className: 'store__card-wrapper',
+      parent: this.storeDescr.getNode(),
+    });
     this.cardPrice = new BaseComponent({
       className: 'store__card-price',
       text: `от ${props.minPrice} ₽`,
@@ -70,7 +77,7 @@ export class ProductCard extends BaseComponent {
       } // TODO refactor
     };
     // TODO посмотреть вариант без создания кнопки!!!
-    this.cardBtn = new Button({ 
+    this.cardBtn = new Button({
       className: 'store__card-btn',
       text: 'Добавить в корзину',
       onclick: () => {
@@ -81,7 +88,7 @@ export class ProductCard extends BaseComponent {
         this.cardBtn.getNode().textContent = 'Уже в корзине';
         this.cardBtn.getNode().setAttribute('disabled', 'true');
       },
-    })
+    });
     if (props.isAvailable) {
       if (DB.cart.some((item) => item[0] === props)) {
         this.cardBtn.getNode().textContent = 'Уже в корзине';
@@ -114,6 +121,6 @@ export class ProductCard extends BaseComponent {
     });
     this.node.onclick = (e) => {
       if (e.target !== this.cardBtn?.getNode()) window.location.hash = `${props.id}`;
-    }
+    };
   }
 }

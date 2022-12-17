@@ -1,5 +1,5 @@
 import { ProductsFilterProps } from '../interfaces/interfaces';
-import { Keyboard } from '../services/db/Keyboard';
+import { Keyboard } from '../services/db/keyboard';
 import { Observable } from '../services/observer';
 
 export class ProductsListState extends Observable<Keyboard[]> {

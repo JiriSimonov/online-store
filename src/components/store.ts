@@ -4,7 +4,7 @@ import { Filters } from './filters/filtres';
 import { ProductCard } from './product/product-card';
 import { StoreContent } from './store-content';
 import { ProductsListState } from '../states/goods-state';
-import { Keyboard } from '../services/db/Keyboard';
+import { Keyboard } from '../services/db/keyboard';
 import { DB } from '../services/db/database';
 import { ChangeView } from './elements/change-view';
 
@@ -50,14 +50,14 @@ export class Store extends BaseComponent {
       }
     });
   }
-  
+
   update = (state: Keyboard[]) => {
     this.storeItems = state.map((item: Keyboard) => new ProductCard(item));
     this.storeList.getNode().replaceChildren();
     this.storeList.appendEl(this.storeItems);
     if (this.storeItems.length === 0) this.storeList.appendEl(this.notFound);
   };
-  
+
   render() {
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
