@@ -1,8 +1,9 @@
+import { CartItem } from './../../interfaces/database';
 import { Keyboard } from './../../services/db/Keyboard';
 import { DB } from './../../services/db/Database';
 import BaseComponent from '../elements/base-component';
 import Button from '../elements/button';
-import CartItem from './cart-item';
+import CartItemElem from './cart-item';
 import CartList from './cart-list';
 import PromoForm from './cart-promo';
 import OrderForm from './order-form';
@@ -14,7 +15,7 @@ export default class Cart extends BaseComponent {
 
   private cartList: CartList;
 
-  private cartItems: CartItem[];
+  private cartItems: CartItemElem[];
 
   private cartButton: Button;
 
@@ -57,7 +58,10 @@ export default class Cart extends BaseComponent {
     this.cartPriceText = new BaseComponent({ tag: 'span', className: 'cart-price__text', text: 'Итог' });
     this.cartPriceTotal = new BaseComponent({ tag: 'span', className: 'cart-price__total', text: `${DB.cartPriceSum}` });
     this.cartList = new CartList();
-    this.cartItems = [...DB.cart.map((item) => new CartItem(...item))];
+    this.cartItems = [...DB.cart.map((item) => {
+      const name: CartItem = { keyboard: item[0], keyboardSwitch: item[1], quantity: item[2] };
+      return new CartItemElem(name, this.cartPriceTotal);
+    })];
     this.orderBtn.getNode().onclick = () => {
       this.orderForm = new OrderForm();
       this.wrapper.appendEl(this.orderForm);
