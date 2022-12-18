@@ -45,7 +45,7 @@
     font-weight: 500;
     color: $white;
     box-shadow: 0 4px 16px rgb(0 131 241 / 50%);
-    cursor: pointer;
+    cursor: $hover;
     transition: .3s linear;
     
     &:hover,
@@ -93,7 +93,7 @@
         font-size: 16px;
         font-weight: 400;
         background-color: transparent;
-        cursor: pointer;
+        cursor: $hover;
         outline: none;
         transition: .3s linear;
         
@@ -127,7 +127,7 @@
 
       &__input {
         all: unset;
-        cursor: pointer;
+        cursor: $hover;
 
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
@@ -154,7 +154,7 @@
     font-weight: 500;
     color: $white;
     box-shadow: 0 4px 16px rgb(0 131 241 / 50%);
-    cursor: pointer;
+    cursor: $hover;
     transition: .3s linear;
 
     &:hover,
@@ -221,7 +221,7 @@
   &__delete {
     padding: 9px;
     border: none;
-    cursor: pointer;
+    cursor: $hover;
     transition: .3s linear;
     
     &:hover,
@@ -251,7 +251,7 @@
     background-color: transparent;
     font-size: 16px;
     font-weight: 400;
-    cursor: pointer;
+    cursor: $hover;
     transition: .3s linear;
   }
 
@@ -361,7 +361,7 @@
     font-size: 18px;
     font-weight: 500;
     box-shadow: 0 4px 16px rgb(20 20 21/ 25%);
-    cursor: pointer;
+    cursor: $hover;
     transition: .3s linear;
 
     &:hover {

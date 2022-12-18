@@ -16,7 +16,7 @@
     width: 100%;
     font-size: 18px;
     font-weight: 500;
-    cursor: pointer;
+    cursor: $hover;
     transition: .3s linear;
     user-select: none;
 
@@ -123,7 +123,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    cursor: pointer;
+    cursor: $hover;
     transition: background .3s linear;
   }
 
@@ -138,7 +138,7 @@
     background-color: $blue;
     font-size: 16px;
     color: $white;
-    cursor: pointer;
+    cursor: $hover;
     transition: .3s linear;
 
     &:hover {
@@ -248,7 +248,7 @@
     color: $white;
     text-align: center;
     text-transform: uppercase;
-    cursor: pointer;
+    cursor: $hover;
     transition: .3s linear;
     z-index: 3;
     user-select: none;
