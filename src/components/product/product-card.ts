@@ -120,7 +120,7 @@ export class ProductCard extends BaseComponent {
       }
     });
     this.node.onclick = (e) => {
-      if (e.target !== this.cardBtn?.getNode()) window.location.hash = `${props.id}`;
+      if (e.target !== this.cardBtn?.getNode() && e.target !== this.cardCopy?.getNode()) window.location.hash = `${props.id}`;
     };
   }
 }

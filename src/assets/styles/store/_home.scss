@@ -44,7 +44,7 @@
     font-weight: 500;
     color: $modal-bg;
     background-color: $cy;
-    cursor: pointer;
+    cursor: $hover;
     transition: .3s linear;
     &:hover,
     &:focus {

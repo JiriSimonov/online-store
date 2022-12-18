@@ -1,3 +1,4 @@
+import { SwitchComponent } from './../switches/switch-component';
 import { FormField } from './../elements/form-field';
 import { CartItem } from '../../interfaces/cart';
 import { BaseComponent } from '../elements/base-component';
@@ -30,6 +31,10 @@ export class CartItemElem extends BaseComponent {
 
   private cartDelete: Button;
 
+  private switchWrapper: BaseComponent;
+
+  private keyboardSwitch: SwitchComponent;
+
   constructor(product: CartItem, totalPrice: BaseComponent) {
     super({ tag: 'li', className: 'cart__item' });
     const { keyboard, keyboardSwitch, quantity } = product;
@@ -42,9 +47,12 @@ export class CartItemElem extends BaseComponent {
       text: keyboard.title,
       parent: this.wrapper.getNode(),
     });
+    this.switchWrapper = new BaseComponent({ className: 'switch', parent: this.wrapper.getNode()});
+    this.keyboardSwitch = new SwitchComponent(keyboardSwitch);
+    this.switchWrapper.appendEl(this.keyboardSwitch);
     this.category = new BaseComponent({
       className: 'cart__category',
-      text: 'Клавиатура',
+      text: `Размер: ${keyboard.size}`,
       parent: this.wrapper.getNode(),
     });
     this.price = new BaseComponent({
