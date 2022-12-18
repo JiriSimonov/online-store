@@ -5,7 +5,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
     margin-top: 40px;
-    width: 100%;
+    padding: 40px;
   }
 
   .store__card-av {
@@ -75,7 +75,10 @@
     color: $black;
   }
 
-  .cart__btn {
-    margin: 20px auto 40px auto;
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 40px 0;
   }
 }
