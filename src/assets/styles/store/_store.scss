@@ -150,207 +150,6 @@
     }
   }
 
-  .switch {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(6, 44px);
-    grid-template-rows: repeat(3, 50px);
-    align-items: center;
-    gap: 2px;
-    margin: 10px 0;
-    padding: 0;
-    list-style: none;
-
-    &__item {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-      padding: 10px;
-      border-radius: 50%;
-      border: 2px solid $white;
-      width: 20px;
-      height: 20px;
-      background-color: transparent;
-      font-family: 'Anonymous', monospace;
-      font-size: 16px;
-      font-weight: 400;
-      color: $white;
-      text-align: center;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: .3s linear;
-      z-index: 3;
-      user-select: none;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background-color: red;
-        transform: rotate(45deg) translateY(-50%);
-        z-index: 4;
-        opacity: 0;
-      }
-    }
-
-    .BR,
-    .CBR,
-    .BR2,
-    .PBR,
-    .CRBR,
-    .LBR,
-    .KBR {
-      background-color: $brown;
-    }
-
-    .BL,
-    .CBL,
-    .SB {
-      background-color: $modal-bg;
-    }
-
-    .B {
-      background-color: $b;
-    }
-
-    .CL,
-    .CCL,
-    .T4S,
-    .TVS,
-    .EJ {
-      background-image: $cl;
-    }
-
-    .SR {
-      background-image: $sr;
-    }
-
-    .R,
-    .AJP {
-      background-color: $r;
-    }
-
-    .SS {
-      background-image: $ss;
-    }
-
-    .CR,
-    .CSS,
-    .CRR,
-    .CRSR,
-    .PR,
-    .PR2,
-    .KPR,
-    .KLR,
-    .LR,
-    .CSR,
-    .PS2,
-    .TSS {
-      background-color: $cr;
-    }
-
-    .CY {
-      background-color: $cy;
-    }
-
-    .CSR {
-      background-image: $csr;
-    }
-
-    .CSS,
-    .CRSS,
-    .PW2 {
-      background-image: $css;
-    }
-
-    .GR {
-      background-color: $gr;
-    }
-
-    .ED,
-    .CRY,
-    .PY2,
-    .PY,
-    .KLN {
-      background-color: $ed;
-      color: $modal-bg;
-    }
-
-    .ES { 
-      background-color: $es;
-    }
-
-    .ER {
-      background-color: $er;
-    }
-
-    .EI,
-    .KLM {
-      background-color: $ei;
-    }
-
-    .GPBR {
-      background-color: $gpbr;
-    }
-
-    .GPB,
-    .CB,
-    .PB,
-    .CRB,
-    .KLB,
-    .LB {
-      background-color: $gpb;
-    }
-
-    .KPC {
-      background-color: $kpc;
-    }
-
-    .EIR,
-    .TE,
-    .ZI,
-    .ZE,
-    .EV,
-    .AJR {
-      background-color: $eir;
-    }
-
-    .EV,
-    .NA,
-    .KRO {
-      background-color: $ev;
-    }
-
-    .KLB {
-      background-color: $klb;
-    }
-
-    .GPY {
-      background-color: $gpy;
-    }
-
-    .T4,
-    .T3,
-    .TV {
-      background-color: $topre;
-    }
-
-    .switch__item_false {
-      background: $sw-disabled-bg;
-      background-image: none;
-      color: $sw-disabled-txt;
-
-      &::before {
-        opacity: 1;
-      }
-    }
-  }
-
   .modal {
     position: absolute;
     top: 0;
@@ -416,6 +215,207 @@
       padding: 0;
       min-height: 350px;
       background-size: 80%;
+    }
+  }
+}
+
+.switch {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, 44px);
+  grid-template-rows: repeat(3, 50px);
+  align-items: center;
+  gap: 2px;
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 50%;
+    border: 2px solid $white;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    font-family: 'Anonymous', monospace;
+    font-size: 16px;
+    font-weight: 400;
+    color: $white;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: .3s linear;
+    z-index: 3;
+    user-select: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: red;
+      transform: rotate(45deg) translateY(-50%);
+      z-index: 4;
+      opacity: 0;
+    }
+  }
+
+  .BR,
+  .CBR,
+  .BR2,
+  .PBR,
+  .CRBR,
+  .LBR,
+  .KBR {
+    background-color: $brown;
+  }
+
+  .BL,
+  .CBL,
+  .SB {
+    background-color: $modal-bg;
+  }
+
+  .B {
+    background-color: $b;
+  }
+
+  .CL,
+  .CCL,
+  .T4S,
+  .TVS,
+  .EJ {
+    background-image: $cl;
+  }
+
+  .SR {
+    background-image: $sr;
+  }
+
+  .R,
+  .AJP {
+    background-color: $r;
+  }
+
+  .SS {
+    background-image: $ss;
+  }
+
+  .CR,
+  .CSS,
+  .CRR,
+  .CRSR,
+  .PR,
+  .PR2,
+  .KPR,
+  .KLR,
+  .LR,
+  .CSR,
+  .PS2,
+  .TSS {
+    background-color: $cr;
+  }
+
+  .CY {
+    background-color: $cy;
+  }
+
+  .CSR {
+    background-image: $csr;
+  }
+
+  .CSS,
+  .CRSS,
+  .PW2 {
+    background-image: $css;
+  }
+
+  .GR {
+    background-color: $gr;
+  }
+
+  .ED,
+  .CRY,
+  .PY2,
+  .PY,
+  .KLN {
+    background-color: $ed;
+    color: $modal-bg;
+  }
+
+  .ES { 
+    background-color: $es;
+  }
+
+  .ER {
+    background-color: $er;
+  }
+
+  .EI,
+  .KLM {
+    background-color: $ei;
+  }
+
+  .GPBR {
+    background-color: $gpbr;
+  }
+
+  .GPB,
+  .CB,
+  .PB,
+  .CRB,
+  .KLB,
+  .LB {
+    background-color: $gpb;
+  }
+
+  .KPC {
+    background-color: $kpc;
+  }
+
+  .EIR,
+  .TE,
+  .ZI,
+  .ZE,
+  .EV,
+  .AJR {
+    background-color: $eir;
+  }
+
+  .EV,
+  .NA,
+  .KRO {
+    background-color: $ev;
+  }
+
+  .KLB {
+    background-color: $klb;
+  }
+
+  .GPY {
+    background-color: $gpy;
+  }
+
+  .T4,
+  .T3,
+  .TV {
+    background-color: $topre;
+  }
+
+  .switch__item_false {
+    background: $sw-disabled-bg;
+    background-image: none;
+    color: $sw-disabled-txt;
+
+    &::before {
+      opacity: 1;
     }
   }
 }

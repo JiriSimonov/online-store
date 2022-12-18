@@ -1,5 +1,9 @@
 .header {
+  position: sticky;
+  top: 0;
   background-color: $white;
+  box-shadow: 0 4px 16px rgb(20 20 21/ 50%);
+  z-index: 6;
 
   &__wrapper {
     display: flex;

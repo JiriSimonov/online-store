@@ -3,6 +3,15 @@
 .cart {
   margin: 20px 0;
 
+  .switch {
+    display: initial;
+    margin: 0;
+
+    &__item {
+      pointer-events: none;
+    }
+  }
+
   &__wrapper {
     position: relative;
     display: flex;
@@ -15,7 +24,17 @@
     }
   }
 
-  
+  &__title {
+    margin: 20px auto 0 auto;
+    font-size: 28px;
+    color: $black;
+  }
+
+  &__category {
+    font-size: 20px;
+    color: $black;
+  }
+
   &__btn {
     padding: 10px 15px;
     border: none;
@@ -60,10 +79,9 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      padding: 1px;
       border-radius: 5px;
-      max-width: 100px;
       background-color: $grey;
+      text-align: center;
       overflow: hidden;
       
       &__dec,
@@ -109,7 +127,6 @@
 
       &__input {
         all: unset;
-        width: 20px;
         cursor: pointer;
 
         &::-webkit-outer-spin-button,
@@ -149,7 +166,7 @@
   }
 
   &__price {
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 400;
     color: $black;
   }
@@ -183,9 +200,12 @@
   }
 
   &__stock-wrapper {
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    justify-content: space-between;
     align-items: center;
     gap: 20px;
+    width: 100%;
   }
 
   &__stock {
