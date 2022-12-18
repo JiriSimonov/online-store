@@ -5,7 +5,7 @@ import { SwitchModal } from '../switches/switch-modal';
 import { Button } from '../elements/button';
 import { Keyboard } from '../../services/db/keyboard';
 import { KeyboardSwitch } from '../../services/db/keyboard-switch';
-import { DB } from '../../services/db/db';
+import { DB } from '../../services/db/database';
 
 export class ProductCard extends BaseComponent {
   private ProductImage: ProductImage;
@@ -81,16 +81,13 @@ export class ProductCard extends BaseComponent {
       className: 'store__card-btn',
       text: 'Добавить в корзину',
       onclick: () => {
-        DB.addToCart(
-          [props, props.switches.find((item) => item.isAvailable) ?? props.switches[0]],
-          1,
-        );
+        DB.cart.add([props,props.switches.find((item) => item.isAvailable) ?? props.switches[0]])
         this.cardBtn.getNode().textContent = 'Уже в корзине';
         this.cardBtn.getNode().setAttribute('disabled', 'true');
       },
     });
     if (props.isAvailable) {
-      if (DB.cart.some((item) => item[0] === props)) {
+      if (DB.cart.isInCart(props.id)) {
         this.cardBtn.getNode().textContent = 'Уже в корзине';
         this.cardBtn.getNode().setAttribute('disabled', 'true');
       }
