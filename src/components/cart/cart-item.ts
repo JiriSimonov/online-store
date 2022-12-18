@@ -1,10 +1,10 @@
 import { SwitchComponent } from './../switches/switch-component';
 import { FormField } from './../elements/form-field';
-import { CartItem } from '../../interfaces/cart';
 import { BaseComponent } from '../elements/base-component';
 import { ProductImage } from '../product/product-img';
 import { Button } from '../elements/button';
-import { DB } from '../../services/db/db';
+import { DB } from '../../services/db/database';
+import { CartItem } from '../../services/db/cart-item';
 
 export class CartItemElem extends BaseComponent {
   private images: ProductImage;
@@ -90,15 +90,15 @@ export class CartItemElem extends BaseComponent {
       if (e.target && e.target instanceof HTMLInputElement) {
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
         if (+e.target.value < +e.target.min) e.target.value = e.target.min;
-        DB.addToCart([keyboard, keyboardSwitch], +e.target.value);
+        product.quantity = +e.target.value;
         this.inStock.getNode().textContent = `Осталось на складе: ${
           keyboardSwitch.quantity - +e.target.value
         }`;
         this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
-        totalPrice.getNode().textContent = `${DB.cartPriceSum}`;
+        totalPrice.getNode().textContent = `${DB.cart.sumPrice}`;
         (this.cartDec.getNode() as HTMLButtonElement).disabled = +e.target.value < 1; // TODO посмотреть поведение после min max attr
         (this.cartInc.getNode() as HTMLButtonElement).disabled =
-        +e.target.value === keyboardSwitch.quantity;
+          +e.target.value === keyboardSwitch.quantity;
       }
     }
     this.countField.getInputNode().onkeydown = (e) => {
@@ -120,8 +120,8 @@ export class CartItemElem extends BaseComponent {
       text: 'Удалить',
       parent: this.stockWrapper.getNode(),
       onclick: () => {
-        DB.removeFromCart([keyboard, keyboardSwitch]);
-        totalPrice.getNode().textContent = `${DB.cartPriceSum}`;
+        DB.cart.remove(product);
+        totalPrice.getNode().textContent = `${DB.cart.sumPrice}`;
         this.destroy();
       },
     });

@@ -1,9 +1,9 @@
-import { DB } from './../../services/db/db';
 import { Button } from './../elements/button';
 import { DescriptionField } from './../elements/description-field';
 import { Keyboard } from '../../services/db/keyboard';
 import { ProductCard } from './../product/product-card';
 import { BaseComponent } from '../elements/base-component';
+import { DB } from '../../services/db/database';
 
 export class ProductPage extends BaseComponent {
   private container: BaseComponent;
@@ -49,7 +49,7 @@ export class ProductPage extends BaseComponent {
       className: 'product__list',
       parent: this.card.getNode(),
     });
-    if(DB.cart.some((item) => item[0] === keyboard)) this.btnWrapper.appendEl(this.cartBtn); // TODO прокинуть эммитер сюда, что бы появлялась кнопка перейти в корзину
+    if(DB.cart.isInCart(keyboard.id)) this.btnWrapper.appendEl(this.cartBtn); // TODO прокинуть эммитер сюда, что бы появлялась кнопка перейти в корзину
     this.descrList.appendEl(this.descrFields);
   }
 }

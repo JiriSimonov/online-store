@@ -1,20 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// TODO разобраться с типизацией аргументов
 class EventEmitter {
-  events: { [key: string]: (() => void)[] } = {};
+  events: { [key: string]: ((args?: any) => void)[] } = {};
 
-  subscribe(eventName: string, callback: () => void) {
-    !this.events[eventName] && (this.events[eventName] = []);
-    this.events[eventName].push(callback);
+  subscribe(eventName: string, callback: (args: any) => void) {
+    if (eventName in this.events) this.events[eventName].push(callback);
+    else this.events[eventName] = [callback];
   }
 
-  unsubscribe(eventName: string, callback: () => void) {
-    this.events[eventName] = this.events[eventName].filter(
-      (eventCallback) => callback !== eventCallback,
-    );
-  }
+  /*   unsubscribe(eventName: string, callback: <T>(args?: T) => void) {
+    this.events[eventName] = this.events[eventName].filter((listener) => listener !== callback);
+  } */
 
-  emit(eventName: string) {
-    const event = this.events[eventName];
-    event && event.forEach((callback) => callback());
+  emit(eventName: string, args?: any) {
+    this.events[eventName].forEach((callback): void => callback(args));
   }
 }
 

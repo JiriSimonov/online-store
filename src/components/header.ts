@@ -1,4 +1,4 @@
-import { DB } from '../services/db/db';
+import { DB } from '../services/db/database';
 import { Anchor } from './elements/anchor';
 import { BaseComponent } from './elements/base-component';
 import { FormField } from './elements/form-field';
@@ -41,14 +41,19 @@ export class Header extends BaseComponent {
     this.cartCount = new BaseComponent({
       tag: 'span',
       className: 'header__count',
-      text: `${DB.cartProductsQuantity}`,
+      text: `${DB.cart.sumQuantity}`,
     });
     this.cartPrice = new BaseComponent({
       tag: 'span',
       className: 'header__price',
-      text: `${DB.cartPriceSum}`,
+      text: `${DB.cart.sumPrice}`,
     });
-    this.searchField = new FormField({ className: 'header', type: 'search' , placeholder: 'Найти', value: ''});
+    this.searchField = new FormField({
+      className: 'header',
+      type: 'search',
+      placeholder: 'Найти',
+      value: '',
+    });
     this.search.getNode().addEventListener('click', () => {
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
       this.searchField.getInputNode().addEventListener('input', (e) => {
@@ -57,14 +62,14 @@ export class Header extends BaseComponent {
         productsState.set({ search: target.value });
       });
     });
-    emitter.subscribe('kekboards__storage-saved', () => {
-      this.cartCount.getNode().textContent = `${DB.cartProductsQuantity}`;
-      this.cartPrice.getNode().textContent = `${DB.cartPriceSum}`;
+    emitter.subscribe('kekboards:cart__save', () => {
+      this.cartCount.getNode().textContent = `${DB.cart.sumQuantity}`;
+      this.cartPrice.getNode().textContent = `${DB.cart.sumPrice}`;
     });
     this.logo.getNode().onclick = () => {
       window.location.hash = '#home';
       this.searchField.getInputNode().classList.remove('header__input_is-open');
-    }
+    };
   }
 
   render() {

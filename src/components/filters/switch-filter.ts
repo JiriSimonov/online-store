@@ -4,7 +4,7 @@ import { BaseComponent } from '../elements/base-component';
 import { SwitchModal } from '../switches/switch-modal';
 import { Button } from '../elements/button';
 import { ProductsListState } from '../../states/goods-state';
-import { DB } from '../../services/db/db';
+import { DB } from '../../services/db/database';
 
 // TODO 🌼 расхардкодить
 const switchBtns = ['Cherry', 'Gateron', 'Varmilo', 'Keychron', 'Kailh', 'TTC', 'Topre', 'Akko'];
