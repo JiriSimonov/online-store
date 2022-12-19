@@ -5,6 +5,7 @@ import { ProductCard } from '../product/product-card';
 import { BaseComponent } from '../elements/base-component';
 import { DB } from '../../services/db/database';
 import { emitter } from '../../services/event-emitter';
+import { ThumbNails } from './product-thumbnails';
 
 export class ProductPage extends BaseComponent {
   private container: BaseComponent;
@@ -23,6 +24,8 @@ export class ProductPage extends BaseComponent {
 
   private cartBtn: Button;
 
+  private thumbnails: ThumbNails;
+
   constructor(keyboard: Keyboard) {
     super({ className: 'container' });
     this.container = new BaseComponent({ className: 'store product', parent: this.node });
@@ -40,6 +43,8 @@ export class ProductPage extends BaseComponent {
       text: 'Оформить заказ',
       onclick: () => {window.location.hash = '#cart'} 
     });
+    this.thumbnails = new ThumbNails(keyboard);
+    this.card.appendEl(this.thumbnails);
     this.title = new BaseComponent({
       tag: 'h2',
       className: 'product__title',
