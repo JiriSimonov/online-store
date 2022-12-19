@@ -7,6 +7,7 @@ import { Button } from '../elements/button';
 import { Keyboard } from '../../services/db/keyboard';
 import { KeyboardSwitch } from '../../services/db/keyboard-switch';
 import { DB } from '../../services/db/database';
+import { CartItem } from '../../services/db/cart-item';
 
 export class ProductCard extends BaseComponent {
   private ProductImage: ProductImage;
@@ -93,8 +94,11 @@ export class ProductCard extends BaseComponent {
         const selected = this.getSelectedSwitch();
         if (selected) {
           DB.cart.add([props, selected.getSwitch()]);
-          emitter.emit('product-card__cardBtn_clicked');
-        }
+        } else {
+          const hiddenSwitch = props.switches.find(item => item.isAvailable)
+          if (hiddenSwitch) DB.cart.add(new CartItem(props, hiddenSwitch))
+        };
+        emitter.emit('product-card__cardBtn_clicked');
       },
     });
     if (props.isAvailable) {
