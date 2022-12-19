@@ -14,6 +14,7 @@ export interface AnchorProps extends BaseComponentProps {
 
 export interface ButtonProps extends BaseComponentProps {
   value?: string;
+  aria?: string;
   onclick?: (this: GlobalEventHandlers, ev: MouseEvent) => void; // todo: типизировать ретурн, когда понадобится
 }
 
