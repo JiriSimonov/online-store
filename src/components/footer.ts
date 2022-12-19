@@ -27,6 +27,7 @@ export class Footer extends BaseComponent {
       href: 'https://rs.school/js/',
       target: '_blank',
     });
+    this.logo.getNode().setAttribute('aria-label', 'Курсы RSS JS/FE');
     this.linkWrapper = new BaseComponent({ className: 'footer__links' });
     this.linkOne = new Anchor({
       tag: 'a',

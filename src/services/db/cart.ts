@@ -24,7 +24,7 @@ export class Cart {
   }
   get sumQuantity() {
     let sum = 0;
-    this.load().forEach((quantity) => (sum += quantity));
+    this.load().forEach((quantity) => { (sum += quantity) });
     return sum;
   }
 

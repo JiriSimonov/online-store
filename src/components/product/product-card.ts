@@ -1,4 +1,4 @@
-import { emitter } from './../../services/event-emitter';
+import { emitter } from '../../services/event-emitter';
 import { BaseComponent } from '../elements/base-component';
 import { ProductImage } from './product-img';
 import { SwitchComponent } from '../switches/switch-component';
@@ -7,6 +7,7 @@ import { Button } from '../elements/button';
 import { Keyboard } from '../../services/db/keyboard';
 import { KeyboardSwitch } from '../../services/db/keyboard-switch';
 import { DB } from '../../services/db/database';
+import { CartItem } from '../../services/db/cart-item';
 
 export class ProductCard extends BaseComponent {
   private ProductImage: ProductImage;
@@ -33,13 +34,13 @@ export class ProductCard extends BaseComponent {
 
   private storeDescr: BaseComponent;
 
-  constructor(props: Keyboard) {
-    super({ tag: 'li', className: 'store__item' });
+  constructor(props: Keyboard, elemTag?: keyof HTMLElementTagNameMap) {
+    super({ tag: elemTag ?? 'li', className: 'store__item' });
     this.ProductImage = new ProductImage(props.images);
     this.appendEl(this.ProductImage);
     this.storeDescr = new BaseComponent({ className: 'store__description', parent: this.node });
     this.cardTitle = new BaseComponent({
-      tag: 'h3',
+      tag: 'h2',
       className: 'store__card-title',
       text: props.title,
       parent: this.storeDescr.getNode(),
@@ -66,7 +67,11 @@ export class ProductCard extends BaseComponent {
       text: `от ${props.minPrice} ₽`,
       parent: this.priceWrapper.getNode(),
     });
-    this.cardCopy = new Button({ className: 'store__card-copy', parent: this.cardTitle.getNode() });
+    this.cardCopy = new Button({
+      className: 'store__card-copy',
+      parent: this.cardTitle.getNode(),
+      aria: 'Скопировать название'
+    });
     this.cardCopy.getNode().onclick = () => {
       if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(props.title);
@@ -89,8 +94,11 @@ export class ProductCard extends BaseComponent {
         const selected = this.getSelectedSwitch();
         if (selected) {
           DB.cart.add([props, selected.getSwitch()]);
-          emitter.emit('product-card__cardBtn_clicked');
-        }
+        } else {
+          const hiddenSwitch = props.switches.find(item => item.isAvailable)
+          if (hiddenSwitch) DB.cart.add(new CartItem(props, hiddenSwitch))
+        };
+        emitter.emit('product-card__cardBtn_clicked');
       },
     });
     if (props.isAvailable) {

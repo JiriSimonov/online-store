@@ -5,7 +5,7 @@ export class Anchor extends BaseComponent<HTMLAnchorElement> {
   constructor(props: AnchorProps) {
     super(Object.assign(props, { tag: 'a' }));
     const { href, target, label } = props;
-    const node = this.node;
+    const { node } = this;
 
     if (href) node.href = href;
     if (label) node.ariaLabel = label;

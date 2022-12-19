@@ -31,12 +31,13 @@ export class Header extends BaseComponent {
     this.wrapper = new BaseComponent({ className: 'header__wrapper' });
     this.controls = new BaseComponent({ className: 'header__controls' });
     this.logo = new Anchor({ className: 'header__logo', text: 'Keyboards Store' });
-    this.search = new BaseComponent({ tag: 'button', className: 'header__search' });
+    this.search = new Button({ className: 'header__search', aria: 'Поиск' });
     this.cart = new Button({
       className: 'header__cart',
       onclick: () => {
         window.location.hash = '#cart';
       },
+      aria: 'Перейти в корзину',
     });
     this.cartCount = new BaseComponent({
       tag: 'span',

@@ -1,5 +1,6 @@
-import { SwitchComponent } from './../switches/switch-component';
-import { FormField } from './../elements/form-field';
+/* eslint-disable no-param-reassign */ // TODO ШО ЭТО ЗА ПАКОСТЬ?:???
+import { SwitchComponent } from '../switches/switch-component';
+import { FormField } from '../elements/form-field';
 import { BaseComponent } from '../elements/base-component';
 import { ProductImage } from '../product/product-img';
 import { Button } from '../elements/button';
@@ -38,7 +39,13 @@ export class CartItemElem extends BaseComponent {
   constructor(product: CartItem, totalPrice: BaseComponent) {
     super({ tag: 'li', className: 'cart__item' });
     const { keyboard, keyboardSwitch, quantity } = product;
-    this.countField = new FormField({ className: 'count-btn', type: 'number', value: `${quantity}`, min: '1', max: `${keyboardSwitch.quantity}`, pattern: '[0-9]{2}' });
+    this.countField = new FormField({
+      className: 'count-btn',
+      type: 'number',
+      value: `${quantity}`,
+      min: '1',
+      max: `${keyboardSwitch.quantity}`,
+      pattern: '[0-9]{2}' });
     this.images = new ProductImage(keyboard.images);
     this.wrapper = new BaseComponent({ className: 'cart__container' });
     this.title = new BaseComponent({
@@ -96,7 +103,8 @@ export class CartItemElem extends BaseComponent {
         }`;
         this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
         totalPrice.getNode().textContent = `${DB.cart.sumPrice}`;
-        (this.cartDec.getNode() as HTMLButtonElement).disabled = +e.target.value === +this.countField.getInputNode().min;
+        (this.cartDec.getNode() as HTMLButtonElement).disabled =
+          +e.target.value === +this.countField.getInputNode().min;
         (this.cartInc.getNode() as HTMLButtonElement).disabled =
           +e.target.value === keyboardSwitch.quantity;
       }
@@ -125,8 +133,10 @@ export class CartItemElem extends BaseComponent {
         this.destroy();
       },
     });
-    if (+this.countField.getInputNode().value === +this.countField.getInputNode().min) this.cartDec.getNode().setAttribute('disabled', 'true');
-    if (+this.countField.getInputNode().value === +this.countField.getInputNode().max) this.cartInc.getNode().setAttribute('disabled', 'true');
+    if (+this.countField.getInputNode().value === +this.countField.getInputNode().min)
+      this.cartDec.getNode().setAttribute('disabled', 'true');
+    if (+this.countField.getInputNode().value === +this.countField.getInputNode().max)
+      this.cartInc.getNode().setAttribute('disabled', 'true');
     this.price.getNode().textContent = `${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`;
     this.appendEl(this.images);
     this.appendEl(this.wrapper);
