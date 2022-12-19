@@ -1,3 +1,4 @@
+import { emitter } from './../../services/event-emitter';
 import { BaseComponent } from '../elements/base-component';
 import { ProductImage } from './product-img';
 import { SwitchComponent } from '../switches/switch-component';
@@ -14,7 +15,7 @@ export class ProductCard extends BaseComponent {
 
   private switchList: BaseComponent;
 
-  private switchItem: SwitchComponent[];
+  private switchItems: SwitchComponent[];
 
   private switchArr: KeyboardSwitch[];
 
@@ -49,8 +50,12 @@ export class ProductCard extends BaseComponent {
       parent: this.storeDescr.getNode(),
     });
     this.switchArr = props.switches.filter((item) => item.id !== 'null');
-    this.switchItem = this.switchArr.map((item) => new SwitchComponent(item));
-    this.switchList.appendEl(this.switchItem);
+    this.switchItems = this.switchArr.map((item) => new SwitchComponent(item, `${props.id}`));
+    this.switchItems.find((item) => item.getSwitch().isAvailable)?.getInputNode().setAttribute('checked', 'true');
+    this.switchItems.filter((item) => item.getSwitch().isAvailable).map((item) => item.getInputNode().oninput = () => {
+      emitter.emit('keyboard:product-cart__change-text');
+    });
+    this.switchList.appendEl(this.switchItems);
     this.priceWrapper = new BaseComponent({
       className: 'store__card-wrapper',
       parent: this.storeDescr.getNode(),
@@ -76,18 +81,25 @@ export class ProductCard extends BaseComponent {
         }, 1000);
       } // TODO refactor
     };
-    // TODO посмотреть вариант без создания кнопки!!!
     this.cardBtn = new Button({
       className: 'store__card-btn',
       text: 'Добавить в корзину',
       onclick: () => {
-        DB.cart.add([props,props.switches.find((item) => item.isAvailable) ?? props.switches[0]])
-        this.cardBtn.getNode().textContent = 'Уже в корзине';
-        this.cardBtn.getNode().setAttribute('disabled', 'true');
+        const selected = this.getSelectedSwitch();
+        if (selected) {
+          DB.cart.add([props, selected.getSwitch()]);
+          emitter.emit('keyboard:product-cart__change-text');
+        }
       },
     });
+    emitter.subscribe('keyboard:product-cart__change-text', () => {
+      this.cardBtn.getNode().textContent = DB.cart.isInCart(props.id, this.getSelectedSwitch()?.getSwitch().id)
+        ? 'Уже в корзине'
+        : 'Добавить в корзину';
+      this.cardPrice.getNode().textContent = `от ${this.getSelectedSwitch()?.getSwitch().price ?? props.minPrice} ₽`;
+    });
     if (props.isAvailable) {
-      if (DB.cart.isInCart(props.id)) {
+      if (DB.cart.isInCart(props.id, this.getSelectedSwitch()?.getSwitch().id)) {
         this.cardBtn.getNode().textContent = 'Уже в корзине';
         this.cardBtn.getNode().setAttribute('disabled', 'true');
       }
@@ -104,7 +116,7 @@ export class ProductCard extends BaseComponent {
     });
     this.switchList.getNode().addEventListener('mouseover', (e) => {
       const target = e.target as HTMLElement;
-      if (target.classList.contains('switch__item')) {
+      if (target.classList.contains('switch__label')) {
         this.switchModal = new SwitchModal(
           target.textContent || '',
           !target.classList.contains('switch__item_false'),
@@ -117,7 +129,16 @@ export class ProductCard extends BaseComponent {
       }
     });
     this.node.onclick = (e) => {
-      if (e.target !== this.cardBtn?.getNode() && e.target !== this.cardCopy?.getNode()) window.location.hash = `${props.id}`;
+      const target = e.target;
+      if (target instanceof HTMLElement
+      && target !== this.cardBtn.getNode() 
+      && target !== this.cardCopy.getNode()
+      && !target.classList.contains('switch__input')
+      && !target.classList.contains('switch__label')) window.location.hash = `${props.id}`;
     };
+  }
+
+  getSelectedSwitch() {
+    return this.switchItems.find((item) => item.getInputNode().checked);
   }
 }

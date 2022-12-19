@@ -38,7 +38,7 @@ export class CartItemElem extends BaseComponent {
   constructor(product: CartItem, totalPrice: BaseComponent) {
     super({ tag: 'li', className: 'cart__item' });
     const { keyboard, keyboardSwitch, quantity } = product;
-    this.countField = new FormField({ className: 'count-btn', type: 'number', value: `${quantity}`, min: '0', max: `${keyboardSwitch.quantity}`, pattern: '[0-9]{2}' });
+    this.countField = new FormField({ className: 'count-btn', type: 'number', value: `${quantity}`, min: '1', max: `${keyboardSwitch.quantity}`, pattern: '[0-9]{2}' });
     this.images = new ProductImage(keyboard.images);
     this.wrapper = new BaseComponent({ className: 'cart__container' });
     this.title = new BaseComponent({
@@ -48,7 +48,7 @@ export class CartItemElem extends BaseComponent {
       parent: this.wrapper.getNode(),
     });
     this.switchWrapper = new BaseComponent({ className: 'switch', parent: this.wrapper.getNode()});
-    this.keyboardSwitch = new SwitchComponent(keyboardSwitch);
+    this.keyboardSwitch = new SwitchComponent(keyboardSwitch, product.key);
     this.switchWrapper.appendEl(this.keyboardSwitch);
     this.category = new BaseComponent({
       className: 'cart__category',
@@ -57,7 +57,7 @@ export class CartItemElem extends BaseComponent {
     });
     this.price = new BaseComponent({
       className: 'cart__price',
-      text: `${keyboardSwitch.price}₽`,
+      text: `${keyboardSwitch.price} ₽`,
       parent: this.wrapper.getNode(),
     });
     this.stockWrapper = new BaseComponent({
@@ -96,7 +96,7 @@ export class CartItemElem extends BaseComponent {
         }`;
         this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
         totalPrice.getNode().textContent = `${DB.cart.sumPrice}`;
-        (this.cartDec.getNode() as HTMLButtonElement).disabled = +e.target.value < 1; // TODO посмотреть поведение после min max attr
+        (this.cartDec.getNode() as HTMLButtonElement).disabled = +e.target.value === +this.countField.getInputNode().min;
         (this.cartInc.getNode() as HTMLButtonElement).disabled =
           +e.target.value === keyboardSwitch.quantity;
       }
@@ -125,7 +125,9 @@ export class CartItemElem extends BaseComponent {
         this.destroy();
       },
     });
-    this.price.getNode().textContent = `${+this.countField.getInputNode().value * keyboardSwitch.price}₽`;
+    if (+this.countField.getInputNode().value === +this.countField.getInputNode().min) this.cartDec.getNode().setAttribute('disabled', 'true');
+    if (+this.countField.getInputNode().value === +this.countField.getInputNode().max) this.cartInc.getNode().setAttribute('disabled', 'true');
+    this.price.getNode().textContent = `${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`;
     this.appendEl(this.images);
     this.appendEl(this.wrapper);
   }
