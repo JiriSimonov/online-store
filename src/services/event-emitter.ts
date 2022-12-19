@@ -18,3 +18,5 @@ class EventEmitter {
 }
 
 export const emitter = new EventEmitter();
+
+console.info(emitter);

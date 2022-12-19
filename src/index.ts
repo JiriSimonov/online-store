@@ -55,7 +55,7 @@ class App extends BaseComponent {
     this.currentPage = error;
     error.render();
     this.appendEl(error);
-    console.log('in error');
+    console.warn('in error');
   }
 
   renderProductPage(keyboard: Keyboard) {

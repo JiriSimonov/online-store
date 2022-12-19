@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { KeyboardData, SwitchDescription, SwitchDescriptionList } from '../../interfaces/database';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
@@ -78,4 +79,4 @@ export const DB = new Database(
 
 emitter.subscribe('kekboards:cart__update-item', (item: CartItem) => DB.cart.add(item));
 
-console.log(DB);
+console.info(DB);
