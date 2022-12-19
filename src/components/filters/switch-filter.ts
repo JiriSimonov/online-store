@@ -49,7 +49,7 @@ export class SwitchFilter extends Filter {
     );
     this.switchWrapper.getNode().addEventListener('mouseover', (e) => {
       const target = e.target as HTMLElement;
-      if (target.classList.contains('switch__item')) {
+      if (target.classList.contains('switch__label')) {
         target.setAttribute('id', 'open');
         this.modalWrapper = new BaseComponent({ className: 'switch__modal' });
         this.switchModal = new SwitchModal(
