@@ -39,7 +39,7 @@ const config = {
   plugins: [
     new ESLintPlugin({ extensions: ['ts'] }),
     new HtmlWebpackPlugin({
-      templateContent: getTemplate('Keyboards Store', 'en'),
+      templateContent: getTemplate('Keyboards Store'),
       fileName: 'index.html',
     }),
     new CopyPlugin({
