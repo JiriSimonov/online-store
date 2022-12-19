@@ -67,7 +67,6 @@
     width: 100%;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 80%;
     transition: background .2s linear;
   }
 
@@ -165,7 +164,7 @@
     height: calc(100% - 40px);
     background-color: $modal-bg;
     color: $white;
-    transition: .4s linear;
+    transition: .2s linear;
     z-index: 2;
 
     &__title {

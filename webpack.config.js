@@ -14,7 +14,6 @@ const getTemplate = (title) => `<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preload" as="font">
     <title>${title}</title>
   </head>
   <body class="body">

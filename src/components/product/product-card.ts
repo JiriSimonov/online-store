@@ -34,6 +34,8 @@ export class ProductCard extends BaseComponent {
 
   private storeDescr: BaseComponent;
 
+  private buyNowBtn: Button;
+
   constructor(props: Keyboard, elemTag?: keyof HTMLElementTagNameMap) {
     super({ tag: elemTag ?? 'li', className: 'store__item' });
     this.ProductImage = new ProductImage(props.images);
@@ -101,12 +103,17 @@ export class ProductCard extends BaseComponent {
         emitter.emit('product-card__cardBtn_clicked');
       },
     });
+    this.buyNowBtn = new Button({
+      className: 'store__card-btn',
+      text: 'Купить в 1 клик',
+      onclick: () => {window.location.hash = '#cart'}, // TODO добавить функциональность согласно ТЗ!!!
+    });
     if (props.isAvailable) {
       if (DB.cart.isInCart(props.id, this.getSelectedSwitch()?.getSwitch().id)) {
         this.cardBtn.getNode().textContent = 'Уже в корзине';
         this.cardBtn.getNode().setAttribute('disabled', 'true');
       }
-      this.priceWrapper.appendEl(this.cardBtn);
+      this.priceWrapper.appendEl([this.buyNowBtn, this.cardBtn]);
     }
     this.isAvialable = new BaseComponent({
       className: `${
