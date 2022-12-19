@@ -49,6 +49,7 @@
 
   &__item {
     position: relative;
+    align-self: stretch;
     padding: 20px;
     border-radius: 13px;
     text-align: initial;
@@ -80,9 +81,11 @@
   }
 
   &__card-price {
+    position: relative;
     font-size: 25px;
     font-weight: 400;
     color: $blue;
+    z-index: 5;
   }
 
   &__card-av {
@@ -132,6 +135,7 @@
   }
 
   &__card-btn {
+    position: relative;
     padding: 8px;
     border: 2px solid transparent;
     border-radius: 13px;
@@ -140,6 +144,7 @@
     color: $white;
     cursor: $hover;
     transition: .3s linear;
+    z-index: 4;
 
     &:hover {
       background-color: $eir;
@@ -225,47 +230,10 @@
   grid-template-columns: repeat(6, 44px);
   grid-template-rows: repeat(3, 50px);
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   margin: 10px 0;
   padding: 0;
   list-style: none;
-
-  &__item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    padding: 10px;
-    border-radius: 50%;
-    border: 2px solid $white;
-    width: 20px;
-    height: 20px;
-    background-color: transparent;
-    font-family: 'Anonymous', monospace;
-    font-size: 16px;
-    font-weight: 400;
-    color: $white;
-    text-align: center;
-    text-transform: uppercase;
-    cursor: $hover;
-    transition: .3s linear;
-    z-index: 3;
-    user-select: none;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background-color: red;
-      transform: rotate(45deg) translateY(-50%);
-      z-index: 4;
-      opacity: 0;
-    }
-  }
 
   .BR,
   .CBR,
@@ -417,5 +385,52 @@
     &::before {
       opacity: 1;
     }
+  }
+
+  &__label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 50%;
+    border: 3px solid $white;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    font-family: 'Anonymous', monospace;
+    font-size: 16px;
+    font-weight: 400;
+    color: $white;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: $hover;
+    transition: .3s linear;
+    z-index: 3;
+    user-select: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: red;
+      transform: rotate(45deg) translateY(-50%);
+      z-index: 4;
+      opacity: 0;
+    }
+  }
+
+  &__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+  }
+
+  &__label:has(&__input:checked) {
+    border-color: $blue;
   }
 }

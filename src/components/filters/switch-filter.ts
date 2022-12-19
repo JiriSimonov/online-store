@@ -39,14 +39,12 @@ export class SwitchFilter extends Filter {
     );
     this.switchArr = DB.switches
       .filter((item) => item.id !== 'null')
-      .map((item) => new SwitchComponent(item));
+      .map((item) => new SwitchComponent(item, `${DB.switches.length}`));
     this.switchWrapper.appendEl(this.switchArr);
     this.switchArr.map((item) =>
       item.getNode().addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
-        if (target.classList.contains('switch__item')) {
-          productsState.set({ switchType: target.textContent as string });
-        } // TODO REFACTOR
+        if (target.classList.contains('switch__item')) productsState.set({ switchType: target.textContent as string }); // TODO REFACTOR
       }),
     );
     this.switchWrapper.getNode().addEventListener('mouseover', (e) => {

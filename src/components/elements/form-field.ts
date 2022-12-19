@@ -2,7 +2,7 @@ import { FormFieldProps } from '../../interfaces/interfaces';
 import { BaseComponent } from './base-component';
 import { Input } from './input';
 
-export class FormField extends BaseComponent {
+export class FormField extends BaseComponent<HTMLLabelElement> {
   private fieldInput: Input;
 
   constructor(props: FormFieldProps) {
@@ -17,6 +17,7 @@ export class FormField extends BaseComponent {
         value: props.value,
         min: props.min,
         max: props.max,
+        name: props.name,
       },
     );
   }
