@@ -30,7 +30,10 @@
     "no-console": ["warn", { "allow": ["warn", "info"] }],
     "no-plusplus": 0,
     "no-return-assign": 1,
-    "no-param-reassign": 1
+    "no-param-reassign": 1,
+    "curly": ["warn", "multi", "consistent"],
+    "no-template-curly-in-string": "warn",
+    "object-curly-spacing": ["warn", "always"]
   },
   "ignorePatterns": ["*.js"]
 }
