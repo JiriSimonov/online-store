@@ -113,4 +113,42 @@
       z-index: 6;
     }
   }
+
+  &__path {
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+
+    &-item {
+      padding-left: 20px;
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: $sw-disabled-bg;
+      user-select: none;
+    }
+    
+    &-item:not(:last-child) {
+      position: relative;
+      padding-right: 20px;
+
+      &::after {
+        content: '>';
+        position: absolute;
+        top: -2px;
+        right: -5px;
+      }
+    }
+
+    &-item:first-child {
+      cursor: $hover;
+      transition: .3s linear;
+
+      &:hover {
+        color: $black;
+      }
+    }
+  }
 }

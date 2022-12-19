@@ -1,3 +1,4 @@
+import { ProductPath } from './product-path';
 import { Button } from '../elements/button';
 import { DescriptionField } from '../elements/description-field';
 import { Keyboard } from '../../services/db/keyboard';
@@ -9,6 +10,8 @@ import { ThumbNails } from './product-thumbnails';
 
 export class ProductPage extends BaseComponent {
   private container: BaseComponent;
+
+  private productPath: ProductPath;
 
   private card: ProductCard;
 
@@ -30,6 +33,8 @@ export class ProductPage extends BaseComponent {
     super({ className: 'container' });
     this.container = new BaseComponent({ className: 'store product', parent: this.node });
     this.card = new ProductCard(keyboard, 'div');
+    this.productPath = new ProductPath(keyboard.title);
+    this.card.appendEl(this.productPath);
     this.container.appendEl(this.card);
     this.btnWrapper = new BaseComponent({ className: 'product__wrapper', parent: this.node });
     this.backBtn = new Button({
