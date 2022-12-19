@@ -76,6 +76,6 @@ export const DB = new Database(
   switchesJson as SwitchDescriptionList,
 );
 
-emitter.subscribe('kekboards:cart__update-item', (item: CartItem) => DB.cart.add(item));
+emitter.subscribe('cart__update-item', (item: CartItem) => DB.cart.add(item));
 
 console.log(DB);

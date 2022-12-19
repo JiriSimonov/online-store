@@ -62,7 +62,7 @@ export class Header extends BaseComponent {
         productsState.set({ search: target.value });
       });
     });
-    emitter.subscribe('kekboards:cart__save', () => {
+    emitter.subscribe('cart__save', () => {
       this.cartCount.getNode().textContent = `${DB.cart.sumQuantity}`;
       this.cartPrice.getNode().textContent = `${DB.cart.sumPrice}`;
     });

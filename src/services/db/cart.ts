@@ -37,7 +37,7 @@ export class Cart {
       this.#CART_KEY,
       JSON.stringify(cart, (_, v) => (v instanceof Map ? Array.from(v) : v)),
     );
-    emitter.emit('kekboards:cart__save');
+    emitter.emit('cart__save');
   }
 
   private convertList(cart: CartItem[]): CartMap;

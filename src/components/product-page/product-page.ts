@@ -4,6 +4,7 @@ import { Keyboard } from '../../services/db/keyboard';
 import { ProductCard } from './../product/product-card';
 import { BaseComponent } from '../elements/base-component';
 import { DB } from '../../services/db/database';
+import { emitter } from '../../services/event-emitter';
 
 export class ProductPage extends BaseComponent {
   private container: BaseComponent;
@@ -49,7 +50,15 @@ export class ProductPage extends BaseComponent {
       className: 'product__list',
       parent: this.card.getNode(),
     });
-    if(DB.cart.isInCart(keyboard.id)) this.btnWrapper.appendEl(this.cartBtn); // TODO прокинуть эммитер сюда, что бы появлялась кнопка перейти в корзину
+    const renderCartBtn = () => {
+      if (DB.cart.isInCart(keyboard.id, this.card.getSelectedSwitch()?.getSwitch().id)) this.btnWrapper.appendEl(this.cartBtn);
+      else this.cartBtn.destroy()
+    }
+    renderCartBtn();
+
+    emitter.subscribe('product-card__cardBtn_clicked', renderCartBtn)
+    emitter.subscribe('product-card__switch-radio_clicked', renderCartBtn)
+
     this.descrList.appendEl(this.descrFields);
   }
 }

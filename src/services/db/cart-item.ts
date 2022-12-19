@@ -20,7 +20,7 @@ export class CartItem {
   }
   set quantity(n) {
     this.#quantity = n;
-    emitter.emit('kekboards:cart__update-item', this);
+    emitter.emit('cart__update-item', this);
   }
   inc() {
     this.quantity++;

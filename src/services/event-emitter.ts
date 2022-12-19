@@ -13,8 +13,10 @@ class EventEmitter {
   } */
 
   emit(eventName: string, args?: any) {
-    this.events[eventName].forEach((callback): void => callback(args));
+    this.events[eventName]?.forEach((callback): void => callback(args));
   }
 }
 
 export const emitter = new EventEmitter();
+
+console.info(emitter)
