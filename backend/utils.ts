@@ -25,6 +25,6 @@ export function showSettledResult<T>(promises: PromiseSettledResult<T>[], items:
   const rejected: string[] = promises
     .filter((promise): promise is PromiseRejectedResult => promise.status === 'rejected')
     .map((v) => `${v.reason}`.slice('Error: '.length));
-  if (rejected.length) console.log('Failed downloads (Bad URL):', rejected);
-  else console.log(`All ${items} downloaded! (${promises.length})`);
+  if (rejected.length) console.warn('Failed downloads (Bad URL):', rejected);
+  else console.info(`All ${items} downloaded! (${promises.length})`);
 }

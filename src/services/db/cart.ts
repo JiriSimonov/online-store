@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { emitter } from '../event-emitter';
 import { CartItem } from './cart-item';
 import { DB } from './database';
@@ -13,7 +14,7 @@ export class Cart {
     return this.load();
   }
   get list(): CartItem[] {
-    return this.convertList(this.cartMap);
+    return Cart.convertList(this.cartMap);
   }
   get sumPrice() {
     return this.list.reduce((sum, item) => {
@@ -40,9 +41,9 @@ export class Cart {
     emitter.emit('cart__save');
   }
 
-  private convertList(cart: CartItem[]): CartMap;
-  private convertList(cart: CartMap): CartItem[];
-  private convertList(cart: CartItem[] | CartMap): CartMap | CartItem[] {
+  private static convertList(cart: CartItem[]): CartMap;
+  private static convertList(cart: CartMap): CartItem[];
+  private static convertList(cart: CartItem[] | CartMap): CartMap | CartItem[] {
     if (cart instanceof Map) {
       return Array.from(cart, (item) => {
         const [kId, sId] = item[0].split('-');
@@ -67,10 +68,10 @@ export class Cart {
   }
   isInCart(keyboardId: number, keyboardSwitchId?: string): boolean {
     if (keyboardSwitchId) return this.cartMap.has(`${keyboardId}-${keyboardSwitchId}`);
-    // return [...this.cartMap.keys()].some((key) => key.startsWith(`${keyboardId}`));
-    for (const key of this.cartMap.keys()) {
+    return [...this.cartMap.keys()].some((key) => key.startsWith(`${keyboardId}`));
+    /* for (const key of this.cartMap.keys()) {
       if (key.startsWith(`${keyboardId}`)) return true;
     }
-    return false;
+    return false; */
   }
 }

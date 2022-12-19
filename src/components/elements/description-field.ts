@@ -11,4 +11,3 @@ export class DescriptionField extends BaseComponent {
     this.value = new BaseComponent({ className: 'product__text', text: props.value, parent: this.node }); 
   }
 }
-  
