@@ -4,9 +4,9 @@ $grey: rgb(229, 230, 230);
 $border-gray: #bfbfbf;
 
 //product cards
-$blue: rgb(0, 131, 241);
-$green: rgb(104, 204, 69);
-$light-gray: rgb(171, 179, 186);
+$blue: #337aaa;
+$green: #42842a;
+$light-gray: #6e7378;
 $modal-bg: #000;
 
 //switch
@@ -20,16 +20,16 @@ $cr: #e3120c;
 $cy: #fcdc67;
 $csr: linear-gradient(45deg, #e3120c, #ffe6cc);
 $css: linear-gradient(45deg, #b6bbc5, #92a4ce);
-$gr: #7fb676;
+$gr: #567c50;
 $ed: #fffd4e;
-$es: #e9adb5;
+$es: #906a6e;
 $er: #c44c70;
-$ei: #9bdb84;
+$ei: #5a804c;
 $gpbr: #92584f;
-$gpb: #3d90c7;
+$gpb: #337aaa;
 $kpc: #276bcc;
 $eir: #354090;
-$ev: #ab93c6;
+$ev: #7b6a90;
 $klb: #72d7fa;
 $gpy: #fff388;
 $topre: #454d54;
@@ -40,3 +40,8 @@ $sw-disabled-txt: rgb(115, 129, 140);
 
 $cursor: url('../../icons/cursor/basic.svg') 10 10, auto;
 $hover: url('../../icons/cursor/hover.svg') 10 10, auto;
+
+
+// text 
+
+$text-gray: #6e7378;
