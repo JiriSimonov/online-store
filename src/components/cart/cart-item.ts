@@ -90,7 +90,7 @@ export class CartItemElem extends BaseComponent {
       if (e.target && e.target instanceof HTMLInputElement) {
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
         if (+e.target.value < +e.target.min) e.target.value = e.target.min;
-        product.quantity = +e.target.value;
+        product.set(+e.target.value);
         this.inStock.getNode().textContent = `Осталось на складе: ${
           keyboardSwitch.quantity - +e.target.value
         }`;
