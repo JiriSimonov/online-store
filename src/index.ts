@@ -11,6 +11,7 @@ import { ProductsListState } from './states/goods-state';
 import { DB } from './services/db/database';
 import { Error } from './utils/error';
 import './assets/styles/global/style.scss';
+import { KekStore } from './components/kekstore';
 
 class App extends BaseComponent {
   private router: Router | null;
@@ -39,6 +40,12 @@ class App extends BaseComponent {
     store.render();
     this.currentPage = store;
     this.appendEl(store);
+  }
+
+  renderKek() {
+    this.currentPage?.destroy();
+    this.currentPage = new KekStore(this.productsListState);
+    this.appendEl(this.currentPage);
   }
 
   renderCart() {
@@ -77,6 +84,7 @@ class App extends BaseComponent {
           '': () => this.renderHome(),
           'home': () => this.renderHome(),
           'store': () => this.renderStore(),
+          'kek': () => this.renderKek(),
           'cart': () => this.renderCart(),
           ...DB.keyboards.reduce(
             (p, c) =>
