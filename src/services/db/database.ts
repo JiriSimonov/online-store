@@ -70,12 +70,13 @@ class Database {
     const keyboard: Keyboard = this.getKeyboard(keyboardId);
     return [keyboard, keyboard.getSwitch(switchId)];
   }
+
+  getChunk<T>(number: number, length: number, list: T[] | Keyboard[] = this.keyboards) {
+    return list.slice(number * length, number * length + length);
+  }
 }
 
-export const DB = new Database(
-  keyboardsJson as KeyboardData[],
-  switchesJson as SwitchDescriptionList,
-);
+export const DB = new Database(keyboardsJson as KeyboardData[], switchesJson as SwitchDescriptionList);
 
 emitter.subscribe('cart__update-item', (item: CartItem) => DB.cart.add(item));
 
