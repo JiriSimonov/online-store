@@ -110,9 +110,9 @@ export class CartItemElem extends BaseComponent {
       }
     }
     this.countField.getInputNode().onkeydown = (e) => {
-      if (e.target && e.target instanceof HTMLInputElement) {
-        if (['e','E', '-', '+', '.', ','].includes(e.key)) e.preventDefault();
-      }
+      // TODO посмотреть что убрать
+      if (e.target && e.target instanceof HTMLInputElement && ['e', 'E', '-', '+', '.', ','].includes(e.key))
+        e.preventDefault();
     }
     this.cartInc = new Button({
       className: 'count-btn__inc',

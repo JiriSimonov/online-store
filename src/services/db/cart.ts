@@ -24,7 +24,9 @@ export class Cart {
   }
   get sumQuantity() {
     let sum = 0;
-    this.load().forEach((quantity) => { (sum += quantity) });
+    this.load().forEach((quantity) => {
+      sum += quantity;
+    });
     return sum;
   }
 
@@ -44,12 +46,10 @@ export class Cart {
   private static convertList(cart: CartItem[]): CartMap;
   private static convertList(cart: CartMap): CartItem[];
   private static convertList(cart: CartItem[] | CartMap): CartMap | CartItem[] {
-    if (cart instanceof Map) {
-      return Array.from(cart, (item) => {
-        const [kId, sId] = item[0].split('-');
-        return new CartItem(...DB.getProduct(+kId, sId), item[1]);
-      });
-    }
+    if (cart instanceof Map) return Array.from(cart, (item) => {
+      const [kId, sId] = item[0].split('-');
+      return new CartItem(...DB.getProduct(+kId, sId), item[1]);
+    });
     return new Map(cart.map((item: CartItem): [string, number] => item.entries));
   }
 
@@ -69,7 +69,7 @@ export class Cart {
   isInCart(keyboardId: number, keyboardSwitchId?: string): boolean {
     if (keyboardSwitchId) return this.cartMap.has(`${keyboardId}-${keyboardSwitchId}`);
     return [...this.cartMap.keys()].some((key) => key.startsWith(`${keyboardId}`));
-    /* for (const key of this.cartMap.keys()) {
+ /* for (const key of this.cartMap.keys()) {
       if (key.startsWith(`${keyboardId}`)) return true;
     }
     return false; */
