@@ -58,7 +58,14 @@
 
   &__input_is-open {
     display: initial;
+    padding: 5px;
+    border: 2px solid $grey;
+    border-radius: 5px;
     visibility: visible;
+
+    &:focus {
+      border-color: $blue;
+    }
   }
 
   &__count {
