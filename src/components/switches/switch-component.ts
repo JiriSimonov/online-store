@@ -5,8 +5,8 @@ import { BaseComponent } from '../elements/base-component';
 export class SwitchComponent extends BaseComponent {
   private switchField: FormField;
 
-  constructor(private props: KeyboardSwitch, keyboardId: string) {
-    super({ tag: 'li', className: 'switch__item' });
+  constructor(private props: KeyboardSwitch, keyboardId: string, elemTag?: keyof HTMLElementTagNameMap) {
+    super({ tag: elemTag ?? 'li', className: 'switch__item' });
     const { id, isAvailable } = props;
     this.switchField = new FormField({
       className: 'switch',
