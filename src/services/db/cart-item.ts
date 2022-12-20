@@ -4,11 +4,9 @@ import { KeyboardSwitch } from './keyboard-switch';
 
 export class CartItem {
   #quantity: number;
-  constructor(
-    public readonly keyboard: Keyboard,
-    public readonly keyboardSwitch: KeyboardSwitch,
-    quantity?: number,
-  ) { this.#quantity = quantity ?? 1; }
+  constructor(public readonly keyboard: Keyboard, public readonly keyboardSwitch: KeyboardSwitch, quantity?: number) {
+    this.#quantity = quantity ?? 1;
+  }
   get key(): string {
     return `${this.keyboard.id}-${this.keyboardSwitch.id}`;
   }
@@ -18,9 +16,12 @@ export class CartItem {
   get quantity(): number {
     return this.#quantity;
   }
-  set quantity(n) {
+  set quantity(n: number) {
     this.#quantity = n;
     emitter.emit('cart__update-item', this);
+  }
+  set(n: number) {
+    this.quantity = n;
   }
   inc() {
     this.quantity++;
