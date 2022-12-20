@@ -138,7 +138,9 @@ export class ProductCard extends BaseComponent {
       if (target.classList.contains('switch__label')) {
         this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
         this.appendEl(this.switchModal);
+        this.cardPrice.getNode().classList.add('store__card-price_is-open');
         target.addEventListener('mouseout', () => {
+          this.cardPrice.getNode().classList.remove('store__card-price_is-open');
           this.switchModal?.destroy();
           this.switchModal = null;
         });
