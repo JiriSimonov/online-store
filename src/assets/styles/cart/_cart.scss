@@ -319,8 +319,8 @@
   }
 
   &__content {
-    width: 30%;
-    padding: 40px 60px;
+    width: 70%;
+    padding: 20px;
     border-radius: 13px;
     background-color: $white;
   }
@@ -371,40 +371,102 @@
   }
 
   .card {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 20px;
+    position: relative;
+    padding: 90px 20px 30px 20px;
+    border-radius: 13px;
+    background-image: url('../../images/card-bg.jpg');
 
-    .modal__label_small:not(:first-child) {
-      width: 40px;
+    &::before,
+    &__logo {
+      height: 49px;
     }
 
-    .modal__label_small:first-child {
-      grid-column: 1 / 3;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 60px;
+      background-image: url('../../images/chip.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
 
-      .modal__input_small {
-        width: 265px;
+    &__logo {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 85px;
+      background-image: url('../../images/visa-logo.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    &__wrapper {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      row-gap: 20px;
+      margin-top: 20px;
+      width: 400px;
+    }
+
+    &__label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      font-size: 14px;
+      color: $white;
+
+      &_number {
+        grid-column: 1 / 3;
+        grid-row: 1;
+        text-align: center;
+      }
+
+      &_expires {
+        grid-column: 1 / 1;
+        grid-row: 2;
+      }
+
+      &_cvv {
+        grid-column: 2;
+        grid-row: 2;
+        margin-left: auto;
+        width: 65px;
       }
     }
 
-    .modal__label_small:nth-child(2) {
-      grid-column: 1;
-      grid-row: 2;
-      margin-left: auto;
-      margin-right: 5px;
-    }
+    &__input {
+      all: unset;
+      padding: 5px;
+      width: 100%;
 
-    .modal__label_small:nth-child(3) {
-      grid-column: 2;
-      grid-row: 2;
-    }
+      &::placeholder {
+        font-family: 'Nunito';
+        font-style: normal;
+        color: $white;
+        font-size: 18px;
+        letter-spacing: 0.1em;
+      }
 
-    .modal__label_small:nth-child(4) {
-      grid-column: 3;
-      grid-row: 2;
-      margin-left: auto;
-    }
+      &_number {
+        margin-top: 15px;
+        
+        &::placeholder {
+          font-size: 24px;
+        }
+      }
+      
+      &_expires,
+      &_cvv {
+        padding: 10px 15px 10px 0;
+      }
 
+      &_expires {
+        width: 80px;
+      }
+    }
   }
 }
 
