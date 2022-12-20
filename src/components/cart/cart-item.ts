@@ -54,7 +54,7 @@ export class CartItemElem extends BaseComponent {
       text: keyboard.title,
       parent: this.wrapper.getNode(),
     });
-    this.switchWrapper = new BaseComponent({ className: 'switch', parent: this.wrapper.getNode()});
+    this.switchWrapper = new BaseComponent({ className: 'switch', parent: this.wrapper.getNode() });
     this.keyboardSwitch = new SwitchComponent(keyboardSwitch, product.key);
     this.switchWrapper.appendEl(this.keyboardSwitch);
     this.category = new BaseComponent({
@@ -110,9 +110,9 @@ export class CartItemElem extends BaseComponent {
       }
     }
     this.countField.getInputNode().onkeydown = (e) => {
-      if (e.target && e.target instanceof HTMLInputElement) {
-        if (['e','E', '-', '+', '.', ','].includes(e.key)) e.preventDefault();
-      }
+      // TODO посмотреть что убрать
+      if (e.target && e.target instanceof HTMLInputElement && ['e', 'E', '-', '+', '.', ','].includes(e.key))
+        e.preventDefault();
     }
     this.cartInc = new Button({
       className: 'count-btn__inc',

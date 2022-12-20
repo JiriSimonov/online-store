@@ -54,7 +54,10 @@ export class ProductCard extends BaseComponent {
     });
     this.switchArr = props.switches.filter((item) => item.id !== 'null');
     this.switchItems = this.switchArr.map((item) => new SwitchComponent(item, `${props.id}`));
-    this.switchItems.find((item) => item.getSwitch().isAvailable)?.getInputNode().setAttribute('checked', 'true');
+    this.switchItems
+      .find((item) => item.getSwitch().isAvailable)
+      ?.getInputNode()
+      .setAttribute('checked', 'true');
     //? перебросил в делегирование. вроде работает
     /* this.switchItems.filter((item) => item.getSwitch().isAvailable).map((item) => item.getInputNode().oninput = () => {
       emitter.emit('product-card__switch-radio_clicked');
@@ -72,7 +75,7 @@ export class ProductCard extends BaseComponent {
     this.cardCopy = new Button({
       className: 'store__card-copy',
       parent: this.cardTitle.getNode(),
-      aria: 'Скопировать название'
+      aria: 'Скопировать название',
     });
     this.cardCopy.getNode().onclick = () => {
       if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
@@ -89,25 +92,35 @@ export class ProductCard extends BaseComponent {
         }, 1000);
       } // TODO refactor
     };
+
+    const addToCart = () => {
+      const selected = this.getSelectedSwitch();
+      if (selected) {
+        DB.cart.add([props, selected.getSwitch()]);
+      } else {
+        const hiddenSwitch = props.switches.find((item) => item.isAvailable);
+        if (hiddenSwitch) DB.cart.add(new CartItem(props, hiddenSwitch));
+      }
+    };
+
+    this.buyNowBtn = new Button({
+      className: 'store__card-btn',
+      text: 'Купить в 1 клик',
+      onclick: () => {
+        addToCart();
+        window.location.hash = '#cart';
+        emitter.emit('product-card__buyNowBtn_clicked');
+      },
+    });
     this.cardBtn = new Button({
       className: 'store__card-btn',
       text: 'Добавить в корзину',
       onclick: () => {
-        const selected = this.getSelectedSwitch();
-        if (selected) {
-          DB.cart.add([props, selected.getSwitch()]);
-        } else {
-          const hiddenSwitch = props.switches.find(item => item.isAvailable)
-          if (hiddenSwitch) DB.cart.add(new CartItem(props, hiddenSwitch))
-        };
+        addToCart();
         emitter.emit('product-card__cardBtn_clicked');
       },
     });
-    this.buyNowBtn = new Button({
-      className: 'store__card-btn',
-      text: 'Купить в 1 клик',
-      onclick: () => {window.location.hash = '#cart'}, // TODO добавить функциональность согласно ТЗ!!!
-    });
+
     if (props.isAvailable) {
       if (DB.cart.isInCart(props.id, this.getSelectedSwitch()?.getSwitch().id)) {
         this.cardBtn.getNode().textContent = 'Уже в корзине';
@@ -116,21 +129,14 @@ export class ProductCard extends BaseComponent {
       this.priceWrapper.appendEl([this.buyNowBtn, this.cardBtn]);
     }
     this.isAvialable = new BaseComponent({
-      className: `${
-        props.isAvailable
-          ? 'store__card-av store__card-av_true'
-          : 'store__card-av store__card-av_false'
-      }`,
+      className: `${props.isAvailable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
       text: `${props.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
       parent: this.node,
     });
     this.switchList.getNode().addEventListener('mouseover', (e) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('switch__label')) {
-        this.switchModal = new SwitchModal(
-          target.textContent || '',
-          !target.classList.contains('switch__item_false'),
-        );
+        this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
         this.appendEl(this.switchModal);
         target.addEventListener('mouseout', () => {
           this.switchModal?.destroy();
@@ -143,20 +149,22 @@ export class ProductCard extends BaseComponent {
       const { target } = e;
       const { classList } = target;
 
-      if (classList.contains('switch__input') || classList.contains('switch__label')) {
+      if (classList.contains('switch__input') || classList.contains('switch__label'))
         emitter.emit('product-card__switch-radio_clicked');
-      } else if (target !== this.cardBtn.getNode() && target !== this.cardCopy.getNode()) {
+      else if (
+        target !== this.cardBtn.getNode() &&
+        target !== this.cardCopy.getNode() &&
+        target !== this.buyNowBtn.getNode()
+      )
         window.location.hash = `${props.id}`;
-      }
     };
 
+    //! TODO пофиксить поведение - при загрузке страницы кнопка "уже в корзине" не ловит онклик. при нажатии "добавить в корзину" кнопка "уже в корзине" ловит онклик
     const changeText = () => {
       const selectedSwitch = this.getSelectedSwitch()?.getSwitch();
       const cardBtn = this.cardBtn.getNode();
       const cardPrice = this.cardPrice.getNode();
-      cardBtn.textContent = DB.cart.isInCart(props.id, selectedSwitch?.id)
-        ? 'Уже в корзине'
-        : 'Добавить в корзину';
+      cardBtn.textContent = DB.cart.isInCart(props.id, selectedSwitch?.id) ? 'Уже в корзине' : 'Добавить в корзину';
       cardPrice.textContent = `от ${selectedSwitch?.price ?? props.minPrice} ₽`;
     };
     emitter.subscribe('product-card__cardBtn_clicked', changeText);

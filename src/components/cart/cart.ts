@@ -6,6 +6,7 @@ import { CartList } from './cart-list';
 import { PromoForm } from './cart-promo';
 import { OrderForm } from './order-form';
 import { ChangeView } from '../elements/change-view';
+import { emitter } from '../../services/event-emitter';
 
 export class Cart extends BaseComponent {
   private container: BaseComponent;
@@ -70,11 +71,23 @@ export class Cart extends BaseComponent {
     });
     this.cartList = new CartList();
     this.cartItems = DB.cart.list.map((item) => new CartItemElem(item, this.cartPriceTotal));
-    this.orderBtn.getNode().onclick = () => {
+
+    const openOrderForm = () => {
       this.orderForm = new OrderForm();
-      this.wrapper.appendEl(this.orderForm);
+      //? если аппендить в body, то хотя бы отрисовывается
+      // this.wrapper.appendEl(this.orderForm);
+      // document.body.append(this.orderForm.getNode());
+      document.body.append(this.orderForm.getNode());
       document.body.classList.add('no-scroll');
     };
+
+    this.orderBtn.getNode().onclick = openOrderForm;
+
+    emitter.subscribe('product-card__buyNowBtn_clicked', () => {
+      //? либо так либо так
+      // this.orderBtn.getNode().click()
+      // openOrderForm();
+    });
   }
 
   render() {

@@ -7,10 +7,10 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     const node = document.createElement(props.tag ?? 'div');
     const { className, text, parent } = props;
     if (className) node.className = className;
-    if (text) {
+    if (text) 
       if (text.includes('\n')) node.innerText = text;
       else node.textContent = text;
-    }
+    
     if (parent) parent.append(node);
     this.node = node as T;
   }
