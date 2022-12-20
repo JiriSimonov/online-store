@@ -5,7 +5,7 @@ export class Input extends BaseComponent<HTMLInputElement> {
   constructor(props: InputProps) {
     super(Object.assign(props, { tag: 'input' }));
     const { value, type, placeholder, pattern, min, max, name } = props;
-    const node = this.node;
+    const { node } = this;
     if (value) node.setAttribute('value', value);
     if (type) node.setAttribute('type', type);
     if (placeholder) node.setAttribute('placeholder', placeholder);

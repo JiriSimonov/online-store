@@ -12,11 +12,15 @@ export class ChangeView extends BaseComponent {
       this.node.parentElement?.classList.remove('list');
       this.table.getNode().classList.add('view__table_active');
       this.list.getNode().classList.remove('view__list_active');
-    } });
+    },
+    aria: 'Отобразить в виде таблицы',
+  });
     this.list = new Button({ className: 'view__list', parent: this.node, onclick: () => {
       this.node.parentElement?.classList.add('list');
       this.list.getNode().classList.add('view__list_active');
       this.table.getNode().classList.remove('view__table_active');
-    } });
+    },
+    aria: 'Отобразить в виде списка',
+  });
   }
 }

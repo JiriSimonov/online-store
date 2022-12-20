@@ -86,7 +86,8 @@
 
   // TODO разбить все по стилям нормально, сейчас каша
   #open {
-    z-index: 4;
+    z-index: 6;
+    transition: none;
   }
 
   @media (max-width: 1401px) {

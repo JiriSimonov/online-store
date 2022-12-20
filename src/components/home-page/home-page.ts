@@ -26,11 +26,13 @@ export class Home extends BaseComponent {
     this.subtitle = new BaseComponent({
       tag: 'p',
       className: 'home__text',
+      // eslint-disable-next-line max-len
       text: 'Keyboards Store - это магазин механических клавиатур для профессионалов. Мы продаём только то, что нравится нам самим. Каждую представленную на сайте клавиатуру мы рекомендуем.',
     });
     this.text = new BaseComponent({
       tag: 'p',
       className: 'home__text',
+      // eslint-disable-next-line max-len
       text: 'Тщательно отбирая клавиатуры и аксессуары для нашего магазина, мы не признаем компромиссов в вопросах качества и не идем на сделки с совестью. Именно поэтому вы не найдете у нас клавиатур, которыми мы сами не хотели бы пользоваться – в GeekBoards продаётся только то, что нравится нам самим и только то, что мы можем со всей ответственностью вам порекомендовать.',
     });
     this.button = new Button({

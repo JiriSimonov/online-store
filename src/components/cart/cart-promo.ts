@@ -1,4 +1,4 @@
-import { FormField } from './../elements/form-field';
+import { FormField } from '../elements/form-field';
 import { BaseComponent } from '../elements/base-component';
 import { Button } from '../elements/button';
 

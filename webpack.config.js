@@ -8,8 +8,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
-const getTemplate = (title, lang) => `<!DOCTYPE html>
-<html lang="${lang ?? 'en'}">
+const getTemplate = (title) => `<!DOCTYPE html>
+<html lang="ru-RU">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,7 +38,7 @@ const config = {
   plugins: [
     new ESLintPlugin({ extensions: ['ts'] }),
     new HtmlWebpackPlugin({
-      templateContent: getTemplate('Keyboards Store', 'en'),
+      templateContent: getTemplate('Keyboards Store'),
       fileName: 'index.html',
     }),
     new CopyPlugin({
