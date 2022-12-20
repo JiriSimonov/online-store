@@ -43,11 +43,9 @@ export class Store extends BaseComponent {
     this.storeItems = DB.keyboards.map((item: Keyboard) => new ProductCard(item));
     this.showFiltersBtn.getNode().addEventListener('click', () => {
       this.wrapper.getNode().classList.toggle('store__wrapper_is-open');
-      if (this.wrapper.getNode().classList.contains('store__wrapper_is-open')) {
+      if (this.wrapper.getNode().classList.contains('store__wrapper_is-open'))
         this.contentWrapper.getNode().prepend(this.filters.getNode());
-      } else {
-        this.filters.destroy();
-      }
+      else this.filters.destroy();
     });
   }
 

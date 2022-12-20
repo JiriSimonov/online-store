@@ -54,7 +54,7 @@ export class CartItemElem extends BaseComponent {
       text: keyboard.title,
       parent: this.wrapper.getNode(),
     });
-    this.switchWrapper = new BaseComponent({ className: 'switch', parent: this.wrapper.getNode()});
+    this.switchWrapper = new BaseComponent({ className: 'switch', parent: this.wrapper.getNode() });
     this.keyboardSwitch = new SwitchComponent(keyboardSwitch, product.key);
     this.switchWrapper.appendEl(this.keyboardSwitch);
     this.category = new BaseComponent({

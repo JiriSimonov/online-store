@@ -41,12 +41,16 @@ export class ProductPage extends BaseComponent {
       className: 'cart__btn',
       text: 'Назад',
       parent: this.btnWrapper.getNode(),
-      onclick: () => {(window.location.hash = '#store')},
+      onclick: () => {
+        window.location.hash = '#store';
+      },
     });
     this.cartBtn = new Button({
       className: 'cart__btn',
       text: 'Оформить заказ',
-      onclick: () => {window.location.hash = '#cart'} 
+      onclick: () => {
+        window.location.hash = '#cart';
+      },
     });
     this.thumbnails = new ThumbNails(keyboard);
     this.card.appendEl(this.thumbnails);
@@ -65,14 +69,14 @@ export class ProductPage extends BaseComponent {
       parent: this.card.getNode(),
     });
     const renderCartBtn = () => {
-      if (DB.cart.isInCart(keyboard.id, this.card.getSelectedSwitch()?.getSwitch().id)) {
+      if (DB.cart.isInCart(keyboard.id, this.card.getSelectedSwitch()?.getSwitch().id))
         this.btnWrapper.appendEl(this.cartBtn);
-      } else this.cartBtn.destroy()
-    }
+      else this.cartBtn.destroy();
+    };
     renderCartBtn();
 
-    emitter.subscribe('product-card__cardBtn_clicked', renderCartBtn)
-    emitter.subscribe('product-card__switch-radio_clicked', renderCartBtn)
+    emitter.subscribe('product-card__cardBtn_clicked', renderCartBtn);
+    emitter.subscribe('product-card__switch-radio_clicked', renderCartBtn);
 
     this.descrList.appendEl(this.descrFields);
   }
