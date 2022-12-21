@@ -321,6 +321,7 @@
   &__content {
     position: relative;
     width: 50%;
+    max-width: 600px;
     padding: 40px;
     border-radius: 13px;
     background-color: $white;
@@ -487,6 +488,16 @@
       all: unset;
       padding: 5px;
       width: 100%;
+      font-family: 'Nunito';
+      font-style: normal;
+      color: $white;
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
 
       &::placeholder {
         font-family: 'Nunito';
@@ -498,6 +509,7 @@
 
       &_number {
         margin-top: 15px;
+        font-size: 25px;
         
         &::placeholder {
           font-size: 24px;
@@ -507,6 +519,10 @@
       &_expires,
       &_cvv {
         padding: 10px 15px 10px 0;
+      }
+
+      &_cvv {
+        text-indent: 10px;
       }
 
       &_expires {

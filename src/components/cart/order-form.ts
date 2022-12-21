@@ -1,3 +1,4 @@
+import Imask from 'imask';
 import { BaseComponent } from '../elements/base-component';
 import { Button } from '../elements/button';
 import { FormField } from '../elements/form-field';
@@ -41,6 +42,11 @@ export class OrderForm extends BaseComponent {
       placeholder: '+7(982)-386-22-16',
       pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
     });
+    const phoneMaskOption = {
+      mask: '+{7}(000)-000-00-00',
+      lazy: false,
+    };
+    Imask(this.phoneField.getInputNode(), phoneMaskOption);
     this.addressField = new FormField({
       className: 'modal',
       text: 'Адрес доставки',

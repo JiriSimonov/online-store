@@ -48,6 +48,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "imask": "^6.4.3",
     "eslint-config-airbnb-typescript": "^17.0.0"
   }
 }
