@@ -319,10 +319,29 @@
   }
 
   &__content {
-    width: 70%;
-    padding: 20px;
+    position: relative;
+    width: 50%;
+    padding: 40px;
     border-radius: 13px;
     background-color: $white;
+  }
+
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    background-image: url('../../icons/close.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    transition: 10.5s linear;
+
+    &:hover,
+    &:focus {
+      transform: rotate(1800deg);
+    }
   }
 
   &__form {
@@ -331,26 +350,50 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
+    font-family: 'Nunito', 'sans-serif';
   }
 
   &__label {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 100%;
+    max-width: 320px;
     font-size: 18px;
     font-weight: 400;
     color: $black;
     user-select: none;
+
+    &::after {
+      content: '*';
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 16px;
+      font-weight: 400;
+      color: $r;
+    }
   }
 
   &__input {
-    padding: 8px 10px 8px 0;
-    border: 2px solid red;
+    padding: 15px 10px 15px 0;
+    border: 1px solid $grey;
     border-radius: 5px;
     background-color: transparent;
-    text-indent: 8px;
+    text-indent: 10px;
     font-size: 16px;
     font-weight: 400px;
+
+    &::placeholder {
+      font-family: 'Nunito', sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    &:focus {
+      border-color: $blue;
+    }
   }
 
   &__submit {
@@ -364,7 +407,8 @@
     cursor: $hover;
     transition: .3s linear;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background-color: $black;
       color: $white;
     }
@@ -373,8 +417,10 @@
   .card {
     position: relative;
     padding: 90px 20px 30px 20px;
+    min-width: 414px;
     border-radius: 13px;
     background-image: url('../../images/card-bg.jpg');
+
 
     &::before,
     &__logo {
@@ -408,7 +454,7 @@
       grid-template-rows: repeat(2, 1fr);
       row-gap: 20px;
       margin-top: 20px;
-      width: 400px;
+      min-width: 350px;
     }
 
     &__label {
