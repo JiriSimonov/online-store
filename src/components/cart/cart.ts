@@ -28,13 +28,9 @@ export class Cart extends BaseComponent {
     tag: 'h3',
     text: 'Активные промокоды',
     className: 'promo__title',
-    parent: this.cartPromoWrapper.getNode()
+    parent: this.cartPromoWrapper.getNode(),
   });
-  private cartPromoItems = [
-    new ActivePromo('hesoyam', '20%'),
-    new ActivePromo('hesoyam', '20%'),
-    new ActivePromo('hesoyam', '20%')
-  ];
+  private cartPromoItems = DB.cart.promo.list.map((promo) => new ActivePromo(promo[0], `${promo[1] * 100}%`));
   private cartPromoList = new BaseComponent({ tag: 'ul', className: 'promo-active' });
   private cartPromoBtn = new Button({
     className: 'promo__btn',
@@ -53,7 +49,8 @@ export class Cart extends BaseComponent {
   });
   private cartCurrentPrice = new BaseComponent({ tag: 'span', className: 'cart-currrent-price', text: '' });
   private orderBtn = new Button({
-    className: 'cart__order', text: 'Продолжить оформление',
+    className: 'cart__order',
+    text: 'Продолжить оформление',
     onclick: () => this.openOrderForm(),
   });
   private orderForm = new OrderForm();
@@ -82,18 +79,15 @@ export class Cart extends BaseComponent {
       // openOrderForm();
     });
     emitter.subscribe('cart__save', () => {
-      this.cartPriceTotal.getNode().textContent
-        = `${DB.cart.sumPrice}`;
-        this.cartCurrentPrice.getNode().textContent
-        = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
-        this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc');
-        // TODO! нужна проверка на наличие активного промокода
+      this.cartPriceTotal.getNode().textContent = `${DB.cart.sumPrice}`;
+      this.cartCurrentPrice.getNode().textContent = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
+      this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc');
+      // TODO нужна проверка на наличие активного промокода
     });
-    emitter.subscribe('cart-promocode-click', () => {
+    emitter.subscribe('promo__save', () => {
       this.cartPriceTotal.appendEl(this.cartCurrentPrice);
-      this.cartCurrentPrice.getNode().textContent
-        = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
-        this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc');
+      this.cartCurrentPrice.getNode().textContent = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
+      this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc');
     });
   }
 
