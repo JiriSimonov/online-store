@@ -63,11 +63,6 @@ export class OrderForm extends BaseComponent {
     this.modalSubmit = new Button({
       className: 'modal__submit',
       text: 'Заказать',
-      onclick: () => {
-        this.destroy();
-        // window.location.hash = '#store';
-        document.body.classList.remove('no-scroll');
-      },
     });
     this.modalClose = new Button({
       className: 'modal__close',
@@ -78,6 +73,9 @@ export class OrderForm extends BaseComponent {
         document.body.classList.remove('no-scroll');
       },
     });
+    this.modalForm.getNode().onsubmit = () => {
+      console.warn('submit');
+    }
     // render
     this.appendEl(this.modalOverlay);
     this.modalOverlay.appendEl(this.modalContent);

@@ -24,6 +24,41 @@ export class Card extends BaseComponent {
       mask: '0000 0000 0000 0000',
     };
     Imask(this.cardNumber.getInputNode(), curdNumberOptions);
+    this.cardNumber.getInputNode().oninput = (e) => {
+      const { target } = e;
+      if (target && target instanceof HTMLInputElement) {
+        let re = (/^4/);
+        if (target.value.match(re) != null) {
+          this.logo.getNode().style.backgroundImage = `url('assets/icons/cards/visa-logo.webp')`;
+          console.warn('VISA');
+          return "visa"
+        }
+        re = /^(34|37)/;
+        if (target.value.match(re) != null) {
+          this.logo.getNode().style.backgroundImage
+          = `url('assets/icons/cards/amex.webp')`;
+          return "amex";
+        }
+        re = /^5[1-5]/;
+        if (target.value.match(re) != null) {
+          console.warn('mastercard');
+          return "mastercard";
+        };
+  
+        re = /^6011/;
+        if (target.value.match(re) != null) {
+          console.warn('discover');
+          return "discover"
+        };
+        
+        re = /^9792/;
+        if (target.value.match(re) != null) {
+          console.warn('troy');
+          return 'troy';
+        }
+      }
+      return "visa";
+    }
     this.cardExpires = new FormField({
       className: 'card',
       modificator: 'expires',
@@ -42,7 +77,7 @@ export class Card extends BaseComponent {
         },
         YY: {
           mask: Imask.MaskedRange,
-          from: 10,
+          from: 23,
           to: 50,
           maxLength: 2,
         }
