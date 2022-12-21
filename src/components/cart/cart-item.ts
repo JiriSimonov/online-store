@@ -36,7 +36,7 @@ export class CartItemElem extends BaseComponent {
 
   private keyboardSwitch: SwitchComponent;
 
-  constructor(product: CartItem, totalPrice: BaseComponent) {
+  constructor(product: CartItem) {
     super({ tag: 'li', className: 'cart__item' });
     const { keyboard, keyboardSwitch, quantity } = product;
     this.countField = new FormField({
@@ -102,7 +102,6 @@ export class CartItemElem extends BaseComponent {
           keyboardSwitch.quantity - +e.target.value
         }`;
         this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
-        totalPrice.getNode().textContent = `${DB.cart.sumPrice}`;
         (this.cartDec.getNode() as HTMLButtonElement).disabled =
           +e.target.value === +this.countField.getInputNode().min;
         (this.cartInc.getNode() as HTMLButtonElement).disabled =
@@ -129,7 +128,6 @@ export class CartItemElem extends BaseComponent {
       parent: this.stockWrapper.getNode(),
       onclick: () => {
         DB.cart.remove(product);
-        totalPrice.getNode().textContent = `${DB.cart.sumPrice}`;
         this.destroy();
       },
     });
