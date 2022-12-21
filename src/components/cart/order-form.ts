@@ -1,6 +1,7 @@
 import { BaseComponent } from '../elements/base-component';
 import { Button } from '../elements/button';
 import { FormField } from '../elements/form-field';
+import { Card } from './card';
 
 export class OrderForm extends BaseComponent {
   private modalOverlay: BaseComponent;
@@ -17,15 +18,7 @@ export class OrderForm extends BaseComponent {
 
   private emailField: FormField;
 
-  private card: BaseComponent;
-
-  private cardNumber: FormField;
-
-  private cardMonth: FormField;
-
-  private cardYear: FormField;
-
-  private cardCVV: FormField;
+  private card: Card;
 
   private modalSubmit: Button;
 
@@ -57,31 +50,7 @@ export class OrderForm extends BaseComponent {
       type: 'email',
       placeholder: 'kotopes@mail.ru',
     });
-    this.card = new BaseComponent({ className: 'card' });
-    this.cardNumber = new FormField({
-      modificator: 'small',
-      className: 'modal',
-      type: 'number',
-      placeholder: '3333-4444-5555-6666',
-    });
-    this.cardMonth = new FormField({
-      modificator: 'small',
-      className: 'modal',
-      type: 'number',
-      placeholder: '12',
-    });
-    this.cardYear = new FormField({
-      modificator: 'small',
-      className: 'modal',
-      type: 'number',
-      placeholder: '23',
-    });
-    this.cardCVV = new FormField({
-      modificator: 'small',
-      className: 'modal',
-      type: 'number',
-      placeholder: '123',
-    });
+    this.card = new Card();
     this.modalSubmit = new Button({
       className: 'modal__submit',
       text: 'Заказать',
@@ -95,7 +64,6 @@ export class OrderForm extends BaseComponent {
     this.appendEl(this.modalOverlay);
     this.modalOverlay.appendEl(this.modalContent);
     this.modalContent.appendEl(this.modalForm);
-    this.card.appendEl([this.cardNumber, this.cardMonth, this.cardYear, this.cardCVV]);
     this.modalForm.appendEl([
       this.nameField,
       this.phoneField,
