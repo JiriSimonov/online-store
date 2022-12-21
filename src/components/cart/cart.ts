@@ -12,7 +12,7 @@ import { emitter } from '../../services/event-emitter';
 export class Cart extends BaseComponent {
   private container = new BaseComponent({ className: 'container' });
   private wrapper = new BaseComponent({ className: 'cart__wrapper' });
-  private changeView = new ChangeView();
+
   private cartButton = new Button({
     className: 'cart__btn',
     text: 'Продолжить покупки',
@@ -20,18 +20,17 @@ export class Cart extends BaseComponent {
       window.location.hash = '#store';
     },
   });
+  private changeView = new ChangeView();
+
   private cartList = new CartList();
   private cartItems = DB.cart.list.map((item) => new CartItemElem(item));
+
   private cartPromoWrapper = new BaseComponent({ className: 'promo' });
-  private cartPromoForm = new PromoForm();
-  private cartPromoTitle = new BaseComponent({
-    tag: 'h3',
-    text: 'Активные промокоды',
-    className: 'promo__title',
-    parent: this.cartPromoWrapper.getNode(),
-  });
-  private cartPromoItems = DB.cart.promo.list.map((promo) => new ActivePromo(promo[0], `${promo[1] * 100}%`));
+
+  private cartPromoTitle = new BaseComponent({ tag: 'h3', text: 'Активные промокоды', className: 'promo__title' });
   private cartPromoList = new BaseComponent({ tag: 'ul', className: 'promo-active' });
+
+  private cartPromoForm = new PromoForm();
   private cartPromoBtn = new Button({
     className: 'promo__btn',
     text: 'Есть промокод?',
@@ -40,6 +39,7 @@ export class Cart extends BaseComponent {
       this.cartPromoWrapper.appendEl(this.cartPromoForm);
     },
   });
+
   private cartPriceWrapper = new BaseComponent({ className: 'cart-price' });
   private cartPriceText = new BaseComponent({ tag: 'span', className: 'cart-price__text', text: 'Итог' });
   private cartPriceTotal = new BaseComponent({
@@ -47,7 +47,8 @@ export class Cart extends BaseComponent {
     className: 'cart-price__total',
     text: `${DB.cart.sumPrice}`,
   });
-  private cartCurrentPrice = new BaseComponent({ tag: 'span', className: 'cart-currrent-price', text: '' });
+  private cartCurrentPrice = new BaseComponent({ tag: 'span', className: 'cart-currrent-price' });
+
   private orderBtn = new Button({
     className: 'cart__order',
     text: 'Продолжить оформление',
@@ -70,8 +71,9 @@ export class Cart extends BaseComponent {
     ]);
     this.cartList.appendEl(this.cartItems);
     this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
-    this.cartPromoWrapper.appendEl([this.cartPromoList, this.cartPromoBtn]);
-    this.cartPromoList.appendEl(this.cartPromoItems);
+    this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
+
+    this.updateActivePromoList();
 
     emitter.subscribe('product-card__buyNowBtn_clicked', () => {
       //? либо так либо так
@@ -80,15 +82,33 @@ export class Cart extends BaseComponent {
     });
     emitter.subscribe('cart__save', () => {
       this.cartPriceTotal.getNode().textContent = `${DB.cart.sumPrice}`;
-      this.cartCurrentPrice.getNode().textContent = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
-      this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc');
+      /*  this.cartCurrentPrice.getNode().textContent = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
+      this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc'); */
       // TODO нужна проверка на наличие активного промокода
     });
     emitter.subscribe('promo__save', () => {
+      const { list } = DB.cart.promo;
+      this.updateActivePromoList();
+
       this.cartPriceTotal.appendEl(this.cartCurrentPrice);
       this.cartCurrentPrice.getNode().textContent = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
-      this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc');
+      const { classList } = this.cartPriceTotal.getNode();
+      if (!list.length) classList.remove('cart-price__total_is-disc');
+      else classList.add('cart-price__total_is-disc');
     });
+  }
+
+  private updateActivePromoList() {
+    const { list } = DB.cart.promo;
+    const [promoWrapper, promoTitle] = [this.cartPromoWrapper.getNode(), this.cartPromoTitle.getNode()];
+    this.cartPromoList.getNode().replaceChildren();
+    if (list.length) {
+      this.cartPromoList.appendEl(list.map((item) => new ActivePromo(item[0], `${item[1] * 100}%`)));
+      promoWrapper.prepend(promoTitle, this.cartPromoList.getNode());
+    } else {
+      promoTitle.remove();
+      this.cartPromoList.destroy();
+    }
   }
 
   private openOrderForm() {
