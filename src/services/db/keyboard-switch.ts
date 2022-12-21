@@ -1,6 +1,9 @@
-import { KeyboardSwitchData } from '../../interfaces/database';
+import { KeyboardSwitchData, SwitchDescription, SwitchDescriptionList } from '../../interfaces/database';
+import switchesJson = require('../../data/switches.json');
 
 export class KeyboardSwitch {
+  static descriptions: SwitchDescriptionList = switchesJson;
+
   readonly id: string;
   readonly title: string;
   quantity: number;
@@ -23,5 +26,10 @@ export class KeyboardSwitch {
 
   changeQuantity(number: number) {
     this.quantity += number;
+  }
+
+  static getDescription(id: string, prop: keyof SwitchDescription): string | string[] {
+    if (!(id in KeyboardSwitch.descriptions)) throw new Error('❌Wrong id in getSwitchData');
+    return KeyboardSwitch.descriptions[id][prop];
   }
 }

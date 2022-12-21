@@ -1,8 +1,7 @@
 /* eslint-disable import/no-cycle */
-import { KeyboardData, SwitchDescription, SwitchDescriptionList } from '../../interfaces/database';
+import { KeyboardData } from '../../interfaces/database';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
-import switchesJson = require('../../data/switches.json');
 import keyboardsJson = require('../../data/keyboards.json');
 import { Cart } from './cart';
 import { emitter } from '../event-emitter';
@@ -11,7 +10,7 @@ import { CartItem } from './cart-item';
 class Database {
   readonly keyboards: Keyboard[];
   readonly cart: Cart = new Cart();
-  constructor(keyboards: KeyboardData[], readonly descriptions: SwitchDescriptionList) {
+  constructor(keyboards: KeyboardData[]) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
     Object.seal(this.keyboards);
   }
@@ -44,12 +43,6 @@ class Database {
       }, new Map());
   }
 
-  // TODO пересмотреть можно ли переписать на вызов от самого экземпляра
-  getSwitchData(id: string, prop: keyof SwitchDescription): string | string[] {
-    if (!(id in this.descriptions)) throw new Error('❌Wrong id in getSwitchData');
-    return this.descriptions[id][prop];
-  }
-
   getKeyboard(id: number, list: Keyboard[] = this.keyboards): Keyboard {
     const value: Keyboard | undefined = list.find((item) => item.id === id);
     if (!value) throw new Error(`Keyboard ${id} not found in this list!`);
@@ -72,7 +65,7 @@ class Database {
   }
 }
 
-export const DB = new Database(keyboardsJson as KeyboardData[], switchesJson as SwitchDescriptionList);
+export const DB = new Database(keyboardsJson as KeyboardData[]);
 
 emitter.subscribe('cart__update-item', (item: CartItem) => DB.cart.add(item));
 
