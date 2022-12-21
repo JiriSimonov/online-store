@@ -38,7 +38,10 @@ export class Cart extends BaseComponent {
     className: 'cart-price__total',
     text: `${DB.cart.sumPrice}`,
   });
-  private orderBtn = new Button({ className: 'cart__order', text: 'Продолжить оформление' });
+  private orderBtn = new Button({
+    className: 'cart__order', text: 'Продолжить оформление',
+    onclick: () => this.openOrderForm(),
+  });
   private orderForm = new OrderForm();
 
   constructor() {
