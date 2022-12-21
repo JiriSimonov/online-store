@@ -7,12 +7,10 @@
     "lint": "eslint .",
     "backend": "npx tsc backend/index.ts && node backend",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy:dev": "npm run build && npx gh-pages -d dist -e online-store -m feat:_update_deploy",
-    "deploy:prod": "npm run prod && npx gh-pages -d dist -e online-store -m feat:_update_deploy",
-    "prod": "cross-env NODE_ENV=production webpack",
+    "deploy": "npm run build && npx gh-pages -d dist -e online-store -m feat:_update_deploy",
     "clean": "rmdir /s /q dist",
-    "build": "cross-env NODE_ENV=development webpack",
-    "start": "webpack serve"
+    "build": "webpack --config webpack.prod.js",
+    "start": "webpack serve --config webpack.dev.js"
   },
   "repository": {
     "type": "git",
@@ -28,15 +26,14 @@
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "copy-webpack-plugin": "^11.0.0",
-    "cross-env": "^7.0.3",
     "css-loader": "^6.7.3",
     "eslint": "^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-webpack-plugin": "^3.2.0",
     "html-webpack-plugin": "^5.5.0",
-    "mini-css-extract-plugin": "^2.7.2",
     "prettier": "^2.8.1",
     "sass": "^1.56.2",
     "sass-loader": "^13.2.0",
@@ -45,10 +42,7 @@
     "typescript": "^4.9.4",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1"
-  },
-  "dependencies": {
-    "imask": "^6.4.3",
-    "eslint-config-airbnb-typescript": "^17.0.0"
+    "webpack-dev-server": "^4.11.1",
+    "webpack-merge": "^5.8.0"
   }
 }

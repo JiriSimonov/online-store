@@ -1,4 +1,4 @@
-import { DB } from '../../services/db/database';
+import { KeyboardSwitch } from '../../services/db/keyboard-switch';
 import { BaseComponent } from '../elements/base-component';
 
 export class SwitchModal extends BaseComponent {
@@ -20,13 +20,11 @@ export class SwitchModal extends BaseComponent {
       tag: 'h2',
       className: 'modal__title',
       parent: this.node,
-      text: DB.getSwitchData(id, 'title') as string,
+      text: KeyboardSwitch.getDescription(id, 'title') as string,
     });
 
     this.modalAvialable = new BaseComponent({
-      className: `${
-        isAvialable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'
-      }`,
+      className: `${isAvialable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
       text: `${isAvialable ? 'В наличии' : 'Нет в наличии'}`,
       parent: this.node,
     });
@@ -40,7 +38,7 @@ export class SwitchModal extends BaseComponent {
     });
     this.modalImg.getNode().style.backgroundImage = `url('assets/images/switches/${id}.webp')`;
 
-    this.modalStats = (DB.getSwitchData(id, 'props') as string[]).map(
+    this.modalStats = (KeyboardSwitch.getDescription(id, 'props') as string[]).map(
       (item) =>
         new BaseComponent({
           className: 'modal__stats',
@@ -52,7 +50,7 @@ export class SwitchModal extends BaseComponent {
       tag: 'p',
       className: 'modal__description',
       parent: this.node,
-      text: DB.getSwitchData(id, 'description') as string,
+      text: KeyboardSwitch.getDescription(id, 'description') as string,
     });
   }
 }
