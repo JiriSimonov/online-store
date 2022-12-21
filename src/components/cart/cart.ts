@@ -1,3 +1,4 @@
+import { ActivePromo } from './active-promo';
 import { DB } from '../../services/db/database';
 import { BaseComponent } from '../elements/base-component';
 import { Button } from '../elements/button';
@@ -22,6 +23,19 @@ export class Cart extends BaseComponent {
   private cartList = new CartList();
   private cartItems = DB.cart.list.map((item) => new CartItemElem(item));
   private cartPromoWrapper = new BaseComponent({ className: 'promo' });
+  private cartPromoForm = new PromoForm();
+  private cartPromoTitle = new BaseComponent({
+    tag: 'h3',
+    text: 'Активные промокоды',
+    className: 'promo__title',
+    parent: this.cartPromoWrapper.getNode()
+  });
+  private cartPromoItems = [
+    new ActivePromo('hesoyam', '20%'),
+    new ActivePromo('hesoyam', '20%'),
+    new ActivePromo('hesoyam', '20%')
+  ];
+  private cartPromoList = new BaseComponent({ tag: 'ul', className: 'promo-active' });
   private cartPromoBtn = new Button({
     className: 'promo__btn',
     text: 'Есть промокод?',
@@ -30,7 +44,6 @@ export class Cart extends BaseComponent {
       this.cartPromoWrapper.appendEl(this.cartPromoForm);
     },
   });
-  private cartPromoForm = new PromoForm();
   private cartPriceWrapper = new BaseComponent({ className: 'cart-price' });
   private cartPriceText = new BaseComponent({ tag: 'span', className: 'cart-price__text', text: 'Итог' });
   private cartPriceTotal = new BaseComponent({
@@ -38,6 +51,7 @@ export class Cart extends BaseComponent {
     className: 'cart-price__total',
     text: `${DB.cart.sumPrice}`,
   });
+  private cartCurrentPrice = new BaseComponent({ tag: 'span', className: 'cart-currrent-price', text: '' });
   private orderBtn = new Button({
     className: 'cart__order', text: 'Продолжить оформление',
     onclick: () => this.openOrderForm(),
@@ -58,8 +72,9 @@ export class Cart extends BaseComponent {
       this.orderBtn,
     ]);
     this.cartList.appendEl(this.cartItems);
-    this.cartPromoWrapper.appendEl(this.cartPromoBtn);
     this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
+    this.cartPromoWrapper.appendEl([this.cartPromoList, this.cartPromoBtn]);
+    this.cartPromoList.appendEl(this.cartPromoItems);
 
     emitter.subscribe('product-card__buyNowBtn_clicked', () => {
       //? либо так либо так
@@ -67,7 +82,18 @@ export class Cart extends BaseComponent {
       // openOrderForm();
     });
     emitter.subscribe('cart__save', () => {
-      this.cartPriceTotal.getNode().textContent = `${DB.cart.sumPrice}`;
+      this.cartPriceTotal.getNode().textContent
+        = `${DB.cart.sumPrice}`;
+        this.cartCurrentPrice.getNode().textContent
+        = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
+        this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc');
+        // TODO! нужна проверка на наличие активного промокода
+    });
+    emitter.subscribe('cart-promocode-click', () => {
+      this.cartPriceTotal.appendEl(this.cartCurrentPrice);
+      this.cartCurrentPrice.getNode().textContent
+        = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
+        this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc');
     });
   }
 
