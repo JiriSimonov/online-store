@@ -98,11 +98,9 @@ export class CartItemElem extends BaseComponent {
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
         if (+e.target.value < +e.target.min) e.target.value = e.target.min;
         product.set(+e.target.value);
-        this.inStock.getNode().textContent = `Осталось на складе: ${
-          keyboardSwitch.quantity - +e.target.value
-        }`;
-        this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
-        totalPrice.getNode().textContent = `${DB.cart.sumPrice}`;
+        this.inStock.setText(`Осталось на складе: ${keyboardSwitch.quantity - +e.target.value}`);
+        this.price.setText(`${+e.target.value * keyboardSwitch.price} ₽`);
+        totalPrice.setText(`${DB.cart.sumPrice}`);
         (this.cartDec.getNode() as HTMLButtonElement).disabled =
           +e.target.value === +this.countField.getInputNode().min;
         (this.cartInc.getNode() as HTMLButtonElement).disabled =
@@ -129,7 +127,7 @@ export class CartItemElem extends BaseComponent {
       parent: this.stockWrapper.getNode(),
       onclick: () => {
         DB.cart.remove(product);
-        totalPrice.getNode().textContent = `${DB.cart.sumPrice}`;
+        totalPrice.setText(`${DB.cart.sumPrice}`);
         this.destroy();
       },
     });
@@ -137,7 +135,7 @@ export class CartItemElem extends BaseComponent {
       this.cartDec.getNode().setAttribute('disabled', 'true');
     if (+this.countField.getInputNode().value === +this.countField.getInputNode().max)
       this.cartInc.getNode().setAttribute('disabled', 'true');
-    this.price.getNode().textContent = `${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`;
+    this.price.setText(`${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`);
     this.appendEl(this.images);
     this.appendEl(this.wrapper);
   }

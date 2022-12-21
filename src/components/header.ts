@@ -64,8 +64,8 @@ export class Header extends BaseComponent {
       });
     });
     emitter.subscribe('cart__save', () => {
-      this.cartCount.getNode().textContent = `${DB.cart.sumQuantity}`;
-      this.cartPrice.getNode().textContent = `${DB.cart.sumPrice}`;
+      this.cartCount.setText(`${DB.cart.sumQuantity}`);
+      this.cartPrice.setText(`${DB.cart.sumPrice}`);
     });
     this.logo.getNode().onclick = () => {
       window.location.hash = '#home';
