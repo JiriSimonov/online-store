@@ -17,6 +17,7 @@ export class Card extends BaseComponent {
       modificator: 'number',
       type: 'number',
       placeholder: '####  ####  ####  ####',
+      pattern: '[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}',
       text: 'Номер карты'
     });
     this.cardExpires = new FormField({
@@ -24,6 +25,7 @@ export class Card extends BaseComponent {
       type: 'number',
       modificator: 'expires',
       placeholder: 'ММ/ГГ',
+      pattern: '[0-9]{2}/[0-9]{2}',
       text: 'Срок действия'
     });
     this.cardCVV = new FormField({
@@ -31,6 +33,7 @@ export class Card extends BaseComponent {
       type: 'number',
       modificator: 'cvv',
       placeholder: 'CVV',
+      pattern: '[0-9]{3}',
       text: 'CVV код'
     });
     this.cardWrapper.appendEl([this.cardNumber, this.cardExpires, this.cardCVV]);

@@ -22,6 +22,8 @@ export class OrderForm extends BaseComponent {
 
   private modalSubmit: Button;
 
+  private modalClose: Button;
+
   constructor() {
     super({ className: 'modal' });
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
@@ -30,13 +32,13 @@ export class OrderForm extends BaseComponent {
     this.nameField = new FormField({
       className: 'modal',
       text: 'Имя Фамилия',
-      placeholder: 'Вася Пупкин',
+      placeholder: 'Василий Клаб',
     });
     this.phoneField = new FormField({
       className: 'modal',
       text: 'Телефон',
       type: 'tel',
-      placeholder: '+798238622',
+      placeholder: '+7(982)-386-22-16',
       pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
     });
     this.addressField = new FormField({
@@ -60,6 +62,15 @@ export class OrderForm extends BaseComponent {
         document.body.classList.remove('no-scroll');
       },
     });
+    this.modalClose = new Button({
+      className: 'modal__close',
+      aria: 'Закрыть',
+      parent: this.modalContent.getNode(),
+      onclick: () => {
+        this.destroy();
+        document.body.classList.remove('no-scroll');
+      },
+    });
     // render
     this.appendEl(this.modalOverlay);
     this.modalOverlay.appendEl(this.modalContent);
@@ -72,5 +83,12 @@ export class OrderForm extends BaseComponent {
       this.card,
       this.modalSubmit,
     ]);
+    this.modalOverlay.getNode().addEventListener('click', (e) => {
+      const { target } = e;
+      if (target === this.modalOverlay.getNode()) {
+        this.destroy();
+        document.body.classList.remove('no-scroll');
+      }
+    });
   }
 }
