@@ -30,6 +30,7 @@ export class OrderForm extends BaseComponent {
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
     this.modalContent = new BaseComponent({ className: 'modal__content' });
     this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
+    this.modalForm.getNode().setAttribute('novalidate', 'true');
     this.nameField = new FormField({
       className: 'modal',
       text: 'Имя Фамилия',

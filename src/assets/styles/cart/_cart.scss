@@ -418,7 +418,7 @@
   .card {
     position: relative;
     padding: 90px 20px 30px 20px;
-    min-width: 414px;
+    min-width: 430px;
     border-radius: 13px;
     background-image: url('../../images/card-bg.jpg');
 
@@ -514,6 +514,10 @@
         &::placeholder {
           font-size: 24px;
         }
+      }
+
+      &_expires {
+        text-indent: 15px;
       }
       
       &_expires,
