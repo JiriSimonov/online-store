@@ -10,10 +10,6 @@ import { CartItem } from './cart-item';
 
 class Database {
   readonly keyboards: Keyboard[];
-  readonly promoList = new Map([
-    ['HESOYAM', 0.33],
-    ['IDKFA', 0.66],
-  ]);
   readonly cart: Cart = new Cart();
   constructor(keyboards: KeyboardData[], readonly descriptions: SwitchDescriptionList) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
