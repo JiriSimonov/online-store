@@ -16,13 +16,18 @@ export class Promo {
     return this.load();
   }
 
+  /** Возвращает список доступных промокодов */
+  get available(): string[] {
+    return Array.from(this.valid.keys());
+  }
+
   /** Возвращает количество активных промокодов */
-  get size() {
-    return this.active.size
+  get size(): number {
+    return this.active.size;
   }
 
   /** Возвращает список активных промокодов */
-  get list() {
+  get list(): [string, number][] {
     return Array.from(this.active);
   }
 
