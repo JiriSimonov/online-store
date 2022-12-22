@@ -38,6 +38,7 @@ module.exports = {
       patterns: [
         { from: './src/assets/images/keyboards', to: './assets/images/keyboards' },
         { from: './src/assets/images/switches', to: './assets/images/switches' },
+        { from: './src/assets/icons/cards', to: './assets/icons/cards' },
       ],
     }),
   ],

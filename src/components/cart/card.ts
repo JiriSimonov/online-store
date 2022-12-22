@@ -27,38 +27,40 @@ export class Card extends BaseComponent {
     this.cardNumber.getInputNode().oninput = (e) => {
       const { target } = e;
       if (target && target instanceof HTMLInputElement) {
-        let re = (/^4/);
+        let re = /^4/;
         if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage = `url('assets/icons/cards/visa-logo.webp')`;
-          console.warn('VISA');
+          this.logo.getNode().style.backgroundImage = `url('./assets/icons/cards/visa-logo.webp')`;
           return "visa"
         }
         re = /^(34|37)/;
         if (target.value.match(re) != null) {
           this.logo.getNode().style.backgroundImage
-          = `url('assets/icons/cards/amex.webp')`;
+          = `url('./assets/icons/cards/amex.webp')`;
           return "amex";
         }
         re = /^5[1-5]/;
         if (target.value.match(re) != null) {
-          console.warn('mastercard');
+          this.logo.getNode().style.backgroundImage
+          = `url('./assets/icons/cards/mastercard.webp')`;
           return "mastercard";
         };
   
         re = /^6011/;
         if (target.value.match(re) != null) {
-          console.warn('discover');
+          this.logo.getNode().style.backgroundImage
+          = `url('./assets/icons/cards/discover.webp')`;
           return "discover"
         };
         
         re = /^9792/;
         if (target.value.match(re) != null) {
-          console.warn('troy');
+          this.logo.getNode().style.backgroundImage
+          = `url('./assets/icons/cards/troy.webp')`;
           return 'troy';
         }
       }
       return "visa";
-    }
+    } // TODO! посмотреть в сторону оптимизации
     this.cardExpires = new FormField({
       className: 'card',
       modificator: 'expires',
