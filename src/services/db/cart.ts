@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import { ls } from '../../utils/utils';
 import { emitter } from '../event-emitter';
 import { CartItem } from './cart-item';
 import { DB } from './database';
@@ -38,15 +39,10 @@ export class Cart {
   }
 
   private load(): CartMap {
-    const json: string | null = localStorage.getItem(this.#CART_KEY);
-    if (!json) return new Map();
-    return JSON.parse(json, (k, v) => (k === '' ? new Map(v) : v));
+    return ls.loadMap(this.#CART_KEY);
   }
   private save(cart: CartMap): void {
-    localStorage.setItem(
-      this.#CART_KEY,
-      JSON.stringify(cart, (_, v) => (v instanceof Map ? Array.from(v) : v)),
-    );
+    ls.saveMap(this.#CART_KEY, cart);
     emitter.emit('cart__save');
   }
 
