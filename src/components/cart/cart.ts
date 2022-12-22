@@ -47,7 +47,7 @@ export class Cart extends BaseComponent {
     className: 'cart-price__total',
     text: `${DB.cart.sumPrice}`,
   });
-  private cartCurrentPrice = new BaseComponent({ tag: 'span', className: 'cart-currrent-price' });
+  private cartCurrentPrice = new BaseComponent({ tag: 'span', className: 'cart-price-current' });
 
   private orderBtn = new Button({
     className: 'cart__order',
@@ -74,6 +74,7 @@ export class Cart extends BaseComponent {
     this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
 
     this.updateActivePromoList();
+    this.updateTotalPrice();
 
     emitter.subscribe('product-card__buyNowBtn_clicked', () => {
       //? либо так либо так
@@ -81,28 +82,34 @@ export class Cart extends BaseComponent {
       // openOrderForm();
     });
     emitter.subscribe('cart__save', () => {
-      this.cartPriceTotal.getNode().textContent = `${DB.cart.sumPrice}`;
-      /*  this.cartCurrentPrice.getNode().textContent = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
-      this.cartPriceTotal.getNode().classList.add('cart-price__total_is-disc'); */
-      // TODO нужна проверка на наличие активного промокода
+      this.updateTotalPrice();
     });
     emitter.subscribe('promo__save', () => {
-      const { list } = DB.cart.promo;
       this.updateActivePromoList();
-
-      this.cartPriceTotal.appendEl(this.cartCurrentPrice);
-      this.cartCurrentPrice.getNode().textContent = `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`;
-      const { classList } = this.cartPriceTotal.getNode();
-      if (!list.length) classList.remove('cart-price__total_is-disc');
-      else classList.add('cart-price__total_is-disc');
+      this.updateTotalPrice();
     });
   }
 
-  private updateActivePromoList() {
-    const { list } = DB.cart.promo;
+  private updateTotalPrice(): void {
+    const { promo, sumPrice } = DB.cart;
+    const { cartCurrentPrice, cartPriceTotal } = this;
+    const { classList } = cartPriceTotal.getNode();
+
+    cartPriceTotal.setText(`${DB.cart.sumPrice}`);
+    if (promo.size) {
+      cartCurrentPrice.setText(`${promo.getDiscounted(sumPrice)}`);
+      classList.add('cart-price__total_is-disc');
+      cartPriceTotal.appendEl(cartCurrentPrice);
+    } else {
+      classList.remove('cart-price__total_is-disc');
+    }
+  }
+
+  private updateActivePromoList(): void {
+    const { list, size } = DB.cart.promo;
     const [promoWrapper, promoTitle] = [this.cartPromoWrapper.getNode(), this.cartPromoTitle.getNode()];
-    this.cartPromoList.getNode().replaceChildren();
-    if (list.length) {
+    this.cartPromoList.clear();
+    if (size) {
       this.cartPromoList.appendEl(list.map((item) => new ActivePromo(item[0], `${item[1] * 100}%`)));
       promoWrapper.prepend(promoTitle, this.cartPromoList.getNode());
     } else {
@@ -111,7 +118,7 @@ export class Cart extends BaseComponent {
     }
   }
 
-  private openOrderForm() {
+  private openOrderForm(): void {
     this.orderForm = new OrderForm();
     //? если аппендить в body, то хотя бы отрисовывается
     // this.wrapper.appendEl(this.orderForm);
