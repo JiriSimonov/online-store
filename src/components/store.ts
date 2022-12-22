@@ -46,7 +46,6 @@ export class Store extends BaseComponent {
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
-
     this.productsState.add(this.update);
 
     [this.nextButton, this.scrollButton].forEach((el) =>
@@ -64,7 +63,6 @@ export class Store extends BaseComponent {
 
   update = () => {
     this.chunkNumber = 0;
-    this.scrollButton.getNode().replaceWith(this.nextButton.getNode());
     this.storeItems = this.chunk;
     this.storeList.getNode().replaceChildren();
     this.storeList.appendEl(this.storeItems);
