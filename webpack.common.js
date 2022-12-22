@@ -33,6 +33,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       templateContent: getTemplate('Keyboards Store', 'ru-RU'),
       fileName: 'index.html',
+      favicon: path.resolve('src', 'assets', 'icons', 'k-button.svg'),
     }),
     new CopyPlugin({
       patterns: [

@@ -1,3 +1,4 @@
+import { ls } from '../../utils/utils';
 import { emitter } from '../event-emitter';
 
 type PromoMap = Map<string, number>;
@@ -15,9 +16,14 @@ export class Promo {
     return this.load();
   }
 
+  /** Возвращает количество активных промокодов */
+  get size() {
+    return this.active.size
+  }
+
   /** Возвращает список активных промокодов */
   get list() {
-    return Array.from(this.load());
+    return Array.from(this.active);
   }
 
   /** Возвращает результат проверки наличия промокода в списке активных промокодов */
@@ -66,15 +72,10 @@ export class Promo {
   }
 
   private load(): PromoMap {
-    const json: string | null = localStorage.getItem(this.#PROMO_KEY);
-    if (!json) return new Map();
-    return JSON.parse(json, (k, v) => (k === '' ? new Map(v) : v));
+    return ls.loadMap(this.#PROMO_KEY);
   }
   private save(list: PromoMap): void {
-    localStorage.setItem(
-      this.#PROMO_KEY,
-      JSON.stringify(list, (_, v) => (v instanceof Map ? Array.from(v) : v)),
-    );
+    ls.saveMap(this.#PROMO_KEY, list);
     emitter.emit('promo__save');
   }
 }

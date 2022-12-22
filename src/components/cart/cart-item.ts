@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */ // TODO ШО ЭТО ЗА ПАКОСТЬ?:???
 import { SwitchComponent } from '../switches/switch-component';
 import { FormField } from '../elements/form-field';
 import { BaseComponent } from '../elements/base-component';
