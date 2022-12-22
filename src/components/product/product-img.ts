@@ -1,8 +1,10 @@
 import { BaseComponent } from '../elements/base-component';
+import { Image } from '../elements/image';
 import { Loader } from '../store/loader';
 
 export class ProductImage extends BaseComponent {
   private images: BaseComponent[] | undefined;
+  private image = new Image();
 
   private loader = new Loader();
 
@@ -10,7 +12,9 @@ export class ProductImage extends BaseComponent {
     super({ className: 'store__img' });
 
     const setImage = (fileName: string): void => {
-      this.node.style.backgroundImage = `url(assets/images/keyboards/${fileName}.webp)`;
+      this.appendEl(this.loader);
+      this.image.getNode().onload = () => this.loader.destroy();
+      this.image.getNode().src = `assets/images/keyboards/${fileName}.webp`;
     };
 
     this.images = imageList.map((v, i, a) => {
@@ -25,7 +29,8 @@ export class ProductImage extends BaseComponent {
       return component;
     });
 
-    this.appendEl(this.loader);
-    this.appendEl(this.images);
+    this.appendEl([this.image, ...this.images]);
+    this.image.setStyleAttr(['position', 'absolute'], ['zIndex', '0']);
+    // this.node.before(this.loader.getNode())
   }
 }
