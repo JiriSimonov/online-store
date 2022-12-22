@@ -32,4 +32,8 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
   setStyleAttr(...props: [keyof CSSStyleDeclaration, string][]) {
     Object.assign(this.node.style, Object.fromEntries(props));
   }
+
+  setText(text: string) {
+    this.node.textContent = text; 
+  }
 }

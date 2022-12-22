@@ -1,3 +1,4 @@
+import Imask from 'imask';
 import { BaseComponent } from '../elements/base-component';
 import { Button } from '../elements/button';
 import { FormField } from '../elements/form-field';
@@ -29,6 +30,7 @@ export class OrderForm extends BaseComponent {
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
     this.modalContent = new BaseComponent({ className: 'modal__content' });
     this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
+    this.modalForm.getNode().setAttribute('novalidate', 'true');
     this.nameField = new FormField({
       className: 'modal',
       text: 'Имя Фамилия',
@@ -41,6 +43,11 @@ export class OrderForm extends BaseComponent {
       placeholder: '+7(982)-386-22-16',
       pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
     });
+    const phoneMaskOption = {
+      mask: '+{7}(000)-000-00-00',
+      lazy: false,
+    };
+    Imask(this.phoneField.getInputNode(), phoneMaskOption);
     this.addressField = new FormField({
       className: 'modal',
       text: 'Адрес доставки',
@@ -56,11 +63,6 @@ export class OrderForm extends BaseComponent {
     this.modalSubmit = new Button({
       className: 'modal__submit',
       text: 'Заказать',
-      onclick: () => {
-        this.destroy();
-        // window.location.hash = '#store';
-        document.body.classList.remove('no-scroll');
-      },
     });
     this.modalClose = new Button({
       className: 'modal__close',
@@ -71,6 +73,9 @@ export class OrderForm extends BaseComponent {
         document.body.classList.remove('no-scroll');
       },
     });
+    this.modalForm.getNode().onsubmit = () => {
+      console.warn('submit');
+    }
     // render
     this.appendEl(this.modalOverlay);
     this.modalOverlay.appendEl(this.modalContent);

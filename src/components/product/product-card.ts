@@ -123,7 +123,7 @@ export class ProductCard extends BaseComponent {
 
     if (props.isAvailable) {
       if (DB.cart.isInCart(props.id, this.getSelectedSwitch()?.getSwitch().id)) {
-        this.cardBtn.getNode().textContent = 'Уже в корзине';
+        this.cardBtn.setText('Уже в корзине');
         this.cardBtn.getNode().setAttribute('disabled', 'true');
       }
       this.priceWrapper.appendEl([this.buyNowBtn, this.cardBtn]);

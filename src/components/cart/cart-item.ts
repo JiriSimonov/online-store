@@ -135,7 +135,7 @@ export class CartItemElem extends BaseComponent {
       this.cartDec.getNode().setAttribute('disabled', 'true');
     if (+this.countField.getInputNode().value === +this.countField.getInputNode().max)
       this.cartInc.getNode().setAttribute('disabled', 'true');
-    this.price.getNode().textContent = `${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`;
+    this.price.setText(`${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`);
     this.appendEl(this.images);
     this.appendEl(this.wrapper);
   }
