@@ -5,19 +5,19 @@ import { BaseComponent } from '../elements/base-component';
 export class SwitchComponent extends BaseComponent {
   private switchField: FormField;
 
-  constructor(private props: KeyboardSwitch, keyboardId: string, elemTag?: keyof HTMLElementTagNameMap) {
+  constructor(private keyboardSwitch: KeyboardSwitch, keyboardId: string, elemTag?: keyof HTMLElementTagNameMap) {
     super({ tag: elemTag ?? 'li', className: 'switch__item' });
-    const { id, isAvailable } = props;
+    const { id, isAvailable } = keyboardSwitch;
     this.switchField = new FormField({
-      className: 'switch',
+      className: `switch`,
       type: 'radio',
       text: id,
       value: id,
-      name: `${keyboardId}`
+      name: keyboardId,
     });
-    this.switchField.getNode().classList.add(id);
-    this.switchField.getNode().classList.add(`${isAvailable ? 'switch__item_true' : 'switch__item_false'}`);
-    if (!isAvailable) this.switchField.getInputNode().setAttribute('disabled', 'false');
+    this.switchField.getNode().classList.add(id, `switch__item_${isAvailable}`);
+
+    if (!isAvailable) this.switchField.disabled = true;
     this.appendEl(this.switchField);
   }
 
@@ -26,6 +26,13 @@ export class SwitchComponent extends BaseComponent {
   }
 
   getSwitch() {
-    return this.props;
+    return this.keyboardSwitch;
+  }
+
+  get checked(): boolean {
+    return this.switchField.getInputNode().checked;
+  }
+  set checked(value: boolean) {
+    this.switchField.getInputNode().checked = value;
   }
 }

@@ -75,19 +75,6 @@ export class Cart extends BaseComponent {
 
     this.updateActivePromoList();
     this.updateTotalPrice();
-
-    emitter.subscribe('product-card__buyNowBtn_clicked', () => {
-      //? либо так либо так
-      // this.orderBtn.getNode().click()
-      // openOrderForm();
-    });
-    emitter.subscribe('cart__save', () => {
-      this.updateTotalPrice();
-    });
-    emitter.subscribe('promo__save', () => {
-      this.updateActivePromoList();
-      this.updateTotalPrice();
-    });
   }
 
   private updateTotalPrice(): void {
@@ -125,5 +112,19 @@ export class Cart extends BaseComponent {
     // document.body.append(this.orderForm.getNode());
     document.body.append(this.orderForm.getNode());
     document.body.classList.add('no-scroll');
+  }
+
+  subscribe() {
+    emitter.subscribe('product-card__buyNowBtn_clicked', () => {
+      this.openOrderForm();
+    });
+    emitter.subscribe('cart__save', () => {
+      this.updateTotalPrice();
+    });
+    emitter.subscribe('promo__save', () => {
+      this.updateActivePromoList();
+      this.updateTotalPrice();
+    });
+    return this;
   }
 }
