@@ -11,11 +11,6 @@ export class PromoForm extends BaseComponent {
   constructor() {
     super({ tag: 'form', className: 'promo__form' });
     this.promoField = new FormField({ className: 'promo', type: 'text', placeholder: 'KEK' });
-    this.promoField.getInputNode().oninput = (e) => {
-      const { target } = e;
-      if (target && target instanceof HTMLInputElement)
-        if (DB.cart.promo.isValid(target.value)) console.warn('наебалово');
-    };
     this.promoBtn = new Button({
       className: 'promo__submit-btn',
       text: 'Применить',

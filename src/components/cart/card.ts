@@ -17,7 +17,7 @@ export class Card extends BaseComponent {
       className: 'card',
       modificator: 'number',
       placeholder: '#### #### #### ####',
-      pattern: '[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}',
+      pattern: `(\\d{4} ){3}\\d{4}`,
       text: 'Номер карты'
     });
     const curdNumberOptions = {
@@ -31,12 +31,6 @@ export class Card extends BaseComponent {
         if (target.value.match(re) != null) {
           this.logo.getNode().style.backgroundImage = `url('./assets/icons/cards/visa-logo.webp')`;
           return "visa"
-        }
-        re = /^(34|37)/;
-        if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage
-          = `url('./assets/icons/cards/amex.webp')`;
-          return "amex";
         }
         re = /^5[1-5]/;
         if (target.value.match(re) != null) {
@@ -65,7 +59,7 @@ export class Card extends BaseComponent {
       className: 'card',
       modificator: 'expires',
       placeholder: 'ММ/ГГ',
-      pattern: '[0-9]{2}/[0-9]{2}',
+      pattern: `\\d{2}\\/\\d{2}`,
       text: 'Срок действия'
     });
     Imask(this.cardExpires.getInputNode(), {
@@ -87,10 +81,9 @@ export class Card extends BaseComponent {
     });
     this.cardCVV = new FormField({
       className: 'card',
-      type: 'number',
       modificator: 'cvv',
       placeholder: 'CVV',
-      pattern: '[0-9]{3}',
+      pattern: `[0-9]{3}`,
       text: 'CVV код'
     });
     const cvvMaskOptions = {

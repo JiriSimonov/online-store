@@ -72,7 +72,6 @@ export class Promo {
    */
   getDiscounted(price: number, pow = 0): number {
     const discounted = Math.floor(price * (1 - this.discount));
-    console.warn(discounted);
     return Math.floor(discounted / 10 ** pow) * 10 ** pow;
   }
 

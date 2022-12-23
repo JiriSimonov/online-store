@@ -1,4 +1,6 @@
 import Imask from 'imask';
+import { Loader } from '../store/loader';
+import { DB } from '../../services/db/database';
 import { BaseComponent } from '../elements/base-component';
 import { Button } from '../elements/button';
 import { FormField } from '../elements/form-field';
@@ -25,23 +27,27 @@ export class OrderForm extends BaseComponent {
 
   private modalClose: Button;
 
+  private loader: Loader;
+
   constructor() {
     super({ className: 'modal' });
+    this.loader = new Loader();
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
     this.modalContent = new BaseComponent({ className: 'modal__content' });
     this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
-    this.modalForm.getNode().setAttribute('novalidate', 'true');
     this.nameField = new FormField({
       className: 'modal',
       text: 'Имя Фамилия',
       placeholder: 'Василий Клаб',
+      type: 'text',
+      pattern: `^([\\wА-я]{3,} ?){3,}$`, // TODO: не отрабатывает
     });
     this.phoneField = new FormField({
       className: 'modal',
       text: 'Телефон',
       type: 'tel',
       placeholder: '+7(982)-386-22-16',
-      pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+      pattern: `\\+7\\(\\d{3}\\)-\\d{3}-\\d{2}-\\d{2}`,
     });
     const phoneMaskOption = {
       mask: '+{7}(000)-000-00-00',
@@ -51,13 +57,16 @@ export class OrderForm extends BaseComponent {
     this.addressField = new FormField({
       className: 'modal',
       text: 'Адрес доставки',
-      placeholder: 'Кукушкина 5 дом 10',
+      type: 'text',
+      placeholder: 'Пенза, Кукушкина 5, дом 10',
+      pattern: `^([\\wА-я]{5,} ?){3,}$`,  // TODO: не отрабатывает
     });
     this.emailField = new FormField({
       className: 'modal',
       text: 'E-mail',
       type: 'email',
       placeholder: 'kotopes@mail.ru',
+      pattern: '.+@.+\\..+',
     });
     this.card = new Card();
     this.modalSubmit = new Button({
@@ -74,7 +83,14 @@ export class OrderForm extends BaseComponent {
       },
     });
     this.modalForm.getNode().onsubmit = () => {
-      console.warn('submit');
+      document.body.append(this.loader.getNode());
+      setTimeout(() => {
+        window.location.hash = '#store';
+        this.destroy();
+        DB.cart.clear();
+        DB.cart.promo.clear();
+        this.loader.destroy();
+      }, 3500);
     }
     // render
     this.appendEl(this.modalOverlay);

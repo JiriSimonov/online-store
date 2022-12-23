@@ -96,7 +96,7 @@ export class Cart extends BaseComponent {
     const { classList } = cartPriceTotal.getNode();
 
     cartPriceTotal.setText(`${DB.cart.sumPrice}`);
-    if (promo.size) {
+    if (promo.size && sumPrice) {
       cartCurrentPrice.setText(`${promo.getDiscounted(sumPrice)}`);
       classList.add('cart-price__total_is-disc');
       cartPriceTotal.appendEl(cartCurrentPrice);
