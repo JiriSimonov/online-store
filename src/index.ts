@@ -40,15 +40,8 @@ class App extends BaseComponent {
   }
 
   renderCart() {
-    /*
     this.currentPage?.destroy();
-    const cart = new Cart();
-    this.currentPage = cart;
-    cart.render();
-    this.appendEl(cart);
-    */
-    this.currentPage?.destroy();
-    this.currentPage = new Cart();
+    this.currentPage = new Cart().subscribe();
     this.appendEl(this.currentPage);
   }
 
@@ -71,8 +64,7 @@ class App extends BaseComponent {
   runApp() {
     const root = document.getElementById('root');
     const footer = new Footer();
-    const header = new Header(this.productsListState);
-    header.render();
+    const header = new Header(this.productsListState).subscribe();
     root?.append(header.getNode());
     if (root) {
       this.router = new Router(

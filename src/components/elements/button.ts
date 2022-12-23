@@ -11,4 +11,18 @@ export class Button extends BaseComponent<HTMLButtonElement> {
     if (onclick) node.onclick = onclick;
     if (aria) node.ariaLabel = aria;
   }
+
+  get onclick() {
+    return this.node.onclick;
+  }
+  set onclick(value) {
+    this.node.onclick = value;
+  }
+
+  get disabled(): boolean {
+    return this.node.disabled;
+  }
+  set disabled(value: boolean) {
+    this.node.disabled = value;
+  }
 }

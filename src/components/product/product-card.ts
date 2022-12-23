@@ -1,179 +1,134 @@
-import { emitter } from '../../services/event-emitter';
 import { BaseComponent } from '../elements/base-component';
 import { ProductImage } from './product-img';
 import { SwitchComponent } from '../switches/switch-component';
 import { SwitchModal } from '../switches/switch-modal';
 import { Button } from '../elements/button';
 import { Keyboard } from '../../services/db/keyboard';
-import { KeyboardSwitch } from '../../services/db/keyboard-switch';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
+import { emitter } from '../../services/event-emitter';
 
 export class ProductCard extends BaseComponent {
-  private ProductImage: ProductImage;
-
-  private cardTitle: BaseComponent;
-
-  private switchList: BaseComponent;
-
-  private switchItems: SwitchComponent[];
-
-  private switchArr: KeyboardSwitch[];
-
-  private priceWrapper: BaseComponent;
-
-  private cardCopy: Button;
-
-  private cardBtn: BaseComponent;
-
-  private cardPrice: BaseComponent;
-
   private isAvialable: BaseComponent;
-
+  private productImage: ProductImage;
+  private storeDescr = new BaseComponent({ className: 'store__description' });
+  private cardTitle: BaseComponent;
+  private cardCopy = new Button({ className: 'store__card-copy', aria: 'Скопировать название' });
+  private switchList = new BaseComponent({ tag: 'ul', className: 'switch' });
+  private switchItems: SwitchComponent[];
+  private priceWrapper = new BaseComponent({ className: 'store__card-wrapper' });
+  private cardPrice = new BaseComponent({ className: 'store__card-price' });
+  private buyNowBtn = new Button({ className: 'store__card-btn', text: 'Купить в 1 клик' });
+  private cardBtn = new Button({ className: 'store__card-btn' });
   private switchModal: SwitchModal | null | undefined;
 
-  private storeDescr: BaseComponent;
-
-  private buyNowBtn: Button;
-
-  constructor(props: Keyboard, elemTag?: keyof HTMLElementTagNameMap) {
+  constructor(private keyboard: Keyboard, elemTag?: keyof HTMLElementTagNameMap) {
     super({ tag: elemTag ?? 'li', className: 'store__item' });
-    this.ProductImage = new ProductImage(props.images);
-    this.appendEl(this.ProductImage);
-    this.storeDescr = new BaseComponent({ className: 'store__description', parent: this.node });
-    this.cardTitle = new BaseComponent({
-      tag: 'h2',
-      className: 'store__card-title',
-      text: props.title,
-      parent: this.storeDescr.getNode(),
-    });
-    this.switchList = new BaseComponent({
-      tag: 'ul',
-      className: 'switch',
-      parent: this.storeDescr.getNode(),
-    });
-    this.switchArr = props.switches.filter((item) => item.id !== 'null');
-    this.switchItems = this.switchArr.map((item) => new SwitchComponent(item, `${props.id}`));
-    this.switchItems
-      .find((item) => item.getSwitch().isAvailable)
-      ?.getInputNode()
-      .setAttribute('checked', 'true');
-    //? перебросил в делегирование. вроде работает
-    /* this.switchItems.filter((item) => item.getSwitch().isAvailable).map((item) => item.getInputNode().oninput = () => {
-      emitter.emit('product-card__switch-radio_clicked');
-    }); */
-    this.switchList.appendEl(this.switchItems);
-    this.priceWrapper = new BaseComponent({
-      className: 'store__card-wrapper',
-      parent: this.storeDescr.getNode(),
-    });
-    this.cardPrice = new BaseComponent({
-      className: 'store__card-price',
-      text: `от ${props.minPrice} ₽`,
-      parent: this.priceWrapper.getNode(),
-    });
-    this.cardCopy = new Button({
-      className: 'store__card-copy',
-      parent: this.cardTitle.getNode(),
-      aria: 'Скопировать название',
-    });
-    this.cardCopy.getNode().onclick = () => {
-      if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(props.title);
-        this.cardCopy.getNode().classList.add('store__card-copy_success');
-        setTimeout(() => {
-          this.cardCopy.getNode().classList.remove('store__card-copy_success');
-        }, 1000);
-      } else {
-        navigator.clipboard.writeText(props.title);
-        this.cardCopy.getNode().classList.add('store__card-copy_fail');
-        setTimeout(() => {
-          this.cardCopy.getNode().classList.remove('store__card-copy_fail');
-        }, 1000);
-      } // TODO refactor
-    };
-
-    const addToCart = () => {
-      const selected = this.getSelectedSwitch();
-      if (selected) {
-        DB.cart.add([props, selected.getSwitch()]);
-      } else {
-        const hiddenSwitch = props.switches.find((item) => item.isAvailable);
-        if (hiddenSwitch) DB.cart.add(new CartItem(props, hiddenSwitch));
-      }
-    };
-
-    this.buyNowBtn = new Button({
-      className: 'store__card-btn',
-      text: 'Купить в 1 клик',
-      onclick: () => {
-        addToCart();
-        window.location.hash = '#cart';
-        emitter.emit('product-card__buyNowBtn_clicked');
-      },
-    });
-    this.cardBtn = new Button({
-      className: 'store__card-btn',
-      text: 'Добавить в корзину',
-      onclick: () => {
-        addToCart();
-        emitter.emit('product-card__cardBtn_clicked');
-      },
-    });
-
-    if (props.isAvailable) {
-      if (DB.cart.isInCart(props.id, this.getSelectedSwitch()?.getSwitch().id)) {
-        this.cardBtn.setText('Уже в корзине');
-        this.cardBtn.getNode().setAttribute('disabled', 'true');
-      }
-      this.priceWrapper.appendEl([this.buyNowBtn, this.cardBtn]);
-    }
     this.isAvialable = new BaseComponent({
-      className: `${props.isAvailable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
-      text: `${props.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
-      parent: this.node,
+      className: `store__card-av store__card-av_${keyboard.isAvailable}`,
+      text: `${keyboard.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
     });
-    this.switchList.getNode().addEventListener('mouseover', (e) => {
-      const target = e.target as HTMLElement;
-      if (target.classList.contains('switch__label')) {
-        this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
-        this.appendEl(this.switchModal);
-        this.cardPrice.getNode().classList.add('store__card-price_is-open');
-        target.addEventListener('mouseout', () => {
-          this.cardPrice.getNode().classList.remove('store__card-price_is-open');
-          this.switchModal?.destroy();
-          this.switchModal = null;
-        });
-      }
-    });
+    this.productImage = new ProductImage(keyboard.images);
+    this.cardTitle = new BaseComponent({ tag: 'h2', className: 'store__card-title', text: keyboard.title });
+    this.switchItems = keyboard.switches.reduce((acc, keyboardSwitch) => {
+      if (keyboardSwitch.id === 'null') return acc;
+
+      const switchComponent = new SwitchComponent(keyboardSwitch, `${keyboard.id}`);
+      if (!acc.some((item) => item.checked)) switchComponent.checked = keyboardSwitch.isAvailable;
+      return [...acc, switchComponent];
+    }, [] as SwitchComponent[]);
+
+    this.switchList.getNode().onmouseover = (e) => {
+      if (e.target instanceof HTMLLabelElement) this.renderModal(e.target);
+    };
+
     this.node.onclick = (e) => {
-      if (!(e.target instanceof HTMLElement)) return;
-      const { target } = e;
-      const { classList } = target;
+      if (!(e.target instanceof HTMLElement) || e.target instanceof HTMLLabelElement) return;
 
-      if (classList.contains('switch__input') || classList.contains('switch__label'))
-        emitter.emit('product-card__switch-radio_clicked');
-      else if (
-        target !== this.cardBtn.getNode() &&
-        target !== this.cardCopy.getNode() &&
-        target !== this.buyNowBtn.getNode()
-      )
-        window.location.hash = `${props.id}`;
+      if (this.switchItems.some((item) => item.getInputNode() === e.target)) {
+        this.renderText();
+        return;
+      }
+
+      switch (e.target) {
+        case this.cardCopy.getNode():
+          this.copyTitle();
+          break;
+        case this.cardBtn.getNode():
+          this.addToCart();
+          this.renderText();
+          break;
+        case this.buyNowBtn.getNode():
+          if (!DB.cart.isInCart(keyboard.id, this.getSelectedSwitch()?.getSwitch().id)) this.addToCart();
+          window.location.hash = `#cart`;
+          emitter.emit('product-card__buyNowBtn_clicked')
+          break;
+        default:
+          window.location.hash = `${keyboard.id}`;
+      }
     };
 
-    //! TODO пофиксить поведение - при загрузке страницы кнопка "уже в корзине" не ловит онклик. при нажатии "добавить в корзину" кнопка "уже в корзине" ловит онклик
-    const changeText = () => {
-      const selectedSwitch = this.getSelectedSwitch()?.getSwitch();
-      const cardBtn = this.cardBtn.getNode();
-      const cardPrice = this.cardPrice.getNode();
-      cardBtn.textContent = DB.cart.isInCart(props.id, selectedSwitch?.id) ? 'Уже в корзине' : 'Добавить в корзину';
-      cardPrice.textContent = `от ${selectedSwitch?.price ?? props.minPrice} ₽`;
-    };
-    emitter.subscribe('product-card__cardBtn_clicked', changeText);
-    emitter.subscribe('product-card__switch-radio_clicked', changeText);
+    this.appendEl([this.isAvialable, this.productImage, this.storeDescr]);
+    this.storeDescr.appendEl([this.cardTitle, this.switchList, this.priceWrapper]);
+    this.cardTitle.appendEl(this.cardCopy);
+    this.switchList.appendEl(this.switchItems);
+    this.priceWrapper.appendEl(this.cardPrice);
+    if (keyboard.isAvailable) this.priceWrapper.appendEl([this.buyNowBtn, this.cardBtn]);
+
+    this.renderText();
   }
 
-  getSelectedSwitch() {
-    return this.switchItems.find((item) => item.getInputNode().checked);
+  getSelectedSwitch(): SwitchComponent | undefined {
+    return this.switchItems.find((item) => item.checked);
+  }
+
+  private renderText(target?: HTMLLabelElement): void {
+    const keyboardSwitch = target
+      ? this.keyboard.getSwitch(target.textContent ?? '')
+      : this.getSelectedSwitch()?.getSwitch();
+    const isInCart = DB.cart.isInCart(this.keyboard.id, keyboardSwitch?.id);
+    this.cardBtn.disabled = isInCart;
+    this.cardBtn.setText(isInCart ? 'Уже в корзине' : 'Добавить в корзину');
+    this.cardPrice.setText(`от ${keyboardSwitch?.price ?? this.keyboard.minPrice} ₽`);
+  }
+
+  private renderModal(label: HTMLLabelElement): void {
+    this.renderText(label);
+    const mouseoutListener = () => {
+      this.renderText();
+      this.cardPrice.getNode().classList.remove('store__card-price_is-open');
+      this.switchModal?.destroy();
+      this.switchModal = null;
+      label.removeEventListener('mouseout', mouseoutListener);
+    };
+    label.addEventListener('mouseout', mouseoutListener);
+    this.switchModal = new SwitchModal(label.textContent ?? '', label.classList.contains('switch__item_false'));
+    this.cardPrice.getNode().classList.add('store__card-price_is-open');
+    this.appendEl(this.switchModal);
+  }
+
+  private addToCart(): void {
+    const selected = this.getSelectedSwitch();
+    if (selected) {
+      DB.cart.add([this.keyboard, selected.getSwitch()]);
+    } else {
+      const availableSwitch = this.keyboard.switches.find((item) => item.isAvailable);
+      if (availableSwitch) DB.cart.add(new CartItem(this.keyboard, availableSwitch));
+    }
+  }
+
+  private copyTitle(): void {
+    const renderCopyAnimation = (result: 'success' | 'fail') => {
+      const icon = this.cardCopy.getNode();
+      icon.classList.add(`store__card-copy_${result}`);
+      icon.ontransitionend = () => {
+        icon.classList.remove(`store__card-copy_${result}`);
+        icon.ontransitionend = null;
+      };
+    };
+    navigator.clipboard
+      .writeText(this.keyboard.title)
+      .then(() => renderCopyAnimation('success'))
+      .catch(() => renderCopyAnimation('fail'));
   }
 }

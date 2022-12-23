@@ -8,9 +8,9 @@ class EventEmitter {
     else this.events[eventName] = [callback];
   }
 
-  /*   unsubscribe(eventName: string, callback: <T>(args?: T) => void) {
+  unsubscribe(eventName: string, callback: (args?: any) => void) {
     this.events[eventName] = this.events[eventName].filter((listener) => listener !== callback);
-  } */
+  }
 
   emit(eventName: string, args?: any) {
     this.events[eventName]?.forEach((callback): void => callback(args));

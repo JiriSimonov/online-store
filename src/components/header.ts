@@ -7,54 +7,24 @@ import { ProductsListState } from '../states/goods-state';
 import { emitter } from '../services/event-emitter';
 
 export class Header extends BaseComponent {
-  private container: BaseComponent;
-
-  private logo: BaseComponent;
-
-  private wrapper: BaseComponent;
-
-  private controls: BaseComponent;
-
-  private search: BaseComponent;
-
-  private cartPrice: BaseComponent;
-
-  private cartCount: BaseComponent;
-
-  private cart: BaseComponent;
-
-  private searchField: FormField;
+  private container = new BaseComponent({ className: 'container' });
+  private wrapper = new BaseComponent({ className: 'header__wrapper' });
+  private logo = new Anchor({ className: 'header__logo', text: 'Keyboards Store' });
+  private controls = new BaseComponent({ className: 'header__controls' });
+  private searchField = new FormField({ className: 'header', type: 'search', placeholder: 'Найти', value: '' });
+  private search = new Button({ className: 'header__search', aria: 'Поиск' });
+  private cart = new Button({
+    className: 'header__cart',
+    onclick: () => {
+      window.location.hash = '#cart';
+    },
+    aria: 'Перейти в корзину',
+  });
+  private cartCount = new BaseComponent({ tag: 'span', className: 'header__count', text: `${DB.cart.sumQuantity}` });
+  private cartPrice = new BaseComponent({ tag: 'span', className: 'header__price', text: `${DB.cart.sumPrice}` });
 
   constructor(private productsState: ProductsListState) {
     super({ tag: 'header', className: 'header' });
-    this.container = new BaseComponent({ className: 'container' });
-    this.wrapper = new BaseComponent({ className: 'header__wrapper' });
-    this.controls = new BaseComponent({ className: 'header__controls' });
-    this.logo = new Anchor({ className: 'header__logo', text: 'Keyboards Store' });
-    this.search = new Button({ className: 'header__search', aria: 'Поиск' });
-    this.cart = new Button({
-      className: 'header__cart',
-      onclick: () => {
-        window.location.hash = '#cart';
-      },
-      aria: 'Перейти в корзину',
-    });
-    this.cartCount = new BaseComponent({
-      tag: 'span',
-      className: 'header__count',
-      text: `${DB.cart.sumQuantity}`,
-    });
-    this.cartPrice = new BaseComponent({
-      tag: 'span',
-      className: 'header__price',
-      text: `${DB.cart.sumPrice}`,
-    });
-    this.searchField = new FormField({
-      className: 'header',
-      type: 'search',
-      placeholder: 'Найти',
-      value: '',
-    });
     this.search.getNode().addEventListener('click', () => {
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
       this.searchField.getInputNode().addEventListener('input', (e) => {
@@ -63,21 +33,24 @@ export class Header extends BaseComponent {
         productsState.set({ search: target.value });
       });
     });
-    emitter.subscribe('cart__save', () => {
-      this.cartCount.setText(`${DB.cart.sumQuantity}`);
-      this.cartPrice.setText(`${DB.cart.sumPrice}`);
-    });
+
     this.logo.getNode().onclick = () => {
       window.location.hash = '#home';
       this.searchField.getInputNode().classList.remove('header__input_is-open');
     };
-  }
 
-  render() {
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.logo, this.controls]);
     this.controls.appendEl([this.searchField, this.search, this.cart, this.cartPrice]);
     this.cart.appendEl(this.cartCount);
+  }
+
+  subscribe() {
+    emitter.subscribe('cart__save', () => {
+      this.cartCount.setText(`${DB.cart.sumQuantity}`);
+      this.cartPrice.setText(`${DB.cart.sumPrice}`);
+    });
+    return this;
   }
 }

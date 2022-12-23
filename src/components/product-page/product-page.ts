@@ -4,80 +4,49 @@ import { DescriptionField } from '../elements/description-field';
 import { Keyboard } from '../../services/db/keyboard';
 import { ProductCard } from '../product/product-card';
 import { BaseComponent } from '../elements/base-component';
-import { DB } from '../../services/db/database';
-import { emitter } from '../../services/event-emitter';
 import { ThumbNails } from './product-thumbnails';
 
 export class ProductPage extends BaseComponent {
-  private container: BaseComponent;
-
-  private productPath: ProductPath;
-
+  private container = new BaseComponent({ className: 'store product' });
   private card: ProductCard;
+  private productPath: ProductPath;
+  private thumbnails: ThumbNails;
+  private title = new BaseComponent({ tag: 'h2', className: 'product__title', text: 'Характеристики' });
+  private descrList = new BaseComponent({ tag: 'ul', className: 'product__list' });
 
   private descrFields: DescriptionField[];
 
-  private descrList: BaseComponent;
-
-  private title: BaseComponent;
-
-  private btnWrapper: BaseComponent;
-
-  private backBtn: Button;
-
-  private cartBtn: Button;
-
-  private thumbnails: ThumbNails;
+  private btnWrapper = new BaseComponent({ className: 'product__wrapper' });
+  private backBtn = new Button({
+    className: 'cart__btn',
+    text: 'Назад',
+    onclick: () => {
+      window.location.hash = '#store';
+    },
+  });
+  private cartBtn = new Button({
+    className: 'cart__btn',
+    text: 'Оформить заказ',
+    onclick: () => {
+      window.location.hash = '#cart';
+    },
+  });
 
   constructor(keyboard: Keyboard) {
     super({ className: 'container' });
-    this.container = new BaseComponent({ className: 'store product', parent: this.node });
     this.card = new ProductCard(keyboard, 'div');
     this.productPath = new ProductPath(keyboard.title);
-    this.card.appendEl(this.productPath);
-    this.container.appendEl(this.card);
-    this.btnWrapper = new BaseComponent({ className: 'product__wrapper', parent: this.node });
-    this.backBtn = new Button({
-      className: 'cart__btn',
-      text: 'Назад',
-      parent: this.btnWrapper.getNode(),
-      onclick: () => {
-        window.location.hash = '#store';
-      },
-    });
-    this.cartBtn = new Button({
-      className: 'cart__btn',
-      text: 'Оформить заказ',
-      onclick: () => {
-        window.location.hash = '#cart';
-      },
-    });
     this.thumbnails = new ThumbNails(keyboard);
-    this.card.appendEl(this.thumbnails);
-    this.title = new BaseComponent({
-      tag: 'h2',
-      className: 'product__title',
-      text: 'Характеристики',
-      parent: this.card.getNode(),
+    this.descrFields = Object.entries(keyboard.properties).map((prop) => {
+      const [title, list] = prop;
+      return new DescriptionField({ key: title, value: list.join('\n') });
     });
-    this.descrFields = Object.entries(keyboard.properties).map(
-      (item) => new DescriptionField({ key: item[0], value: item[1].join('\n') }),
-    );
-    this.descrList = new BaseComponent({
-      tag: 'ul',
-      className: 'product__list',
-      parent: this.card.getNode(),
-    });
-    const renderCartBtn = () => {
-      if (DB.cart.isInCart(keyboard.id, this.card.getSelectedSwitch()?.getSwitch().id))
-        this.btnWrapper.appendEl(this.cartBtn);
-      else this.cartBtn.destroy();
-    };
-    renderCartBtn();
 
-    emitter.subscribe('product-card__cardBtn_clicked', renderCartBtn);
-    emitter.subscribe('product-card__switch-radio_clicked', renderCartBtn);
-
+    this.appendEl(this.container);
+    this.container.appendEl([this.card, this.btnWrapper]);
+    this.card.appendEl([this.productPath, this.thumbnails, this.title, this.descrList]);
     this.descrList.appendEl(this.descrFields);
+    this.btnWrapper.appendEl(this.backBtn);
+    if (keyboard.isAvailable) this.btnWrapper.appendEl(this.cartBtn);
   }
 }
