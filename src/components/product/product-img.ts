@@ -1,7 +1,10 @@
 import { BaseComponent } from '../elements/base-component';
+import { Loader } from '../store/loader';
 
 export class ProductImage extends BaseComponent {
   private images: BaseComponent[] | undefined;
+
+  private loader = new Loader();
 
   constructor(imageList: string[]) {
     super({ className: 'store__img' });
@@ -22,6 +25,7 @@ export class ProductImage extends BaseComponent {
       return component;
     });
 
+    this.appendEl(this.loader);
     this.appendEl(this.images);
   }
 }

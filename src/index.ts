@@ -1,17 +1,16 @@
+import { DB } from './services/db/database';
 import { Keyboard } from './services/db/keyboard';
+import { Router } from './utils/router';
+import { Header } from './components/header';
+import { Home } from './components/home-page/home-page';
+import { Store } from './components/store';
 import { ProductPage } from './components/product-page/product-page';
 import { BaseComponent } from './components/elements/base-component';
-import { Router } from './utils/router';
-import { Store } from './components/store';
-import { Header } from './components/header';
-import { Footer } from './components/footer';
-import { Home } from './components/home-page/home-page';
 import { Cart } from './components/cart/cart';
 import { ProductsListState } from './states/goods-state';
-import { DB } from './services/db/database';
+import { Footer } from './components/footer';
 import { Error } from './utils/error';
 import './assets/styles/global/style.scss';
-import { KekStore } from './components/kekstore';
 
 class App extends BaseComponent {
   private router: Router | null;
@@ -36,15 +35,7 @@ class App extends BaseComponent {
 
   renderStore() {
     this.currentPage?.destroy();
-    const store = new Store(this.productsListState);
-    store.render();
-    this.currentPage = store;
-    this.appendEl(store);
-  }
-
-  renderKek() {
-    this.currentPage?.destroy();
-    this.currentPage = new KekStore(this.productsListState);
+    this.currentPage = new Store(this.productsListState);
     this.appendEl(this.currentPage);
   }
 
@@ -89,7 +80,6 @@ class App extends BaseComponent {
           '': () => this.renderHome(),
           'home': () => this.renderHome(),
           'store': () => this.renderStore(),
-          'kek': () => this.renderKek(),
           'cart': () => this.renderCart(),
           ...DB.keyboards.reduce(
             (p, c) =>
