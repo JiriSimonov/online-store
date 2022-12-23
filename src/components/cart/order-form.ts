@@ -1,4 +1,5 @@
 import Imask from 'imask';
+import { DB } from '../../services/db/database';
 import { BaseComponent } from '../elements/base-component';
 import { Button } from '../elements/button';
 import { FormField } from '../elements/form-field';
@@ -30,18 +31,19 @@ export class OrderForm extends BaseComponent {
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
     this.modalContent = new BaseComponent({ className: 'modal__content' });
     this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
-    this.modalForm.getNode().setAttribute('novalidate', 'true');
     this.nameField = new FormField({
       className: 'modal',
       text: 'Имя Фамилия',
       placeholder: 'Василий Клаб',
+      type: 'text',
+      pattern: `^([\\wА-я]{3,} ?){2,}$`,
     });
     this.phoneField = new FormField({
       className: 'modal',
       text: 'Телефон',
       type: 'tel',
       placeholder: '+7(982)-386-22-16',
-      pattern: '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+      pattern: `\\+7\\(\\d{3}\\)-\\d{3}-\\d{2}-\\d{2}`,
     });
     const phoneMaskOption = {
       mask: '+{7}(000)-000-00-00',
@@ -74,7 +76,12 @@ export class OrderForm extends BaseComponent {
       },
     });
     this.modalForm.getNode().onsubmit = () => {
-      console.warn('submit');
+      setTimeout(() => {
+        window.location.hash = '#store';
+        this.destroy();
+        DB.cart.clear();
+        DB.cart.promo.clear();
+      }, 3500);
     }
     // render
     this.appendEl(this.modalOverlay);

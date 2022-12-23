@@ -539,6 +539,8 @@
       all: unset;
       padding: 5px;
       width: 100%;
+      border: 2px solid transparent;
+      border-radius: 5px;
       font-family: 'Nunito';
       font-style: normal;
       color: $white;
@@ -560,30 +562,38 @@
 
       &_number {
         margin-top: 15px;
+        max-width: 416px;
         font-size: 25px;
         
         &::placeholder {
           font-size: 24px;
         }
       }
-
-      &_expires {
-        text-indent: 15px;
-      }
       
       &_expires,
       &_cvv {
-        padding: 10px 15px 10px 0;
+        padding: 10px 0 10px 0;
+        text-align: center;
       }
 
       &_cvv {
-        text-indent: 10px;
+        max-width: 65px;
       }
 
       &_expires {
         width: 80px;
       }
     }
+  }
+
+  &__input:invalid,
+  .card__input:invalid {
+    border-color: $r;
+  }
+
+  &__input:valid,
+  .card__input:valid {
+    border-color: $green;
   }
 }
 

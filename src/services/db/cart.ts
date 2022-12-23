@@ -74,6 +74,13 @@ export class Cart {
     this.save(cartMap);
   }
 
+  /** Удаление всех `CartItem` из корзины */
+  clear(): void {
+    const { cartMap } = this;
+    cartMap.clear();
+    this.save(cartMap);
+  }
+
   /** Возвращает результат проверки наличия в корзине
    * @param `keyboardId` `Keyboard.id`
    * @param `keyboardSwitchId` `KeyboardSwitch.id`
