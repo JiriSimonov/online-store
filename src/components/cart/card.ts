@@ -17,7 +17,7 @@ export class Card extends BaseComponent {
       className: 'card',
       modificator: 'number',
       placeholder: '#### #### #### ####',
-      pattern: `\\d{4} \\d{4} \\d{4} \\d{4}`,
+      pattern: `(\\d{4} ){3}\\d{4}`,
       text: 'Номер карты'
     });
     const curdNumberOptions = {

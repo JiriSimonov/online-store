@@ -40,7 +40,7 @@ export class OrderForm extends BaseComponent {
       text: 'Имя Фамилия',
       placeholder: 'Василий Клаб',
       type: 'text',
-      pattern: `^([\\wА-я]{3,} ?){2,}$`,
+      pattern: `^([\\wА-я]{3,} ?){3,}$`, // TODO: не отрабатывает
     });
     this.phoneField = new FormField({
       className: 'modal',
@@ -57,7 +57,9 @@ export class OrderForm extends BaseComponent {
     this.addressField = new FormField({
       className: 'modal',
       text: 'Адрес доставки',
-      placeholder: 'Кукушкина 5 дом 10',
+      type: 'text',
+      placeholder: 'Пенза, Кукушкина 5, дом 10',
+      pattern: `^([\\wА-я]{5,} ?){3,}$`,  // TODO: не отрабатывает
     });
     this.emailField = new FormField({
       className: 'modal',
