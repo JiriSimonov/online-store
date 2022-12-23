@@ -1,4 +1,5 @@
 import Imask from 'imask';
+import { Loader } from '../store/loader';
 import { DB } from '../../services/db/database';
 import { BaseComponent } from '../elements/base-component';
 import { Button } from '../elements/button';
@@ -26,8 +27,11 @@ export class OrderForm extends BaseComponent {
 
   private modalClose: Button;
 
+  private loader: Loader;
+
   constructor() {
     super({ className: 'modal' });
+    this.loader = new Loader();
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
     this.modalContent = new BaseComponent({ className: 'modal__content' });
     this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
@@ -60,6 +64,7 @@ export class OrderForm extends BaseComponent {
       text: 'E-mail',
       type: 'email',
       placeholder: 'kotopes@mail.ru',
+      pattern: '.+@.+\\..+',
     });
     this.card = new Card();
     this.modalSubmit = new Button({
@@ -76,11 +81,13 @@ export class OrderForm extends BaseComponent {
       },
     });
     this.modalForm.getNode().onsubmit = () => {
+      document.body.append(this.loader.getNode());
       setTimeout(() => {
         window.location.hash = '#store';
         this.destroy();
         DB.cart.clear();
         DB.cart.promo.clear();
+        this.loader.destroy();
       }, 3500);
     }
     // render
