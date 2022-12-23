@@ -24,13 +24,18 @@ export class Store extends BaseComponent {
 
   private filters: Filters;
   private nextButton = new Button({
-    text: 'next',
+    text: 'Показать еще',
+    className: 'store__more',
     onclick: () => {
       this.storeList.appendEl(this.chunk);
       this.renderBottomButton();
     },
   });
-  private scrollButton = new Button({ text: 'NAVERH', onclick: () => window.scrollTo({ behavior: 'smooth', top: 0 }) });
+  private scrollButton = new Button({
+    text: 'Наверх',
+    className: 'store__more',
+    onclick: () => window.scrollTo({ behavior: 'smooth', top: 0 }),
+  });
 
   constructor(private productsState: ProductsListState) {
     super({ tag: 'section', className: 'store' });
@@ -47,17 +52,6 @@ export class Store extends BaseComponent {
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
     this.productsState.add(this.update);
-
-    [this.nextButton, this.scrollButton].forEach((el) =>
-      el.setStyleAttr(
-        ['marginBottom', '.5rem'],
-        ['width', '100%'],
-        ['height', '100px'],
-        ['fontSize', '3rem'],
-        ['backgroundColor', '#0f0'],
-      ),
-    );
-
     this.update();
   }
 

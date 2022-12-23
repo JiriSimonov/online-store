@@ -18,7 +18,7 @@ export class ProductImage extends BaseComponent {
     };
 
     this.images = imageList.map((v, i, a) => {
-      const component = new BaseComponent({ className: 'store__img' });
+      const component = new BaseComponent({ className: 'store__img-item' });
       const node = component.getNode();
 
       if (i === 0) setImage(v);
@@ -30,7 +30,5 @@ export class ProductImage extends BaseComponent {
     });
 
     this.appendEl([this.image, ...this.images]);
-    this.image.setStyleAttr(['position', 'absolute'], ['zIndex', '0']);
-    // this.node.before(this.loader.getNode())
   }
 }
