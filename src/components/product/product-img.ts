@@ -4,19 +4,15 @@ import { Loader } from '../store/loader';
 
 export class ProductImage extends BaseComponent {
   private zones: BaseComponent[];
-  private image: Image = new Image();
   private images: Image[] = [];
 
   private loader = new Loader();
 
   constructor(imageList: string[]) {
     super({ className: 'store__img' });
-    this.image.getNode().className = 'store__img-main';
 
     const setImage = (index: number): void => {
-      const newImage = this.images[index];
-      this.image.getNode().replaceWith(newImage.getNode());
-      this.image = newImage;
+      this.setStyleAttr(['backgroundImage',`url(${this.images[index].getNode().src})`])
     };
 
     this.zones = imageList.map((_, i) => {
@@ -29,7 +25,7 @@ export class ProductImage extends BaseComponent {
       return component;
     });
 
-    this.appendEl([this.image, this.loader, ...this.zones]);
+    this.appendEl([this.loader, ...this.zones]);
     this.getImageList(imageList).then(() => {
       this.loader.destroy();
       setImage(0);
@@ -41,7 +37,6 @@ export class ProductImage extends BaseComponent {
       new Promise((res) => {
         const img = new Image();
         img.getNode().src = `assets/images/keyboards/${name}.webp`;
-        img.getNode().className = 'store__img-main';
         img.getNode().onload = () => res(img);
       });
     this.images = await Promise.all(imageList.map(getPromise));
