@@ -316,6 +316,10 @@
 
     .store__img {
       padding: 0;
+
+      &-item {
+        min-height: 405px;
+      }
     }
   }
 

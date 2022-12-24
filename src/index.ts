@@ -17,6 +17,12 @@ class App extends BaseComponent {
 
   private productsListState: ProductsListState;
 
+  private home = new Home();
+
+  private store: Store;
+
+  private cart = new Cart().subscribe();
+
   private currentPage: BaseComponent | null;
 
   constructor() {
@@ -24,24 +30,24 @@ class App extends BaseComponent {
     this.productsListState = new ProductsListState(DB.keyboards);
     this.router = null;
     this.currentPage = null;
+    this.store = new Store(this.productsListState);
   }
 
   renderHome() {
     this.currentPage?.destroy();
-    const home = new Home();
-    this.currentPage = home;
-    this.appendEl(home);
+    this.currentPage = this.home;
+    this.appendEl(this.home);
   }
 
   renderStore() {
     this.currentPage?.destroy();
-    this.currentPage = new Store(this.productsListState);
+    this.currentPage = this.store;
     this.appendEl(this.currentPage);
   }
 
   renderCart() {
     this.currentPage?.destroy();
-    this.currentPage = new Cart().subscribe();
+    this.currentPage = this.cart.updateCart();
     this.appendEl(this.currentPage);
   }
 
@@ -55,7 +61,6 @@ class App extends BaseComponent {
   }
 
   renderProductPage(keyboard: Keyboard) {
-    // TODO ЭТО ОН!!!
     this.currentPage?.destroy();
     this.currentPage = new ProductPage(keyboard);
     this.appendEl(this.currentPage);

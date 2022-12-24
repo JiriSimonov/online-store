@@ -90,6 +90,7 @@ export class OrderForm extends BaseComponent {
         DB.cart.clear();
         DB.cart.promo.clear();
         this.loader.destroy();
+        document.body.classList.remove('no-scroll');
       }, 3500);
     }
     // render
