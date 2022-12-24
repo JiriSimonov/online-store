@@ -75,6 +75,7 @@ export class Cart extends BaseComponent {
 
     this.updateActivePromoList();
     this.updateTotalPrice();
+    this.updateTotalQuantity();
   }
 
   private updateTotalPrice(): void {
@@ -92,6 +93,10 @@ export class Cart extends BaseComponent {
     }
   }
 
+  private updateTotalQuantity() {
+    this.cartPriceText.setText(`Итого: ${DB.cart.sumQuantity}`);
+  }
+
   private updateActivePromoList(): void {
     const { list, size } = DB.cart.promo;
     const [promoWrapper, promoTitle] = [this.cartPromoWrapper.getNode(), this.cartPromoTitle.getNode()];
@@ -106,9 +111,9 @@ export class Cart extends BaseComponent {
   }
 
   updateCart() {
-    this.cartList.clear()
-    this.cartItems = DB.cart.list.map((item) => new CartItemElem(item))
-    this.cartList.appendEl(this.cartItems)
+    this.cartList.clear();
+    this.cartItems = DB.cart.list.map((item) => new CartItemElem(item));
+    this.cartList.appendEl(this.cartItems);
     return this;
   }
 
@@ -127,6 +132,7 @@ export class Cart extends BaseComponent {
     });
     emitter.subscribe('cart__save', () => {
       this.updateTotalPrice();
+      this.updateTotalQuantity();
     });
     emitter.subscribe('promo__save', () => {
       this.updateActivePromoList();
