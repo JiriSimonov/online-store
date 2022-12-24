@@ -88,8 +88,13 @@ export class CartItemElem extends BaseComponent {
       text: '-',
       parent: this.countBtn.getNode(),
       onclick: () => {
-        this.countField.getInputNode().stepDown();
-        this.countField.getInputNode().dispatchEvent(new Event('input'));
+        if (+this.countField.getInputNode().value === 1) {
+          DB.cart.remove(product);
+          this.destroy();
+        } else {
+          this.countField.getInputNode().stepDown();
+          this.countField.getInputNode().dispatchEvent(new Event('input'));
+        }
       },
     });
     this.countBtn.appendEl(this.countField);
@@ -100,12 +105,10 @@ export class CartItemElem extends BaseComponent {
         product.set(+e.target.value);
         this.inStock.getNode().textContent = `Осталось на складе: ${keyboardSwitch.quantity - +e.target.value}`;
         this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
-        this.cartDec.disabled = +e.target.value === +this.countField.getInputNode().min;
         this.cartInc.disabled = +e.target.value === keyboardSwitch.quantity;
       }
     };
     this.countField.getInputNode().onkeydown = (e) => {
-      // TODO посмотреть что убрать
       if (e.target && e.target instanceof HTMLInputElement && ['e', 'E', '-', '+', '.', ','].includes(e.key))
         e.preventDefault();
     };
@@ -127,8 +130,6 @@ export class CartItemElem extends BaseComponent {
         this.destroy();
       },
     });
-    if (+this.countField.getInputNode().value === +this.countField.getInputNode().min)
-      this.cartDec.getNode().setAttribute('disabled', 'true');
     if (+this.countField.getInputNode().value === +this.countField.getInputNode().max)
       this.cartInc.getNode().setAttribute('disabled', 'true');
     this.price.setText(`${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`);
