@@ -44,7 +44,8 @@ export class CartItemElem extends BaseComponent {
       value: `${quantity}`,
       min: '1',
       max: `${keyboardSwitch.quantity}`,
-      pattern: '[0-9]{2}' });
+      pattern: '[0-9]{2}',
+    });
     this.images = new ProductImage(keyboard.images);
     this.wrapper = new BaseComponent({ className: 'cart__container' });
     this.title = new BaseComponent({
@@ -89,7 +90,7 @@ export class CartItemElem extends BaseComponent {
       onclick: () => {
         this.countField.getInputNode().stepDown();
         this.countField.getInputNode().dispatchEvent(new Event('input'));
-      }
+      },
     });
     this.countBtn.appendEl(this.countField);
     this.countField.getInputNode().oninput = (e) => {
@@ -97,21 +98,17 @@ export class CartItemElem extends BaseComponent {
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
         if (+e.target.value < +e.target.min) e.target.value = e.target.min;
         product.set(+e.target.value);
-        this.inStock.getNode().textContent = `Осталось на складе: ${
-          keyboardSwitch.quantity - +e.target.value
-        }`;
+        this.inStock.getNode().textContent = `Осталось на складе: ${keyboardSwitch.quantity - +e.target.value}`;
         this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
-        (this.cartDec.getNode() as HTMLButtonElement).disabled =
-          +e.target.value === +this.countField.getInputNode().min;
-        (this.cartInc.getNode() as HTMLButtonElement).disabled =
-          +e.target.value === keyboardSwitch.quantity;
+        this.cartDec.disabled = +e.target.value === +this.countField.getInputNode().min;
+        this.cartInc.disabled = +e.target.value === keyboardSwitch.quantity;
       }
-    }
+    };
     this.countField.getInputNode().onkeydown = (e) => {
       // TODO посмотреть что убрать
       if (e.target && e.target instanceof HTMLInputElement && ['e', 'E', '-', '+', '.', ','].includes(e.key))
         e.preventDefault();
-    }
+    };
     this.cartInc = new Button({
       className: 'count-btn__inc',
       text: '+',
@@ -119,7 +116,7 @@ export class CartItemElem extends BaseComponent {
       onclick: () => {
         this.countField.getInputNode().stepUp();
         this.countField.getInputNode().dispatchEvent(new Event('input'));
-      }
+      },
     });
     this.cartDelete = new Button({
       className: 'cart__stock cart__delete',
