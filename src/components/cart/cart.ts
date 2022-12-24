@@ -105,6 +105,13 @@ export class Cart extends BaseComponent {
     }
   }
 
+  updateCart() {
+    this.cartList.clear()
+    this.cartItems = DB.cart.list.map((item) => new CartItemElem(item))
+    this.cartList.appendEl(this.cartItems)
+    return this;
+  }
+
   private openOrderForm(): void {
     this.orderForm = new OrderForm();
     //? если аппендить в body, то хотя бы отрисовывается

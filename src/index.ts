@@ -47,7 +47,7 @@ class App extends BaseComponent {
 
   renderCart() {
     this.currentPage?.destroy();
-    this.currentPage = this.cart;
+    this.currentPage = this.cart.updateCart();
     this.appendEl(this.currentPage);
   }
 
