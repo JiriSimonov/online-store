@@ -10,6 +10,7 @@ export class ProductImage extends BaseComponent {
 
   constructor(imageList: string[]) {
     super({ className: 'store__img' });
+    this.image.getNode().className = 'store__img-main';
 
     const setImage = (fileName: string): void => {
       this.appendEl(this.loader);
