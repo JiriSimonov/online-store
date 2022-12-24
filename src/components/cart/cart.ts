@@ -8,6 +8,7 @@ import { PromoForm } from './cart-promo';
 import { OrderForm } from './order-form';
 import { ChangeView } from '../elements/change-view';
 import { emitter } from '../../services/event-emitter';
+import { getNoun } from '../../utils/get-noun';
 
 export class Cart extends BaseComponent {
   private container = new BaseComponent({ className: 'container' });
@@ -94,7 +95,8 @@ export class Cart extends BaseComponent {
   }
 
   private updateTotalQuantity() {
-    this.cartPriceText.setText(`Итого: ${DB.cart.sumQuantity}`);
+    this.cartPriceText
+    .setText(`Итого: ${DB.cart.sumQuantity} ${getNoun(DB.cart.sumQuantity, 'товар', 'товара', 'товаров')} на сумму`);
   }
 
   private updateActivePromoList(): void {
@@ -119,9 +121,6 @@ export class Cart extends BaseComponent {
 
   private openOrderForm(): void {
     this.orderForm = new OrderForm();
-    //? если аппендить в body, то хотя бы отрисовывается
-    // this.wrapper.appendEl(this.orderForm);
-    // document.body.append(this.orderForm.getNode());
     document.body.append(this.orderForm.getNode());
     document.body.classList.add('no-scroll');
   }
