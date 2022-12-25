@@ -1,3 +1,4 @@
+import { CartPagination } from './cart-pagination';
 import { ActivePromo } from './active-promo';
 import { DB } from '../../services/db/database';
 import { BaseComponent } from '../elements/base-component';
@@ -24,6 +25,8 @@ export class Cart extends BaseComponent {
     },
   });
   private changeView = new ChangeView();
+
+  private cartPagination = new CartPagination();
 
   private cartList = new CartList();
   private cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
@@ -121,6 +124,7 @@ export class Cart extends BaseComponent {
         this.cartPriceWrapper,
         this.orderBtn,
       ]);
+      this.changeView.appendEl(this.cartPagination);
       this.cartList.appendEl(DB.cart.list.map((item, index) => new CartItemElem(item, index)));
       this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
       this.cartPromoWrapper.appendEl([this.cartPromoBtn]);

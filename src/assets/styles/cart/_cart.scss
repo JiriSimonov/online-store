@@ -21,6 +21,8 @@
     .view {
       top: 0;
       right: 0;
+      align-items: center;
+      gap: 20px;
     }
   }
 
@@ -624,5 +626,91 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+  }
+}
+
+.dropdown {
+  position: relative;
+
+  &__wrapper {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    border: 2px solid $blue;
+    border-radius: 5px;
+    background-color: $white;
+    overflow: hidden;
+    visibility: hidden;
+    z-index: 9;
+  }
+
+  &__label {
+    background-color: transparent;
+    padding: 5px 20px; 
+    font-size: 16px;
+    font-weight: 400;
+    color: $black;
+    text-align: center;
+    cursor: $hover;
+    user-select: none;
+    transition: .3s linear;
+
+    &:hover,
+    &:focus {
+      background-color: $blue;
+      color: $white;
+    }
+  }
+
+  &__label_selected {
+    display: block;
+    padding: 5px 10px;
+    border: 2px solid $blue;
+    border-radius: 5px;
+    background-color: transparent;
+
+    &:hover,
+    &:focus {
+      background-color: $blue;
+      .dropdown__input_selected {
+        color: $white;
+      }
+    }
+  }
+
+  &__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    cursor: $hover;
+    transition: .3s linear;
+  }
+
+  &__input_selected {
+    all: unset;
+    padding: 0;
+    width: 100%;
+    max-width: 40px;
+    font-size: 16px;
+    font-weight: 400;
+    color: $black;
+    user-select: none;
+    transition: .3s linear;
+
+    &::placeholder {
+      font-family: 'Nunito', monospace;
+      font-size: 18px;
+      font-weight: 400;
+      user-select: none;
+    }
+  }
+}
+
+.dropdown_is-open {
+  .dropdown__wrapper {
+    display: flex;
+    visibility: visible;
   }
 }
