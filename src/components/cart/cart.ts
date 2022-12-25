@@ -14,6 +14,8 @@ export class Cart extends BaseComponent {
   private container = new BaseComponent({ className: 'container' });
   private wrapper = new BaseComponent({ className: 'cart__wrapper' });
 
+  private cartTitle = new BaseComponent({ tag: 'h2', className: 'cart__title', text: 'Корзина пока что пуста' });
+
   private cartButton = new Button({
     className: 'cart__btn',
     text: 'Продолжить покупки',
@@ -65,6 +67,7 @@ export class Cart extends BaseComponent {
     this.updateActivePromoList();
     this.updateTotalPrice();
     this.updateTotalQuantity();
+    this.render();
   }
 
   private updateTotalPrice(): void {
@@ -103,8 +106,13 @@ export class Cart extends BaseComponent {
   updateCart() {
     this.cartList.clear();
     this.cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
+    this.render();
+    return this;
+  }
+
+  private render() {
     if (DB.cart.list.length > 0) {
-      this.cartList.appendEl(this.cartItems);
+      this.cartTitle.destroy();
       this.wrapper.appendEl([
         this.changeView,
         this.cartButton,
@@ -113,11 +121,14 @@ export class Cart extends BaseComponent {
         this.cartPriceWrapper,
         this.orderBtn,
       ]);
-      this.cartList.appendEl(this.cartItems);
+      this.cartList.appendEl(DB.cart.list.map((item, index) => new CartItemElem(item, index)));
       this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
       this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
+    } else {
+      this.wrapper.clear();
+      this.wrapper.appendEl(this.cartButton);
+      this.wrapper.appendEl(this.cartTitle);
     }
-    return this;
   }
 
   private openOrderForm(): void {
@@ -134,7 +145,7 @@ export class Cart extends BaseComponent {
       this.updateTotalPrice();
       this.updateTotalQuantity();
       this.cartList.clear();
-      this.cartList.appendEl(DB.cart.list.map((item, index) => new CartItemElem(item, index)));
+      this.render();
     });
     emitter.subscribe('promo__save', () => {
       this.updateActivePromoList();
