@@ -2,17 +2,22 @@
 import { KeyboardData } from '../../interfaces/database';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
-import keyboardsJson = require('../../data/keyboards.json');
 import { Cart } from './cart';
 import { emitter } from '../event-emitter';
 import { CartItem } from './cart-item';
+import keyboardsJson = require('../../data/keyboards.json');
+import { Filter } from './filter';
 
 class Database {
   readonly keyboards: Keyboard[];
   readonly cart: Cart = new Cart();
+  readonly filter: Filter;
+
   constructor(keyboards: KeyboardData[]) {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
     Object.seal(this.keyboards);
+    this.filter = new Filter(this.keyboards);
+    emitter.subscribe('cart__update-item', (item: CartItem) => this.cart.add(item));
   }
 
   get switches(): KeyboardSwitch[] {
@@ -66,7 +71,5 @@ class Database {
 }
 
 export const DB = new Database(keyboardsJson as KeyboardData[]);
-
-emitter.subscribe('cart__update-item', (item: CartItem) => DB.cart.add(item));
 
 console.info(DB);
