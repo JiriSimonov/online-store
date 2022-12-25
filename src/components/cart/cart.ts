@@ -76,6 +76,8 @@ export class Cart extends BaseComponent {
     this.updateActivePromoList();
     this.updateTotalPrice();
     this.updateTotalQuantity();
+
+    this.subscribe()
   }
 
   private updateTotalPrice(): void {
@@ -119,9 +121,6 @@ export class Cart extends BaseComponent {
 
   private openOrderForm(): void {
     this.orderForm = new OrderForm();
-    //? если аппендить в body, то хотя бы отрисовывается
-    // this.wrapper.appendEl(this.orderForm);
-    // document.body.append(this.orderForm.getNode());
     document.body.append(this.orderForm.getNode());
     document.body.classList.add('no-scroll');
   }

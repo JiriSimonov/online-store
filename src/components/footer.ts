@@ -50,5 +50,6 @@ export class Footer extends BaseComponent {
     this.linkWrapper.appendEl([this.linkOne, this.linkTwo]);
     this.contentWrapper.appendEl([this.linkWrapper, this.year, this.logo]);
     this.appendEl(this.wrapper);
+    return this;
   }
 }

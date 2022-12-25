@@ -1,14 +1,14 @@
-import { RoutesObj } from '../interfaces/interfaces';
-
 export class Router {
-  constructor(private readonly routes: RoutesObj, private errorCallback: () => void) {
+  constructor(private readonly routes: Map<string, () => void>, private errorPage: () => void) {
     window.addEventListener('hashchange', this.onHashChangeHandler);
     this.onHashChangeHandler();
   }
 
   onHashChangeHandler = () => {
-    const hashPath = window.location.hash.slice(1);
-    if (Object.keys(this.routes).includes(hashPath)) this.routes[hashPath]();
+    const [hashPath] = window.location.hash.split('?');
+    const callback = this.routes.get(hashPath);
+    if (callback) callback();
+    else this.errorPage();
   };
 
   destroy() {
