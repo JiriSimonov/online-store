@@ -102,7 +102,7 @@ export class ProductCard extends BaseComponent {
       label.removeEventListener('mouseout', mouseoutListener);
     };
     label.addEventListener('mouseout', mouseoutListener);
-    this.switchModal = new SwitchModal(label.textContent ?? '', label.classList.contains('switch__item_false'));
+    this.switchModal = new SwitchModal(label.textContent ?? '', label.classList.contains('switch__item_true'));
     this.cardPrice.getNode().classList.add('store__card-price_is-open');
     this.appendEl(this.switchModal);
   }
