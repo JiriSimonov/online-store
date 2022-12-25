@@ -23,7 +23,7 @@ export class Store extends BaseComponent {
   private changeView = new ChangeView();
   private notFound = new BaseComponent({ className: 'store__not-found', text: 'Нет результатов' });
 
-/*   private filters: Filters; */
+  private filters = new Filters(new ProductsListState(DB.filter.list));
   private nextButton = new Button({
     text: 'Показать еще',
     className: 'store__more',
@@ -40,19 +40,24 @@ export class Store extends BaseComponent {
 
   constructor(/* private productsState: ProductsListState */) {
     super({ tag: 'section', className: 'store' });
-   /*  this.filters = new Filters(this.productsState); */
+
     this.showFiltersBtn.getNode().onclick = () => {
       const { classList } = this.wrapper.getNode();
       classList.toggle('store__wrapper_is-open');
-/*       if (!classList.contains('store__wrapper_is-open')) this.filters.destroy();
-      else this.contentWrapper.getNode().prepend(this.filters.getNode()); */
+
+      if (!classList.contains('store__wrapper_is-open')) this.filters.destroy();
+      else this.contentWrapper.getNode().prepend(this.filters.getNode());
     };
 
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
-    /* this.productsState.add(this.update); */
+
+    window.addEventListener('hashchange', () => {
+      console.warn('hashhhh');
+      this.update();
+    });
     this.update();
   }
 
