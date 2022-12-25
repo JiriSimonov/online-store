@@ -1,31 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
+import { FilterCategory } from '../../interfaces/database';
 import { converter } from '../../utils/utils';
 import { Keyboard } from './keyboard';
 
-/*
-available
-switch
-manufacturer
-size
-features
-search
-*/
-enum FilterCategory {
-  available,
-  brand,
-  size,
-  features,
-  switches,
-  search,
-}
-
 export class Filter {
-  private usp = new URLSearchParams(this.query);
+  constructor(private source: Keyboard[]) {}
 
-  constructor(private source: Keyboard[]) {
-    /* this.add('switches', 'T4'); */
-    console.warn(this.getAll());
+  private get usp() {
+    return new URLSearchParams(this.query);
   }
 
   private get query(): string {
@@ -57,16 +40,22 @@ export class Filter {
       const switchesIdList: string[] = item.switches.map((keyboardSwitch) => keyboardSwitch.id);
       return values ? switchesIdList.some((keyboardSwitch) => values.has(keyboardSwitch)) : true;
     };
+    const hasManufacturer = (item: Keyboard): boolean => {
+      const values = filters.get('manufacturer');
+      const switchesManufacturerList: string[] = item.switches.map((keyboardSwitch) => keyboardSwitch.manufacturer);
+      return values ? switchesManufacturerList.some((manufacturer) => values.has(manufacturer)) : true;
+    };
     let search; // TODO
     const res = [...this.source].filter(
       (keyboard) =>
         isAvailable(keyboard) &&
-        hasSize(keyboard) &&
+        hasManufacturer(keyboard) &&
+        hasSwitches(keyboard) &&
         hasBrand(keyboard) &&
-        hasFeatures(keyboard) &&
-        hasSwitches(keyboard),
+        hasSize(keyboard) &&
+        hasFeatures(keyboard),
     );
-    console.info(res);
+    // console.info(res);
     return res;
   }
 
