@@ -324,11 +324,9 @@
 }
 
 .promo-active {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: 40%;
+  display: flex;
+  gap: 10px;
   text-align: center;
-  gap: 20px;
 
   &__title,
   &__text {
@@ -337,7 +335,14 @@
 
   &__item {
     display: flex;
+    align-self: flex-end;
+    flex-wrap: wrap;
     gap: 20px;
+
+    &:not(:last-child) {
+      padding-right: 10px;
+      border-right: 1px solid $blue;
+    }
   }
 
   &__text {
