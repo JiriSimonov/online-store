@@ -272,6 +272,12 @@
     transition: .3s linear;
   }
 
+  &__label {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
   &__btn {
     max-width: 160px;
     padding-left: 0;
