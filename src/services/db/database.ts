@@ -5,8 +5,9 @@ import { KeyboardSwitch } from './keyboard-switch';
 import { Cart } from './cart';
 import { emitter } from '../event-emitter';
 import { CartItem } from './cart-item';
-import keyboardsJson = require('../../data/keyboards.json');
 import { Filter } from './filter';
+import { FilterCategory } from '../../interfaces/enums';
+import keyboardsJson = require('../../data/keyboards.json');
 
 class Database {
   readonly keyboards: Keyboard[];
@@ -68,8 +69,35 @@ class Database {
   getChunk<T>(number: number, length: number, list: T[] | Keyboard[] = this.keyboards) {
     return list.slice(number * length, number * length + length);
   }
+
+  getVariants(category: keyof typeof FilterCategory): Set<unknown> {
+    switch (category) {
+      case 'available':
+        return new Set(this.keyboards.map((k) => k.isAvailable));
+      case 'manufacturer':
+        return new Set(this.keyboards.flatMap((k) => k.switches.map((s) => s.manufacturer)));
+      case 'switches':
+        return new Set(this.keyboards.flatMap((k) => k.switches.map((s) => s.id)));
+      case 'brand':
+        return new Set(this.keyboards.flatMap((k) => k.brands));
+      case 'size':
+        return new Set(this.keyboards.map((k) => k.size));
+      case 'features':
+        return new Set(this.keyboards.flatMap((k) => k.features));
+      default:
+        return new Set();
+    }
+  }
 }
 
 export const DB = new Database(keyboardsJson as KeyboardData[]);
 
 console.info(DB);
+
+// TODO удалить нижние логи, когда станут не нужны
+console.info(DB.getVariants('available'));
+console.info(DB.getVariants('manufacturer'));
+console.info(DB.getVariants('switches'));
+console.info(DB.getVariants('brand'));
+console.info(DB.getVariants('size'));
+console.info(DB.getVariants('features'));

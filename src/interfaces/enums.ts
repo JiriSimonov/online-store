@@ -63,4 +63,12 @@ export enum SwitchShorts {
   'zeal pc zealios v2 67g' = 'ZE',
 }
 
-export enum Placeholder {}
+export enum FilterCategory {
+  available,
+  manufacturer,
+  switches,
+  brand,
+  size,
+  features,
+  search,
+}

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import { FilterCategory } from '../../interfaces/database';
+import { FilterCategory } from '../../interfaces/enums';
 import { converter } from '../../utils/utils';
 import { Keyboard } from './keyboard';
 
