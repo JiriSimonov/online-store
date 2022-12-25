@@ -29,7 +29,7 @@ export class PromoForm extends BaseComponent {
       if (DB.cart.promo.isValid(this.promoField.getInputNode().value))
         this.appendEl(this.promoBtn);
       else
-        if (this.node.children.length > 1) this.node.removeChild(this.promoBtn.getNode());
+        this.promoBtn.destroy();
     }
     this.appendEl(this.promoField);
   }
