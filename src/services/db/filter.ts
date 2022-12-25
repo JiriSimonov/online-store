@@ -5,11 +5,13 @@ import { converter } from '../../utils/utils';
 import { Keyboard } from './keyboard';
 
 export class Filter {
+  private usp = new URLSearchParams(this.query);
+
   constructor(private source: Keyboard[]) {}
 
-  private get usp() {
+  /* private get usp() {
     return new URLSearchParams(this.query);
-  }
+  } */
 
   private get query(): string {
     const { hash } = window.location;
