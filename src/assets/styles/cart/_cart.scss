@@ -278,6 +278,12 @@
     transition: .3s linear;
   }
 
+  &__label {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
   &__btn {
     max-width: 160px;
     padding-left: 0;
@@ -330,11 +336,9 @@
 }
 
 .promo-active {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: 40%;
+  display: flex;
+  gap: 10px;
   text-align: center;
-  gap: 20px;
 
   &__title,
   &__text {
@@ -343,7 +347,14 @@
 
   &__item {
     display: flex;
+    align-self: flex-end;
+    flex-wrap: wrap;
     gap: 20px;
+
+    &:not(:last-child) {
+      padding-right: 10px;
+      border-right: 1px solid $blue;
+    }
   }
 
   &__text {

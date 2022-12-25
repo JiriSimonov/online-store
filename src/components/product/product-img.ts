@@ -14,7 +14,7 @@ export class ProductImage extends BaseComponent {
     const setImage = (index: number): void => this.setStyleAttr(['backgroundImage', `url(${this.images[index]})`]);
 
     this.zones = imageList.map((_, i) => {
-      const component = new BaseComponent({ className: 'store__img-item' });
+      const component = new BaseComponent({ tag: 'span', className: 'store__img-item' });
       const node = component.getNode();
 
       node.onmouseover = () => setImage(i);
