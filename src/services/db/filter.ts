@@ -7,7 +7,11 @@ import { Keyboard } from './keyboard';
 export class Filter {
   private usp = new URLSearchParams(this.query);
 
-  constructor(private source: Keyboard[]) {}
+  constructor(private source: Keyboard[]) {
+    window.addEventListener('hashchange', () => {
+      this.usp = new URLSearchParams(this.query);
+    });
+  }
 
   /* private get usp() {
     return new URLSearchParams(this.query);
@@ -76,6 +80,7 @@ export class Filter {
     const params: Set<string> = converter.stringToSet(param);
     params.delete(value);
     this.usp.set(category, converter.setToString(params));
+    if (!params.size) this.clear(category);
     this.query = this.usp.toString();
   }
   /** Очищает категорию фильтра в Query */
