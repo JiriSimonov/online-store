@@ -4,20 +4,14 @@ import { Loader } from '../store/loader';
 
 export class ProductImage extends BaseComponent {
   private zones: BaseComponent[];
-  private image: Image = new Image();
-  private images: Image[] = [];
+  private images: string[] = [];
 
   private loader = new Loader();
 
   constructor(imageList: string[]) {
     super({ className: 'store__img' });
-    this.image.getNode().className = 'store__img-main';
 
-    const setImage = (index: number): void => {
-      const newImage = this.images[index];
-      this.image.getNode().replaceWith(newImage.getNode());
-      this.image = newImage;
-    };
+    const setImage = (index: number): void => this.setStyleAttr(['backgroundImage', `url(${this.images[index]})`]);
 
     this.zones = imageList.map((_, i) => {
       const component = new BaseComponent({ className: 'store__img-item' });
@@ -29,21 +23,21 @@ export class ProductImage extends BaseComponent {
       return component;
     });
 
-    this.appendEl([this.image, this.loader, ...this.zones]);
+    this.appendEl([this.loader, ...this.zones]);
     this.getImageList(imageList).then(() => {
       this.loader.destroy();
       setImage(0);
     });
   }
 
-  async getImageList(imageList: string[]) {
-    const getPromise = (name: string): Promise<Image> =>
-      new Promise((res) => {
-        const img = new Image();
-        img.getNode().src = `assets/images/keyboards/${name}.webp`;
-        img.getNode().className = 'store__img-main';
-        img.getNode().onload = () => res(img);
-      });
-    this.images = await Promise.all(imageList.map(getPromise));
+  async getImageList(imageList: string[]): Promise<void> {
+    const promises: Promise<string>[] = imageList.map(async (name) => {
+      const src = `assets/images/keyboards/${name}.webp`;
+      const img = new Image();
+      Object.assign(img.getNode(), { src });
+      await img.getNode().decode();
+      return src;
+    });
+    this.images = await Promise.all(promises);
   }
 }
