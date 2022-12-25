@@ -76,6 +76,7 @@ export class Cart extends BaseComponent {
     this.updateActivePromoList();
     this.updateTotalPrice();
     this.updateTotalQuantity();
+    this.updateCart();
 
     this.subscribe()
   }
@@ -132,6 +133,7 @@ export class Cart extends BaseComponent {
     emitter.subscribe('cart__save', () => {
       this.updateTotalPrice();
       this.updateTotalQuantity();
+      this.updateCart();
     });
     emitter.subscribe('promo__save', () => {
       this.updateActivePromoList();
