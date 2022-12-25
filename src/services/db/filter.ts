@@ -3,13 +3,28 @@
 import { converter } from '../../utils/utils';
 import { Keyboard } from './keyboard';
 
+/*
+available
+switch
+manufacturer
+size
+features
+search
+*/
+enum FilterCategory {
+  available,
+  brand,
+  size,
+  features,
+  switches,
+  search,
+}
+
 export class Filter {
   private usp = new URLSearchParams(this.query);
 
   constructor(private source: Keyboard[]) {
-    this.add('brand', 'Ducky');
-    this.add('brand', 'TTC');
-    this.add('size', '80');
+    /* this.add('switches', 'T4'); */
     console.warn(this.getAll());
   }
 
@@ -26,11 +41,37 @@ export class Filter {
 
   /** Возвращает отфильтрованный массив Keyboard */
   get list(): Keyboard[] {
-    return [...this.source];
+    const filters = this.getAll();
+    const isAvailable = (item: Keyboard): boolean => filters.get('available')?.has(`${item.isAvailable}`) ?? true;
+    const hasSize = (item: Keyboard): boolean => filters.get('size')?.has(item.size) ?? true;
+    const hasBrand = (item: Keyboard): boolean => {
+      const values = filters.get('brand');
+      return values ? item.brands.some((brand) => values.has(brand)) : true;
+    };
+    const hasFeatures = (item: Keyboard): boolean => {
+      const values = filters.get('features');
+      return values ? item.features.some((feature) => values.has(feature)) : true;
+    };
+    const hasSwitches = (item: Keyboard): boolean => {
+      const values = filters.get('switches');
+      const switchesIdList: string[] = item.switches.map((keyboardSwitch) => keyboardSwitch.id);
+      return values ? switchesIdList.some((keyboardSwitch) => values.has(keyboardSwitch)) : true;
+    };
+    let search; // TODO
+    const res = [...this.source].filter(
+      (keyboard) =>
+        isAvailable(keyboard) &&
+        hasSize(keyboard) &&
+        hasBrand(keyboard) &&
+        hasFeatures(keyboard) &&
+        hasSwitches(keyboard),
+    );
+    console.info(res);
+    return res;
   }
 
   /** Добавляет фильтр в Query */
-  add(category: string, value: string) {
+  add(category: keyof typeof FilterCategory, value: string) {
     const param: string = this.usp.get(category) ?? '[]';
     const params: Set<string> = converter.stringToSet(param);
     params.add(value);
