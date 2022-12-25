@@ -64,6 +64,12 @@
     transition: .3s linear;
   }
 
+  &__position {
+    font-size: 18px;
+    font-weight: 400;
+    user-select: none;
+  }
+
   &__item {
     padding: 30px 20px;
     border-radius: 15px;

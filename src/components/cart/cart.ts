@@ -23,7 +23,7 @@ export class Cart extends BaseComponent {
   private changeView = new ChangeView();
 
   private cartList = new CartList();
-  private cartItems = DB.cart.list.map((item) => new CartItemElem(item));
+  private cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
 
   private cartPromoWrapper = new BaseComponent({ className: 'promo' });
 
@@ -61,18 +61,6 @@ export class Cart extends BaseComponent {
 
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
-    this.wrapper.appendEl([
-      this.changeView,
-      this.cartButton,
-      this.cartList,
-      this.cartPromoWrapper,
-      this.cartPriceWrapper,
-      this.orderBtn,
-    ]);
-    this.cartList.appendEl(this.cartItems);
-    this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
-    this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
-
     this.updateActivePromoList();
     this.updateTotalPrice();
     this.updateTotalQuantity();
@@ -112,8 +100,21 @@ export class Cart extends BaseComponent {
 
   updateCart() {
     this.cartList.clear();
-    this.cartItems = DB.cart.list.map((item) => new CartItemElem(item));
-    this.cartList.appendEl(this.cartItems);
+    this.cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
+    if (DB.cart.list.length > 0) {
+      this.cartList.appendEl(this.cartItems);
+      this.wrapper.appendEl([
+        this.changeView,
+        this.cartButton,
+        this.cartList,
+        this.cartPromoWrapper,
+        this.cartPriceWrapper,
+        this.orderBtn,
+      ]);
+      this.cartList.appendEl(this.cartItems);
+      this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
+      this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
+    }
     return this;
   }
 
@@ -133,6 +134,8 @@ export class Cart extends BaseComponent {
     emitter.subscribe('cart__save', () => {
       this.updateTotalPrice();
       this.updateTotalQuantity();
+      this.cartList.clear();
+      this.cartList.appendEl(DB.cart.list.map((item, index) => new CartItemElem(item, index)));
     });
     emitter.subscribe('promo__save', () => {
       this.updateActivePromoList();

@@ -35,7 +35,9 @@ export class CartItemElem extends BaseComponent {
 
   private keyboardSwitch: SwitchComponent;
 
-  constructor(product: CartItem) {
+  private cartPosition: BaseComponent;
+
+  constructor(product: CartItem, index: number) {
     super({ tag: 'li', className: 'cart__item' });
     const { keyboard, keyboardSwitch, quantity } = product;
     this.countField = new FormField({
@@ -97,6 +99,7 @@ export class CartItemElem extends BaseComponent {
         }
       },
     });
+    this.cartPosition = new BaseComponent({ className: 'cart__position', text: `${index + 1}`, parent: this.node });
     this.countBtn.appendEl(this.countField);
     this.countField.getInputNode().oninput = (e) => {
       if (e.target && e.target instanceof HTMLInputElement) {
