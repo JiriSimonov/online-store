@@ -92,6 +92,7 @@ export class OrderForm extends BaseComponent {
         this.loader.destroy();
         document.body.classList.remove('no-scroll');
       }, 3500);
+      return false;
     }
     // render
     this.appendEl(this.modalOverlay);
