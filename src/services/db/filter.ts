@@ -90,14 +90,23 @@ export class Filter {
   }
   /** Очищает Query полностью */
   clearAll() {
-    this.query = '';
+    const categories = Object.keys(FilterCategory);
+    categories.slice(categories.length / 2).forEach((category) => this.clear(category));
   }
 
-  private getAll(): Map<string, Set<string>> {
+  getAll(): Map<string, Set<string>> {
     const convert = (entry: [string, string]): [string, Set<string>] => {
       const [category, values] = entry;
       return [category, converter.stringToSet(values)];
     };
-    return new Map(Array.from(this.usp.entries(), convert));
+    return new Map(
+      Array.from(this.usp.entries(), (entry) => {
+        try {
+          return convert(entry);
+        } catch {
+          return [entry[0], new Set()];
+        }
+      }),
+    );
   }
 }
