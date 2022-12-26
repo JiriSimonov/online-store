@@ -67,15 +67,20 @@ export class Store extends BaseComponent {
     this.storeList.appendEl(this.storeItems);
     this.contentWrapper.appendEl(this.goodsCount);
     const num = DB.filter.list.length;
-    if (num === 0)
-      this.goodsCount.setText('По вашему запросу нет результатов')
-    else if (num === DB.keyboards.length)
-      this.goodsCount.setText('');
-    else
-      this.goodsCount
-        .setText(`По вашему запросу ${num > 1 ? 'найдено' : 'найден'
-          } ${num} ${getNoun(num, 'результат', 'результата', 'результатов')}`);
-    // TODO! переписать условие, когда будут QueryParams
+    switch (num) {
+      case 0:
+        this.goodsCount.setText('По вашему запросу нет результатов');
+        break;
+      case DB.keyboards.length:
+        this.goodsCount.setText('');
+        break;
+      default:
+        this.goodsCount
+          .setText(`По вашему запросу ${num > 1 ? 'найдено' : 'найден'
+            } ${num} ${getNoun(num, 'результат', 'результата', 'результатов')}
+          `);
+        break;
+    }
     this.renderBottomButton();
   };
 
