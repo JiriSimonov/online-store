@@ -1,48 +1,30 @@
 import { BaseComponent } from '../elements/base-component';
 import { Filter } from './filter';
-import { Button } from '../elements/button';
-import { ProductsListState } from '../../states/goods-state';
-
-const brandsArr = [
-  'Ducky',
-  'Leopold',
-  'Geekboards',
-  'Vortex',
-  'Mistel',
-  'Durgod',
-  'Tex',
-  'Shurikey Gear',
-  'Keychron',
-  'Varmilo',
-  'NuPhy',
-  'Topre Realforce',
-  'HHKB',
-  'Kinesis',
-];
+import { DB } from '../../services/db/database';
+import { FormField } from '../elements/form-field';
 
 export class BrandFilter extends Filter {
-  private filterWrapper: BaseComponent;
+  private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
 
-  private brands: Button[];
+  private brands = [...DB.getVariants('brand')]
+  .map((item) =>
+    new FormField({
+      className: 'filter',
+      type: 'checkbox',
+      text: item,
+      value: item,
+    }));
 
-  constructor(private productsState: ProductsListState) {
-    super('Бренд');
-    this.filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-    this.brands = brandsArr.map(
-      (item) =>
-        new Button({
-          className: 'filter__btn',
-          text: `${item}`,
-          parent: this.filterWrapper.getNode(),
-        }),
-    );
-    this.brands.map((item) =>
-      item.getNode().addEventListener('click', () => {
-        // TODO REFACTOR
-        this.brands.map((elem) => elem.getNode().classList.remove('active'));
-        item.getNode().classList.add('active');
-        productsState.set({ brand: item.getNode().textContent as string });
-      }),
-    );
+  constructor() {
+    super('Бренды');
+    this.brands.forEach((item) => {
+      item.getInputNode().addEventListener('change', (e) => {
+        const { target } = e;
+        if (target && target instanceof HTMLInputElement) 
+          if (target.checked) DB.filter.add('brand', target.value);
+          else DB.filter.remove('brand', target.value);
+      });
+    })
+    this.filterWrapper.appendEl(this.brands);
   }
 }

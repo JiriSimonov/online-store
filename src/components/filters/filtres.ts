@@ -1,4 +1,5 @@
 import { BaseComponent } from '../elements/base-component';
+import { DB } from '../../services/db/database';
 import { Filter } from './filter';
 import { AvFilter } from './av-filter';
 import { SwitchFilter } from './switch-filter';
@@ -6,7 +7,6 @@ import { BrandFilter } from './brand-filter';
 import { SizeFilter } from './size-filter';
 import { FeaturesFilter } from './features-filter';
 import { Button } from '../elements/button';
-import { ProductsListState } from '../../states/goods-state';
 
 export class Filters extends BaseComponent {
   switchFilter: SwitchFilter;
@@ -21,24 +21,19 @@ export class Filters extends BaseComponent {
 
   clearFilters: Button;
 
-  constructor(private productsState: ProductsListState) {
+  constructor() {
     super({ tag: 'ul', className: 'filters' });
-    this.availableFilter = new AvFilter(productsState);
-    this.switchFilter = new SwitchFilter(productsState);
-    this.manufacturerFiler = new BrandFilter(productsState);
-    this.sizeFilter = new SizeFilter(productsState);
-    this.featuresFilter = new FeaturesFilter(productsState);
-    this.clearFilters = new Button({ className: 'filter__clear', text: 'Очистить фильтры' });
-    this.clearFilters.getNode().onclick = () => {
-      productsState.set({
-        search: '',
-        inStock: false,
-        brand: '',
-        switchType: '',
-        size: '',
-        features: '',
-      });
-    };
+    this.availableFilter = new AvFilter();
+    this.switchFilter = new SwitchFilter();
+    this.manufacturerFiler = new BrandFilter();
+    this.sizeFilter = new SizeFilter();
+    this.featuresFilter = new FeaturesFilter();
+    this.clearFilters = new Button({
+      className: 'filter__clear', text: 'Очистить фильтры',
+      onclick: () => {
+        DB.filter.clearAll();
+      }
+    });
     this.appendEl([
       this.availableFilter,
       this.switchFilter,

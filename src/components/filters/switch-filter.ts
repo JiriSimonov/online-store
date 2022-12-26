@@ -2,51 +2,53 @@ import { Filter } from './filter';
 import { SwitchComponent } from '../switches/switch-component';
 import { BaseComponent } from '../elements/base-component';
 import { SwitchModal } from '../switches/switch-modal';
-import { Button } from '../elements/button';
-import { ProductsListState } from '../../states/goods-state';
 import { DB } from '../../services/db/database';
-
-// TODO 🌼 расхардкодить
-const switchBtns = ['Cherry', 'Gateron', 'Varmilo', 'Keychron', 'Kailh', 'TTC', 'Topre', 'Akko'];
+import { FormField } from '../elements/form-field';
 
 export class SwitchFilter extends Filter {
-  private switchWrapper: BaseComponent;
+  private manufacturersWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
 
-  private buttonWrapper: BaseComponent;
+  private switchWrapper = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
 
-  private switchButtons: Button[];
+  private manufacturers = [...DB.getVariants('manufacturer')]
+    .map((item) =>
+      new FormField({
+        className: 'filter',
+        type: 'checkbox',
+        text: item,
+        value: item,
+      }));
 
-  switchArr: SwitchComponent[];
+  private switches = DB.switches
+    .filter((item) => item.id !== 'null')
+    .map((item) =>
+      new SwitchComponent(item, `${DB.switches.length}`));
 
   private modalWrapper: BaseComponent | null | undefined;
 
   private switchModal: SwitchModal | null | undefined;
 
-  constructor(private productsState: ProductsListState) {
+  constructor() {
     super('Переключатели');
-    this.buttonWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-    this.switchWrapper = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
-    this.switchButtons = switchBtns.map(
-      (item) =>
-        new Button({ className: 'filter__btn', text: item, parent: this.buttonWrapper.getNode() }),
-    );
-    this.switchButtons.map((item) =>
-      item.getNode().addEventListener('click', () => {
-        this.switchButtons.map((elem) => elem.getNode().classList.remove('active'));
-        item.getNode().classList.add('active');
-        productsState.set({ manufacturer: item.getNode().textContent as string });
-      }),
-    );
-    this.switchArr = DB.switches
-      .filter((item) => item.id !== 'null')
-      .map((item) => new SwitchComponent(item, `${DB.switches.length}`));
-    this.switchWrapper.appendEl(this.switchArr);
-    this.switchArr.map((item) =>
-      item.getNode().addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        if (target.classList.contains('switch__item')) productsState.set({ switchType: target.textContent as string }); // TODO REFACTOR
-      }),
-    );
+    this.manufacturers.forEach((item) => {
+      item.getInputNode().addEventListener('change', (e) => {
+        const { target } = e;
+        if (target && target instanceof HTMLInputElement)
+          if (target.checked) DB.filter.add('manufacturer', target.value);
+          else DB.filter.remove('manufacturer', target.value);
+      });
+    })
+    this.switches.forEach((item) => {
+      item.getInputNode().addEventListener('change', (e) => {
+        const { target } = e;
+        if (target && target instanceof HTMLInputElement) {
+          DB.filter.clear('switches');
+          if (target.checked) DB.filter.add('switches', target.value)
+        };
+      });
+    })
+    this.manufacturersWrapper.appendEl(this.manufacturers);
+    this.switchWrapper.appendEl(this.switches);
     this.switchWrapper.getNode().addEventListener('mouseover', (e) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('switch__label')) {

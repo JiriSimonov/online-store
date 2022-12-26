@@ -1,28 +1,31 @@
 import { BaseComponent } from '../elements/base-component';
 import { Filter } from './filter';
-import { Button } from '../elements/button';
-import { ProductsListState } from '../../states/goods-state';
-
-const btns = ['100%', '90%', '80%', '70%', '65%', '60%', '40%', '20%'];
+import { FormField } from '../elements/form-field';
+import { DB } from '../../services/db/database';
 
 export class SizeFilter extends Filter {
-  private filterWrapper: BaseComponent;
+  private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
 
-  private buttons: Button[];
+  private size = [...DB.getVariants('size')]
+  .filter((elem) => elem)
+  .map((item) =>
+    new FormField({
+      className: 'filter',
+      type: 'checkbox',
+      text: item,
+      value: item,
+    }));
 
-  constructor(private productsState: ProductsListState) {
+  constructor() {
     super('Размер');
-    this.filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-    this.buttons = btns.map(
-      (item) =>
-        new Button({ className: 'filter__btn', text: item, parent: this.filterWrapper.getNode() }),
-    );
-    this.buttons.map((item) =>
-      item.getNode().addEventListener('click', () => {
-        this.buttons.map((elem) => elem.getNode().classList.remove('active'));
-        item.getNode().classList.add('active');
-        productsState.set({ size: item.getNode().textContent as string });
-      }),
-    );
+    this.size.forEach((item) => {
+      item.getInputNode().addEventListener('change', (e) => {
+        const { target } = e;
+        if (target && target instanceof HTMLInputElement) 
+          if (target.checked) DB.filter.add('size', target.value);
+          else DB.filter.remove('size', target.value);
+      });
+    })
+    this.filterWrapper.appendEl(this.size);
   }
 }

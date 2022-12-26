@@ -2,7 +2,6 @@ import { BaseComponent } from './elements/base-component';
 import { Button } from './elements/button';
 import { Filters } from './filters/filtres';
 import { ProductCard } from './product/product-card';
-import { ProductsListState } from '../states/goods-state';
 import { Keyboard } from '../services/db/keyboard';
 import { StoreContent } from './store-content';
 import { ChangeView } from './elements/change-view';
@@ -23,7 +22,7 @@ export class Store extends BaseComponent {
   private changeView = new ChangeView();
   private goodsCount = new BaseComponent({ className: 'store__goods-count' });
 
-  private filters = new Filters(new ProductsListState(DB.filter.list));
+  private filters = new Filters();
   private nextButton = new Button({
     text: 'Показать еще',
     className: 'store__more',
@@ -67,15 +66,20 @@ export class Store extends BaseComponent {
     this.storeList.appendEl(this.storeItems);
     this.contentWrapper.appendEl(this.goodsCount);
     const num = DB.filter.list.length;
-    if (num === 0)
-      this.goodsCount.setText('По вашему запросу нет результатов')
-    else if (num === DB.keyboards.length)
-      this.goodsCount.setText('');
-    else
-      this.goodsCount
-        .setText(`По вашему запросу ${num > 1 ? 'найдено' : 'найден'
-          } ${num} ${getNoun(num, 'результат', 'результата', 'результатов')}`);
-    // TODO! переписать условие, когда будут QueryParams
+    switch (num) {
+      case 0:
+        this.goodsCount.setText('По вашему запросу нет результатов');
+        break;
+      case DB.keyboards.length:
+        this.goodsCount.setText('');
+        break;
+      default:
+        this.goodsCount
+          .setText(`По вашему запросу ${num > 1 ? 'найдено' : 'найден'
+            } ${num} ${getNoun(num, 'результат', 'результата', 'результатов')}
+          `);
+        break;
+    }
     this.renderBottomButton();
   };
 

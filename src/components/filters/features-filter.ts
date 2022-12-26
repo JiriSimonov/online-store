@@ -1,37 +1,30 @@
 import { BaseComponent } from '../elements/base-component';
 import { Filter } from './filter';
-import { Button } from '../elements/button';
-import { ProductsListState } from '../../states/goods-state';
-
-const btns = [
-  'С русскими буквами',
-  'Программируемая',
-  'С подсветкой',
-  'HOT-SWAP',
-  'Мультимедиа-клавиши',
-  'Специально под Mac',
-  'Беспроводная',
-  'Эргономическая',
-];
+import { FormField } from '../elements/form-field';
+import { DB } from '../../services/db/database';
 
 export class FeaturesFilter extends Filter {
-  private filterWrapper: BaseComponent;
+  private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
 
-  private buttons: Button[];
+  private features = [...DB.getVariants('features')]
+  .map((item) =>
+    new FormField({
+      className: 'filter',
+      type: 'checkbox',
+      text: item,
+      value: item,
+    }));
 
-  constructor(private productsState: ProductsListState) {
+  constructor() {
     super('Фичи');
-    this.filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-    this.buttons = btns.map(
-      (item) =>
-        new Button({ className: 'filter__btn', text: item, parent: this.filterWrapper.getNode() }),
-    );
-    this.buttons.map((item) =>
-      item.getNode().addEventListener('click', () => {
-        this.buttons.map((elem) => elem.getNode().classList.remove('active'));
-        item.getNode().classList.toggle('active');
-        productsState.set({ features: item.getNode().textContent as string });
-      }),
-    );
+    this.features.forEach((item) => {
+      item.getInputNode().addEventListener('change', (e) => {
+        const { target } = e;
+        if (target && target instanceof HTMLInputElement) 
+          if (target.checked) DB.filter.add('features', target.value);
+          else DB.filter.remove('features', target.value);
+      });
+    })
+    this.filterWrapper.appendEl(this.features);
   }
 }
