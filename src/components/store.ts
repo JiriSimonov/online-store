@@ -8,6 +8,7 @@ import { ProductsListState } from '../states/goods-state';
 import { Keyboard } from '../services/db/keyboard';
 import { ChangeView } from './elements/change-view';
 import { DB } from '../services/db/database';
+import { getNoun } from '../utils/get-noun';
 
 export class Store extends BaseComponent {
   private chunkSize = 20;
@@ -21,7 +22,7 @@ export class Store extends BaseComponent {
   private storeList = new StoreContent();
   private storeItems: ProductCard[] = [];
   private changeView = new ChangeView();
-  private notFound = new BaseComponent({ className: 'store__not-found', text: 'Нет результатов' });
+  private goodsCount = new BaseComponent({ className: 'store__goods-count' });
 
   private filters = new Filters(new ProductsListState(DB.filter.list));
   private nextButton = new Button({
@@ -66,7 +67,17 @@ export class Store extends BaseComponent {
     this.storeItems = this.chunk;
     this.storeList.getNode().replaceChildren();
     this.storeList.appendEl(this.storeItems);
-    if (this.storeItems.length === 0) this.storeList.appendEl(this.notFound);
+    this.contentWrapper.appendEl(this.goodsCount);
+    const num = this.productsState.get().length;
+    if (num === 0)
+      this.goodsCount.setText('По вашему запросу нет результатов')
+    else if (num === DB.keyboards.length)
+      this.goodsCount.setText('');
+    else
+      this.goodsCount
+        .setText(`По вашему запросу ${num > 1 ? 'найдено' : 'найден'
+          } ${num} ${getNoun(num, 'результат', 'результата', 'результатов')}`);
+    // TODO! переписать условие, когда будут QueryParams
     this.renderBottomButton();
   };
 

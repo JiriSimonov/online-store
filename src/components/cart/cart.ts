@@ -1,3 +1,4 @@
+import { CartPagination } from './cart-pagination';
 import { ActivePromo } from './active-promo';
 import { DB } from '../../services/db/database';
 import { BaseComponent } from '../elements/base-component';
@@ -8,10 +9,13 @@ import { PromoForm } from './cart-promo';
 import { OrderForm } from './order-form';
 import { ChangeView } from '../elements/change-view';
 import { emitter } from '../../services/event-emitter';
+import { getNoun } from '../../utils/get-noun';
 
 export class Cart extends BaseComponent {
   private container = new BaseComponent({ className: 'container' });
   private wrapper = new BaseComponent({ className: 'cart__wrapper' });
+
+  private cartTitle = new BaseComponent({ tag: 'h2', className: 'cart__title', text: 'Корзина пока что пуста' });
 
   private cartButton = new Button({
     className: 'cart__btn',
@@ -22,8 +26,10 @@ export class Cart extends BaseComponent {
   });
   private changeView = new ChangeView();
 
+  private cartPagination = new CartPagination();
+
   private cartList = new CartList();
-  private cartItems = DB.cart.list.map((item) => new CartItemElem(item));
+  private cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
 
   private cartPromoWrapper = new BaseComponent({ className: 'promo' });
 
@@ -61,24 +67,10 @@ export class Cart extends BaseComponent {
 
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
-    this.wrapper.appendEl([
-      this.changeView,
-      this.cartButton,
-      this.cartList,
-      this.cartPromoWrapper,
-      this.cartPriceWrapper,
-      this.orderBtn,
-    ]);
-    this.cartList.appendEl(this.cartItems);
-    this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
-    this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
-
     this.updateActivePromoList();
     this.updateTotalPrice();
     this.updateTotalQuantity();
-    this.updateCart();
-
-    this.subscribe()
+    this.render();
   }
 
   private updateTotalPrice(): void {
@@ -97,7 +89,8 @@ export class Cart extends BaseComponent {
   }
 
   private updateTotalQuantity() {
-    this.cartPriceText.setText(`Итого: ${DB.cart.sumQuantity}`);
+    this.cartPriceText
+    .setText(`Итого: ${DB.cart.sumQuantity} ${getNoun(DB.cart.sumQuantity, 'товар', 'товара', 'товаров')} на сумму`);
   }
 
   private updateActivePromoList(): void {
@@ -115,9 +108,31 @@ export class Cart extends BaseComponent {
 
   updateCart() {
     this.cartList.clear();
-    this.cartItems = DB.cart.list.map((item) => new CartItemElem(item));
-    this.cartList.appendEl(this.cartItems);
+    this.cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
+    this.render();
     return this;
+  }
+
+  private render() {
+    if (DB.cart.list.length > 0) {
+      this.cartTitle.destroy();
+      this.wrapper.appendEl([
+        this.changeView,
+        this.cartButton,
+        this.cartList,
+        this.cartPromoWrapper,
+        this.cartPriceWrapper,
+        this.orderBtn,
+      ]);
+      this.changeView.appendEl(this.cartPagination);
+      this.cartList.appendEl(DB.cart.list.map((item, index) => new CartItemElem(item, index)));
+      this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
+      this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
+    } else {
+      this.wrapper.clear();
+      this.wrapper.appendEl(this.cartButton);
+      this.wrapper.appendEl(this.cartTitle);
+    }
   }
 
   private openOrderForm(): void {
@@ -133,7 +148,8 @@ export class Cart extends BaseComponent {
     emitter.subscribe('cart__save', () => {
       this.updateTotalPrice();
       this.updateTotalQuantity();
-      this.updateCart();
+      this.cartList.clear();
+      this.render();
     });
     emitter.subscribe('promo__save', () => {
       this.updateActivePromoList();
