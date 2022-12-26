@@ -35,6 +35,23 @@ export class Keyboard {
     return this.manufacturer;
   }
 
+  get sumQuantity() {
+    return this.switches.reduce((sum, keyboardSwitch) => sum + keyboardSwitch.quantity, 0);
+  }
+
+  get priceMax() {
+    return this.switches.reduce((max, keyboardSwitch) => {
+      const { isAvailable, price } = keyboardSwitch;
+      return isAvailable && price > max ? price : max;
+    }, this.minPrice);
+  }
+  get priceMin() {
+    return this.switches.reduce((min, keyboardSwitch) => {
+      const { isAvailable, price } = keyboardSwitch;
+      return isAvailable && price < min ? price : min;
+    }, this.minPrice);
+  }
+
   getSwitch(id: string): KeyboardSwitch {
     const value: KeyboardSwitch | undefined = this.switches.find((item) => item.id === id);
     if (!value) throw new Error(`Switch ${id} not found in ${this.title}'s switches!`);
