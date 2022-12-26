@@ -4,7 +4,6 @@ import { Anchor } from './elements/anchor';
 import { BaseComponent } from './elements/base-component';
 import { FormField } from './elements/form-field';
 import { Button } from './elements/button';
-import { ProductsListState } from '../states/goods-state';
 import { emitter } from '../services/event-emitter';
 
 export class Header extends BaseComponent {
@@ -28,11 +27,6 @@ export class Header extends BaseComponent {
     super({ tag: 'header', className: 'header' });
     this.search.getNode().addEventListener('click', () => {
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
-      /* this.searchField.getInputNode().addEventListener('input', (e) => {
-        if (window.location.hash !== '#store') window.location.hash = '#store';
-        const target = e.target as HTMLInputElement;
-        productsState.set({ search: target.value });
-      }); */
     });
 
     this.logo.getNode().onclick = () => {

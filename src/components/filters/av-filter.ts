@@ -1,7 +1,6 @@
 import { BaseComponent } from '../elements/base-component';
 import { Filter } from './filter';
 import { Button } from '../elements/button';
-import { ProductsListState } from '../../states/goods-state';
 
 export class AvFilter extends Filter {
   private filterWrapper: BaseComponent;
@@ -10,7 +9,7 @@ export class AvFilter extends Filter {
 
   private inStock: Button;
 
-  constructor(private productsState: ProductsListState) {
+  constructor() {
     super('Наличие');
     this.filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
     this.all = new Button({
@@ -21,7 +20,6 @@ export class AvFilter extends Filter {
     this.all.getNode().onclick = () => {
       this.all.getNode().classList.add('active');
       this.inStock.getNode().classList.remove('active');
-      productsState.set({ inStock: !productsState.props.inStock });
     };
     this.inStock = new Button({
       className: 'filter__btn',
@@ -31,7 +29,6 @@ export class AvFilter extends Filter {
     this.inStock.getNode().onclick = () => {
       this.all.getNode().classList.remove('active');
       this.inStock.getNode().classList.add('active');
-      productsState.set({ inStock: !productsState.props.inStock });
     };
   }
 }

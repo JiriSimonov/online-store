@@ -1,7 +1,6 @@
 import { BaseComponent } from '../elements/base-component';
 import { Filter } from './filter';
 import { Button } from '../elements/button';
-import { ProductsListState } from '../../states/goods-state';
 
 const btns = ['100%', '90%', '80%', '70%', '65%', '60%', '40%', '20%'];
 
@@ -10,7 +9,7 @@ export class SizeFilter extends Filter {
 
   private buttons: Button[];
 
-  constructor(private productsState: ProductsListState) {
+  constructor() {
     super('Размер');
     this.filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
     this.buttons = btns.map(
@@ -21,7 +20,6 @@ export class SizeFilter extends Filter {
       item.getNode().addEventListener('click', () => {
         this.buttons.map((elem) => elem.getNode().classList.remove('active'));
         item.getNode().classList.add('active');
-        productsState.set({ size: item.getNode().textContent as string });
       }),
     );
   }

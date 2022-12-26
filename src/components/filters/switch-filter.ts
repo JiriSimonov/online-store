@@ -3,7 +3,6 @@ import { SwitchComponent } from '../switches/switch-component';
 import { BaseComponent } from '../elements/base-component';
 import { SwitchModal } from '../switches/switch-modal';
 import { Button } from '../elements/button';
-import { ProductsListState } from '../../states/goods-state';
 import { DB } from '../../services/db/database';
 
 // TODO 🌼 расхардкодить
@@ -22,7 +21,7 @@ export class SwitchFilter extends Filter {
 
   private switchModal: SwitchModal | null | undefined;
 
-  constructor(private productsState: ProductsListState) {
+  constructor() {
     super('Переключатели');
     this.buttonWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
     this.switchWrapper = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
@@ -34,7 +33,6 @@ export class SwitchFilter extends Filter {
       item.getNode().addEventListener('click', () => {
         this.switchButtons.map((elem) => elem.getNode().classList.remove('active'));
         item.getNode().classList.add('active');
-        productsState.set({ manufacturer: item.getNode().textContent as string });
       }),
     );
     this.switchArr = DB.switches
@@ -42,9 +40,8 @@ export class SwitchFilter extends Filter {
       .map((item) => new SwitchComponent(item, `${DB.switches.length}`));
     this.switchWrapper.appendEl(this.switchArr);
     this.switchArr.map((item) =>
-      item.getNode().addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        if (target.classList.contains('switch__item')) productsState.set({ switchType: target.textContent as string }); // TODO REFACTOR
+      item.getNode().addEventListener('click', () => {
+      //  const target = e.target as HTMLElement; // TODO REFACTOR
       }),
     );
     this.switchWrapper.getNode().addEventListener('mouseover', (e) => {

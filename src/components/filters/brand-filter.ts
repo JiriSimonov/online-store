@@ -1,7 +1,6 @@
 import { BaseComponent } from '../elements/base-component';
 import { Filter } from './filter';
 import { Button } from '../elements/button';
-import { ProductsListState } from '../../states/goods-state';
 
 const brandsArr = [
   'Ducky',
@@ -25,7 +24,7 @@ export class BrandFilter extends Filter {
 
   private brands: Button[];
 
-  constructor(private productsState: ProductsListState) {
+  constructor() {
     super('Бренд');
     this.filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
     this.brands = brandsArr.map(
@@ -41,7 +40,6 @@ export class BrandFilter extends Filter {
         // TODO REFACTOR
         this.brands.map((elem) => elem.getNode().classList.remove('active'));
         item.getNode().classList.add('active');
-        productsState.set({ brand: item.getNode().textContent as string });
       }),
     );
   }
