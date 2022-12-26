@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BaseComponent } from './elements/base-component';
 import { Button } from './elements/button';
 import { Filters } from './filters/filtres';
@@ -23,7 +24,7 @@ export class Store extends BaseComponent {
   private changeView = new ChangeView();
   private goodsCount = new BaseComponent({ className: 'store__goods-count' });
 
-  private filters: Filters;
+  private filters = new Filters(new ProductsListState(DB.filter.list));
   private nextButton = new Button({
     text: 'Показать еще',
     className: 'store__more',
@@ -38,12 +39,13 @@ export class Store extends BaseComponent {
     onclick: () => window.scrollTo({ behavior: 'smooth', top: 0 }),
   });
 
-  constructor(private productsState: ProductsListState) {
+  constructor(/* private productsState: ProductsListState */) {
     super({ tag: 'section', className: 'store' });
-    this.filters = new Filters(this.productsState);
+
     this.showFiltersBtn.getNode().onclick = () => {
       const { classList } = this.wrapper.getNode();
       classList.toggle('store__wrapper_is-open');
+
       if (!classList.contains('store__wrapper_is-open')) this.filters.destroy();
       else this.contentWrapper.getNode().prepend(this.filters.getNode());
     };
@@ -52,7 +54,11 @@ export class Store extends BaseComponent {
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
-    this.productsState.add(this.update);
+
+    window.addEventListener('hashchange', () => {
+      console.warn('hashhhh');
+      this.update();
+    });
     this.update();
   }
 
@@ -76,13 +82,13 @@ export class Store extends BaseComponent {
   };
 
   private get chunk() {
-    return DB.getChunk(this.chunkNumber++, this.chunkSize, this.productsState.get()).map(
+    return DB.getChunk(this.chunkNumber++, this.chunkSize, DB.filter.list).map(
       (item: Keyboard) => new ProductCard(item),
     );
   }
 
   private renderBottomButton() {
-    const [length, number, size] = [this.productsState.get().length, this.chunkNumber, this.chunkSize];
+    const [length, number, size] = [DB.filter.list.length, this.chunkNumber, this.chunkSize];
     const [next, scroll] = [this.nextButton.getNode(), this.scrollButton.getNode()];
 
     next.remove();

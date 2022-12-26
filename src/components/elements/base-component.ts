@@ -1,7 +1,7 @@
 import { BaseComponentProps } from '../../interfaces/interfaces';
 
 export class BaseComponent<T extends HTMLElement = HTMLElement> {
-  protected node: T;
+  node: T;
 
   constructor(props: BaseComponentProps) {
     const node = document.createElement(props.tag ?? 'div');
