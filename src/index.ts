@@ -90,7 +90,6 @@ class App extends BaseComponent {
       );
       root.append(this.node);
     }
-    footer.render();
     root?.append(footer.getNode());
   }
 }
