@@ -70,10 +70,10 @@ class Database {
     return list.slice(number * length, number * length + length);
   }
 
-  getVariants(category: keyof typeof FilterCategory): Set<unknown> {
+  getVariants(category: keyof typeof FilterCategory): Set<string> {
     switch (category) {
       case 'available':
-        return new Set(this.keyboards.map((k) => k.isAvailable));
+        return new Set(this.keyboards.map((k) => `${k.isAvailable}`));
       case 'manufacturer':
         return new Set(this.keyboards.flatMap((k) => k.switches.map((s) => s.manufacturer)));
       case 'switches':
