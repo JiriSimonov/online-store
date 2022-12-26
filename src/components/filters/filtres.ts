@@ -1,4 +1,5 @@
 import { BaseComponent } from '../elements/base-component';
+import { DB } from '../../services/db/database';
 import { Filter } from './filter';
 import { AvFilter } from './av-filter';
 import { SwitchFilter } from './switch-filter';
@@ -27,7 +28,12 @@ export class Filters extends BaseComponent {
     this.manufacturerFiler = new BrandFilter();
     this.sizeFilter = new SizeFilter();
     this.featuresFilter = new FeaturesFilter();
-    this.clearFilters = new Button({ className: 'filter__clear', text: 'Очистить фильтры' });
+    this.clearFilters = new Button({
+      className: 'filter__clear', text: 'Очистить фильтры',
+      onclick: () => {
+        DB.filter.clearAll();
+      }
+    });
     this.appendEl([
       this.availableFilter,
       this.switchFilter,
