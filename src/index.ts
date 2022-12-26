@@ -55,7 +55,6 @@ class App extends BaseComponent {
     this.currentPage?.destroy();
     const error = new Error();
     this.currentPage = error;
-    error.render();
     this.appendEl(error);
     console.warn('in error');
   }
