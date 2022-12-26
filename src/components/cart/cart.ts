@@ -64,15 +64,15 @@ export class Cart extends BaseComponent {
 
   constructor() {
     super({ tag: 'section', className: 'cart' });
-
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
+    this.render();
     this.updateActivePromoList();
     this.updateTotalPrice();
     this.updateTotalQuantity();
-    this.render();
+    this.subscribe();
+    window.addEventListener('hashchange', () => this.render());
   }
-
   private updateTotalPrice(): void {
     const { promo, sumPrice } = DB.cart;
     const { cartCurrentPrice, cartPriceTotal } = this;
@@ -106,14 +106,7 @@ export class Cart extends BaseComponent {
     }
   }
 
-  updateCart() {
-    this.cartList.clear();
-    this.cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
-    this.render();
-    return this;
-  }
-
-  private render() {
+  render() {
     if (DB.cart.list.length > 0) {
       this.cartTitle.destroy();
       this.wrapper.appendEl([
@@ -125,6 +118,7 @@ export class Cart extends BaseComponent {
         this.orderBtn,
       ]);
       this.changeView.appendEl(this.cartPagination);
+      this.cartList.clear();
       this.cartList.appendEl(DB.cart.list.map((item, index) => new CartItemElem(item, index)));
       this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
       this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
@@ -148,12 +142,13 @@ export class Cart extends BaseComponent {
     emitter.subscribe('cart__save', () => {
       this.updateTotalPrice();
       this.updateTotalQuantity();
-      this.cartList.clear();
-      this.render();
     });
     emitter.subscribe('promo__save', () => {
       this.updateActivePromoList();
       this.updateTotalPrice();
+    });
+    emitter.subscribe('cart__delete-item', () => {
+      this.render();
     });
     return this;
   }

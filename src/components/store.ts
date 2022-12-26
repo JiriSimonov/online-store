@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BaseComponent } from './elements/base-component';
 import { Button } from './elements/button';
 import { Filters } from './filters/filtres';
 import { ProductCard } from './product/product-card';
-import { StoreContent } from './store-content';
 import { ProductsListState } from '../states/goods-state';
 import { Keyboard } from '../services/db/keyboard';
+import { StoreContent } from './store-content';
 import { ChangeView } from './elements/change-view';
 import { DB } from '../services/db/database';
 import { getNoun } from '../utils/get-noun';
@@ -56,7 +55,6 @@ export class Store extends BaseComponent {
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
 
     window.addEventListener('hashchange', () => {
-      console.warn('hashhhh');
       this.update();
     });
     this.update();
@@ -68,7 +66,7 @@ export class Store extends BaseComponent {
     this.storeList.getNode().replaceChildren();
     this.storeList.appendEl(this.storeItems);
     this.contentWrapper.appendEl(this.goodsCount);
-    const num = this.productsState.get().length;
+    const num = DB.filter.list.length;
     if (num === 0)
       this.goodsCount.setText('По вашему запросу нет результатов')
     else if (num === DB.keyboards.length)

@@ -5,6 +5,7 @@ import { ProductImage } from '../product/product-img';
 import { Button } from '../elements/button';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
+import { emitter } from '../../services/event-emitter';
 
 export class CartItemElem extends BaseComponent {
   private images: ProductImage;
@@ -92,7 +93,7 @@ export class CartItemElem extends BaseComponent {
       onclick: () => {
         if (+this.countField.getInputNode().value === 1) {
           DB.cart.remove(product);
-          this.destroy();
+          emitter.emit('cart__delete-item');
         } else {
           this.countField.getInputNode().stepDown();
           this.countField.getInputNode().dispatchEvent(new Event('input'));
@@ -130,7 +131,7 @@ export class CartItemElem extends BaseComponent {
       parent: this.stockWrapper.getNode(),
       onclick: () => {
         DB.cart.remove(product);
-        this.destroy();
+        emitter.emit('cart__delete-item');
       },
     });
     if (+this.countField.getInputNode().value === +this.countField.getInputNode().max)
