@@ -26,6 +26,7 @@ export interface InputProps extends BaseComponentProps {
   max?: string;
   min?: string;
   name?: string;
+  step?: string;
 }
 
 export interface FormFieldProps extends InputProps {
