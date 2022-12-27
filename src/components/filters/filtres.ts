@@ -1,45 +1,50 @@
-import { QuantityFilter } from './quantity-filter';
-import { PriceFilter } from './price-filter';
 import { BaseComponent } from '../elements/base-component';
 import { DB } from '../../services/db/database';
-import { Filter } from './filter';
+import { Button } from '../elements/button';
+import { QuantityFilter } from './quantity-filter';
+import { PriceFilter } from './price-filter';
 import { AvFilter } from './av-filter';
 import { SwitchFilter } from './switch-filter';
 import { BrandFilter } from './brand-filter';
 import { SizeFilter } from './size-filter';
 import { FeaturesFilter } from './features-filter';
-import { Button } from '../elements/button';
 
 export class Filters extends BaseComponent {
-  switchFilter: SwitchFilter;
-
-  manufacturerFiler: Filter;
-
-  priceFilter: Filter;
-
-  quantityFilter: Filter;
-
-  availableFilter: Filter;
-
-  sizeFilter: Filter;
-
-  featuresFilter: Filter;
-
+  availableFilter = new AvFilter();
+  switchFilter = new SwitchFilter();
+  priceFilter = new PriceFilter();
+  quantityFilter = new QuantityFilter();
+  manufacturerFiler = new BrandFilter();
+  sizeFilter = new SizeFilter();
+  featuresFilter = new FeaturesFilter();
   clearFilters: Button;
+  copyFilters: Button;
 
   constructor() {
     super({ tag: 'ul', className: 'filters' });
-    this.availableFilter = new AvFilter();
-    this.switchFilter = new SwitchFilter();
-    this.priceFilter = new PriceFilter();
-    this.quantityFilter = new QuantityFilter();
-    this.manufacturerFiler = new BrandFilter();
-    this.sizeFilter = new SizeFilter();
-    this.featuresFilter = new FeaturesFilter();
     this.clearFilters = new Button({
       className: 'filter__clear', text: 'Очистить фильтры',
       onclick: () => {
         DB.filter.clearAll();
+      }
+    });
+    this.copyFilters = new Button({
+      className: 'filter__clear', text: 'Скопировать фильтры',
+      onclick: () => {
+        const renderCopyAnimation = (result: 'success' | 'fail') => {
+          const icon = this.copyFilters.getNode();
+          icon.classList.add(`filter__clear_${result}`);
+          icon.textContent = 'Скопировано!';
+          icon.ontransitionend = () => {
+            icon.classList.remove(`filter__clear_${result}`);
+            icon.textContent = 'Скопировать фильтры';
+            icon.ontransitionend = null;
+          };
+        };
+        navigator.clipboard
+          .writeText(window.location.hash.split('?')[1])
+          .then(() => renderCopyAnimation('success'))
+          .catch(() => renderCopyAnimation('fail'));
       }
     });
     this.appendEl([
@@ -50,6 +55,7 @@ export class Filters extends BaseComponent {
       this.manufacturerFiler,
       this.sizeFilter,
       this.featuresFilter,
+      this.copyFilters,
       this.clearFilters,
     ]);
   }

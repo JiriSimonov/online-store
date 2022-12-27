@@ -13,9 +13,10 @@ export class Store extends BaseComponent {
   private chunkNumber = 0;
 
   private container = new BaseComponent({ className: 'container' });
-  private wrapper = new BaseComponent({ className: `store__wrapper${DB.filter.getParam('filters')
-  ? ' store__wrapper_is-open'
-  : ''}` });
+  private wrapper = new BaseComponent({
+    className: `store__wrapper${DB.filter.getParam('filters')
+      ? ' store__wrapper_is-open'
+      : ''}` });
   private title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
   private showFiltersBtn = new Button({ className: 'store__filter', text: 'Фильтры' });
   private contentWrapper = new BaseComponent({
@@ -25,7 +26,6 @@ export class Store extends BaseComponent {
   private storeItems: ProductCard[] = [];
   private changeView = new ChangeView();
   private goodsCount = new BaseComponent({ className: 'store__goods-count' });
-
   private filters = new Filters();
   private nextButton = new Button({
     text: 'Показать еще',

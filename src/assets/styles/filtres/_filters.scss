@@ -67,6 +67,17 @@
     }
   }
 
+  .filter__clear_success {
+    background-color: $blue;
+    color: $white;
+    transition: 1s linear;
+
+    &:focus {
+      background-color: $blue;
+      color: $white;
+    }
+  }
+
   .filter__input {
     all: unset;
     position: absolute;
