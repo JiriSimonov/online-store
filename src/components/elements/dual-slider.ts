@@ -54,21 +54,24 @@ export class DualSlider extends BaseComponent {
     const progress = this.getProgressNode();
     const priceGap = gap;
     this.getNumbersNodes().forEach((item) => item.addEventListener('input', (e) => {
-      if (+minInputNum.value >= +minInputNum.max) minInputNum.value = `${+minInputNum.max - priceGap}`;
+      if (+minInputNum.value >= +maxInputNum.value) {
+        minInputNum.value = `${+maxInputNum.value - priceGap}`;
+        maxInputNum.value = `${+minInputNum.value + priceGap}`;
+      };
       if (+maxInputNum.value >= +maxInputNum.max) maxInputNum.value = maxInputNum.max;
-      if (+maxInputNum.value <= +minInputNum.value) maxInputNum.value = `${+minInputNum.value + priceGap}`;
+      if (+maxInputNum.value <= min && minInputNum.value !== '') maxInputNum.value = `${+minInputNum.value + gap}`;
       const { target } = e;
       const minValue = +minInputNum.value;
       const maxValue = +maxInputNum.value;
-      if (target && target instanceof HTMLInputElement) 
+      if (target && target instanceof HTMLInputElement)
         if ((maxValue - minValue >= priceGap) && maxValue <= +maxRange.max)
-          if (target === minInputNum) {
-            minRange.value = `${minValue}`;
-            progress.style.left = `${((minValue / +minRange.max) * 100)}%`;
-          } else {
-            maxRange.value = `${maxValue}`;
-            progress.style.right = `${100 - ((maxValue / +maxRange.max) * 100)}%`;
-          }
+      if (target === minInputNum) {
+        minRange.value = `${minValue}`;
+        progress.style.left = `${((minValue / +minRange.max) * 100)}%`;
+      } else {
+        maxRange.value = `${maxValue}`;
+        progress.style.right = `${100 - ((maxValue / +maxRange.max) * 100)}%`;
+      }
     }));
     this.getRangesNodes().forEach((item) => item.addEventListener('input', (e) => {
       const { target } = e;
@@ -78,7 +81,8 @@ export class DualSlider extends BaseComponent {
         if ((maxValue - minValue) < priceGap) {
           if (target === minRange)
             minRange.value = `${maxValue - priceGap}`;
-          else maxRange.value = `${minValue + priceGap}`;
+          else
+            maxRange.value = `${minValue + priceGap}`;
         } else {
           minInputNum.value = `${minValue}`;
           maxInputNum.value = `${maxValue}`;
