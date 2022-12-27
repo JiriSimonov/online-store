@@ -59,7 +59,10 @@ export class DualSlider extends BaseComponent {
         maxInputNum.value = `${+minInputNum.value + priceGap}`;
       };
       if (+maxInputNum.value >= +maxInputNum.max) maxInputNum.value = maxInputNum.max;
-      if (+maxInputNum.value <= min && minInputNum.value !== '') maxInputNum.value = `${+minInputNum.value + gap}`;
+      if (+maxInputNum.value <= min && minInputNum.value !== '') {
+        maxInputNum.value = `${min + gap}`;
+        minInputNum.value = `${min}`;
+      }
       const { target } = e;
       const minValue = +minInputNum.value;
       const maxValue = +maxInputNum.value;
