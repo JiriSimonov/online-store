@@ -27,8 +27,9 @@ export class Filter {
     const filters = this.params;
 
     const isInList = (key: keyof typeof FilterCategory, list: string[]): boolean => {
-      const values = filters.get(key);
-      return values ? list.some((item) => values.has(item)) : true;
+      const query = filters.get(key);
+      if (!query) return true;
+      return list.flat().some((string) => [...query].some((value) => new RegExp(value, 'i').test(string)));
     };
 
     const isInRange = (minKey: string, maxKey: string, minValue: number, maxValue: number) => {
@@ -36,11 +37,22 @@ export class Filter {
       return +[...min] <= minValue && maxValue <= +[...max];
     };
 
-    // TODO let search;
-
     return [...this.source].filter((keyboard) => {
       const switchesIdList: string[] = keyboard.switches.map((v) => v.id);
       const switchesManufacturerList: string[] = keyboard.switches.map((v) => v.manufacturer);
+      const fullSearchList: string[] = [
+        keyboard.brands,
+        keyboard.minPrice,
+        keyboard.priceMax,
+        keyboard.priceMin,
+        Object.entries(keyboard.properties),
+        keyboard.size,
+        keyboard.sumQuantity,
+        keyboard.title,
+        switchesIdList,
+        switchesManufacturerList,
+      ].flat(Infinity);
+
       const result: boolean =
         isInList('available', [`${keyboard.isAvailable}`]) &&
         isInList('brand', keyboard.brands) &&
@@ -49,7 +61,8 @@ export class Filter {
         isInRange('minQuantity', 'maxQuantity', keyboard.sumQuantity, keyboard.sumQuantity) &&
         isInList('switches', switchesIdList) &&
         isInList('size', [keyboard.size]) &&
-        isInList('manufacturer', switchesManufacturerList);
+        isInList('manufacturer', switchesManufacturerList) &&
+        isInList('search', fullSearchList);
       return result;
     });
   }
