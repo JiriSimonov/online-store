@@ -1,24 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable class-methods-use-this */
 import { FilterCategory } from '../../interfaces/enums';
 import { converter } from '../../utils/utils';
 import { Keyboard } from './keyboard';
 
 export class Filter {
-  private usp = new URLSearchParams(this.query);
+  private usp = new URLSearchParams(Filter.query);
 
   constructor(private source: Keyboard[]) {
     window.addEventListener('hashchange', () => {
-      this.usp = new URLSearchParams(this.query);
+      this.usp = new URLSearchParams(Filter.query);
     });
   }
 
-  private get query(): string {
+  private static get query(): string {
     const { hash } = window.location;
     const index: number = hash.indexOf('?');
     return index > 0 ? hash.slice(index) : '';
   }
-  private set query(str: string) {
+  private static set query(str: string) {
     const [currentHash] = window.location.hash.split('?');
     const query: string = str ? `?${decodeURIComponent(str)}` : '';
     window.location.hash = currentHash + query;
@@ -27,38 +25,46 @@ export class Filter {
   /** Возвращает отфильтрованный массив Keyboard */
   get list(): Keyboard[] {
     const filters = this.params;
-    const isAvailable = (item: Keyboard): boolean => filters.get('available')?.has(`${item.isAvailable}`) ?? true;
-    const hasSize = (item: Keyboard): boolean => filters.get('size')?.has(item.size) ?? true;
-    const hasBrand = (item: Keyboard): boolean => {
-      const values = filters.get('brand');
-      return values ? item.brands.some((brand) => values.has(brand)) : true;
+
+    const isInList = (key: keyof typeof FilterCategory, list: string[]): boolean => {
+      const query = filters.get(key);
+      if (!query) return true;
+      return list.flat().some((string) => [...query].some((value) => new RegExp(value, 'i').test(string)));
     };
-    const hasFeatures = (item: Keyboard): boolean => {
-      const values = filters.get('features');
-      return values ? item.features.some((feature) => values.has(feature)) : true;
+
+    const isInRange = (minKey: string, maxKey: string, minValue: number, maxValue: number) => {
+      const [min, max] = [filters.get(minKey) ?? [-Infinity], filters.get(maxKey) ?? [Infinity]];
+      return +[...min] <= minValue && maxValue <= +[...max];
     };
-    const hasSwitches = (item: Keyboard): boolean => {
-      const values = filters.get('switches');
-      const switchesIdList: string[] = item.switches.map((keyboardSwitch) => keyboardSwitch.id);
-      return values ? switchesIdList.some((keyboardSwitch) => values.has(keyboardSwitch)) : true;
-    };
-    const hasManufacturer = (item: Keyboard): boolean => {
-      const values = filters.get('manufacturer');
-      const switchesManufacturerList: string[] = item.switches.map((keyboardSwitch) => keyboardSwitch.manufacturer);
-      return values ? switchesManufacturerList.some((manufacturer) => values.has(manufacturer)) : true;
-    };
-    let search; // TODO
-    const res = [...this.source].filter(
-      (keyboard) =>
-        isAvailable(keyboard) &&
-        hasManufacturer(keyboard) &&
-        hasSwitches(keyboard) &&
-        hasBrand(keyboard) &&
-        hasSize(keyboard) &&
-        hasFeatures(keyboard),
-    );
-    // console.info(res);
-    return res;
+
+    return [...this.source].filter((keyboard) => {
+      const switchesIdList: string[] = keyboard.switches.map((v) => v.id);
+      const switchesManufacturerList: string[] = keyboard.switches.map((v) => v.manufacturer);
+      const fullSearchList: string[] = [
+        keyboard.brands,
+        keyboard.minPrice,
+        keyboard.priceMax,
+        keyboard.priceMin,
+        Object.entries(keyboard.properties),
+        keyboard.size,
+        keyboard.sumQuantity,
+        keyboard.title,
+        switchesIdList,
+        switchesManufacturerList,
+      ].flat(Infinity);
+
+      const result: boolean =
+        isInList('available', [`${keyboard.isAvailable}`]) &&
+        isInList('brand', keyboard.brands) &&
+        isInList('features', keyboard.features) &&
+        isInRange('minPrice', 'maxPrice', keyboard.priceMin, keyboard.priceMax) &&
+        isInRange('minQuantity', 'maxQuantity', keyboard.sumQuantity, keyboard.sumQuantity) &&
+        isInList('switches', switchesIdList) &&
+        isInList('size', [keyboard.size]) &&
+        isInList('manufacturer', switchesManufacturerList) &&
+        isInList('search', fullSearchList);
+      return result;
+    });
   }
 
   /** Добавляет фильтр в Query */
@@ -68,7 +74,7 @@ export class Filter {
     const params: Set<string> = converter.stringToSet(param);
     params.add(value);
     this.usp.set(category, converter.setToString(params));
-    this.query = this.usp.toString();
+    Filter.query = this.usp.toString();
   }
   /** Удаляет фильтр из Query */
   remove(category: string, value: string) {
@@ -77,12 +83,13 @@ export class Filter {
     params.delete(value);
     this.usp.set(category, converter.setToString(params));
     if (!params.size) this.clear(category);
-    this.query = this.usp.toString();
+    Filter.query = this.usp.toString();
   }
   /** Очищает категорию фильтра в Query */
-  clear(category: string) {
+  clear(category: string): this {
     this.usp.delete(category);
-    this.query = this.usp.toString();
+    Filter.query = this.usp.toString();
+    return this;
   }
   /** Очищает Query полностью */
   clearAll() {
@@ -114,6 +121,6 @@ export class Filter {
   setParam(type: string, value?: string): void {
     if (value) this.usp.set(type, value);
     else this.usp.delete(type);
-    this.query = this.usp.toString();
+    Filter.query = this.usp.toString();
   }
 }
