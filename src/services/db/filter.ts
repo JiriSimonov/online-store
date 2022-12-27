@@ -13,10 +13,6 @@ export class Filter {
     });
   }
 
-  /* private get usp() {
-    return new URLSearchParams(this.query);
-  } */
-
   private get query(): string {
     const { hash } = window.location;
     const index: number = hash.indexOf('?');
@@ -30,7 +26,7 @@ export class Filter {
 
   /** Возвращает отфильтрованный массив Keyboard */
   get list(): Keyboard[] {
-    const filters = this.getAll();
+    const filters = this.params;
     const isAvailable = (item: Keyboard): boolean => filters.get('available')?.has(`${item.isAvailable}`) ?? true;
     const hasSize = (item: Keyboard): boolean => filters.get('size')?.has(item.size) ?? true;
     const hasBrand = (item: Keyboard): boolean => {
@@ -90,14 +86,34 @@ export class Filter {
   }
   /** Очищает Query полностью */
   clearAll() {
-    this.query = '';
+    const categories = Object.keys(FilterCategory);
+    categories.slice(categories.length / 2).forEach((category) => this.clear(category));
   }
 
-  private getAll(): Map<string, Set<string>> {
+  /** Возвращает содержимое Query строки
+   * @returns `Map<string, Set<string>`*/
+  get params(): Map<string, Set<string>> {
     const convert = (entry: [string, string]): [string, Set<string>] => {
       const [category, values] = entry;
       return [category, converter.stringToSet(values)];
     };
-    return new Map(Array.from(this.usp.entries(), convert));
+    return new Map(
+      Array.from(this.usp.entries(), (entry) => {
+        try {
+          return convert(entry);
+        } catch {
+          return [entry[0], new Set()];
+        }
+      }),
+    );
+  }
+
+  getParam(type: string): string {
+    return this.usp.get(type) ?? '';
+  }
+  setParam(type: string, value?: string): void {
+    if (value) this.usp.set(type, value);
+    else this.usp.delete(type);
+    this.query = this.usp.toString();
   }
 }
