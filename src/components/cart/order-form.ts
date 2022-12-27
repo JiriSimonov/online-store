@@ -31,7 +31,7 @@ export class OrderForm extends BaseComponent {
 
   constructor() {
     super({ className: 'modal' });
-    this.loader = new Loader();
+    this.loader = new Loader(true);
     this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
     this.modalContent = new BaseComponent({ className: 'modal__content' });
     this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
