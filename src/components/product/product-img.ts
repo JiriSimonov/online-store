@@ -6,7 +6,7 @@ export class ProductImage extends BaseComponent {
   private zones: BaseComponent[];
   private images: string[] = [];
 
-  private loader = new Loader();
+  private loader = new Loader(false);
 
   constructor(imageList: string[]) {
     super({ className: 'store__img' });
