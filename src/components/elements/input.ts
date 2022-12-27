@@ -6,14 +6,19 @@ export class Input extends BaseComponent<HTMLInputElement> {
     super(Object.assign(props, { tag: 'input' }));
     const { value, type, placeholder, pattern, min, max, name, step } = props;
     const { node } = this;
-    if (value) node.value = value;
-    if (type) node.type = type;
-    if (placeholder) node.placeholder = placeholder;
-    if (pattern) node.pattern = pattern;
-    if (min) node.min = min;
-    if (max) node.max = max;
-    if (name) node.name = name;
-    if (step) node.step = step;
+    if (value) node.setAttribute('value', value);
+    if (type) node.setAttribute('type', type);
+    if (type === 'number')
+      this.node.onkeydown = (e) => {
+        if (e.target && e.target instanceof HTMLInputElement && ['e', 'E', '-', '+', '.', ','].includes(e.key))
+          e.preventDefault();
+      };
+    if (placeholder) node.setAttribute('placeholder', placeholder);
+    if (pattern) node.setAttribute('pattern', pattern);
+    if (min)node.setAttribute('min', min);
+    if (max) node.setAttribute('max', max);
+    if (name) node.setAttribute('name', name);
+    if (step) node.setAttribute('step', step);
     node.required = true;
   }
 }
