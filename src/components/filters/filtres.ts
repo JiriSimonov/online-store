@@ -1,3 +1,5 @@
+import { QuantityFilter } from './quantity-filter';
+import { PriceFilter } from './price-filter';
 import { BaseComponent } from '../elements/base-component';
 import { DB } from '../../services/db/database';
 import { Filter } from './filter';
@@ -13,6 +15,10 @@ export class Filters extends BaseComponent {
 
   manufacturerFiler: Filter;
 
+  priceFilter: Filter;
+
+  quantityFilter: Filter;
+
   availableFilter: Filter;
 
   sizeFilter: Filter;
@@ -25,6 +31,8 @@ export class Filters extends BaseComponent {
     super({ tag: 'ul', className: 'filters' });
     this.availableFilter = new AvFilter();
     this.switchFilter = new SwitchFilter();
+    this.priceFilter = new PriceFilter();
+    this.quantityFilter = new QuantityFilter();
     this.manufacturerFiler = new BrandFilter();
     this.sizeFilter = new SizeFilter();
     this.featuresFilter = new FeaturesFilter();
@@ -37,6 +45,8 @@ export class Filters extends BaseComponent {
     this.appendEl([
       this.availableFilter,
       this.switchFilter,
+      this.priceFilter,
+      this.quantityFilter,
       this.manufacturerFiler,
       this.sizeFilter,
       this.featuresFilter,
