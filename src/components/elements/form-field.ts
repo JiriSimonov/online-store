@@ -25,6 +25,7 @@ export class FormField extends BaseComponent<HTMLLabelElement> {
         max: props.max,
         name: props.name,
         step: props.step,
+        checked: props.checked,
       },
     );
   }

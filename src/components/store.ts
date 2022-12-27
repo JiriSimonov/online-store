@@ -13,10 +13,14 @@ export class Store extends BaseComponent {
   private chunkNumber = 0;
 
   private container = new BaseComponent({ className: 'container' });
-  private wrapper = new BaseComponent({ className: 'store__wrapper' });
-  private title = new BaseComponent<HTMLHeadingElement>({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
+  private wrapper = new BaseComponent({ className: `store__wrapper${DB.filter.getParam('filters')
+  ? ' store__wrapper_is-open'
+  : ''}` });
+  private title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
   private showFiltersBtn = new Button({ className: 'store__filter', text: 'Фильтры' });
-  private contentWrapper = new BaseComponent({ className: 'store__content' });
+  private contentWrapper = new BaseComponent({
+    className: 'store__content',
+    });
   private storeList = new StoreContent();
   private storeItems: ProductCard[] = [];
   private changeView = new ChangeView();
@@ -37,22 +41,25 @@ export class Store extends BaseComponent {
     onclick: () => window.scrollTo({ behavior: 'smooth', top: 0 }),
   });
 
-  constructor(/* private productsState: ProductsListState */) {
+  constructor() {
     super({ tag: 'section', className: 'store' });
-
     this.showFiltersBtn.getNode().onclick = () => {
       const { classList } = this.wrapper.getNode();
-      classList.toggle('store__wrapper_is-open');
-
-      if (!classList.contains('store__wrapper_is-open')) this.filters.destroy();
-      else this.contentWrapper.getNode().prepend(this.filters.getNode());
+      if (!classList.contains('store__wrapper_is-open')) {
+        this.contentWrapper.getNode().prepend(this.filters.getNode());
+        classList.add('store__wrapper_is-open');
+        DB.filter.setParam('filters', 'true');
+      } else {
+        this.filters.destroy()
+        classList.remove('store__wrapper_is-open');
+        DB.filter.setParam('filters');
+      };
     };
-
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
-
+    if (DB.filter.getParam('filters')) this.contentWrapper.getNode().prepend(this.filters.getNode());
     window.addEventListener('hashchange', () => {
       this.update();
     });

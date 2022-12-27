@@ -13,6 +13,7 @@ export class AvFilter extends Filter {
         name: 'av-filter',
         text: item === 'true' ? 'В наличии' : 'Всё',
         value: item,
+        checked: DB.filter.params.has('available'),
       }));
 
   constructor() {

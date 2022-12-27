@@ -13,6 +13,7 @@ export class FeaturesFilter extends Filter {
       type: 'checkbox',
       text: item,
       value: item,
+      checked: DB.filter.params.get('features')?.has(item),
     }));
 
   constructor() {
