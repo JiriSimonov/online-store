@@ -88,6 +88,14 @@ class Database {
         return new Set();
     }
   }
+
+  getSortedKeyboards(
+    type: keyof Pick<Keyboard, 'minPrice' | 'sumQuantity'>,
+    isAscending?: boolean,
+    list: Keyboard[] = this.keyboards,
+  ): Keyboard[] {
+    return [...list].sort((a, b) => (isAscending ? a[type] - b[type] : b[type] - a[type]));
+  }
 }
 
 export const DB = new Database(keyboardsJson as KeyboardData[]);
