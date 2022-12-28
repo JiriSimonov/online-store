@@ -37,10 +37,11 @@ export class QuantityFilter extends Filter {
   setDefaultValues() {
     const [minNum, maxNum, minRange, maxRange] = [...this.slider.getNumbersNodes(), ...this.slider.getRangesNodes()];
     const progress = this.slider.getProgressNode();
-    minNum.value = `${0}`;
-    maxNum.value = `${this.filteredMax}`;
-    console.warn(`${this.filteredMax}`, 'кв');
-    progress.style.left = `${((+minNum.value / +minRange.max) * 100)}%`;
-    progress.style.right = `${100 - ((+maxNum.value / +maxRange.max) * 100)}%`;
+    maxNum.value = maxNum.max;
+    minNum.value = minNum.min;
+    minRange.value = minRange.min;
+    maxRange.value = maxRange.max;
+    progress.style.left = `0`;
+    progress.style.right = `0`;
   }
 }
