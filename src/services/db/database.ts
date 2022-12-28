@@ -93,7 +93,7 @@ class Database {
     const options = ['sumQuantity', 'priceMin', 'title'];
     const sortType = (options.includes(type) ? type : options[0]) as keyof Keyboard;
     const xor = (a: boolean, b: boolean): boolean => (a && b) || (!a && !b);
-    return [...list].sort((a, b) => (xor(a[sortType] < b[sortType], direction === 'ascending') ? -1 : 1));
+    return [...list].sort((a, b) => (xor(a[sortType] < b[sortType], direction !== 'descending') ? -1 : 1));
   }
 }
 
