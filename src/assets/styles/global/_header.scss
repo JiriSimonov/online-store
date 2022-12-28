@@ -100,3 +100,29 @@
     }
   }
 }
+
+@media (max-width: 770px) {
+  .header {
+    &__logo {
+      font-size: 28px;
+    }
+
+    &__controls {
+      position: fixed;
+      top: 70px;
+      right: 0;
+      flex-direction: column;
+      padding: 40px 20px;
+      border: 2px solid $blue;
+      border-radius: 13px;
+      background-color: $white;
+      z-index: 15;
+      transform: translateX(100%);
+      transition: .6s linear;
+    }
+
+    &__controls_is-open {
+      transform: none;
+    }
+  }
+}

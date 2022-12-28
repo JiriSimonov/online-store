@@ -1,9 +1,7 @@
-// https://codeguide.maxgraph.ru/ --- порядок свойств
-
 @import 'fonts';
 @import 'vars';
 @import 'header';
-@import '../store/home';
+@import '../home';
 @import '../filtres/filters';
 @import '../store/store';
 @import '../cart/cart';
@@ -42,7 +40,7 @@ ul {
   scroll-behavior: smooth;
 
   &::-webkit-scrollbar {
-    width: 20px;
+    opacity: 0;
   }
 
   &::-webkit-scrollbar-track {
@@ -52,12 +50,15 @@ ul {
   }
 
   &::-webkit-scrollbar-thumb {
-    height: 40px;
+    width: initial;
+    height: initial;
     background-image: url('../../icons/scroll.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100%;
+    background-size: contain; // нашел в чем косяк со скролбаром, пока думаю как нерфить!
   }
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 
 #root {
@@ -69,15 +70,18 @@ ul {
   font-family: 'Nunito', monospace;
 }
 
-.no-scroll {
-  overflow: hidden;
-}
 
 .container {
   margin: 0 auto;
   padding: 0 40px;
   width: 100%;
   max-width: 1520px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .view {
@@ -147,9 +151,92 @@ ul {
   }
 }
 
+.burger {
+  position: relative;
+  display: none;
+  border: none;
+  padding: 8px 15px;
+  background-color: transparent;
+  cursor: $hover;
+  visibility: hidden;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    border-radius: 1px;
+    width: 100%;
+    height: 2px;
+    background-color: $black;
+    transition: .3s linear;
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  &__line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    background-color: $black;
+    transform: translateY(-50%);
+    transform: .4s;
+  }
+}
+
+.burger_is-open {
+  &::before {
+    transform: rotate(-135deg);
+  }
+  &::after {
+    top: 0;
+    transform: rotate(135deg);
+  }
+  .burger__line {
+    opacity: 0;
+  }
+}
+
 @media (max-width: 1601px) {
   .container {
     padding: 10px;
     max-width: 980px;
+  }
+}
+
+
+@media (max-width: 1201px) {
+  .container {
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 770px) {
+  .body {
+    overflow-x: hidden;
+  }
+  .container {
+    max-width: 480px;
+  }
+
+  .burger {
+    display: block;
+    margin-left: auto;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 501px) {
+  .container {
+    max-width: 300px;
   }
 }
