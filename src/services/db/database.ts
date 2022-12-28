@@ -89,12 +89,11 @@ class Database {
     }
   }
 
-  getSortedKeyboards(
-    type: keyof Pick<Keyboard, 'minPrice' | 'sumQuantity' | 'title'>,
-    isAscending?: boolean,
-    list: Keyboard[] = this.keyboards,
-  ): Keyboard[] {
-    return [...list].sort((a, b) => (a[type] < b[type] && isAscending ? -1 : 1));
+  getSortedKeyboards(type: string, direction: string, list: Keyboard[] = this.keyboards): Keyboard[] {
+    const options = ['sumQuantity', 'priceMin', 'title'];
+    const sortType = (options.includes(type) ? type : options[0]) as keyof Keyboard;
+    const xor = (a: boolean, b: boolean): boolean => (a && b) || (!a && !b);
+    return [...list].sort((a, b) => (xor(a[sortType] < b[sortType], direction === 'ascending') ? -1 : 1));
   }
 }
 
