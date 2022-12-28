@@ -1,3 +1,4 @@
+import { Burger } from './elements/burger-menu';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DB } from '../services/db/database';
 import { Anchor } from './elements/anchor';
@@ -7,21 +8,37 @@ import { Button } from './elements/button';
 import { emitter } from '../services/event-emitter';
 
 export class Header extends BaseComponent {
-  private container = new BaseComponent({ className: 'container' });
-  private wrapper = new BaseComponent({ className: 'header__wrapper' });
-  private logo = new Anchor({ className: 'header__logo', text: 'Keyboards Store' });
-  private controls = new BaseComponent({ className: 'header__controls' });
-  private searchField = new FormField({ className: 'header', type: 'search', placeholder: 'Найти', value: '' });
-  private search = new Button({ className: 'header__search', aria: 'Поиск' });
+  private container = new BaseComponent({ className: 'container', parent: this.node });
+  private wrapper = new BaseComponent({ className: 'header__wrapper', parent: this.container.getNode() });
+  private logo = new Anchor({ className: 'header__logo', text: 'Keyboards Store', parent: this.wrapper.getNode() });
+  private controls = new BaseComponent({ className: 'header__controls', parent: this.wrapper.getNode() });
+  private burger = new Burger();
+  private searchField = new FormField({
+    className: 'header',
+    type: 'search',
+    placeholder: 'Найти',
+    value: '',
+  });
+  private search = new Button({ className: 'header__search', aria: 'Поиск', parent: this.controls.getNode() });
   private cart = new Button({
     className: 'header__cart',
     onclick: () => {
       window.location.hash = '#cart';
     },
     aria: 'Перейти в корзину',
+    parent: this.controls.getNode(),
   });
-  private cartCount = new BaseComponent({ tag: 'span', className: 'header__count', text: `${DB.cart.sumQuantity}` });
-  private cartPrice = new BaseComponent({ tag: 'span', className: 'header__price', text: `${DB.cart.sumPrice}` });
+  private cartCount = new BaseComponent({
+    tag: 'span',
+    className: 'header__count',
+    text: `${DB.cart.sumQuantity}`,
+    parent: this.cart.getNode() });
+  private cartPrice = new BaseComponent({
+    tag: 'span',
+    className: 'header__price',
+    text: `${DB.cart.sumPrice}`,
+    parent: this.controls.getNode()
+  });
 
   constructor() {
     super({ tag: 'header', className: 'header' });
@@ -32,17 +49,17 @@ export class Header extends BaseComponent {
       window.location.hash = '#home';
       this.searchField.getInputNode().classList.remove('header__input_is-open');
     };
+    this.burger.getNode().onclick = () => {
+      this.controls.getNode().classList.toggle('header__controls_is-open');
+      this.burger.getNode().classList.toggle('burger_is-open');
+    };
+    this.wrapper.appendEl(this.burger);
+    this.controls.getNode().prepend(this.searchField.getNode());
     this.searchField.getInputNode().oninput = (e) => {
       if (window.location.hash !== '#store') window.location.hash = '#store';
       const { target } = e;
       if (target instanceof HTMLInputElement) DB.filter.clear('search').add('search', target.value);
     }
-    this.appendEl(this.container);
-    this.container.appendEl(this.wrapper);
-    this.wrapper.appendEl([this.logo, this.controls]);
-    this.controls.appendEl([this.searchField, this.search, this.cart, this.cartPrice]);
-    this.cart.appendEl(this.cartCount);
-
     this.subscribe();
   }
 
