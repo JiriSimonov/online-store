@@ -14,14 +14,11 @@ export class Store extends BaseComponent {
 
   private container = new BaseComponent({ className: 'container' });
   private wrapper = new BaseComponent({
-    className: `store__wrapper${DB.filter.getParam('filters')
-      ? ' store__wrapper_is-open'
-      : ''}` });
+    className: `store__wrapper${DB.filter.getParam('filters') ? ' store__wrapper_is-open' : ''}`,
+  });
   private title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
   private showFiltersBtn = new Button({ className: 'store__filter', text: 'Фильтры' });
-  private contentWrapper = new BaseComponent({
-    className: 'store__content',
-    });
+  private contentWrapper = new BaseComponent({ className: 'store__content' });
   private storeList = new StoreContent();
   private storeItems: ProductCard[] = [];
   private changeView = new ChangeView();
@@ -50,19 +47,17 @@ export class Store extends BaseComponent {
         classList.add('store__wrapper_is-open');
         DB.filter.setParam('filters', 'true');
       } else {
-        this.filters.destroy()
+        this.filters.destroy();
         classList.remove('store__wrapper_is-open');
         DB.filter.setParam('filters');
-      };
+      }
     };
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
     if (DB.filter.getParam('filters')) this.contentWrapper.getNode().prepend(this.filters.getNode());
-    window.addEventListener('hashchange', () => {
-      this.update();
-    });
+    window.addEventListener('hashchange', () => this.update());
     this.update();
   }
 
@@ -73,27 +68,26 @@ export class Store extends BaseComponent {
     this.storeList.appendEl(this.storeItems);
     this.contentWrapper.appendEl(this.goodsCount);
     const num = DB.filter.list.length;
+    let message = 'По вашему запросу ';
     switch (num) {
       case 0:
-        this.goodsCount.setText('По вашему запросу нет результатов');
+        message += 'нет результатов';
         break;
       case DB.keyboards.length:
-        this.goodsCount.setText('');
+        message = '';
         break;
       default:
-        this.goodsCount
-          .setText(`По вашему запросу ${num > 1 ? 'найдено' : 'найден'
-            } ${num} ${getNoun(num, 'результат', 'результата', 'результатов')}
-          `);
+        message += `${num > 1 ? 'найдено' : 'найден'} ${num} ${getNoun(num, 'результат', 'результата', 'результатов')}`;
         break;
     }
+    this.goodsCount.setText(message);
     this.renderBottomButton();
   };
 
   private get chunk() {
-    return DB.getChunk(this.chunkNumber++, this.chunkSize, DB.filter.list).map(
-      (item: Keyboard) => new ProductCard(item),
-    );
+    const [type, direction] = [DB.filter.getParam('sortType'), DB.filter.getParam('sortDirection')];
+    const sorted = DB.getSortedKeyboards(type, direction, DB.filter.list);
+    return DB.getChunk(this.chunkNumber++, this.chunkSize, sorted).map((item: Keyboard) => new ProductCard(item));
   }
 
   private renderBottomButton() {

@@ -117,9 +117,10 @@ export class Filter {
   getParam(type: string): string {
     return this.usp.get(type) ?? '';
   }
-  setParam(type: string, value?: string): void {
+  setParam(type: string, value?: string): this {
     if (value) this.usp.set(type, value);
     else this.usp.delete(type);
     Filter.query = this.usp.toString();
+    return this;
   }
 }
