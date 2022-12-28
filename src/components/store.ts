@@ -2,11 +2,10 @@ import { BaseComponent } from './elements/base-component';
 import { Button } from './elements/button';
 import { Filters } from './filters/filtres';
 import { ProductCard } from './product/product-card';
-import { Keyboard } from '../services/db/keyboard';
 import { StoreContent } from './store-content';
 import { ChangeView } from './elements/change-view';
 import { DB } from '../services/db/database';
-import { getNoun } from '../utils/get-noun';
+import { getNoun, getChunk } from '../utils/utils';
 
 export class Store extends BaseComponent {
   private chunkSize = 20;
@@ -83,10 +82,8 @@ export class Store extends BaseComponent {
     this.renderBottomButton();
   };
 
-  private get chunk() {
-    return DB.getChunk(this.chunkNumber++, this.chunkSize, DB.filter.list).map(
-      (item: Keyboard) => new ProductCard(item),
-    );
+  private get chunk(): ProductCard[] {
+    return getChunk(this.chunkNumber++, this.chunkSize, DB.filter.list).map((item) => new ProductCard(item));
   }
 
   private renderBottomButton() {

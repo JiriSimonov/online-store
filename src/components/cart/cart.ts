@@ -9,7 +9,7 @@ import { PromoForm } from './cart-promo';
 import { OrderForm } from './order-form';
 import { ChangeView } from '../elements/change-view';
 import { emitter } from '../../services/event-emitter';
-import { getNoun } from '../../utils/get-noun';
+import { getNoun } from '../../utils/utils';
 
 export class Cart extends BaseComponent {
   private container = new BaseComponent({ className: 'container' });
