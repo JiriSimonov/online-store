@@ -8,12 +8,14 @@ export class SizeFilter extends Filter {
 
   private size = [...DB.getVariants('size')]
   .filter((elem) => elem)
+  .sort((a, b) => +b.slice(0, -1) - +a.slice(0, -1))
   .map((item) =>
     new FormField({
       className: 'filter',
       type: 'checkbox',
       text: item,
       value: item,
+      checked: DB.filter.params.get('size')?.has(item),
     }));
 
   constructor() {
@@ -27,5 +29,9 @@ export class SizeFilter extends Filter {
       });
     })
     this.filterWrapper.appendEl(this.size);
+  }
+
+  getInputs() {
+    return this.size;
   }
 }

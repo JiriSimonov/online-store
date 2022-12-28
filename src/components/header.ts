@@ -55,6 +55,11 @@ export class Header extends BaseComponent {
     };
     this.wrapper.appendEl(this.burger);
     this.controls.getNode().prepend(this.searchField.getNode());
+    this.searchField.getInputNode().oninput = (e) => {
+      if (window.location.hash !== '#store') window.location.hash = '#store';
+      const { target } = e;
+      if (target instanceof HTMLInputElement) DB.filter.clear('search').add('search', target.value);
+    }
     this.subscribe();
   }
 

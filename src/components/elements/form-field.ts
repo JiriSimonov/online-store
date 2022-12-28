@@ -25,6 +25,7 @@ export class FormField extends BaseComponent<HTMLLabelElement> {
         max: props.max,
         name: props.name,
         step: props.step,
+        checked: props.checked,
       },
     );
   }
@@ -38,5 +39,11 @@ export class FormField extends BaseComponent<HTMLLabelElement> {
   }
   set disabled(value: boolean) {
     this.getInputNode().disabled = value;
+  }
+  get checked(): boolean {
+    return this.getInputNode().checked;
+  }
+  set checked(value: boolean) {
+    this.getInputNode().checked = value;
   }
 }
