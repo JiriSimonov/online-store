@@ -636,13 +636,13 @@
     position: absolute;
     top: 40px;
     right: 0;
-    display: none;
+    /* display: none; */ // TODO перепроверь необходимы ли хиддены эти ваши
     flex-direction: column;
     border: 2px solid $blue;
     border-radius: 5px;
     background-color: $white;
     overflow: hidden;
-    visibility: hidden;
+    /* visibility: hidden; */ // TODO перепроверь необходимы ли хиддены эти ваши
     z-index: 9;
   }
 
@@ -708,9 +708,9 @@
   }
 }
 
-.dropdown_is-open {
+/* .dropdown_is-open { */ // TODO перепроверь необходимы ли хиддены эти ваши
   .dropdown__wrapper {
     display: flex;
-    visibility: visible;
+    /* visibility: visible; */ // TODO перепроверь необходимы ли хиддены эти ваши
   }
-}
+/* } */ // TODO перепроверь необходимы ли хиддены эти ваши

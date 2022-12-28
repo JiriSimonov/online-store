@@ -9,9 +9,11 @@ import { PromoForm } from './cart-promo';
 import { OrderForm } from './order-form';
 import { ChangeView } from '../elements/change-view';
 import { emitter } from '../../services/event-emitter';
-import { getNoun } from '../../utils/utils';
+import { getChunk, getNoun } from '../../utils/utils';
 
 export class Cart extends BaseComponent {
+  private defaultPageSize = 20;
+
   private container = new BaseComponent({ className: 'container' });
   private wrapper = new BaseComponent({ className: 'cart__wrapper' });
 
@@ -72,7 +74,18 @@ export class Cart extends BaseComponent {
     this.updateTotalQuantity();
     this.subscribe();
     window.addEventListener('hashchange', () => this.render());
+    // TODO 👇
+    const buttons = ['👈', '👉'].map((name) => {
+      const button = document.createElement('button');
+      button.textContent = name;
+      return button;
+    });
+    buttons[0].onclick = () => this.pagination.prevPage();
+    buttons[1].onclick = () => this.pagination.nextPage();
+    this.cartPagination.node.before(buttons[0]);
+    this.cartPagination.node.after(buttons[1]);
   }
+
   private updateTotalPrice(): void {
     const { promo, sumPrice } = DB.cart;
     const { cartCurrentPrice, cartPriceTotal } = this;
@@ -89,8 +102,9 @@ export class Cart extends BaseComponent {
   }
 
   private updateTotalQuantity() {
-    this.cartPriceText
-    .setText(`Итого: ${DB.cart.sumQuantity} ${getNoun(DB.cart.sumQuantity, 'товар', 'товара', 'товаров')} на сумму`);
+    this.cartPriceText.setText(
+      `Итого: ${DB.cart.sumQuantity} ${getNoun(DB.cart.sumQuantity, 'товар', 'товара', 'товаров')} на сумму`,
+    );
   }
 
   private updateActivePromoList(): void {
@@ -119,7 +133,11 @@ export class Cart extends BaseComponent {
       ]);
       this.changeView.appendEl(this.cartPagination);
       this.cartList.clear();
-      this.cartList.appendEl(DB.cart.list.map((item, index) => new CartItemElem(item, index)));
+      this.cartList.appendEl(
+        this.pagination.page.chunk.map(
+          (item, index) => new CartItemElem(item, index + this.pagination.page.firstindex),
+        ),
+      );
       this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
       this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
     } else {
@@ -151,5 +169,25 @@ export class Cart extends BaseComponent {
       this.render();
     });
     return this;
+  }
+
+  private get pagination() {
+    const querySize: number = +DB.filter.getParam('cartPageSize');
+    const queryPage: number = +DB.filter.getParam('cartPage');
+    const size: number = Number.isInteger(querySize) && querySize > 0 ? querySize : this.defaultPageSize;
+    const lastPageNumber = DB.cart.list.length / size;
+    const page: number = Number.isInteger(queryPage) && queryPage > 0 ? queryPage : 0;
+    return {
+      get page() {
+        //! присутствует баг с переходом на последнюю страницу при очистке текущей
+        return { chunk: getChunk(page, size, DB.cart.list), firstindex: page * size };
+      },
+      prevPage() {
+        if (page > 0) DB.filter.setParam('cartPage', `${page - 1}`);
+      },
+      nextPage() {
+        if (page < lastPageNumber) DB.filter.setParam('cartPage', `${page + 1}`);
+      },
+    };
   }
 }

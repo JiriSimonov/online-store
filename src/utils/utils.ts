@@ -37,5 +37,5 @@ export function getNoun(number: number, one: string, two: string, five: string) 
 }
 
 export function getChunk<T>(number: number, length: number, list: T[]): T[] {
-  return list.slice(number * length, number * length + length);
+  return list.slice(number * length, (number + 1) * length);
 }
