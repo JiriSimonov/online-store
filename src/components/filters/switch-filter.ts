@@ -75,4 +75,12 @@ export class SwitchFilter extends Filter {
       }
     }); // TODO модалка перебивает свич и не дает зацепить нужный элемент
   }
+
+  getRadioInputs() {
+    return this.switches;
+  }
+
+  getInputs() {
+    return this.manufacturers;
+  }
 }

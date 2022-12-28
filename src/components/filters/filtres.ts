@@ -1,3 +1,4 @@
+import { SortFilter } from './sort-filter';
 import { BaseComponent } from '../elements/base-component';
 import { DB } from '../../services/db/database';
 import { Button } from '../elements/button';
@@ -8,8 +9,10 @@ import { SwitchFilter } from './switch-filter';
 import { BrandFilter } from './brand-filter';
 import { SizeFilter } from './size-filter';
 import { FeaturesFilter } from './features-filter';
+import { Filter } from './filter';
 
 export class Filters extends BaseComponent {
+  sortFilter = new SortFilter();
   availableFilter = new AvFilter();
   switchFilter = new SwitchFilter();
   priceFilter = new PriceFilter();
@@ -26,6 +29,15 @@ export class Filters extends BaseComponent {
       className: 'filter__clear', text: 'Очистить фильтры',
       onclick: () => {
         DB.filter.clearAll();
+        Filter.uncheckAll(
+          ...this.availableFilter.getInputs(),
+          ...this.switchFilter.getInputs(),
+          ...this.switchFilter.getRadioInputs(),
+          ...this.manufacturerFiler.getInputs(),
+          ...this.sizeFilter.getInputs(),
+          ...this.featuresFilter.getInputs(),
+          );
+        window.scrollTo(0, 0);
       }
     });
     this.copyFilters = new Button({
@@ -42,12 +54,13 @@ export class Filters extends BaseComponent {
           };
         };
         navigator.clipboard
-          .writeText(window.location.hash.split('?')[1])
+          .writeText(encodeURI(window.location.href))
           .then(() => renderCopyAnimation('success'))
           .catch(() => renderCopyAnimation('fail'));
       }
     });
     this.appendEl([
+      this.sortFilter,
       this.availableFilter,
       this.switchFilter,
       this.priceFilter,

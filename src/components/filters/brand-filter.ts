@@ -28,4 +28,8 @@ export class BrandFilter extends Filter {
     })
     this.filterWrapper.appendEl(this.brands);
   }
+
+  getInputs() {
+    return this.brands;
+  }
 }
