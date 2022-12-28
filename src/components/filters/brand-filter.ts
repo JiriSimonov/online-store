@@ -13,6 +13,7 @@ export class BrandFilter extends Filter {
       type: 'checkbox',
       text: item,
       value: item,
+      checked: DB.filter.params.get('brand')?.has(item),
     }));
 
   constructor() {
@@ -26,5 +27,9 @@ export class BrandFilter extends Filter {
       });
     })
     this.filterWrapper.appendEl(this.brands);
+  }
+
+  getInputs() {
+    return this.brands;
   }
 }

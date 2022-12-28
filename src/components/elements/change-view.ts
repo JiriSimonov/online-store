@@ -1,5 +1,6 @@
 import { BaseComponent } from './base-component';
 import { Button } from './button';
+import { DB } from '../../services/db/database';
 
 export class ChangeView extends BaseComponent {
   private table: Button;
@@ -12,6 +13,7 @@ export class ChangeView extends BaseComponent {
       this.node.parentElement?.classList.remove('list');
       this.table.getNode().classList.add('view__table_active');
       this.list.getNode().classList.remove('view__list_active');
+      DB.filter.setParam('view', 'table');
     },
     aria: 'Отобразить в виде таблицы',
   });
@@ -19,8 +21,10 @@ export class ChangeView extends BaseComponent {
       this.node.parentElement?.classList.add('list');
       this.list.getNode().classList.add('view__list_active');
       this.table.getNode().classList.remove('view__table_active');
+      DB.filter.setParam('view', 'list');
     },
     aria: 'Отобразить в виде списка',
   });
+  if (DB.filter.getParam('view') === 'list') this.list.getNode().click();
   }
 }

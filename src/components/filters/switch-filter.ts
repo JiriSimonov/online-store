@@ -11,18 +11,23 @@ export class SwitchFilter extends Filter {
   private switchWrapper = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
 
   private manufacturers = [...DB.getVariants('manufacturer')]
+    .filter((elem) => elem !== 'null')
     .map((item) =>
       new FormField({
         className: 'filter',
         type: 'checkbox',
         text: item,
         value: item,
+        checked: DB.filter.params.get('manufacturer')?.has(item),
       }));
 
   private switches = DB.switches
     .filter((item) => item.id !== 'null')
-    .map((item) =>
-      new SwitchComponent(item, `${DB.switches.length}`));
+    .map((item) => {
+        const component = new SwitchComponent(item, `${DB.switches.length}`);
+        component.checked = !!DB.filter.params.get('switches')?.has(item.id);
+        return component;
+    });
 
   private modalWrapper: BaseComponent | null | undefined;
 
@@ -69,5 +74,13 @@ export class SwitchFilter extends Filter {
         });
       }
     }); // TODO модалка перебивает свич и не дает зацепить нужный элемент
+  }
+
+  getRadioInputs() {
+    return this.switches;
+  }
+
+  getInputs() {
+    return this.manufacturers;
   }
 }

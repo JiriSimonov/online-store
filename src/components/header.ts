@@ -23,17 +23,20 @@ export class Header extends BaseComponent {
   private cartCount = new BaseComponent({ tag: 'span', className: 'header__count', text: `${DB.cart.sumQuantity}` });
   private cartPrice = new BaseComponent({ tag: 'span', className: 'header__price', text: `${DB.cart.sumPrice}` });
 
-  constructor(/* private productsState: ProductsListState */) {
+  constructor() {
     super({ tag: 'header', className: 'header' });
     this.search.getNode().addEventListener('click', () => {
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
     });
-
     this.logo.getNode().onclick = () => {
       window.location.hash = '#home';
       this.searchField.getInputNode().classList.remove('header__input_is-open');
     };
-
+    this.searchField.getInputNode().oninput = (e) => {
+      if (window.location.hash !== '#store') window.location.hash = '#store';
+      const { target } = e;
+      if (target instanceof HTMLInputElement) DB.filter.clear('search').add('search', target.value);
+    }
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.logo, this.controls]);
