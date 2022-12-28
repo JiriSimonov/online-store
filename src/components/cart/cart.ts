@@ -175,7 +175,7 @@ export class Cart extends BaseComponent {
     const querySize: number = +DB.filter.getParam('cartPageSize');
     const queryPage: number = +DB.filter.getParam('cartPage');
     const size: number = Number.isInteger(querySize) && querySize > 0 ? querySize : this.defaultPageSize;
-    const lastPageNumber = DB.cart.list.length / size;
+    const lastPageNumber = Math.floor(DB.cart.list.length / size);
     const page: number = Number.isInteger(queryPage) && queryPage > 0 ? queryPage : 0;
     return {
       get page() {
@@ -183,9 +183,11 @@ export class Cart extends BaseComponent {
         return { chunk: getChunk(page, size, DB.cart.list), firstindex: page * size };
       },
       prevPage() {
+        // TODO добавить условия для сброса страниц при выходе за ренж
         if (page > 0) DB.filter.setParam('cartPage', `${page - 1}`);
       },
       nextPage() {
+        // TODO добавить условия для сброса страниц при выходе за ренж
         if (page < lastPageNumber) DB.filter.setParam('cartPage', `${page + 1}`);
       },
     };
