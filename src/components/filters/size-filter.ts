@@ -30,4 +30,8 @@ export class SizeFilter extends Filter {
     })
     this.filterWrapper.appendEl(this.size);
   }
+
+  getInputs() {
+    return this.size;
+  }
 }

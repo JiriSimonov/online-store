@@ -28,4 +28,8 @@ export class AvFilter extends Filter {
       });
     })
   }
+
+  getInputs() {
+    return this.items;
+  }
 }

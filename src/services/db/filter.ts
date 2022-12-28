@@ -69,7 +69,6 @@ export class Filter {
 
   /** Добавляет фильтр в Query */
   add(category: keyof typeof FilterCategory, value: string) {
-    if (category === 'search') return; // TODO
     const param: string = this.usp.get(category) ?? '[]';
     const params: Set<string> = converter.stringToSet(param);
     params.add(value);

@@ -28,4 +28,8 @@ export class FeaturesFilter extends Filter {
     })
     this.filterWrapper.appendEl(this.features);
   }
+
+  getInputs() {
+    return this.features;
+  }
 }
