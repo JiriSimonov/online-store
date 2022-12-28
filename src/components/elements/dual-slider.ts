@@ -11,14 +11,14 @@ export class DualSlider extends BaseComponent {
   private sliderLeft: FormField;
   private sliderRight: FormField;
 
-  constructor(min: number, max: number, step: number, gap: number) {
+  constructor(min: number, max: number, step: number, gap: number, paramMin: string, paramMax: string) {
     super({ className: 'dual-slider' });
     this.minimumValue = new FormField({
       className: 'dual-slider',
       type: 'number',
       min: `${min}`,
       max: `${max}`,
-      value: `${min}`,
+      value: `${paramMin}`,
       text: 'От',
     });
     this.miximumValue = new FormField({
@@ -26,7 +26,7 @@ export class DualSlider extends BaseComponent {
       type: 'number',
       min: `${min}`,
       max: `${max}`,
-      value: `${max}`,
+      value: `${paramMax}`,
       text: 'До',
     });
     this.sliderLeft = new FormField({
@@ -35,7 +35,7 @@ export class DualSlider extends BaseComponent {
       type: 'range',
       min: `${min}`,
       max: `${max}`,
-      value: `${min}`,
+      value: `${paramMin}`,
       step: `${step}`,
     });
     this.sliderRight = new FormField({
@@ -44,14 +44,16 @@ export class DualSlider extends BaseComponent {
       type: 'range',
       min: `${min}`,
       max: `${max}`,
-      value: `${max}`,
+      value: `${paramMax}`,
       step: `${step}`,
     });
-    this.sliderLeft.getInputNode().value = `${min}`;
-    this.sliderRight.getInputNode().value = `${max}`;
+    this.sliderLeft.getInputNode().value = `${paramMin}`;
+    this.sliderRight.getInputNode().value = `${paramMax}`;
     const [minInputNum, maxInputNum] = this.getNumbersNodes();
     const [minRange, maxRange] = this.getRangesNodes();
     const progress = this.getProgressNode();
+    progress.style.left = `${((+paramMin / +minRange.max) * 100)}%`;
+    progress.style.right = `${100 - ((+paramMax / +maxRange.max) * 100)}%`;
     const priceGap = gap;
     this.getNumbersNodes().forEach((item) => item.addEventListener('input', (e) => {
       if (+minInputNum.value >= +maxInputNum.value) {

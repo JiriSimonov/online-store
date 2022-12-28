@@ -6,14 +6,14 @@ import { Filter } from './filter';
 export class AvFilter extends Filter {
   private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
   private items = [...DB.getVariants('available')]
-    .map((item) =>
+    .map((item, index) =>
       new FormField({
         className: 'filter',
         type: 'radio',
         name: 'av-filter',
         text: item === 'true' ? 'В наличии' : 'Всё',
         value: item,
-        checked: DB.filter.params.has('available'),
+        checked: index === 0 ? true : DB.filter.params.has('available'),
       }));
 
   constructor() {

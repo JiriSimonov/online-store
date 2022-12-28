@@ -37,6 +37,7 @@ export class Filters extends BaseComponent {
           ...this.sizeFilter.getInputs(),
           ...this.featuresFilter.getInputs(),
           );
+          this.availableFilter.getInputs()[0].checked = true;
         window.scrollTo(0, 0);
       }
     });

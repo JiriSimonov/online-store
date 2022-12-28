@@ -12,15 +12,21 @@ export class PriceFilter extends Filter {
     super('Цена');
     const filteredMax = DB.keyboards.reduce((max, kb) => (kb.priceMax > max ? kb.priceMax : max), 0);
     const filteredMin = DB.keyboards.reduce((min, kb) => (kb.priceMin < min ? kb.priceMin : min), filteredMax);
-    this.slider = new DualSlider(filteredMin, filteredMax, 100, 1000);
+    const paramMinValue = DB.filter.params.get('minPrice');
+    const paramMaxValue = DB.filter.params.get('maxPrice');
+    this.slider = new DualSlider(
+      filteredMin, filteredMax,
+      100,
+      1000,
+      `${paramMinValue ? [...paramMinValue] : filteredMin}`,
+      `${paramMaxValue ? [...paramMaxValue] : filteredMax}`,
+    );
     this.filterWrapper.appendEl(this.slider);
 
     const [minNum, maxNum, minRange, maxRange] = [...this.slider.getNumbersNodes(), ...this.slider.getRangesNodes()];
-    [minNum, minRange].forEach((item) =>
-      item.addEventListener('change', () => DB.filter.clear('minPrice').add('minPrice', item.value)),
-    );
-    [maxNum, maxRange].forEach((item) =>
-      item.addEventListener('change', () => DB.filter.clear('maxPrice').add('maxPrice', item.value)),
-    );
+    minNum.addEventListener('input', () => DB.filter.clear('minPrice').add('minPrice', minNum.value));
+    maxNum.addEventListener('input', () => DB.filter.clear('maxPrice').add('maxPrice', maxNum.value));
+    minRange.addEventListener('change', () => DB.filter.clear('minPrice').add('minPrice', minRange.value));
+    maxRange.addEventListener('change', () => DB.filter.clear('maxPrice').add('maxPrice', maxRange.value));
   }
 }
