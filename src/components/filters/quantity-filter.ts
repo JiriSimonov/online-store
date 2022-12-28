@@ -5,21 +5,20 @@ import { BaseComponent } from '../elements/base-component';
 
 export class QuantityFilter extends Filter {
   private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-
   private slider: DualSlider;
+  private filteredMax = DB.keyboards.reduce((max, kb) => (kb.sumQuantity > max ? kb.sumQuantity : max), 0);
 
   constructor() {
     super('Остаток на складе');
-    const filteredMax = DB.keyboards.reduce((max, kb) => (kb.sumQuantity > max ? kb.sumQuantity : max), 0);
     const paramMinValue = DB.filter.params.get('minQuantity');
     const paramMaxValue = DB.filter.params.get('maxQuantity');
     this.slider = new DualSlider(
       0,
-      filteredMax,
+      this.filteredMax,
       6,
       16,
       `${paramMinValue ? [...paramMinValue] : 0}`,
-      `${paramMaxValue ? [...paramMaxValue] : filteredMax}`,
+      `${paramMaxValue ? [...paramMaxValue] : this.filteredMax}`,
     );
     this.filterWrapper.appendEl(this.slider);
 
@@ -34,5 +33,14 @@ export class QuantityFilter extends Filter {
       DB.filter.clear('maxQuantity').add('maxQuantity', maxRange.value);
       this.slider.removeStyles();
     });
+  }
+  setDefaultValues() {
+    const [minNum, maxNum, minRange, maxRange] = [...this.slider.getNumbersNodes(), ...this.slider.getRangesNodes()];
+    const progress = this.slider.getProgressNode();
+    minNum.value = `${0}`;
+    maxNum.value = `${this.filteredMax}`;
+    console.warn(`${this.filteredMax}`, 'кв');
+    progress.style.left = `${((+minNum.value / +minRange.max) * 100)}%`;
+    progress.style.right = `${100 - ((+maxNum.value / +maxRange.max) * 100)}%`;
   }
 }

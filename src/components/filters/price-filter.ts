@@ -5,21 +5,20 @@ import { BaseComponent } from '../elements/base-component';
 
 export class PriceFilter extends Filter {
   private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-
+  private filteredMax = DB.keyboards.reduce((max, kb) => (kb.priceMax > max ? kb.priceMax : max), 0);
+  private filteredMin = DB.keyboards.reduce((min, kb) => (kb.priceMin < min ? kb.priceMin : min), this.filteredMax);
   private slider: DualSlider;
 
   constructor() {
     super('Цена');
-    const filteredMax = DB.keyboards.reduce((max, kb) => (kb.priceMax > max ? kb.priceMax : max), 0);
-    const filteredMin = DB.keyboards.reduce((min, kb) => (kb.priceMin < min ? kb.priceMin : min), filteredMax);
     const paramMinValue = DB.filter.params.get('minPrice');
     const paramMaxValue = DB.filter.params.get('maxPrice');
     this.slider = new DualSlider(
-      filteredMin, filteredMax,
+      this.filteredMin, this.filteredMax,
       100,
       3500,
-      `${paramMinValue ? [...paramMinValue] : filteredMin}`,
-      `${paramMaxValue ? [...paramMaxValue] : filteredMax}`,
+      `${paramMinValue ? [...paramMinValue] : this.filteredMin}`,
+      `${paramMaxValue ? [...paramMaxValue] : this.filteredMax}`,
     );
     this.filterWrapper.appendEl(this.slider);
 
@@ -34,5 +33,15 @@ export class PriceFilter extends Filter {
       DB.filter.clear('maxPrice').add('maxPrice', maxRange.value);
       this.slider.removeStyles();
     });
+  }
+  setDefaultValues() {
+    const [minNum, maxNum, minRange, maxRange] = [...this.slider.getNumbersNodes(), ...this.slider.getRangesNodes()];
+    const progress = this.slider.getProgressNode();
+    maxNum.value = maxNum.max;
+    minNum.value = minNum.min;
+    minRange.value = minRange.min;
+    maxRange.value = maxRange.max;
+    progress.style.left = `0`;
+    progress.style.right = `0`;
   }
 }
