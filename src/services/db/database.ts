@@ -90,11 +90,11 @@ class Database {
   }
 
   getSortedKeyboards(
-    type: keyof Pick<Keyboard, 'minPrice' | 'sumQuantity'>,
+    type: keyof Pick<Keyboard, 'minPrice' | 'sumQuantity' | 'title'>,
     isAscending?: boolean,
     list: Keyboard[] = this.keyboards,
   ): Keyboard[] {
-    return [...list].sort((a, b) => (isAscending ? a[type] - b[type] : b[type] - a[type]));
+    return [...list].sort((a, b) => (a[type] < b[type] && isAscending ? -1 : 1));
   }
 }
 
