@@ -52,37 +52,45 @@ export class DualSlider extends BaseComponent {
     const [minInputNum, maxInputNum] = this.getNumbersNodes();
     const [minRange, maxRange] = this.getRangesNodes();
     const progress = this.getProgressNode();
-    progress.style.left = `${((+paramMin / +minRange.max) * 100)}%`;
-    progress.style.right = `${100 - ((+paramMax / +maxRange.max) * 100)}%`;
     const priceGap = gap;
+    if (+minInputNum.value >= +maxInputNum.value) {
+      minInputNum.value = `${+maxInputNum.value - priceGap}`;
+      maxInputNum.value = `${+minInputNum.value + priceGap}`;
+    };
+    if (+maxInputNum.value >= +maxInputNum.max) maxInputNum.value = maxInputNum.max;
+    if (+maxInputNum.value <= min && minInputNum.value !== '') {
+      maxInputNum.value = `${min + gap}`;
+      minInputNum.value = `${min}`;
+    }
+    if (+minInputNum.value < 0) minInputNum.value = `${min}`;
+    progress.style.left = `${((+minInputNum.value / +minRange.max) * 100)}%`;
+    progress.style.right = `${100 - ((+maxInputNum.value / +maxRange.max) * 100)}%`;
     this.getNumbersNodes().forEach((item) => item.addEventListener('input', (e) => {
-      if (+minInputNum.value >= +maxInputNum.value) {
-        minInputNum.value = `${+maxInputNum.value - priceGap}`;
-        maxInputNum.value = `${+minInputNum.value + priceGap}`;
-      };
-      if (+maxInputNum.value >= +maxInputNum.max) maxInputNum.value = maxInputNum.max;
-      if (+maxInputNum.value <= min && minInputNum.value !== '') {
-        maxInputNum.value = `${min + gap}`;
-        minInputNum.value = `${min}`;
-      }
       const { target } = e;
       const minValue = +minInputNum.value;
       const maxValue = +maxInputNum.value;
       if (target && target instanceof HTMLInputElement)
         if ((maxValue - minValue >= priceGap) && maxValue <= +maxRange.max)
-      if (target === minInputNum) {
-        minRange.value = `${minValue}`;
-        progress.style.left = `${((minValue / +minRange.max) * 100)}%`;
-      } else {
-        maxRange.value = `${maxValue}`;
-        progress.style.right = `${100 - ((maxValue / +maxRange.max) * 100)}%`;
-      }
+          if (target === minInputNum) {
+            minRange.value = `${minValue}`;
+            progress.style.left = `${((minValue / +minRange.max) * 100)}%`;
+          } else {
+            maxRange.value = `${maxValue}`;
+            progress.style.right = `${100 - ((maxValue / +maxRange.max) * 100)}%`;
+          }
     }));
     this.getRangesNodes().forEach((item) => item.addEventListener('input', (e) => {
       const { target } = e;
       if (target && target instanceof HTMLInputElement) {
         const minValue = +minRange.value;
         const maxValue = +maxRange.value;
+        if (target === minRange) {
+          minRange.classList.add('dual-slider__input_is-selected');
+          maxRange.classList.remove('dual-slider__input_is-selected');
+        } else {
+          minRange.classList.remove('dual-slider__input_is-selected');
+          maxRange.classList.add('dual-slider__input_is-selected');
+        }
         if ((maxValue - minValue) < priceGap) {
           if (target === minRange)
             minRange.value = `${maxValue - priceGap}`;
@@ -111,5 +119,10 @@ export class DualSlider extends BaseComponent {
 
   getProgressNode() {
     return this.sliderProgress.getNode();
+  }
+
+  removeStyles() {
+    this.sliderLeft.getInputNode().classList.remove('dual-slider__input_is-selected');
+    this.sliderRight.getInputNode().classList.remove('dual-slider__input_is-selected');
   }
 }

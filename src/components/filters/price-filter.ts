@@ -17,7 +17,7 @@ export class PriceFilter extends Filter {
     this.slider = new DualSlider(
       filteredMin, filteredMax,
       100,
-      1000,
+      3500,
       `${paramMinValue ? [...paramMinValue] : filteredMin}`,
       `${paramMaxValue ? [...paramMaxValue] : filteredMax}`,
     );
@@ -26,7 +26,13 @@ export class PriceFilter extends Filter {
     const [minNum, maxNum, minRange, maxRange] = [...this.slider.getNumbersNodes(), ...this.slider.getRangesNodes()];
     minNum.addEventListener('input', () => DB.filter.clear('minPrice').add('minPrice', minNum.value));
     maxNum.addEventListener('input', () => DB.filter.clear('maxPrice').add('maxPrice', maxNum.value));
-    minRange.addEventListener('change', () => DB.filter.clear('minPrice').add('minPrice', minRange.value));
-    maxRange.addEventListener('change', () => DB.filter.clear('maxPrice').add('maxPrice', maxRange.value));
+    minRange.addEventListener('change', () => {
+      DB.filter.clear('minPrice').add('minPrice', minRange.value);
+      this.slider.removeStyles();
+    });
+    maxRange.addEventListener('change', () => {
+      DB.filter.clear('maxPrice').add('maxPrice', maxRange.value);
+      this.slider.removeStyles();
+    });
   }
 }
