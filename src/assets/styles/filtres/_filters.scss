@@ -58,11 +58,23 @@
     font-size: 16px;
     font-weight: 400;
     cursor: $hover;
+    user-select: none;
     transition: .3s linear;
 
     &:hover,
     &:focus {
       background-color: $black;
+      color: $white;
+    }
+  }
+
+  .filter__clear_success {
+    background-color: $blue;
+    color: $white;
+    transition: 1s linear;
+
+    &:focus {
+      background-color: $blue;
       color: $white;
     }
   }
@@ -118,6 +130,7 @@
     font-size: 16px;
     font-weight: 400;
     color: $black;
+    user-select: none;
   }
 
   &__input {
@@ -126,6 +139,7 @@
     border: 2px solid $white;
     border-radius: 5px;
     width: 70px;
+    user-select: none;
     transition: .3s linear;
 
     &::-webkit-outer-spin-button,
@@ -216,6 +230,14 @@
       pointer-events: auto;
       -moz-appearance: none;
       box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  &__input_is-selected {
+    z-index: 8;
+    &::-webkit-slider-thumb {
+      background-color: $klb;
+      border-color: $gpb;
     }
   }
 }

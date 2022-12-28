@@ -2,26 +2,26 @@ import { BaseComponent } from './elements/base-component';
 import { Button } from './elements/button';
 import { Filters } from './filters/filtres';
 import { ProductCard } from './product/product-card';
-import { Keyboard } from '../services/db/keyboard';
 import { StoreContent } from './store-content';
 import { ChangeView } from './elements/change-view';
 import { DB } from '../services/db/database';
-import { getNoun } from '../utils/get-noun';
+import { getNoun, getChunk } from '../utils/utils';
 
 export class Store extends BaseComponent {
   private chunkSize = 20;
   private chunkNumber = 0;
 
   private container = new BaseComponent({ className: 'container' });
-  private wrapper = new BaseComponent({ className: 'store__wrapper' });
-  private title = new BaseComponent<HTMLHeadingElement>({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
+  private wrapper = new BaseComponent({
+    className: `store__wrapper${DB.filter.getParam('filters') ? ' store__wrapper_is-open' : ''}`,
+  });
+  private title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
   private showFiltersBtn = new Button({ className: 'store__filter', text: 'Фильтры' });
   private contentWrapper = new BaseComponent({ className: 'store__content' });
   private storeList = new StoreContent();
   private storeItems: ProductCard[] = [];
   private changeView = new ChangeView();
   private goodsCount = new BaseComponent({ className: 'store__goods-count' });
-
   private filters = new Filters();
   private nextButton = new Button({
     text: 'Показать еще',
@@ -37,25 +37,26 @@ export class Store extends BaseComponent {
     onclick: () => window.scrollTo({ behavior: 'smooth', top: 0 }),
   });
 
-  constructor(/* private productsState: ProductsListState */) {
+  constructor() {
     super({ tag: 'section', className: 'store' });
-
     this.showFiltersBtn.getNode().onclick = () => {
       const { classList } = this.wrapper.getNode();
-      classList.toggle('store__wrapper_is-open');
-
-      if (!classList.contains('store__wrapper_is-open')) this.filters.destroy();
-      else this.contentWrapper.getNode().prepend(this.filters.getNode());
+      if (!classList.contains('store__wrapper_is-open')) {
+        this.contentWrapper.getNode().prepend(this.filters.getNode());
+        classList.add('store__wrapper_is-open');
+        DB.filter.setParam('filters', 'true');
+      } else {
+        this.filters.destroy();
+        classList.remove('store__wrapper_is-open');
+        DB.filter.setParam('filters');
+      }
     };
-
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
-
-    window.addEventListener('hashchange', () => {
-      this.update();
-    });
+    if (DB.filter.getParam('filters')) this.contentWrapper.getNode().prepend(this.filters.getNode());
+    window.addEventListener('hashchange', () => this.update());
     this.update();
   }
 
@@ -66,27 +67,24 @@ export class Store extends BaseComponent {
     this.storeList.appendEl(this.storeItems);
     this.contentWrapper.appendEl(this.goodsCount);
     const num = DB.filter.list.length;
+    let message = 'По вашему запросу ';
     switch (num) {
       case 0:
-        this.goodsCount.setText('По вашему запросу нет результатов');
+        message += 'нет результатов';
         break;
       case DB.keyboards.length:
-        this.goodsCount.setText('');
+        message = '';
         break;
       default:
-        this.goodsCount
-          .setText(`По вашему запросу ${num > 1 ? 'найдено' : 'найден'
-            } ${num} ${getNoun(num, 'результат', 'результата', 'результатов')}
-          `);
+        message += `${num > 1 ? 'найдено' : 'найден'} ${num} ${getNoun(num, 'результат', 'результата', 'результатов')}`;
         break;
     }
+    this.goodsCount.setText(message);
     this.renderBottomButton();
   };
 
-  private get chunk() {
-    return DB.getChunk(this.chunkNumber++, this.chunkSize, DB.filter.list).map(
-      (item: Keyboard) => new ProductCard(item),
-    );
+  private get chunk(): ProductCard[] {
+    return getChunk(this.chunkNumber++, this.chunkSize, DB.filter.list).map((item) => new ProductCard(item));
   }
 
   private renderBottomButton() {
