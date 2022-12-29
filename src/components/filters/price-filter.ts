@@ -8,8 +8,7 @@ export class PriceFilter extends Filter {
   // private category: keyof typeof FilterCategory = 'minPrice';
   // private category: keyof typeof FilterCategory = 'maxPrice';
   private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-  private filteredMax = DB.keyboards.reduce((max, kb) => (kb.priceMax > max ? kb.priceMax : max), 0);
-  private filteredMin = DB.keyboards.reduce((min, kb) => (kb.priceMin < min ? kb.priceMin : min), this.filteredMax);
+  private limits = DB.filter.getMinMaxValues('price')
   private slider: DualSlider;
 
   constructor() {
@@ -17,12 +16,12 @@ export class PriceFilter extends Filter {
     const paramMinValue = DB.filter.params.get('minPrice');
     const paramMaxValue = DB.filter.params.get('maxPrice');
     this.slider = new DualSlider(
-      this.filteredMin,
-      this.filteredMax,
+      this.limits.min,
+      this.limits.max,
       100,
       3500,
-      `${paramMinValue ? [...paramMinValue] : this.filteredMin}`,
-      `${paramMaxValue ? [...paramMaxValue] : this.filteredMax}`,
+      `${paramMinValue ? [...paramMinValue] : this.limits.min}`,
+      `${paramMaxValue ? [...paramMaxValue] : this.limits.max}`,
     );
     this.filterWrapper.appendEl(this.slider);
 

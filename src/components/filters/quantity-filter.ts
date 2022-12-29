@@ -9,19 +9,19 @@ export class QuantityFilter extends Filter {
   // private category: keyof typeof FilterCategory = 'maxQuantity';
   private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
   private slider: DualSlider;
-  private filteredMax = DB.keyboards.reduce((max, kb) => (kb.sumQuantity > max ? kb.sumQuantity : max), 0);
+  private limits = DB.filter.getMinMaxValues('quantity')
 
   constructor() {
     super('Остаток на складе');
     const paramMinValue = DB.filter.params.get('minQuantity');
     const paramMaxValue = DB.filter.params.get('maxQuantity');
     this.slider = new DualSlider(
-      0,
-      this.filteredMax,
+      this.limits.min, //? тут был ноль
+      this.limits.max,
       6,
       16,
-      `${paramMinValue ? [...paramMinValue] : 0}`,
-      `${paramMaxValue ? [...paramMaxValue] : this.filteredMax}`,
+      `${paramMinValue ? [...paramMinValue] : this.limits.min}`,
+      `${paramMaxValue ? [...paramMaxValue] : this.limits.max}`,
     );
     this.filterWrapper.appendEl(this.slider);
 

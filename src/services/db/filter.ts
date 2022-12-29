@@ -28,8 +28,33 @@ export class Filter {
    * @param `list` список клавиатур для фильтрации
    * @returns список отфильтрованных клавиатур
    */
-  static getSearchSample(category: string, value: string, list: Keyboard[]): Keyboard[] {
+  getSearchSample(category: string, value: string, list = this.source): Keyboard[] {
     return Filter.getList(new Map([[category, new Set([value])]]), list);
+  }
+  /** Возвращает минимальный и максимальный порог цены/количества без учёта выбранного фильтра
+   * @param `excluded` категория фильтра
+   * @returns `{min: number, max: number}`
+   */
+  getMinMaxValues(excluded: 'price' | 'quantity'): Record<'min' | 'max', number> {
+    const result = { min: Infinity, max: 0 };
+    const { params } = this;
+    if (excluded === 'quantity') {
+      ['minQuantity', 'maxQuantity'].forEach((v) => params.delete(v));
+      Filter.getList(params, this.source).forEach((kb) => {
+        const { sumQuantity } = kb;
+        if (sumQuantity > result.max) result.max = sumQuantity;
+        if (sumQuantity < result.min) result.min = sumQuantity;
+      });
+    }
+    if (excluded === 'price') {
+      ['minPrice', 'maxPrice'].forEach((v) => params.delete(v));
+      Filter.getList(params, this.source).forEach((kb) => {
+        const { priceMax, priceMin } = kb;
+        if (priceMax > result.max) result.max = priceMax;
+        if (priceMin < result.min) result.min = priceMin;
+      });
+    }
+    return result;
   }
 
   private static getList(filters: Map<string, Set<string>>, keyboardList: Keyboard[]): Keyboard[] {
