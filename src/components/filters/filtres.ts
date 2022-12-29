@@ -26,7 +26,8 @@ export class Filters extends BaseComponent {
   constructor() {
     super({ tag: 'ul', className: 'filters' });
     this.clearFilters = new Button({
-      className: 'filter__clear', text: 'Очистить фильтры',
+      className: 'filter__clear',
+      text: 'Очистить фильтры',
       onclick: () => {
         DB.filter.clearAll();
         Filter.uncheckAll(
@@ -36,15 +37,16 @@ export class Filters extends BaseComponent {
           ...this.manufacturerFiler.getInputs(),
           ...this.sizeFilter.getInputs(),
           ...this.featuresFilter.getInputs(),
-          );
+        );
         this.availableFilter.getInputs()[0].checked = true;
         this.priceFilter.setDefaultValues();
         this.quantityFilter.setDefaultValues();
         window.scrollTo(0, 0);
-      }
+      },
     });
     this.copyFilters = new Button({
-      className: 'filter__clear', text: 'Скопировать фильтры',
+      className: 'filter__clear',
+      text: 'Скопировать фильтры',
       onclick: () => {
         const renderCopyAnimation = (result: 'success' | 'fail') => {
           const icon = this.copyFilters.getNode();
@@ -60,7 +62,7 @@ export class Filters extends BaseComponent {
           .writeText(encodeURI(window.location.href))
           .then(() => renderCopyAnimation('success'))
           .catch(() => renderCopyAnimation('fail'));
-      }
+      },
     });
     this.appendEl([
       this.sortFilter,
@@ -74,5 +76,69 @@ export class Filters extends BaseComponent {
       this.copyFilters,
       this.clearFilters,
     ]);
+
+    //?
+    this.renderFilterNumbers();
+    window.addEventListener('hashchange', () => this.renderFilterNumbers());
+  }
+
+  renderFilterNumbers() {
+    [
+      ...this.availableFilter.getInputs(),
+      ...this.switchFilter.getInputs(),
+      ...this.manufacturerFiler.getInputs(),
+      ...this.sizeFilter.getInputs(),
+      ...this.featuresFilter.getInputs(),
+    ].forEach((v) => {
+      const input = v.getInputNode();
+      const textNode = v.node.firstChild;
+
+      //? не пойму че делать с текстами фильтра наличия
+      /* let label: string;
+      let sample: number;
+      let all: number;
+
+      if (input.name === 'available') {
+        if (input.value === 'true') {
+          label = 'В наличии';
+          [sample, all] = [Filter.getHead(input.name, input.value), Filter.getTail(input.name, input.value)];
+        } else {
+          label = 'Всё';
+          [sample, all] = [Filter.getHead('', ''), Filter.getTail('', '')];
+        }
+      } else {
+        label = input.value;
+        [sample, all] = [Filter.getHead(input.name, input.value), Filter.getTail(input.name, input.value)];
+      } */
+
+      //? вариант без обработки текста фильтров наличия
+      if (input.name === 'available') return;
+      const label = input.value;
+      const [sample, all] = [Filter.getHead(input.name, input.value), Filter.getTail(input.name, input.value)];
+      //?
+
+      //? отключил дизейбл, т.к. это отменяет часть `||` фильтрации
+      // input.disabled = !sample; //? возможно тут лучше поинтеривентс, но не уверен
+      Object.assign(v.node.style, { opacity: sample ? 1 : 1 / 3 });
+
+      if (textNode) textNode.textContent = `${label}: (${sample}/${all})`;
+    });
+
+    //? с этими хз. пока так (отключил, т.к. с ними тормозит)
+    /* this.switchFilter.getRadioInputs().forEach((v) => {
+      const { name, value } = v.getInputNode();
+      const part = Filter.getHead(name, value);
+      // const all = Filter.getTail(name, value);
+      // const str = Filter.getHeadTail(name, value);
+      // console.info(part, all, str);
+
+      const input = v.getInputNode();
+      const label = input.parentElement;
+      if (!label) return;
+
+      input.disabled = !part;
+      if (part) label.classList.remove('switch__item_false');
+      else label.classList.add('switch__item_false');
+    }); */
   }
 }

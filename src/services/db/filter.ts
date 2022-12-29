@@ -22,10 +22,17 @@ export class Filter {
     window.location.hash = currentHash + query;
   }
 
-  /** Возвращает отфильтрованный массив Keyboard */
-  get list(): Keyboard[] {
-    const filters = this.params;
+  /** Возвращает отфильтрованный по конкретным `category=[value]` список
+   * @param `category` категория фильтра
+   * @param `value` значение фильтра (одно)
+   * @param `list` список клавиатур для фильтрации
+   * @returns список отфильтрованных клавиатур
+   */
+  static getSearchSample(category: string, value: string, list: Keyboard[]): Keyboard[] {
+    return Filter.getList(new Map([[category, new Set([value])]]), list);
+  }
 
+  private static getList(filters: Map<string, Set<string>>, keyboardList: Keyboard[]): Keyboard[] {
     const isInList = (key: keyof typeof FilterCategory, list: string[]): boolean => {
       const query = filters.get(key);
       if (!query) return true;
@@ -37,7 +44,7 @@ export class Filter {
       return +[...min] <= minValue && maxValue <= +[...max];
     };
 
-    return [...this.source].filter((keyboard) => {
+    return [...keyboardList].filter((keyboard) => {
       const switchesIdList: string[] = keyboard.switches.map((v) => v.id);
       const switchesManufacturerList: string[] = keyboard.switches.map((v) => v.manufacturer);
       const fullSearchList: string[] = [
@@ -65,6 +72,11 @@ export class Filter {
         isInList('search', fullSearchList);
       return result;
     });
+  }
+
+  /** Возвращает отфильтрованный массив Keyboard */
+  get list(): Keyboard[] {
+    return Filter.getList(this.params, this.source);
   }
 
   /** Добавляет фильтр в Query */
@@ -114,9 +126,11 @@ export class Filter {
     );
   }
 
+  /** Возвращает значение одиночного Query параметра */
   getParam(type: string): string {
     return this.usp.get(type) ?? '';
   }
+  /** Устанавливает/удаляет значение одиночного Query параметра */
   setParam(type: string, value?: string): this {
     if (value) this.usp.set(type, value);
     else this.usp.delete(type);

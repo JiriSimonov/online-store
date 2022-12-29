@@ -2,8 +2,11 @@ import { DB } from '../../services/db/database';
 import { Filter } from './filter';
 import { DualSlider } from '../elements/dual-slider';
 import { BaseComponent } from '../elements/base-component';
+// import { FilterCategory } from '../../interfaces/enums';
 
 export class QuantityFilter extends Filter {
+  // private category: keyof typeof FilterCategory = 'minQuantity';
+  // private category: keyof typeof FilterCategory = 'maxQuantity';
   private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
   private slider: DualSlider;
   private filteredMax = DB.keyboards.reduce((max, kb) => (kb.sumQuantity > max ? kb.sumQuantity : max), 0);
