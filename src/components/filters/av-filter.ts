@@ -5,16 +5,17 @@ import { Filter } from './filter';
 
 export class AvFilter extends Filter {
   private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-  private items = [...DB.getVariants('available')]
-    .map((item, index) =>
+  private items = [...DB.getVariants('available')].map(
+    (item, index) =>
       new FormField({
         className: 'filter',
         type: 'radio',
         name: 'av-filter',
         text: item === 'true' ? 'В наличии' : 'Всё',
         value: item,
-        checked: index === 0 ? true : DB.filter.params.has('available'),
-      }));
+        checked: index ? DB.filter.params.has('available') : true,
+      }),
+  );
 
   constructor() {
     super('Наличие');
@@ -23,10 +24,10 @@ export class AvFilter extends Filter {
       item.getInputNode().addEventListener('change', (e) => {
         const { target } = e;
         if (target && target instanceof HTMLInputElement)
-          if (target.value === 'true') DB.filter.add('available', target.value)
+          if (target.value === 'true') DB.filter.add('available', target.value);
           else DB.filter.clear('available');
       });
-    })
+    });
   }
 
   getInputs() {

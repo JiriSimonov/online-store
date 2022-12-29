@@ -32,12 +32,13 @@ export class Header extends BaseComponent {
     tag: 'span',
     className: 'header__count',
     text: `${DB.cart.sumQuantity}`,
-    parent: this.cart.getNode() });
+    parent: this.cart.getNode(),
+  });
   private cartPrice = new BaseComponent({
     tag: 'span',
     className: 'header__price',
     text: `${DB.cart.sumPrice}`,
-    parent: this.controls.getNode()
+    parent: this.controls.getNode(),
   });
 
   constructor() {
@@ -58,8 +59,11 @@ export class Header extends BaseComponent {
     this.searchField.getInputNode().oninput = (e) => {
       if (window.location.hash !== '#store') window.location.hash = '#store';
       const { target } = e;
-      if (target instanceof HTMLInputElement) DB.filter.clear('search').add('search', target.value);
-    }
+      if (target instanceof HTMLInputElement) {
+        DB.filter.clear('search');
+        if (target.value) DB.filter.add('search', target.value);
+      }
+    };
     this.subscribe();
   }
 
