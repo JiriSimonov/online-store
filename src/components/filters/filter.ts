@@ -1,7 +1,6 @@
 import { SwitchComponent } from '../switches/switch-component';
 import { FormField } from '../elements/form-field';
 import { BaseComponent } from '../elements/base-component';
-import { Filter as DBFilter } from '../../services/db/filter';
 import { DB } from '../../services/db/database';
 
 export class Filter extends BaseComponent {
@@ -25,9 +24,9 @@ export class Filter extends BaseComponent {
     return `${this.getHead(category, value)}/${this.getTail(category, value)}`;
   }
   static getHead(category: string, value: string) {
-    return DBFilter.getSearchSample(category, value, DB.filter.list).length;
+    return DB.filter.getSearchSample(category, value, DB.filter.list).length;
   }
   static getTail(category: string, value: string) {
-    return DBFilter.getSearchSample(category, value, DB.keyboards).length;
+    return DB.filter.getSearchSample(category, value, DB.keyboards).length;
   }
 }
