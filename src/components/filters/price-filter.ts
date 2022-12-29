@@ -2,8 +2,11 @@ import { DB } from '../../services/db/database';
 import { Filter } from './filter';
 import { DualSlider } from '../elements/dual-slider';
 import { BaseComponent } from '../elements/base-component';
+// import { FilterCategory } from '../../interfaces/enums';
 
 export class PriceFilter extends Filter {
+  // private category: keyof typeof FilterCategory = 'minPrice';
+  // private category: keyof typeof FilterCategory = 'maxPrice';
   private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
   private filteredMax = DB.keyboards.reduce((max, kb) => (kb.priceMax > max ? kb.priceMax : max), 0);
   private filteredMin = DB.keyboards.reduce((min, kb) => (kb.priceMin < min ? kb.priceMin : min), this.filteredMax);
@@ -14,7 +17,8 @@ export class PriceFilter extends Filter {
     const paramMinValue = DB.filter.params.get('minPrice');
     const paramMaxValue = DB.filter.params.get('maxPrice');
     this.slider = new DualSlider(
-      this.filteredMin, this.filteredMax,
+      this.filteredMin,
+      this.filteredMax,
       100,
       3500,
       `${paramMinValue ? [...paramMinValue] : this.filteredMin}`,

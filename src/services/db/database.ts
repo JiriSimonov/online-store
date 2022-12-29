@@ -100,11 +100,3 @@ class Database {
 export const DB = new Database(keyboardsJson as KeyboardData[]);
 
 console.info(DB);
-
-// TODO удалить нижние логи, когда станут не нужны
-console.info(DB.getVariants('available'));
-console.info(DB.getVariants('manufacturer'));
-console.info(DB.getVariants('switches'));
-console.info(DB.getVariants('brand'));
-console.info(DB.getVariants('size'));
-console.info(DB.getVariants('features'));
