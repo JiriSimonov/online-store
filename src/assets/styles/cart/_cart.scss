@@ -66,14 +66,9 @@
     transition: .3s linear;
   }
 
-  &__position {
-    font-size: 18px;
-    font-weight: 400;
-    user-select: none;
-  }
-
   &__item {
-    padding: 30px 20px;
+    position: relative;
+    padding: 40px 20px 30px 20px;
     border-radius: 15px;
     background-color: $white;
     transition: .3s linear;
@@ -81,69 +76,17 @@
     .store__img {
       margin-top: 0;
     }
-
-    .count-btn {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      border-radius: 5px;
-      background-color: $grey;
-      text-align: center;
-      overflow: hidden;
-
-      &__dec,
-      &__inc {
-        border: none;
-        border-radius: 5px;
-        width: 40px;
-        height: 36px;
-        font-size: 16px;
-        font-weight: 400;
-        background-color: transparent;
-        cursor: $hover;
-        outline: none;
-        transition: .3s linear;
-
-        &:hover {
-          color: $white;
-        }
-
-        &:disabled {
-          opacity: .5;
-          pointer-events: none;
-        }
-      }
-
-      &__dec {
-        padding-bottom: 4px;
-      }
-
-      &__dec:hover,
-      &__dec:focus {
-        background-color: $r;
-      }
-
-      &__inc:hover,
-      &__inc:focus {
-        background-color: $green;
-      }
-
-      &__count {
-        user-select: none;
-      }
-
-      &__input {
-        all: unset;
-        cursor: $hover;
-
-        &::-webkit-outer-spin-button,
-        &::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-        }
-      }
-    }
   }
+
+  &__position {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 18px;
+    font-weight: 400;
+    user-select: none;
+  }
+
 
   &__container {
     display: flex;
@@ -636,19 +579,21 @@
     position: absolute;
     top: 40px;
     right: 0;
-    /* display: none; */ // TODO перепроверь необходимы ли хиддены эти ваши
+    /* display: none; */
+    // TODO перепроверь необходимы ли хиддены эти ваши
     flex-direction: column;
     border: 2px solid $blue;
     border-radius: 5px;
     background-color: $white;
     overflow: hidden;
-    /* visibility: hidden; */ // TODO перепроверь необходимы ли хиддены эти ваши
+    /* visibility: hidden; */
+    // TODO перепроверь необходимы ли хиддены эти ваши
     z-index: 9;
   }
 
   &__label {
     background-color: transparent;
-    padding: 5px 20px; 
+    padding: 5px 20px;
     font-size: 16px;
     font-weight: 400;
     color: $black;
@@ -674,6 +619,7 @@
     &:hover,
     &:focus {
       background-color: $blue;
+
       .dropdown__input_selected {
         color: $white;
       }
@@ -708,9 +654,101 @@
   }
 }
 
-/* .dropdown_is-open { */ // TODO перепроверь необходимы ли хиддены эти ваши
-  .dropdown__wrapper {
-    display: flex;
-    /* visibility: visible; */ // TODO перепроверь необходимы ли хиддены эти ваши
+.count-btn,
+.pagination-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-radius: 5px;
+  background-color: $grey;
+  text-align: center;
+  overflow: hidden;
+
+  &__dec,
+  &__inc {
+    border: none;
+    border-radius: 5px;
+    width: 40px;
+    height: 36px;
+    font-size: 16px;
+    font-weight: 400;
+    background-color: transparent;
+    cursor: $hover;
+    outline: none;
+    transition: .3s linear;
+
+    &:hover {
+      color: $white;
+    }
+
+    &:disabled {
+      opacity: .5;
+      pointer-events: none;
+    }
   }
-/* } */ // TODO перепроверь необходимы ли хиддены эти ваши
+
+  &__dec {
+    padding-bottom: 4px;
+  }
+
+  &__dec:hover,
+  &__dec:focus {
+    background-color: $r;
+  }
+
+  &__inc:hover,
+  &__inc:focus {
+    background-color: $green;
+  }
+
+  &__count {
+    user-select: none;
+  }
+
+  &__input {
+    all: unset;
+    cursor: $hover;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  }
+}
+
+.pagination-btn {
+  margin: 0 auto;
+  background-color: $white;
+
+  &__dec,
+  &__inc {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: inline-block;
+      padding: 4px;
+      border: solid $blue;
+      border-width: 0 3px 3px 0;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: rgb(0 0 0 / 30%);
+    }
+  }
+
+  &__dec::before {
+    transform: translate(-50%, -50%) rotate(135deg);
+    -webkit-transform: translate(-50%, -50%) rotate(135deg);
+  }
+
+  &__inc::before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+    -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}

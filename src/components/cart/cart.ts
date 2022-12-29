@@ -8,6 +8,7 @@ import { CartList } from './cart-list';
 import { PromoForm } from './cart-promo';
 import { OrderForm } from './order-form';
 import { ChangeView } from '../elements/change-view';
+import { FormField } from '../elements/form-field';
 import { emitter } from '../../services/event-emitter';
 import { getChunk, getNoun } from '../../utils/utils';
 
@@ -32,6 +33,34 @@ export class Cart extends BaseComponent {
 
   private cartList = new CartList();
   private cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
+
+  private pagBtn = new BaseComponent({ className: 'pagination-btn' });
+  private pagDec = new Button({
+    className: 'pagination-btn__dec',
+    onclick: () => {
+      this.pagination.prevPage();
+      this.pagCountField.getInputNode().stepDown();
+      this.pagCountField.getInputNode().dispatchEvent(new Event('input'));
+      window.scrollTo(0, 0);
+    },
+  });
+  private pagCountField = new FormField({
+    className: 'pagination-btn',
+    type: 'number',
+    value: `${DB.filter.getParam('cartPage') ? DB.filter.getParam('cartPage') : 1}`,
+    min: '1',
+    max: `${this.pagination.lastPage}`,
+    pattern: '[0-9]{2}',
+  });
+  private pagInc = new Button({
+    className: 'pagination-btn__inc',
+    onclick: () => {
+      this.pagination.nextPage();
+      this.pagCountField.getInputNode().stepUp();
+      this.pagCountField.getInputNode().dispatchEvent(new Event('input'));
+      window.scrollTo(0, 0);
+    },
+  });
 
   private cartPromoWrapper = new BaseComponent({ className: 'promo' });
 
@@ -73,17 +102,16 @@ export class Cart extends BaseComponent {
     this.updateTotalPrice();
     this.updateTotalQuantity();
     this.subscribe();
+    this.pagCountField.getInputNode().oninput = (e) => {
+      if (e.target && e.target instanceof HTMLInputElement) {
+        if (+e.target.value > +e.target.max) e.target.value = e.target.max;
+        if (+e.target.value < +e.target.min && e.target.value !== '') e.target.value = e.target.min;
+        if (e.target.value === '') return;
+        DB.filter.setParam('cartPage', e.target.value); //! работает, но еще в тесте
+      }
+    };
     window.addEventListener('hashchange', () => this.render());
     // TODO 👇
-    const buttons = ['👈', '👉'].map((name) => {
-      const button = document.createElement('button');
-      button.textContent = name;
-      return button;
-    });
-    buttons[0].onclick = () => this.pagination.prevPage();
-    buttons[1].onclick = () => this.pagination.nextPage();
-    this.cartPagination.node.before(buttons[0]);
-    this.cartPagination.node.after(buttons[1]);
   }
 
   private updateTotalPrice(): void {
@@ -127,10 +155,12 @@ export class Cart extends BaseComponent {
         this.changeView,
         this.cartButton,
         this.cartList,
+        this.pagBtn,
         this.cartPromoWrapper,
         this.cartPriceWrapper,
         this.orderBtn,
       ]);
+      this.pagBtn.appendEl([this.pagDec, this.pagCountField, this.pagInc]);
       this.changeView.appendEl(this.cartPagination);
       this.cartList.clear();
       this.cartList.appendEl(
@@ -190,6 +220,9 @@ export class Cart extends BaseComponent {
         // TODO добавить условия для сброса страниц при выходе за ренж
         if (page < lastPageNumber) DB.filter.setParam('cartPage', `${page + 1}`);
       },
+      get lastPage() {
+        return lastPageNumber;
+      }
     };
   }
 }
