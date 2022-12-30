@@ -1,4 +1,3 @@
-import { SortFilter } from './sort-filter';
 import { BaseComponent } from '../elements/base-component';
 import { DB } from '../../services/db/database';
 import { Button } from '../elements/button';
@@ -12,7 +11,6 @@ import { FeaturesFilter } from './features-filter';
 import { Filter } from './filter';
 
 export class Filters extends BaseComponent {
-  sortFilter = new SortFilter();
   availableFilter = new AvFilter();
   switchFilter = new SwitchFilter();
   priceFilter = new PriceFilter();
@@ -65,7 +63,6 @@ export class Filters extends BaseComponent {
       },
     });
     this.appendEl([
-      this.sortFilter,
       this.availableFilter,
       this.switchFilter,
       this.priceFilter,

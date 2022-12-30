@@ -326,3 +326,82 @@
     align-items: flex-start;
   }
 }
+
+.sort {
+  display: flex;
+  gap: 10px;
+  &__label {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-weight: 400;
+    color: $black;
+    user-select: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: .3s linear;
+
+    &:hover,
+    &:focus {
+      border-color: $black;
+    }
+  }
+
+  &__input {
+    all: unset;
+    padding: 18px;
+    border-radius: 5px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+    cursor: $hover;
+    transition: .3s linear;
+  }
+
+  &__label_alph-asc {
+    background-image: url('../../icons/sort/sort-alpha-up.png');
+  }
+
+  &__label_alph-desc {
+    background-image: url('../../icons/sort/sort-alpha-down.png');
+  }
+
+  &__label_price-asc {
+    background-image: url('../../icons/sort/sort-price-up.png');
+  }
+
+  &__label_price-desc {
+    background-image: url('../../icons/sort/sort-price-down.png');
+  }
+
+  &__label_stock-asc {
+    background-image: url('../../icons/sort/sort-amount-up.png');
+  }
+
+  &__label_stock-desc {
+    background-image: url('../../icons/sort/sort-amount-down.png');
+  }
+
+  &__label:has(&__input:checked) {
+    border-color: $blue;
+  }
+
+  &__clear {
+    all: unset;
+    padding: 5px 10px;
+    border-radius: 13px;
+    background-color: $white;
+    font-size: 16px;
+    color: $black;
+    transition: .3s linear;
+
+    &:hover,
+    &:focus {
+      background-color: $black;
+      color: $white;
+    }
+  }
+}

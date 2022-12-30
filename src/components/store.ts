@@ -5,6 +5,7 @@ import { ProductCard } from './product/product-card';
 import { Keyboard } from '../services/db/keyboard';
 import { StoreContent } from './store-content';
 import { ChangeView } from './elements/change-view';
+import { SortFilter } from './filters/sort-filter';
 import { DB } from '../services/db/database';
 import { getChunk, getNoun } from '../utils/utils';
 
@@ -22,6 +23,7 @@ export class Store extends BaseComponent {
   private storeList = new StoreContent();
   private storeItems: ProductCard[] = [];
   private changeView = new ChangeView();
+  private sortFilter = new SortFilter();
   private goodsCount = new BaseComponent({ className: 'store__goods-count' });
   private filters = new Filters();
   private nextButton = new Button({
@@ -56,6 +58,7 @@ export class Store extends BaseComponent {
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
+    this.changeView.appendEl(this.sortFilter);
     if (DB.filter.getParam('filters')) this.contentWrapper.getNode().prepend(this.filters.getNode());
     window.addEventListener('hashchange', () => this.update());
     this.update();
