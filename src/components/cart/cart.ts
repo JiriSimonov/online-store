@@ -41,6 +41,7 @@ export class Cart extends BaseComponent {
       const input = this.pagCountField.getInputNode();
 
       input.stepDown();
+      /* input.dispatchEvent(new Event('input')); */
       input.dispatchEvent(new Event('change'));
       window.scrollTo(0, 0);
     },
@@ -59,6 +60,7 @@ export class Cart extends BaseComponent {
       const input = this.pagCountField.getInputNode();
 
       input.stepUp();
+      /* input.dispatchEvent(new Event('input')); */
       input.dispatchEvent(new Event('change'));
       window.scrollTo(0, 0);
     },
@@ -123,7 +125,6 @@ export class Cart extends BaseComponent {
         value: this.pagination.pageNumber,
         max: this.pagination.lastPage,
       });
-      this.pagination.setPage(`${this.pagination.pageNumber}`);
       this.cartPagination.selected.getInputNode().value = `${this.pagination.pageSize}`;
     });
   }
@@ -220,17 +221,18 @@ export class Cart extends BaseComponent {
     const { defaultPageSize } = this;
     const { list } = DB.cart;
 
-    const getValue = (param: 'cartPageSize' | 'cartPage', defaultValue: number) => {
+    const getValue = (param: 'cartPageSize' | 'cartPage', defaultValue: number, max: number) => {
       const query = +DB.filter.getParam(param);
-      return Number.isInteger(query) && query > 0 ? query : defaultValue;
+      const value = Number.isInteger(query) && query > 0 ? query : defaultValue;
+      return value < max ? value : max;
     };
 
     return {
       get pageNumber() {
-        return getValue('cartPage', defaultPageNumber);
+        return getValue('cartPage', defaultPageNumber, +this.lastPage);
       },
       get pageSize() {
-        return getValue('cartPageSize', defaultPageSize);
+        return getValue('cartPageSize', defaultPageSize, DB.cart.list.length);
       },
       get chunk() {
         return getChunk(this.pageNumber - 1, this.pageSize, list);
@@ -242,7 +244,7 @@ export class Cart extends BaseComponent {
         return `${Math.ceil(DB.cart.list.length / this.pageSize)}`;
       },
       setPage(n: string) {
-        DB.filter.setParam('cartPage', `${n < this.lastPage ? n : this.lastPage}`);
+        DB.filter.setParam('cartPage', n);
       },
     };
   }
