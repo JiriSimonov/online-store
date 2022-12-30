@@ -579,15 +579,12 @@
     position: absolute;
     top: 40px;
     right: 0;
-    /* display: none; */
-    // TODO перепроверь необходимы ли хиддены эти ваши
+    display: flex;
     flex-direction: column;
     border: 2px solid $blue;
     border-radius: 5px;
     background-color: $white;
     overflow: hidden;
-    /* visibility: hidden; */
-    // TODO перепроверь необходимы ли хиддены эти ваши
     z-index: 9;
   }
 
