@@ -95,6 +95,14 @@ class Database {
     const xor = (a: boolean, b: boolean): boolean => (a && b) || (!a && !b);
     return [...list].sort((a, b) => (xor(a[sortType] < b[sortType], direction !== 'descending') ? -1 : 1));
   }
+
+  buyAll() {
+    this.keyboards.forEach((kb) =>
+      kb.switches.forEach((sw) => {
+        if (sw.isAvailable) this.cart.add([kb, sw]);
+      }),
+    );
+  }
 }
 
 export const DB = new Database(keyboardsJson as KeyboardData[]);
