@@ -41,7 +41,6 @@ export class ProductCard extends BaseComponent {
     this.switchList.getNode().onmouseover = (e) => {
       if (e.target instanceof HTMLLabelElement) this.renderModal(e.target);
     };
-
     this.node.onclick = (e) => {
       if (!(e.target instanceof HTMLElement) || e.target instanceof HTMLLabelElement) return;
 
@@ -97,9 +96,9 @@ export class ProductCard extends BaseComponent {
     const mouseoutListener = () => {
       this.renderText();
       this.cardPrice.getNode().classList.remove('store__card-price_is-open');
-      this.switchModal?.destroy();
-      this.switchModal = null;
-      label.removeEventListener('mouseout', mouseoutListener);
+      // this.switchModal?.destroy();
+      // this.switchModal = null;
+      // label.removeEventListener('mouseout', mouseoutListener);
     };
     label.addEventListener('mouseout', mouseoutListener);
     this.switchModal = new SwitchModal(label.textContent ?? '', label.classList.contains('switch__item_true'));

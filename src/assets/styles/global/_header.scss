@@ -109,6 +109,7 @@
 
     &__controls {
       position: fixed;
+      display: none;
       top: 70px;
       right: 0;
       flex-direction: column;
@@ -122,6 +123,7 @@
     }
 
     &__controls_is-open {
+      display: flex;
       transform: none;
     }
   }

@@ -11,6 +11,15 @@ import { FeaturesFilter } from './features-filter';
 import { Filter } from './filter';
 
 export class Filters extends BaseComponent {
+  private closeFilterTop = new Button({
+    className: 'modal__close',
+    aria: 'Закрыть',
+    parent: this.node,
+  });
+  private closeFilterBottom = new Button({
+    className: 'filter__clear',
+    text: 'Закрыть',
+  });
   availableFilter = new AvFilter();
   switchFilter = new SwitchFilter();
   priceFilter = new PriceFilter();
@@ -21,8 +30,17 @@ export class Filters extends BaseComponent {
   clearFilters: Button;
   copyFilters: Button;
 
-  constructor() {
-    super({ tag: 'ul', className: 'filters' });
+  constructor(elem: BaseComponent) {
+    super({ tag: 'ul', className: 'filter' });
+    this.closeFilterTop.getNode().onclick = () => {
+      elem.getNode().classList.remove('store__wrapper_is-open');
+      this.destroy();
+    }
+    this.closeFilterBottom.getNode().onclick = () => {
+      elem.getNode().classList.remove('store__wrapper_is-open');
+      this.destroy();
+      window.scrollTo(0,0);
+    };
     this.clearFilters = new Button({
       className: 'filter__clear',
       text: 'Очистить фильтры',
@@ -72,6 +90,7 @@ export class Filters extends BaseComponent {
       this.featuresFilter,
       this.copyFilters,
       this.clearFilters,
+      this.closeFilterBottom,
     ]);
 
     //?
