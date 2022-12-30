@@ -130,7 +130,7 @@ ul {
   background-color: $loader-grey;
   backdrop-filter: blur(5px);
   animation: cube;
-  z-index: 11;
+  z-index: 7;
 
   &__title {
     position: absolute;
@@ -149,7 +149,7 @@ ul {
     top: 50%;
     left: 49%;
     transform: translate(-50%, -49%);
-    z-index: 12;
+    z-index: 8;
   }
 }
 
@@ -191,18 +191,22 @@ ul {
     border-radius: 1px;
     background-color: $black;
     transform: translateY(-50%);
-    transform: .4s;
+    transition: .2s linear;
   }
 }
 
 .burger_is-open {
   &::before {
-    transform: rotate(-135deg);
+    top: 50%;
+    transform: rotate(45deg);
   }
+
   &::after {
-    top: 0;
-    transform: rotate(135deg);
+    top: 50%;
+    bottom: auto;
+    transform: rotate(-45deg);
   }
+
   .burger__line {
     opacity: 0;
   }
@@ -226,6 +230,7 @@ ul {
   .body {
     overflow-x: hidden;
   }
+
   .container {
     max-width: 480px;
   }

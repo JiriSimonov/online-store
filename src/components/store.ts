@@ -8,6 +8,7 @@ import { ChangeView } from './elements/change-view';
 import { SortFilter } from './filters/sort-filter';
 import { DB } from '../services/db/database';
 import { getChunk, getNoun } from '../utils/utils';
+import { Burger } from './elements/burger-menu';
 
 export class Store extends BaseComponent {
   private chunkSize = 20;
@@ -24,8 +25,9 @@ export class Store extends BaseComponent {
   private storeItems: ProductCard[] = [];
   private changeView = new ChangeView();
   private sortFilter = new SortFilter();
+  private burger = new Burger();
   private goodsCount = new BaseComponent({ className: 'store__goods-count' });
-  private filters = new Filters();
+  private filters = new Filters(this.wrapper);
   private nextButton = new Button({
     text: 'Показать еще',
     className: 'store__more',
@@ -54,11 +56,15 @@ export class Store extends BaseComponent {
         DB.filter.setParam('filters');
       }
     };
+    this.burger.getNode().onclick = () => {
+      this.sortFilter.getNode().classList.toggle('sort_is-open');
+      this.burger.getNode().classList.toggle('burger_is-open');
+    };
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
-    this.changeView.appendEl(this.sortFilter);
+    this.changeView.appendEl([this.sortFilter, this.burger]);
     if (DB.filter.getParam('filters')) this.contentWrapper.getNode().prepend(this.filters.getNode());
     window.addEventListener('hashchange', () => this.update());
     this.update();

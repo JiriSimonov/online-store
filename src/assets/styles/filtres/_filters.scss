@@ -1,24 +1,28 @@
-.filters {
+.filter {
   margin: 0;
+  text-align: initial;
   transform: .3s linear;
 
-  .filter {
-    &__title {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 500;
-      color: $black;
-      user-select: none;
-      text-align: initial;
-    }
+  &__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+    color: $black;
+    user-select: none;
+    text-align: initial;
   }
 }
 
+
 .store__wrapper_is-open {
-  .filters {
+  .filter {
     display: flex;
     flex-direction: column;
     gap: 20px;
+  }
+
+  .modal__close {
+    display: none;
   }
 
   .filter__item {
@@ -235,9 +239,108 @@
 
   &__input_is-selected {
     z-index: 8;
+
     &::-webkit-slider-thumb {
       background-color: $klb;
       border-color: $gpb;
+    }
+  }
+}
+
+@media (max-width: 1601px) {
+  .store {
+    .store__wrapper_is-open {
+      .modal__close {
+        display: initial;
+        outline: none;
+      }
+
+      .store__content {
+        grid-template-columns: 1fr;
+        min-height: 1845px;
+      }
+
+      .store__list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .filter {
+        position: absolute;
+        top: 80px;
+        align-items: center;
+        padding: 20px 15px;
+        border-radius: 13px;
+        min-width: 290px;
+        max-width: 50%;
+        background-color: $grey;
+        outline: 2px solid $blue;
+        z-index: 9;
+
+        &__title {
+          margin: 0;
+        }
+      }
+
+      .switch {
+        justify-content: center;
+      }
+    }
+
+    .store__wrapper_is-open {
+      .list {
+        .store__list {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+  }
+
+}
+
+@media (max-width: 1201px) {
+  .store {
+    .store__wrapper_is-open {
+      .filter {
+        top: 100px;
+      }
+
+      .store__content {
+        min-height: 2128px;
+      }
+    }
+  }
+}
+
+@media (max-width: 770px) {
+  .store {
+    .store__wrapper_is-open {
+      .store__list {
+        grid-template-columns: 1fr;
+      }
+
+      .filter {
+        .switch {
+          grid-template-columns: repeat(6, 44px);
+
+          &__label {
+            padding: 5px;
+          }
+        }
+      }
+    }
+
+    .switch {
+      gap: 5px;
+    }
+  }
+}
+
+@media (max-width: 501px) {
+  .store {
+    .store__wrapper_is-open {
+      .filter {
+        padding: 20px 5px;
+      }
     }
   }
 }

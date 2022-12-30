@@ -41,7 +41,6 @@ export class ProductCard extends BaseComponent {
     this.switchList.getNode().onmouseover = (e) => {
       if (e.target instanceof HTMLLabelElement) this.renderModal(e.target);
     };
-
     this.node.onclick = (e) => {
       if (!(e.target instanceof HTMLElement) || e.target instanceof HTMLLabelElement) return;
       if (e.target.classList.contains('product__path-item')) return;
