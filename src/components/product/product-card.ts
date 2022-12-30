@@ -44,6 +44,7 @@ export class ProductCard extends BaseComponent {
 
     this.node.onclick = (e) => {
       if (!(e.target instanceof HTMLElement) || e.target instanceof HTMLLabelElement) return;
+      if (e.target.classList.contains('product__path-item')) return;
 
       if (this.switchItems.some((item) => item.getInputNode() === e.target)) {
         this.renderText();
@@ -61,7 +62,7 @@ export class ProductCard extends BaseComponent {
         case this.buyNowBtn.getNode():
           if (!DB.cart.isInCart(keyboard.id, this.getSelectedSwitch()?.getSwitch().id)) this.addToCart();
           window.location.hash = `#cart`;
-          emitter.emit('product-card__buyNowBtn_clicked')
+          emitter.emit('product-card__buyNowBtn_clicked');
           break;
         default:
           window.location.hash = `${keyboard.id}`;
