@@ -13,7 +13,7 @@ import { emitter } from '../../services/event-emitter';
 import { getChunk, getNoun } from '../../utils/utils';
 
 export class Cart extends BaseComponent {
-  private defaultPageSize = 20;
+  private defaultPageSize = 4;
 
   private container = new BaseComponent({ className: 'container' });
   private wrapper = new BaseComponent({ className: 'cart__wrapper' });
@@ -29,7 +29,7 @@ export class Cart extends BaseComponent {
   });
   private changeView = new ChangeView();
 
-  private cartPagination = new CartPagination();
+  private cartPagination = new CartPagination(`${this.pagination.pageSize}`);
 
   private cartList = new CartList();
   private cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
@@ -38,16 +38,17 @@ export class Cart extends BaseComponent {
   private pagDec = new Button({
     className: 'pagination-btn__dec',
     onclick: () => {
-      this.pagination.prevPage();
-      this.pagCountField.getInputNode().stepDown();
-      this.pagCountField.getInputNode().dispatchEvent(new Event('input'));
+      const input = this.pagCountField.getInputNode();
+
+      input.stepDown();
+      input.dispatchEvent(new Event('change'));
       window.scrollTo(0, 0);
     },
   });
   private pagCountField = new FormField({
     className: 'pagination-btn',
     type: 'number',
-    value: `${DB.filter.getParam('cartPage') ? DB.filter.getParam('cartPage') : 1}`,
+    value: `${this.pagination.pageNumber}`,
     min: '1',
     max: `${this.pagination.lastPage}`,
     pattern: '[0-9]{2}',
@@ -55,9 +56,10 @@ export class Cart extends BaseComponent {
   private pagInc = new Button({
     className: 'pagination-btn__inc',
     onclick: () => {
-      this.pagination.nextPage();
-      this.pagCountField.getInputNode().stepUp();
-      this.pagCountField.getInputNode().dispatchEvent(new Event('input'));
+      const input = this.pagCountField.getInputNode();
+
+      input.stepUp();
+      input.dispatchEvent(new Event('change'));
       window.scrollTo(0, 0);
     },
   });
@@ -102,16 +104,28 @@ export class Cart extends BaseComponent {
     this.updateTotalPrice();
     this.updateTotalQuantity();
     this.subscribe();
-    this.pagCountField.getInputNode().oninput = (e) => {
-      if (e.target && e.target instanceof HTMLInputElement) {
-        if (+e.target.value > +e.target.max) e.target.value = e.target.max;
-        if (+e.target.value < +e.target.min && e.target.value !== '') e.target.value = e.target.min;
-        if (e.target.value === '') return;
-        DB.filter.setParam('cartPage', e.target.value); //! работает, но еще в тесте
-      }
-    };
+    this.pagCountField.getInputNode().addEventListener('input', (e) => {
+      const { target } = e;
+      if (!(target instanceof HTMLInputElement)) return;
+
+      if (target.value === '') return; //! работает, но еще сосиска в тесте
+      if (+target.value > +target.max) target.value = target.max;
+      if (+target.value < +target.min) target.value = target.min;
+    });
+    this.pagCountField.getInputNode().addEventListener('change', (e) => {
+      const { target } = e;
+      if (!(target instanceof HTMLInputElement)) return;
+      this.pagination.setPage(target.value);
+    });
     window.addEventListener('hashchange', () => this.render());
-    // TODO 👇
+    window.addEventListener('hashchange', () => {
+      Object.assign(this.pagCountField.getInputNode(), {
+        value: this.pagination.pageNumber,
+        max: this.pagination.lastPage,
+      });
+      this.pagination.setPage(`${this.pagination.pageNumber}`);
+      this.cartPagination.selected.getInputNode().value = `${this.pagination.pageSize}`;
+    });
   }
 
   private updateTotalPrice(): void {
@@ -164,9 +178,7 @@ export class Cart extends BaseComponent {
       this.changeView.appendEl(this.cartPagination);
       this.cartList.clear();
       this.cartList.appendEl(
-        this.pagination.page.chunk.map(
-          (item, index) => new CartItemElem(item, index + this.pagination.page.firstindex),
-        ),
+        this.pagination.chunk.map((item, index) => new CartItemElem(item, index + this.pagination.firstindex)),
       );
       this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
       this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
@@ -197,32 +209,41 @@ export class Cart extends BaseComponent {
     });
     emitter.subscribe('cart__delete-item', () => {
       this.render();
+      this.pagCountField.getInputNode().max = this.pagination.lastPage;
+      this.pagination.setPage(`${Math.ceil(this.pagination.firstindex / this.pagination.pageSize)}`);
     });
     return this;
   }
 
   private get pagination() {
-    const querySize: number = +DB.filter.getParam('cartPageSize');
-    const queryPage: number = +DB.filter.getParam('cartPage');
-    const size: number = Number.isInteger(querySize) && querySize > 0 ? querySize : this.defaultPageSize;
-    const lastPageNumber = Math.floor(DB.cart.list.length / size);
-    const page: number = Number.isInteger(queryPage) && queryPage > 0 ? queryPage : 0;
+    const defaultPageNumber = 1;
+    const { defaultPageSize } = this;
+    const { list } = DB.cart;
+
+    const getValue = (param: 'cartPageSize' | 'cartPage', defaultValue: number) => {
+      const query = +DB.filter.getParam(param);
+      return Number.isInteger(query) && query > 0 ? query : defaultValue;
+    };
+
     return {
-      get page() {
-        //! присутствует баг с переходом на последнюю страницу при очистке текущей
-        return { chunk: getChunk(page, size, DB.cart.list), firstindex: page * size };
+      get pageNumber() {
+        return getValue('cartPage', defaultPageNumber);
       },
-      prevPage() {
-        // TODO добавить условия для сброса страниц при выходе за ренж
-        if (page > 0) DB.filter.setParam('cartPage', `${page - 1}`);
+      get pageSize() {
+        return getValue('cartPageSize', defaultPageSize);
       },
-      nextPage() {
-        // TODO добавить условия для сброса страниц при выходе за ренж
-        if (page < lastPageNumber) DB.filter.setParam('cartPage', `${page + 1}`);
+      get chunk() {
+        return getChunk(this.pageNumber - 1, this.pageSize, list);
+      },
+      get firstindex() {
+        return (this.pageNumber - 1) * this.pageSize + 1;
       },
       get lastPage() {
-        return lastPageNumber;
-      }
+        return `${Math.ceil(DB.cart.list.length / this.pageSize)}`;
+      },
+      setPage(n: string) {
+        DB.filter.setParam('cartPage', `${n < this.lastPage ? n : this.lastPage}`);
+      },
     };
   }
 }

@@ -100,7 +100,7 @@ export class CartItemElem extends BaseComponent {
         }
       },
     });
-    this.cartPosition = new BaseComponent({ className: 'cart__position', text: `${index + 1}`, parent: this.node });
+    this.cartPosition = new BaseComponent({ className: 'cart__position', text: `${index}`, parent: this.node });
     this.countBtn.appendEl(this.countField);
     this.countField.getInputNode().oninput = (e) => {
       if (e.target && e.target instanceof HTMLInputElement) {

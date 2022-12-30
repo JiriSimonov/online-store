@@ -3,23 +3,27 @@ import { BaseComponent } from '../elements/base-component';
 import { FormField } from '../elements/form-field';
 
 export class CartPagination extends BaseComponent {
-  private selected = new FormField({ className: 'dropdown', modificator: 'selected', value: '20', placeholder: '20' });
+  selected = new FormField({ className: 'dropdown', modificator: 'selected' });
   private wrapper = new BaseComponent({ className: 'dropdown__wrapper' });
-  private options = ['5', '10', '15', '20'].map(
+  private options = ['4', '10', '16', '20'].map(
     (item) => new FormField({ className: 'dropdown', type: 'radio', name: 'pagination-size', value: item, text: item }),
   );
 
-  constructor() {
+  constructor(currentValue: string) {
     super({ className: 'dropdown' });
-    this.selected.getInputNode().addEventListener('click', () => this.renderDropDown());
-    this.selected.getInputNode().setAttribute('readonly', 'true');
+    Object.assign(this.selected.getInputNode(), {
+      value: currentValue,
+      placeholder: currentValue,
+      readOnly: true,
+      onclick: () => this.renderDropDown(),
+    });
 
     this.wrapper.node.onclick = (e) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
 
-      this.selected.getInputNode().value = target.value
-      DB.filter.setParam('cartPageSize', target.value)
+      this.selected.getInputNode().value = target.value;
+      DB.filter.setParam('cartPageSize', target.value);
 
       this.renderDropDown();
     };
