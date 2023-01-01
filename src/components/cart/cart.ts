@@ -232,7 +232,8 @@ export class Cart extends BaseComponent {
         return getValue('cartPage', defaultPageNumber, +this.lastPage);
       },
       get pageSize() {
-        return getValue('cartPageSize', defaultPageSize, DB.cart.list.length);
+        const { length } = DB.cart.list;
+        return getValue('cartPageSize', defaultPageSize, length > defaultPageSize ? length : defaultPageSize);
       },
       get chunk() {
         return getChunk(this.pageNumber - 1, this.pageSize, list);
