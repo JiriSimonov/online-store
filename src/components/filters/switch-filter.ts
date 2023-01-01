@@ -72,8 +72,6 @@ export class SwitchFilter extends Filter {
           target.removeAttribute('id');
           this.modalWrapper?.destroy();
           this.modalWrapper = null;
-          this.switchModal?.destroy();
-          this.switchModal = null;
         });
       }
     }); // TODO модалка перебивает свич и не дает зацепить нужный элемент

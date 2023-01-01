@@ -45,11 +45,16 @@ export class Header extends BaseComponent {
   constructor() {
     super({ tag: 'header', className: 'header' });
     this.search.getNode().addEventListener('click', () => {
+      if (this.searchField.getInputNode().classList.contains('header__input_is-open'))
+        this.searchField.destroy();
+      else
+        this.controls.getNode().prepend(this.searchField.getNode());
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
     });
     this.logo.getNode().onclick = () => {
       window.location.hash = '#home';
       this.searchField.getInputNode().classList.remove('header__input_is-open');
+      this.searchField.destroy();
     };
     this.burger.getNode().onclick = () => {
       this.controls.getNode().classList.toggle('header__controls_is-open');
@@ -63,7 +68,7 @@ export class Header extends BaseComponent {
       DB.filter.clear('search');
       if (el.value) DB.filter.add('search', el.value);
     }, 300);
-
+    
     this.searchField.getInputNode().oninput = (e) => {
       if (!window.location.hash.startsWith('#store')) window.location.hash = '#store';
       const { target } = e;

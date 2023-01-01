@@ -31,14 +31,19 @@
         .modal {
           top: 50px;
           left: -20px;
-          padding: 20px;
           width: 420px;
-          height: 400px;
+          height: auto;
           text-align: left;
           box-sizing: border-box;
 
           .store__card-av {
             display: none;
+          }
+
+          &__stats,
+          &__description {
+            font-family: 'Nunito', monospace;
+            text-transform: initial;
           }
         }
       }
