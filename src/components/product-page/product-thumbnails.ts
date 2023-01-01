@@ -1,5 +1,7 @@
 import { Keyboard } from '../../services/db/keyboard';
+import { Button } from '../elements/button';
 import { BaseComponent } from '../elements/base-component';
+import { ProductModal } from './product-modal';
 
 export class ThumbNails extends BaseComponent {
   private thumbnailList: BaseComponent[];
@@ -8,8 +10,13 @@ export class ThumbNails extends BaseComponent {
     super({ tag: 'ul', className: 'thumbnails' });
     this.thumbnailList = keyboard.images.map((image) => {
       const item = new BaseComponent({ tag: 'li', className: 'thumbnails__item', parent: this.node });
-      item.setStyleAttr(['backgroundImage', `url('assets/images/keyboards/${image}.webp')`]);
-      item.getNode().addEventListener('click', () => item.getNode().classList.toggle('is-selected'));
+      const button = new Button({ className: 'thumbnails__button' });
+      button.setStyleAttr(['backgroundImage', `url('assets/images/keyboards/${image}.webp')`]);
+      const modal = new ProductModal(`url('assets/images/keyboards/${image}.webp')`);
+      button.getNode().addEventListener('click', () => {
+        item.appendEl(modal);
+      });
+      item.appendEl(button);
       return item;
   });
   }

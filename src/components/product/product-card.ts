@@ -64,7 +64,7 @@ export class ProductCard extends BaseComponent {
           emitter.emit('product-card__buyNowBtn_clicked');
           break;
         default:
-          window.location.hash = `${keyboard.id}`;
+            if (window.location.hash.match('store')) window.location.hash = `${keyboard.id}`;
       }
     };
 
