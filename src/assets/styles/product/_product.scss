@@ -197,6 +197,13 @@
     &__modal {
       height: 48%;
     }
+
+    .modal {
+      &__description {
+        display: initial;
+        visibility: initial;
+      }
+    }
   }
 }
 
@@ -226,6 +233,12 @@
 
     &__content {
       background-size: 100%;
+    }
+
+    .modal {
+      top: 0;
+      height: 25%;
+      transform: none;
     }
   }
 }
@@ -276,6 +289,14 @@
 
     &__modal {
       height: 37%;
+    }
+
+    .modal {
+      height: 20%;
+      &__description {
+        display: none;
+        visibility: hidden;
+      }
     }
   }
 }

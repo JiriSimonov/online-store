@@ -51,10 +51,10 @@ ul {
   }
 
   &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
     width: initial;
     height: initial;
-    background-image: url('../../icons/scroll.svg');
-    background-size: contain; // нашел в чем косяк со скролбаром, пока думаю как нерфить!
+    background-color: $blue;
   }
 }
 
