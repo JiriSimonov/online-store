@@ -150,3 +150,104 @@
     }
   }
 }
+
+
+@media (max-width: 1601px) {
+  .product {
+    .store__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .store__img {
+      width: 100%;
+    }
+
+    .thumbnails {
+      margin-top: 0;
+    }
+
+    &__title {
+      margin-top: 0;
+    }
+  }
+}
+
+@media (max-width: 1201px) {
+  .product {
+    &__path {
+      position: initial;
+      margin-top: 40px;
+    }
+  }
+}
+
+@media (max-width: 770px) {
+  .product {
+    &__path {
+      position: initial;
+      margin-top: 40px;
+
+      &-item {
+        padding-left: 10px;
+        font-size: 13px;
+        &:not(:last-child)::after {
+          right: 0;
+        }
+      }
+    }
+
+    .store__img {
+      margin-top: 0;
+    }
+
+  }
+}
+
+@media (max-width: 501px) {
+  .product {
+    &__path {
+      flex-wrap: wrap;
+      align-items: center;
+      row-gap: 10px;
+      margin-top: 60px;
+    }
+
+    .store__item {
+      padding: 10px;
+    }
+
+    .store__card-title,
+    .store__card-price,
+    &__title {
+      font-size: 18px;
+    }
+
+    .store__card-btn,
+    .store__card-av {
+      padding: 7px;
+      font-size: 16px;
+    }
+
+    .switch {
+      gap: 2px;
+    }
+
+    .thumbnails {
+      &__item {
+        padding: 20px 30px;
+      }
+    }
+
+    &__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    &__subtitle,
+    &__text {
+      font-size: 16px;
+    }
+  }
+}

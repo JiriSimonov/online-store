@@ -60,6 +60,10 @@ export class Store extends BaseComponent {
       this.sortFilter.getNode().classList.toggle('sort_is-open');
       this.burger.getNode().classList.toggle('burger_is-open');
     };
+    this.sortFilter.getResertSortNode().onclick = () => {
+      this.sortFilter.getNode().classList.toggle('sort_is-open');
+      this.burger.getNode().classList.toggle('burger_is-open');
+    }
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
