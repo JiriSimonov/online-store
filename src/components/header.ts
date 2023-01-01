@@ -6,6 +6,7 @@ import { BaseComponent } from './elements/base-component';
 import { FormField } from './elements/form-field';
 import { Button } from './elements/button';
 import { emitter } from '../services/event-emitter';
+import { debounce } from '../utils/utils';
 
 export class Header extends BaseComponent {
   private container = new BaseComponent({ className: 'container', parent: this.node });
@@ -60,14 +61,20 @@ export class Header extends BaseComponent {
       this.burger.getNode().classList.toggle('burger_is-open');
     };
     this.wrapper.appendEl(this.burger);
+    this.controls.getNode().prepend(this.searchField.getNode());
+
+    // TODO refactor 👇
+    const TODOREFACTOR = debounce((el: HTMLInputElement) => {
+      DB.filter.clear('search');
+      if (el.value) DB.filter.add('search', el.value);
+    }, 300);
+    
     this.searchField.getInputNode().oninput = (e) => {
-      if (window.location.hash !== '#store') window.location.hash = '#store';
+      if (!window.location.hash.startsWith('#store')) window.location.hash = '#store';
       const { target } = e;
-      if (target instanceof HTMLInputElement) {
-        DB.filter.clear('search');
-        if (target.value) DB.filter.add('search', target.value);
-      }
+      if (target instanceof HTMLInputElement) TODOREFACTOR(target);
     };
+    // TODO refactor ☝
     this.subscribe();
   }
 
