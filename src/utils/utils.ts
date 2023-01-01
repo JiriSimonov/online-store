@@ -39,3 +39,11 @@ export function getNoun(number: number, one: string, two: string, five: string) 
 export function getChunk<T>(number: number, length: number, list: T[]): T[] {
   return list.slice(number * length, (number + 1) * length);
 }
+
+export function debounce<T extends (...args: Parameters<T>) => void>(callback: T, ms: number) {
+  let timeout: ReturnType<typeof setTimeout>;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => callback(...args), ms);
+  };
+}
