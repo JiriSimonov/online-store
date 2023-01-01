@@ -45,6 +45,10 @@
 
   &__item {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
     padding: 20px;
     border-radius: 13px;
     text-align: initial;
@@ -239,7 +243,7 @@
   padding: 0;
 
   .switch__item_false {
-    border-color: $sw-disabled-bg;
+    border-color: $r;
     background: $sw-disabled-bg;
     background-image: none;
     color: $sw-disabled-txt;
@@ -462,7 +466,7 @@
     }
 
     .switch {
-      gap: 0;
+      gap: 2px;
 
       &__label {
         padding: 5px;
@@ -503,7 +507,7 @@
 
   .sort_is-open {
     position: absolute;
-    top: 110%;
+    top: 160%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     padding: 20px;

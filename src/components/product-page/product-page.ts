@@ -44,7 +44,8 @@ export class ProductPage extends BaseComponent {
 
     this.appendEl(this.container);
     this.container.appendEl([this.card, this.btnWrapper]);
-    this.card.appendEl([this.productPath, this.thumbnails, this.title, this.descrList]);
+    this.card.getNode().prepend(this.productPath.getNode());
+    this.card.appendEl([this.thumbnails, this.title, this.descrList]);
     this.descrList.appendEl(this.descrFields);
     this.btnWrapper.appendEl(this.backBtn);
     if (keyboard.isAvailable) this.btnWrapper.appendEl(this.cartBtn);

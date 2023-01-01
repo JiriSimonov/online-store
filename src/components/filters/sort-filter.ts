@@ -78,4 +78,8 @@ export class SortFilter extends BaseComponent {
       this.inStockSortDesc,
     ].forEach((item) => {Object.assign(item, { checked: false })});
   }
+
+  getResertSortNode() {
+    return this.resetSort.getNode();
+  }
 }

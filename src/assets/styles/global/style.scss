@@ -231,6 +231,12 @@ ul {
     overflow-x: hidden;
   }
 
+  .view__table,
+  .view__list {
+    display: none;
+    visibility: hidden;
+  }
+
   .container {
     max-width: 480px;
   }

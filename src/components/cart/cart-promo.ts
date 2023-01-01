@@ -32,5 +32,6 @@ export class PromoForm extends BaseComponent {
         this.promoBtn.destroy();
     }
     this.appendEl(this.promoField);
+    this.node.onsubmit = () => false;
   }
 }

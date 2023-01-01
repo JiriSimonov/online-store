@@ -8,7 +8,7 @@ export class Promo {
 
   private readonly valid: PromoMap = new Map([
     ['greedisgood', 0.05],
-    ['nwctheconstruct', 0.1],
+    ['garrett', 0.1],
     ['hesoyam', 0.2],
     ['idkfa', 0.4],
   ]);
