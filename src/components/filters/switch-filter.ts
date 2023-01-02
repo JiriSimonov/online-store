@@ -74,7 +74,7 @@ export class SwitchFilter extends Filter {
           this.modalWrapper = null;
         });
       }
-    }); // TODO модалка перебивает свич и не дает зацепить нужный элемент
+    });
   }
 
   getRadioInputs() {

@@ -112,11 +112,6 @@ export class CartItemElem extends BaseComponent {
         this.cartInc.disabled = +e.target.value === keyboardSwitch.quantity;
       }
     };
-    // this.countField.getInputNode().onkeydown = (e) => {
-    //   if (e.target && e.target instanceof HTMLInputElement && ['e', 'E', '-', '+', '.', ','].includes(e.key))
-    //     e.preventDefault();
-    // };
-    // TODO! здесь мб можно без доп валидации обойтись, прокинул прямо в инпут валидацию
     this.cartInc = new Button({
       className: 'count-btn__inc',
       text: '+',
