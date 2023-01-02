@@ -44,16 +44,15 @@ export class Header extends BaseComponent {
 
   constructor() {
     super({ tag: 'header', className: 'header' });
-    if (DB.filter.getParam('search')) {
+    const searchParam = DB.filter.params.get('search');
+    if (searchParam) {
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
-      this.searchField.getInputNode().value = DB.filter.getParam('search').replace(/["[\]]/g, '');
+      this.searchField.getInputNode().value = `${[...searchParam]}`;
       this.controls.getNode().prepend(this.searchField.getNode());
     }
     this.search.getNode().addEventListener('click', () => {
-      if (this.searchField.getInputNode().classList.contains('header__input_is-open'))
-        this.searchField.destroy();
-      else
-        this.controls.getNode().prepend(this.searchField.getNode());
+      if (this.searchField.getInputNode().classList.contains('header__input_is-open')) this.searchField.destroy();
+      else this.controls.getNode().prepend(this.searchField.getNode());
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
     });
     this.logo.getNode().onclick = () => {
@@ -73,7 +72,7 @@ export class Header extends BaseComponent {
       DB.filter.clear('search');
       if (el.value) DB.filter.add('search', el.value);
     }, 300);
-    
+
     this.searchField.getInputNode().oninput = (e) => {
       if (!window.location.hash.startsWith('#store')) window.location.hash = '#store';
       const { target } = e;
