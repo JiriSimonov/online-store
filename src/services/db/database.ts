@@ -10,7 +10,7 @@ import keyboardsJson = require('../../data/keyboards.json');
 
 class Database {
   readonly keyboards: Keyboard[];
-  readonly cart = new Cart((...args) => this.getProduct(...args));
+  readonly cart: Cart = new Cart((...args) => this.getProduct(...args));
   readonly filter: Filter;
 
   constructor(keyboards: KeyboardData[]) {
