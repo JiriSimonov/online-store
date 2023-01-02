@@ -63,6 +63,7 @@ export class Store extends BaseComponent {
     this.sortFilter.getResertSortNode().onclick = () => {
       this.sortFilter.getNode().classList.toggle('sort_is-open');
       this.burger.getNode().classList.toggle('burger_is-open');
+      this.sortFilter.uncheckAll();
     }
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
@@ -70,7 +71,10 @@ export class Store extends BaseComponent {
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
     this.changeView.appendEl([this.sortFilter, this.burger]);
     if (DB.filter.getParam('filters')) this.contentWrapper.getNode().prepend(this.filters.getNode());
-    window.addEventListener('hashchange', () => this.update());
+    window.addEventListener('hashchange', () => {
+      this.update();
+      if (!DB.filter.getParam('sortType')) this.sortFilter.uncheckAll();
+    });
     this.update();
   }
 

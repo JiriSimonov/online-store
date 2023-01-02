@@ -4,34 +4,51 @@ import { FormField } from '../elements/form-field';
 import { DB } from '../../services/db/database';
 
 export class SortFilter extends BaseComponent {
-  private alphSortAsc = new FormField({ className: 'sort', modificator: 'alph-asc', type: 'radio', name: 'sort' });
-  private alphSortDesc = new FormField({ className: 'sort', modificator: 'alph-desc', type: 'radio', name: 'sort' });
-  private priceSortAsc = new FormField({ className: 'sort', modificator: 'price-asc', type: 'radio', name: 'sort' });
+  private alphSortAsc = new FormField({
+    className: 'sort',
+    modificator: 'alph-asc',
+    type: 'radio',
+    name: 'sort',
+    checked: !!DB.filter.getParam('sortType') && DB.filter.getParam('sortDirection') === 'ascending',
+  });
+  private alphSortDesc = new FormField({
+    className: 'sort',
+    modificator: 'alph-desc',
+    type: 'radio',
+    name: 'sort',
+    checked: DB.filter.getParam('sortType') === 'title' && DB.filter.getParam('sortDirection') === 'descending',
+  });
+  private priceSortAsc = new FormField({
+    className: 'sort',
+    modificator: 'price-asc',
+    type: 'radio',
+    name: 'sort',
+    checked: DB.filter.getParam('sortType') === 'priceMin' && DB.filter.getParam('sortDirection') === 'ascending',
+  });
   private priceSortDesc = new FormField({
     className: 'sort',
     modificator: 'price-desc',
     type: 'radio',
     name: 'sort',
+    checked: DB.filter.getParam('sortType') === 'priceMin' && DB.filter.getParam('sortDirection') === 'descending',
   });
   private inStockSortAsc = new FormField({
     className: 'sort',
     modificator: 'stock-asc',
     type: 'radio',
     name: 'sort',
+    checked: DB.filter.getParam('sortType') === 'sumQuantity' && DB.filter.getParam('sortDirection') === 'ascending',
   });
   private inStockSortDesc = new FormField({
     className: 'sort',
     modificator: 'stock-desc',
     type: 'radio',
     name: 'sort',
+    checked: DB.filter.getParam('sortType') === 'sumQuantity' && DB.filter.getParam('sortDirection') === 'descending',
   });
   private resetSort = new Button({
     className: 'sort__clear',
     text: 'Очистить сортировку',
-    onclick: () => {
-      DB.filter.setParam('sortType').setParam('sortDirection');
-      this.uncheckAll();
-    },
   });
 
 
@@ -66,6 +83,7 @@ export class SortFilter extends BaseComponent {
         this.resetSort,
       ]
     );
+    //! работает по тз, но надо рефачить, выглядит как KEK
   }
 
   uncheckAll() {
@@ -76,7 +94,8 @@ export class SortFilter extends BaseComponent {
       this.priceSortDesc,
       this.inStockSortAsc,
       this.inStockSortDesc,
-    ].forEach((item) => {Object.assign(item, { checked: false })});
+    ].forEach((item) => {Object.assign(item.getInputNode(), { checked: false })});
+    DB.filter.setParam('sortType').setParam('sortDirection');
   }
 
   getResertSortNode() {

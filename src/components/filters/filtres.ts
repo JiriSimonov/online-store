@@ -34,10 +34,12 @@ export class Filters extends BaseComponent {
     super({ tag: 'ul', className: 'filter' });
     this.closeFilterTop.getNode().onclick = () => {
       elem.getNode().classList.remove('store__wrapper_is-open');
+      DB.filter.setParam('filters');
       this.destroy();
     }
     this.closeFilterBottom.getNode().onclick = () => {
       elem.getNode().classList.remove('store__wrapper_is-open');
+      DB.filter.setParam('filters');
       this.destroy();
       window.scrollTo(0,0);
     };
