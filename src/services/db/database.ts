@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { KeyboardData } from '../../interfaces/database';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
@@ -11,7 +10,7 @@ import keyboardsJson = require('../../data/keyboards.json');
 
 class Database {
   readonly keyboards: Keyboard[];
-  readonly cart: Cart = new Cart();
+  readonly cart = new Cart((...args) => this.getProduct(...args));
   readonly filter: Filter;
 
   constructor(keyboards: KeyboardData[]) {
