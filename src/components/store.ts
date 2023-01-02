@@ -64,7 +64,7 @@ export class Store extends BaseComponent {
       this.sortFilter.getNode().classList.toggle('sort_is-open');
       this.burger.getNode().classList.toggle('burger_is-open');
       this.sortFilter.uncheckAll();
-    }
+    };
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
@@ -102,7 +102,7 @@ export class Store extends BaseComponent {
   };
 
   private get chunk(): ProductCard[] {
-    const [type, direction] = [DB.filter.getParam('sortType'), DB.filter.getParam('sortDirection')];
+    const [type, direction] = [DB.filter.getParam('sortType'), DB.filter.getParam('sortOrder')];
     const sorted = DB.getSortedKeyboards(type, direction, DB.filter.list);
     return getChunk(this.chunkNumber++, this.chunkSize, sorted).map((item: Keyboard) => new ProductCard(item));
   }

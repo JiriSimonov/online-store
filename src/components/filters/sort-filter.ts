@@ -46,15 +46,12 @@ export class SortFilter extends BaseComponent {
     name: 'sort',
     value: 'sumQuantity-descending',
   });
-  private resetSort = new Button({
-    className: 'sort__clear',
-    text: 'Очистить сортировку',
-  });
+  private resetSort = new Button({ className: 'sort__clear', text: 'Очистить сортировку' });
 
   constructor() {
     super({ className: 'sort' });
 
-    const sortParams = { type: DB.filter.getParam('sortType'), order: DB.filter.getParam('sortDirection') };
+    const sortParams = { type: DB.filter.getParam('sortType'), order: DB.filter.getParam('sortOrder') };
 
     Object.entries({
       'Отсортировать в алфивитном порядке': this.alphSortAsc,
@@ -68,7 +65,7 @@ export class SortFilter extends BaseComponent {
       const input = element.getInputNode();
       const [type, order] = input.value.split('-');
       input.title = title;
-      input.addEventListener('change', () => DB.filter.setParam('sortType', type).setParam('sortDirection', order));
+      input.addEventListener('change', () => DB.filter.setParam('sortType', type).setParam('sortOrder', order));
       input.checked = sortParams.type === type && sortParams.order === order;
       this.appendEl(element);
     });
@@ -85,7 +82,7 @@ export class SortFilter extends BaseComponent {
       this.inStockSortAsc,
       this.inStockSortDesc,
     ].forEach((item) => Object.assign(item.getInputNode(), { checked: false }));
-    DB.filter.setParam('sortType').setParam('sortDirection');
+    DB.filter.setParam('sortType').setParam('sortOrder');
   }
 
   getResertSortNode() {
