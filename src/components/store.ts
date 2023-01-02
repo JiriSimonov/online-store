@@ -63,14 +63,18 @@ export class Store extends BaseComponent {
     this.sortFilter.getResertSortNode().onclick = () => {
       this.sortFilter.getNode().classList.toggle('sort_is-open');
       this.burger.getNode().classList.toggle('burger_is-open');
-    }
+      this.sortFilter.uncheckAll();
+    };
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
     this.changeView.appendEl([this.sortFilter, this.burger]);
     if (DB.filter.getParam('filters')) this.contentWrapper.getNode().prepend(this.filters.getNode());
-    window.addEventListener('hashchange', () => this.update());
+    window.addEventListener('hashchange', () => {
+      this.update();
+      if (!DB.filter.getParam('sortType')) this.sortFilter.uncheckAll();
+    });
     this.update();
   }
 
@@ -98,7 +102,7 @@ export class Store extends BaseComponent {
   };
 
   private get chunk(): ProductCard[] {
-    const [type, direction] = [DB.filter.getParam('sortType'), DB.filter.getParam('sortDirection')];
+    const [type, direction] = [DB.filter.getParam('sortType'), DB.filter.getParam('sortOrder')];
     const sorted = DB.getSortedKeyboards(type, direction, DB.filter.list);
     return getChunk(this.chunkNumber++, this.chunkSize, sorted).map((item: Keyboard) => new ProductCard(item));
   }
