@@ -8,12 +8,7 @@ import {
   SourceSwitch,
   SourceSwitchList,
 } from './types/SourceKeyboardData';
-import {
-  KeyboardData,
-  KeyboardSwitchData,
-  SwitchDescription,
-  SwitchDescriptionList,
-} from '../src/interfaces/database';
+import { KeyboardData, KeyboardSwitchData, SwitchDescription, SwitchDescriptionList } from '../src/interfaces/database';
 import { SwitchShorts } from '../src/interfaces/enums';
 import { download, showSettledResult } from './utils';
 
@@ -89,7 +84,7 @@ class SourceBuilder {
     const { id } = keyboard;
     return {
       id,
-      title: keyboard.title,
+      title: keyboard.title.replace('&amp;', '&'),
       switches: keyboard.variants.reduce((acc, item) => {
         const converted = SourceBuilder.convertVariant(item);
         const duplicate = acc.find((v) => v.id === converted.id);
