@@ -10,10 +10,11 @@ import { OrderForm } from './order-form';
 import { ChangeView } from '../elements/change-view';
 import { FormField } from '../elements/form-field';
 import { emitter } from '../../services/event-emitter';
-import { getChunk, getNoun } from '../../utils/utils';
+import { getNoun } from '../../utils/utils';
+import { Pagination } from '../../services/db/pagination';
 
 export class Cart extends BaseComponent {
-  private defaultPageSize = 4;
+  private pagination = new Pagination(DB.cart, 1, 4, DB.filter);
 
   private container = new BaseComponent({ className: 'container' });
   private wrapper = new BaseComponent({ className: 'cart__wrapper' });
@@ -60,7 +61,6 @@ export class Cart extends BaseComponent {
       const input = this.pagCountField.getInputNode();
 
       input.stepUp();
-      /* input.dispatchEvent(new Event('input')); */
       input.dispatchEvent(new Event('change'));
       window.scrollTo(0, 0);
     },
@@ -110,7 +110,7 @@ export class Cart extends BaseComponent {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
 
-      if (target.value === '') return; //! работает, но еще сосиска в тесте
+      if (target.value === '') return;
       if (+target.value > +target.max) target.value = target.max;
       if (+target.value < +target.min) target.value = target.min;
     });
@@ -214,39 +214,5 @@ export class Cart extends BaseComponent {
       this.pagination.setPage(`${Math.ceil(this.pagination.firstindex / this.pagination.pageSize)}`);
     });
     return this;
-  }
-
-  private get pagination() {
-    const defaultPageNumber = 1;
-    const { defaultPageSize } = this;
-    const { list } = DB.cart;
-
-    const getValue = (param: 'cartPageSize' | 'cartPage', defaultValue: number, max: number) => {
-      const query = +DB.filter.getParam(param);
-      const value = Number.isInteger(query) && query > 0 ? query : defaultValue;
-      return value < max ? value : max;
-    };
-
-    return {
-      get pageNumber() {
-        return getValue('cartPage', defaultPageNumber, +this.lastPage);
-      },
-      get pageSize() {
-        const { length } = DB.cart.list;
-        return getValue('cartPageSize', defaultPageSize, length > defaultPageSize ? length : defaultPageSize);
-      },
-      get chunk() {
-        return getChunk(this.pageNumber - 1, this.pageSize, list);
-      },
-      get firstindex() {
-        return (this.pageNumber - 1) * this.pageSize + 1;
-      },
-      get lastPage() {
-        return `${Math.ceil(DB.cart.list.length / this.pageSize)}`;
-      },
-      setPage(n: string) {
-        DB.filter.setParam('cartPage', n);
-      },
-    };
   }
 }
