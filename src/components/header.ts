@@ -44,6 +44,11 @@ export class Header extends BaseComponent {
 
   constructor() {
     super({ tag: 'header', className: 'header' });
+    if (DB.filter.getParam('search')) {
+      this.searchField.getInputNode().classList.toggle('header__input_is-open');
+      this.searchField.getInputNode().value = DB.filter.getParam('search').replace(/["[\]]/g, '');
+      this.controls.getNode().prepend(this.searchField.getNode());
+    }
     this.search.getNode().addEventListener('click', () => {
       if (this.searchField.getInputNode().classList.contains('header__input_is-open'))
         this.searchField.destroy();
