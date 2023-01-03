@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "backend": "npx tsc backend/index.ts && node backend",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "npm run build && npx gh-pages -d dist -e online-store -m feat:_update_deploy",
+    "deploy": "npm run build && npx gh-pages -d dist",
     "clean": "rmdir /s /q dist",
     "build": "webpack --config webpack.prod.js",
     "start": "webpack serve --config webpack.dev.js"
@@ -33,6 +33,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-webpack-plugin": "^3.2.0",
+    "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "prettier": "^2.8.1",
     "sass": "^1.56.2",
