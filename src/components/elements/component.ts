@@ -64,4 +64,15 @@ export class Component<T extends HTMLElement = HTMLElement> {
   after(children: Parameters<typeof this.insert>[1]): void {
     this.insert('after', children);
   }
+
+  get onclick() {
+    return this.node.onclick;
+  }
+  set onclick(value) {
+    this.node.onclick = value;
+  }
+
+  get addEventListener() {
+    return this.node.addEventListener;
+  }
 }
