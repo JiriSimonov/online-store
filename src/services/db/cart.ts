@@ -1,8 +1,6 @@
-/* eslint-disable import/no-cycle */
 import { ls } from '../../utils/utils';
 import { emitter } from '../event-emitter';
 import { CartItem } from './cart-item';
-import { DB } from './database';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
 import { Promo } from './promo';
@@ -12,6 +10,8 @@ type CartMap = Map<string, number>;
 export class Cart {
   #CART_KEY = 'kekboards__cart';
 
+  constructor(private getProduct: (keyboardId: number, switchId: string) => [Keyboard, KeyboardSwitch]) {}
+
   /** Промокоды */
   readonly promo = new Promo();
 
@@ -20,7 +20,7 @@ export class Cart {
   }
   /** Список товаров корзины (массив экземпляров класса `CartItem`)*/
   get list(): CartItem[] {
-    return Cart.convertList(this.cartMap);
+    return this.convertList(this.cartMap);
   }
   /** Суммарная цена корзины */
   get sumPrice() {
@@ -46,13 +46,13 @@ export class Cart {
     emitter.emit('cart__save');
   }
 
-  private static convertList(cart: CartItem[]): CartMap;
-  private static convertList(cart: CartMap): CartItem[];
-  private static convertList(cart: CartItem[] | CartMap): CartMap | CartItem[] {
+  private convertList(cart: CartItem[]): CartMap;
+  private convertList(cart: CartMap): CartItem[];
+  private convertList(cart: CartItem[] | CartMap): CartMap | CartItem[] {
     if (cart instanceof Map)
       return Array.from(cart, (item) => {
         const [kId, sId] = item[0].split('-');
-        return new CartItem(...DB.getProduct(+kId, sId), item[1]);
+        return new CartItem(...this.getProduct(+kId, sId), item[1]);
       });
     return new Map(cart.map((item: CartItem): [string, number] => item.entries));
   }
