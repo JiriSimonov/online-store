@@ -35,7 +35,7 @@ export class PriceFilter extends Filter {
       this.slider.removeStyles();
     });
     this.updateSlider();
-    window.onhashchange = () => {this.updateSlider()}
+    window.addEventListener('hashchange', () => this.updateSlider());
     this.filterWrapper.appendEl(this.slider);
   }
   setDefaultValues() {
@@ -51,14 +51,11 @@ export class PriceFilter extends Filter {
   updateSlider() {
     const paramMinValue = DB.filter.params.get('minPrice');
     const paramMaxValue = DB.filter.params.get('maxPrice');
-    const limits = DB.filter.getMinMaxValues('price')
-    if (paramMinValue && paramMaxValue)
-      this.slider.setValues(`${[...paramMinValue]}`, `${[...paramMaxValue]}`);
-    else if (paramMinValue)
-      this.slider.setValues(`${[...paramMinValue]}`, limits.max);
-    else if (paramMaxValue)
-      this.slider.setValues(limits.min, `${[...paramMaxValue]}`);
-    else
-      this.slider.setValues(limits.min, limits.max);
+    const limits = DB.filter.getMinMaxValues('price');
+    console.warn(limits.min, limits.max);
+    if (paramMinValue) this.slider.setValues(`${[...paramMinValue]}`, limits.max);
+    if (paramMaxValue) this.slider.setValues(limits.min, `${[...paramMaxValue]}`);
+    if (paramMinValue && paramMaxValue) this.slider.setValues(`${[...paramMinValue]}`, `${[...paramMaxValue]}`);
+    if (limits) this.slider.setValues(limits.min, limits.max);
   }
 }
