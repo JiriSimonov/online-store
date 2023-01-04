@@ -1,15 +1,17 @@
 interface IComponent {
-  parent?: HTMLElement;
+  parent?: HTMLElement | Component;
   tag?: keyof HTMLElementTagNameMap;
 }
-export type ComponentProps<T> = IComponent & Partial<T>;
+export type ComponentProps<T = HTMLElement> = IComponent & Partial<T>;
 
 export class Component<T extends HTMLElement = HTMLElement> {
   readonly #node: T;
   constructor(props?: ComponentProps<T>) {
     this.#node = document.createElement(props?.tag ?? 'div') as T;
     if (props) Object.assign(this.#node, props);
-    if (props?.parent) props.parent.append(this.#node);
+    if (props?.parent)
+      if (props.parent instanceof Component) props.parent.node.append(this.#node);
+      else props.parent.append(this.#node);
   }
 
   get node(): T {
@@ -47,21 +49,19 @@ export class Component<T extends HTMLElement = HTMLElement> {
   private static toNode(component: Node | Component) {
     return component instanceof Component ? component.node : component;
   }
-  private insert(target: 'before' | 'prepend' | 'append' | 'after', children: Node | Component | (Node | Component)[]) {
-    if (children instanceof Node) this.node[target](children);
-    if (children instanceof Component) this.node[target](children.node);
-    if (Array.isArray(children)) this[target](children.map(Component.toNode));
+  private insert(target: 'before' | 'prepend' | 'append' | 'after', children: (Node | Component)[]) {
+    this.node[target](...children.map(Component.toNode));
   }
-  before(children: Parameters<typeof this.insert>[1]): void {
+  before(...children: (Node | Component)[]): void {
     this.insert('before', children);
   }
-  prepend(children: Parameters<typeof this.insert>[1]): void {
+  prepend(...children: (Node | Component)[]): void {
     this.insert('prepend', children);
   }
-  append(children: Parameters<typeof this.insert>[1]): void {
+  append(...children: (Node | Component)[]): void {
     this.insert('append', children);
   }
-  after(children: Parameters<typeof this.insert>[1]): void {
+  after(...children: (Node | Component)[]): void {
     this.insert('after', children);
   }
 
