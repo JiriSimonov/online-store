@@ -8,7 +8,6 @@ export class PriceFilter extends Filter {
   // private categoryMin: keyof typeof FilterCategory = 'minPrice';
   // private categoryMax: keyof typeof FilterCategory = 'maxPrice';
   private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
-  private limits = DB.filter.getMinMaxValues('price')
   private slider: DualSlider;
 
   constructor() {
@@ -35,46 +34,31 @@ export class PriceFilter extends Filter {
       DB.filter.clear('maxPrice').add('maxPrice', maxRange.value);
       this.slider.removeStyles();
     });
-    if (paramMinValue && paramMaxValue)
-      this.slider.setValues(`${[...paramMinValue]}`, `${[...paramMaxValue]}`);
-    else if (paramMinValue)
-      this.slider.setValues(`${[...paramMinValue]}`, this.limits.max);
-    else if (paramMaxValue)
-      this.slider.setValues(this.limits.min, `${[...paramMaxValue]}`);
-    else
-      this.slider.setValues(this.limits.min, this.limits.max);
-    window.onhashchange = () => {
-      const paramMinValue1 = DB.filter.params.get('minPrice');
-      const paramMaxValue1 = DB.filter.params.get('maxPrice');
-      const limit1 = DB.filter.getMinMaxValues('price');
-      console.warn(paramMinValue1, paramMaxValue1)
-      if (paramMinValue1 && paramMaxValue1) {
-        this.slider.setValues(`${[...paramMinValue1]}`, `${[...paramMaxValue1]}`);
-        console.warn('есть оба парамса');
-      }
-      else if (paramMinValue1) {
-        this.slider.setValues(`${[...paramMinValue1]}`, limit1.max);
-        console.warn('есть мин парам');
-      }
-      else if (paramMaxValue1) {
-        this.slider.setValues(limit1.min, `${[...paramMaxValue1]}`);
-        console.warn('есть мин парам');
-      }
-      else {
-        this.slider.setValues(limit1.min, limit1.max);
-        console.warn('нет парамсов');
-      }
-    }
+    this.updateSlider();
+    window.onhashchange = () => {this.updateSlider()}
     this.filterWrapper.appendEl(this.slider);
   }
   setDefaultValues() {
     const [minNum, maxNum, minRange, maxRange] = [...this.slider.getNumbersNodes(), ...this.slider.getRangesNodes()];
-    const progress = this.slider.getProgressNode();
     maxNum.value = maxNum.max;
     minNum.value = minNum.min;
     minRange.value = minRange.min;
     maxRange.value = maxRange.max;
-    progress.style.left = `0`;
-    progress.style.right = `0`;
+    this.slider.setLeftPos(minNum.value, minRange.value);
+    this.slider.setLeftPos(maxNum.value, maxRange.value);
+  }
+
+  updateSlider() {
+    const paramMinValue = DB.filter.params.get('minPrice');
+    const paramMaxValue = DB.filter.params.get('maxPrice');
+    const limits = DB.filter.getMinMaxValues('price')
+    if (paramMinValue && paramMaxValue)
+      this.slider.setValues(`${[...paramMinValue]}`, `${[...paramMaxValue]}`);
+    else if (paramMinValue)
+      this.slider.setValues(`${[...paramMinValue]}`, limits.max);
+    else if (paramMaxValue)
+      this.slider.setValues(limits.min, `${[...paramMaxValue]}`);
+    else
+      this.slider.setValues(limits.min, limits.max);
   }
 }

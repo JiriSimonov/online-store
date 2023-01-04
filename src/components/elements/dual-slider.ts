@@ -55,10 +55,9 @@ export class DualSlider extends BaseComponent {
     this.maximumValue.getInputNode().value = `${paramMax}`;
     const [minInputNum, maxInputNum] = this.getNumbersNodes();
     const [minRange, maxRange] = this.getRangesNodes();
-    const priceGap = gap;
     if (+minInputNum.value >= +maxInputNum.value) {
-      minInputNum.value = `${+maxInputNum.value - priceGap}`;
-      maxInputNum.value = `${+minInputNum.value + priceGap}`;
+      minInputNum.value = `${+maxInputNum.value - this.gap}`;
+      maxInputNum.value = `${+minInputNum.value + this.gap}`;
     };
     if (+maxInputNum.value >= +maxInputNum.max) maxInputNum.value = maxInputNum.max;
     if (+maxInputNum.value <= min && minInputNum.value !== '') {
@@ -72,8 +71,8 @@ export class DualSlider extends BaseComponent {
       const { target } = e;
       const minValue = +minInputNum.value;
       const maxValue = +maxInputNum.value;
-      if (target && target instanceof HTMLInputElement)
-        if ((maxValue - minValue >= priceGap) && maxValue <= +maxRange.max)
+      if (target instanceof HTMLInputElement)
+        if ((maxValue - minValue >= this.gap) && maxValue <= +maxRange.max)
           if (target === minInputNum) {
             minRange.value = `${minValue}`;
             this.setLeftPos(minValue, minRange.max);
@@ -84,21 +83,14 @@ export class DualSlider extends BaseComponent {
     }));
     this.getRangesNodes().forEach((item) => item.addEventListener('input', (e) => {
       const { target } = e;
-      if (target && target instanceof HTMLInputElement) {
+      if (target instanceof HTMLInputElement) {
         const minValue = +minRange.value;
         const maxValue = +maxRange.value;
-        if (target === minRange) {
-          minRange.classList.add('dual-slider__input_is-selected');
-          maxRange.classList.remove('dual-slider__input_is-selected');
-        } else {
-          minRange.classList.remove('dual-slider__input_is-selected');
-          maxRange.classList.add('dual-slider__input_is-selected');
-        }
-        if ((maxValue - minValue) < priceGap) {
-          if (target === minRange)
-            minRange.value = `${maxValue - priceGap}`;
-          else
-            maxRange.value = `${minValue + priceGap}`;
+        if (target === minRange) minRange.classList.add('dual-slider__input_is-selected');
+         else maxRange.classList.add('dual-slider__input_is-selected');
+        if ((maxValue - minValue) < this.gap) {
+          if (target === minRange) minRange.value = `${maxValue - this.gap}`;
+            else maxRange.value = `${minValue + this.gap}`;
         } else {
           minInputNum.value = `${minValue}`;
           maxInputNum.value = `${maxValue}`;
@@ -116,6 +108,10 @@ export class DualSlider extends BaseComponent {
     return [this.minimumValue.getInputNode(), this.maximumValue.getInputNode()];
   }
 
+  get minValues(): HTMLInputElement[] {
+    return [this.minimumValue.getInputNode(), this.sliderLeft.getInputNode()];
+  }
+
   getRangesNodes() {
     return [this.sliderLeft.getInputNode(), this.sliderRight.getInputNode()];
   }
@@ -125,12 +121,12 @@ export class DualSlider extends BaseComponent {
   }
 
   setValues(min: number | string, max: number | string) {
-    // eslint-disable-next-line no-param-reassign
-    if ((+max - +min < this.gap) && +max <= +this.sliderRight.getInputNode().max) max = +max + this.gap;
+    let maxVal = max;
+    if ((+max - +min < this.gap) && +max <= +this.sliderRight.getInputNode().max) maxVal = +max + this.gap;
     this.minimumValue.getInputNode().value = `${min}`;
-    this.maximumValue.getInputNode().value = `${max}`;
+    this.maximumValue.getInputNode().value = `${maxVal}`;
     this.sliderLeft.getInputNode().value = `${min}`;
-    this.sliderRight.getInputNode().value = `${max}`;
+    this.sliderRight.getInputNode().value = `${maxVal}`;
     const [minNum, maxNum, minRange, maxRange] = [...this.getNumbersNodes(), ...this.getRangesNodes()];
     this.setLeftPos(minNum.value, minRange.max);
     this.setRightPos(maxNum.value, maxRange.max);
@@ -143,7 +139,6 @@ export class DualSlider extends BaseComponent {
   setRightPos(inputVal: string | number, limit: string | number) {
     this.sliderProgress.getNode().style.right = `${100 - ((+inputVal / +limit) * 100)}%`;
   }
-
 
   removeStyles() {
     this.sliderLeft.getInputNode().classList.remove('dual-slider__input_is-selected');
