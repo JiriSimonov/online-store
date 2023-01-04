@@ -32,36 +32,28 @@ export class Filter {
     return Filter.getList(new Map([[category, new Set([value])]]), list);
   }
   /** Возвращает минимальный и максимальный порог цены/количества без учёта выбранного фильтра
-   * @param `excluded` категория фильтра
+   * @param `category` категория фильтра
    * @returns `{min: number, max: number}`
    */
-  getMinMaxValues(excluded?: 'price' | 'quantity'): Record<'min' | 'max', number | null> {
+  getMinMaxValues(category: 'price' | 'quantity', list = this.source): Record<'min' | 'max', number | null> {
     const [defaultMin, defaultMax] = [Infinity, 0];
     const { params } = this;
 
     let [min, max] = [defaultMin, defaultMax];
 
-    if (!excluded) {
-      Filter.getList(params, this.source).forEach((kb) => {
-        const { priceMax, priceMin } = kb;
-        if (priceMax > max) max = priceMax;
-        if (priceMin < min) min = priceMin;
-      });
-    } else if (excluded === 'quantity') {
-      ['minQuantity', 'maxQuantity'].forEach((v) => params.delete(v));
-      Filter.getList(params, this.source).forEach((kb) => {
+    if (category === 'quantity')
+      Filter.getList(params, list).forEach((kb) => {
         const { sumQuantity } = kb;
         if (sumQuantity > max) max = sumQuantity;
         if (sumQuantity < min) min = sumQuantity;
       });
-    } else if (excluded === 'price') {
-      ['minPrice', 'maxPrice'].forEach((v) => params.delete(v));
-      Filter.getList(params, this.source).forEach((kb) => {
+    if (category === 'price')
+      Filter.getList(params, list).forEach((kb) => {
         const { priceMax, priceMin } = kb;
         if (priceMax > max) max = priceMax;
         if (priceMin < min) min = priceMin;
       });
-    }
+
     return { min: min === defaultMin ? null : min, max: max === defaultMax ? null : max };
   }
 
