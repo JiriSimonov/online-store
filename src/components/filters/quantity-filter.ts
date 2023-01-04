@@ -18,8 +18,8 @@ export class QuantityFilter extends Filter {
       this.filteredMax,
       6,
       16,
-      `${paramMinValue ? [...paramMinValue] : this.filteredMax}`,
-      `${paramMaxValue ? [...paramMaxValue] : this.filteredMin}`,
+      `${paramMinValue ? [...paramMinValue] : this.filteredMin}`,
+      `${paramMaxValue ? [...paramMaxValue] : this.filteredMax}`,
     );
     this.updateSlider();
     window.addEventListener('hashchange', () => this.updateSlider());
@@ -42,20 +42,23 @@ export class QuantityFilter extends Filter {
     minNum.value = minNum.min;
     minRange.value = minRange.min;
     maxRange.value = maxRange.max;
-    this.slider.setLeftPos(minNum.value, minRange.value);
-    this.slider.setLeftPos(maxNum.value, maxRange.value);
+    this.slider.getProgressNode().style.left = '0';
+    this.slider.getProgressNode().style.right = '0';
   }
 
   updateSlider() {
     const paramMinValue = DB.filter.params.get('minQuantity');
     const paramMaxValue = DB.filter.params.get('maxQuantity');
     const limits = DB.filter.getMinMaxValues('quantity');
-    if (paramMaxValue && limits.max <= +[...paramMaxValue]) limits.max = +[...paramMaxValue];
-    if (paramMinValue && limits.min >= +[...paramMinValue]) limits.min = +[...paramMinValue];
-    if (paramMinValue) this.slider.setValues(`${[...paramMinValue]}`, limits.max);
-    if (paramMaxValue) this.slider.setValues(limits.min, `${[...paramMaxValue]}`);
+    const min = this.slider.getNumbersNodes()[0];
+    
+    if (limits.min && limits.min === 1) this.slider.getNumbersNodes()[0].value = '0';
+    if (limits.max) this.slider.setValues(min.value, limits.max);
+    if (paramMaxValue && limits.max && limits.max <= +[...paramMaxValue]) limits.max = +[...paramMaxValue];
+    if (paramMinValue && limits.min && limits.min > +[...paramMinValue]) limits.min = +[...paramMinValue];
+    if (paramMinValue && limits.max) this.slider.setValues(`${[...paramMinValue]}`, limits.max);
+    if (paramMaxValue && limits.min) this.slider.setValues(limits.min, `${[...paramMaxValue]}`);
     if (paramMinValue && paramMaxValue) this.slider.setValues(`${[...paramMinValue]}`, `${[...paramMaxValue]}`);
-    if (limits) this.slider.setValues(limits.min, limits.max);
-    if (limits.max === 0) this.slider.setValues(this.filteredMin, this.filteredMax);
+    if (limits.max && limits.min) this.slider.setValues(limits.min, limits.max);
   }
 }
