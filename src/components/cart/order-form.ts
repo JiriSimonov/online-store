@@ -40,7 +40,7 @@ export class OrderForm extends BaseComponent {
       text: 'Имя Фамилия',
       placeholder: 'Василий Клаб',
       type: 'text',
-      pattern: `^([\\wА-я]{3,} ?){3,}$`, // TODO: не отрабатывает
+      pattern: '[а-яА-Я]{3,}(\\s[а-яА-Я]{3,})+',
     });
     this.phoneField = new FormField({
       className: 'modal',
@@ -58,8 +58,8 @@ export class OrderForm extends BaseComponent {
       className: 'modal',
       text: 'Адрес доставки',
       type: 'text',
-      placeholder: 'Пенза, Кукушкина 5, дом 10',
-      pattern: `^([\\wА-я]{5,} ?){3,}$`,  // TODO: не отрабатывает
+      placeholder: 'Пенза, Кукушкина 5, квартира 1',
+      pattern: '[а-яА-Я]{5,}(\\s[а-яА-Я]{5,})(\\s[а-яА-Я]{5,})+',
     });
     this.emailField = new FormField({
       className: 'modal',
@@ -94,7 +94,7 @@ export class OrderForm extends BaseComponent {
       }, 3500);
       return false;
     }
-    // render
+
     this.appendEl(this.modalOverlay);
     this.modalOverlay.appendEl(this.modalContent);
     this.modalContent.appendEl(this.modalForm);

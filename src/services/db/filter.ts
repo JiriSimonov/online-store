@@ -35,18 +35,23 @@ export class Filter {
    * @param `excluded` категория фильтра
    * @returns `{min: number, max: number}`
    */
-  getMinMaxValues(excluded: 'price' | 'quantity'): Record<'min' | 'max', number> {
+  getMinMaxValues(excluded?: 'price' | 'quantity'): Record<'min' | 'max', number> {
     const result = { min: Infinity, max: 0 };
     const { params } = this;
-    if (excluded === 'quantity') {
+    if (!excluded) {
+      Filter.getList(params, this.source).forEach((kb) => {
+        const { priceMax, priceMin } = kb;
+        if (priceMax > result.max) result.max = priceMax;
+        if (priceMin < result.min) result.min = priceMin;
+      });
+    } else if (excluded === 'quantity') {
       ['minQuantity', 'maxQuantity'].forEach((v) => params.delete(v));
       Filter.getList(params, this.source).forEach((kb) => {
         const { sumQuantity } = kb;
         if (sumQuantity > result.max) result.max = sumQuantity;
         if (sumQuantity < result.min) result.min = sumQuantity;
       });
-    }
-    if (excluded === 'price') {
+    } else if (excluded === 'price') {
       ['minPrice', 'maxPrice'].forEach((v) => params.delete(v));
       Filter.getList(params, this.source).forEach((kb) => {
         const { priceMax, priceMin } = kb;
