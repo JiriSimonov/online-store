@@ -21,8 +21,14 @@ export class PriceFilter extends Filter {
       `${paramMaxValue ? [...paramMaxValue] : this.filteredMax}`,
     );
     const [minNum, maxNum, minRange, maxRange] = [...this.slider.getNumbersNodes(), ...this.slider.getRangesNodes()];
-    minNum.addEventListener('input', () => DB.filter.clear('minPrice').add('minPrice', minNum.value));
-    maxNum.addEventListener('input', () => DB.filter.clear('maxPrice').add('maxPrice', maxNum.value));
+    minNum.addEventListener('input', () => {
+      DB.filter.clear('minPrice');
+      if (minNum.value) DB.filter.add('minPrice', minNum.value);
+    });
+    maxNum.addEventListener('input', () => {
+      DB.filter.clear('maxPrice').add('maxPrice', maxNum.value);
+      // if (+maxNum.value >= +maxNum.max) maxNum.value = maxNum.max;
+    });
     minRange.addEventListener('change', () => {
       DB.filter.clear('minPrice').add('minPrice', minRange.value);
       this.slider.removeStyles();

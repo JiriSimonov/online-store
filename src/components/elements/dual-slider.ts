@@ -80,6 +80,16 @@ export class DualSlider extends BaseComponent {
             maxRange.value = `${maxValue}`;
             this.setRightPos(maxValue, maxRange.max);
           }
+      if (+maxInputNum.value >= +maxInputNum.max) maxInputNum.value = maxInputNum.max;
+      if (+maxInputNum.value <= min && minInputNum.value !== '') {
+        maxInputNum.value = `${min + gap}`;
+        minInputNum.value = `${min}`;
+      }
+      if (+minInputNum.value >= +maxInputNum.value) {
+        minInputNum.value = `${+maxInputNum.value - this.gap}`;
+        maxInputNum.value = `${+minInputNum.value + this.gap}`;
+      };
+      if (minInputNum.value === '') minInputNum.value = minInputNum.min;
     }));
     this.getRangesNodes().forEach((item) => item.addEventListener('input', (e) => {
       const { target } = e;
@@ -87,10 +97,10 @@ export class DualSlider extends BaseComponent {
         const minValue = +minRange.value;
         const maxValue = +maxRange.value;
         if (target === minRange) minRange.classList.add('dual-slider__input_is-selected');
-         else maxRange.classList.add('dual-slider__input_is-selected');
+        else maxRange.classList.add('dual-slider__input_is-selected');
         if ((maxValue - minValue) < this.gap) {
           if (target === minRange) minRange.value = `${maxValue - this.gap}`;
-            else maxRange.value = `${minValue + this.gap}`;
+          else maxRange.value = `${minValue + this.gap}`;
         } else {
           minInputNum.value = `${minValue}`;
           maxInputNum.value = `${maxValue}`;

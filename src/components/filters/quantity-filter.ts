@@ -24,7 +24,10 @@ export class QuantityFilter extends Filter {
     this.updateSlider();
     window.addEventListener('hashchange', () => this.updateSlider());
     const [minNum, maxNum, minRange, maxRange] = [...this.slider.getNumbersNodes(), ...this.slider.getRangesNodes()];
-    minNum.addEventListener('input', () => DB.filter.clear('minQuantity').add('minQuantity', minNum.value));
+    minNum.addEventListener('input', () => {
+      DB.filter.clear('minQuantity');
+      if (minNum.value) DB.filter.add('minQuantity', minNum.value);
+    });
     maxNum.addEventListener('input', () => DB.filter.clear('maxQuantity').add('maxQuantity', maxNum.value));
     minRange.addEventListener('change', () => {
       DB.filter.clear('minQuantity').add('minQuantity', minRange.value);
@@ -52,7 +55,7 @@ export class QuantityFilter extends Filter {
     const limits = DB.filter.getMinMaxValues('quantity');
     const min = this.slider.getNumbersNodes()[0];
     
-    if (limits.min && limits.min === 1) this.slider.getNumbersNodes()[0].value = '0';
+    if (limits.min && limits.min === 1) min.value = '0';
     if (limits.max) this.slider.setValues(min.value, limits.max);
     if (paramMaxValue && limits.max && limits.max <= +[...paramMaxValue]) limits.max = +[...paramMaxValue];
     if (paramMinValue && limits.min && limits.min > +[...paramMinValue]) limits.min = +[...paramMinValue];
