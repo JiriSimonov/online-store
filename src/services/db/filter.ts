@@ -35,31 +35,34 @@ export class Filter {
    * @param `excluded` категория фильтра
    * @returns `{min: number, max: number}`
    */
-  getMinMaxValues(excluded?: 'price' | 'quantity'): Record<'min' | 'max', number> {
-    const result = { min: Infinity, max: 0 };
+  getMinMaxValues(excluded?: 'price' | 'quantity'): Record<'min' | 'max', number | null> {
+    const [defaultMin, defaultMax] = [Infinity, 0];
     const { params } = this;
+
+    let [min, max] = [defaultMin, defaultMax];
+
     if (!excluded) {
       Filter.getList(params, this.source).forEach((kb) => {
         const { priceMax, priceMin } = kb;
-        if (priceMax > result.max) result.max = priceMax;
-        if (priceMin < result.min) result.min = priceMin;
+        if (priceMax > max) max = priceMax;
+        if (priceMin < min) min = priceMin;
       });
     } else if (excluded === 'quantity') {
       ['minQuantity', 'maxQuantity'].forEach((v) => params.delete(v));
       Filter.getList(params, this.source).forEach((kb) => {
         const { sumQuantity } = kb;
-        if (sumQuantity > result.max) result.max = sumQuantity;
-        if (sumQuantity < result.min) result.min = sumQuantity;
+        if (sumQuantity > max) max = sumQuantity;
+        if (sumQuantity < min) min = sumQuantity;
       });
     } else if (excluded === 'price') {
       ['minPrice', 'maxPrice'].forEach((v) => params.delete(v));
       Filter.getList(params, this.source).forEach((kb) => {
         const { priceMax, priceMin } = kb;
-        if (priceMax > result.max) result.max = priceMax;
-        if (priceMin < result.min) result.min = priceMin;
+        if (priceMax > max) max = priceMax;
+        if (priceMin < min) min = priceMin;
       });
     }
-    return result;
+    return { min: min === defaultMin ? null : min, max: max === defaultMax ? null : max };
   }
 
   private static getList(filters: Map<string, Set<string>>, keyboardList: Keyboard[]): Keyboard[] {
