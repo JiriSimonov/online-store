@@ -57,14 +57,15 @@ export class CartItemElem extends BaseComponent {
       text: keyboard.title,
       parent: this.wrapper.getNode(),
     });
-    this.switchWrapper = new BaseComponent({ className: 'switch', parent: this.wrapper.getNode() });
+    this.switchWrapper = new BaseComponent({ className: 'switch' });
     this.keyboardSwitch = new SwitchComponent(keyboardSwitch, product.key, 'div');
+    if (keyboardSwitch.title !== 'null') this.wrapper.appendEl(this.switchWrapper);
     this.switchWrapper.appendEl(this.keyboardSwitch);
     this.category = new BaseComponent({
       className: 'cart__category',
       text: `Размер: ${keyboard.size}`,
-      parent: this.wrapper.getNode(),
     });
+    if (keyboard.size !== '') this.wrapper.appendEl(this.category);
     this.price = new BaseComponent({
       className: 'cart__price',
       text: `${keyboardSwitch.price} ₽`,
