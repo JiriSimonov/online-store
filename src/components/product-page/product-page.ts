@@ -1,22 +1,22 @@
 import { ProductPath } from './product-path';
-import { Button } from '../elements/button';
+import { Button } from '../elements/button-component';
 import { DescriptionField } from '../elements/description-field';
 import { Keyboard } from '../../services/db/keyboard';
 import { ProductCard } from '../product/product-card';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { ThumbNails } from './product-thumbnails';
 
-export class ProductPage extends BaseComponent {
-  private container = new BaseComponent({ className: 'store product' });
+export class ProductPage extends Component {
+  private container = new Component({ className: 'store product' });
   private card: ProductCard;
   private productPath: ProductPath;
   private thumbnails: ThumbNails;
-  private title = new BaseComponent({ tag: 'h2', className: 'product__title', text: 'Характеристики' });
-  private descrList = new BaseComponent({ tag: 'ul', className: 'product__list' });
+  private title = new Component({ tag: 'h2', className: 'product__title', textContent: 'Характеристики' });
+  private descrList = new Component({ tag: 'ul', className: 'product__list' });
 
   private descrFields: DescriptionField[];
 
-  private btnWrapper = new BaseComponent({ className: 'product__wrapper' });
+  private btnWrapper = new Component({ className: 'product__wrapper' });
   private backBtn = new Button({
     className: 'cart__btn',
     textContent: 'Назад',
@@ -42,12 +42,12 @@ export class ProductPage extends BaseComponent {
       return new DescriptionField({ key: title, value: list.join('\n') });
     });
 
-    this.appendEl(this.container);
-    this.container.appendEl([this.card, this.btnWrapper]);
+    this.append(this.container);
+    this.container.append(this.card, this.btnWrapper);
     this.card.node.prepend(this.productPath.node);
-    this.card.appendEl([this.thumbnails, this.title, this.descrList]);
-    this.descrList.appendEl(this.descrFields);
-    this.btnWrapper.appendEl(this.backBtn);
-    if (keyboard.isAvailable) this.btnWrapper.appendEl(this.cartBtn);
+    this.card.append(this.thumbnails, this.title, this.descrList);
+    this.descrList.append(...this.descrFields);
+    this.btnWrapper.append(this.backBtn);
+    if (keyboard.isAvailable) this.btnWrapper.append(this.cartBtn);
   }
 }

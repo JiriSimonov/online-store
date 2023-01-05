@@ -1,4 +1,4 @@
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { Filter } from './filter';
 import { FormField } from '../elements/form-field';
 import { DB } from '../../services/db/database';
@@ -6,7 +6,7 @@ import { FilterCategory } from '../../interfaces/enums';
 
 export class SizeFilter extends Filter {
   private category: keyof typeof FilterCategory = 'size';
-  private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
+  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this.node });
 
   private size = [...DB.getVariants(this.category)]
     .filter((elem) => elem)
@@ -33,7 +33,7 @@ export class SizeFilter extends Filter {
           else DB.filter.remove(this.category, target.value);
       });
     });
-    this.filterWrapper.appendEl(this.size);
+    this.filterWrapper.append(...this.size);
   }
 
   getInputs() {

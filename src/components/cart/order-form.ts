@@ -1,17 +1,17 @@
 import Imask from 'imask';
 import { Loader } from '../store/loader';
 import { DB } from '../../services/db/database';
-import { BaseComponent } from '../elements/base-component';
-import { Button } from '../elements/button';
+import { Component } from '../elements/base-component';
+import { Button } from '../elements/button-component';
 import { FormField } from '../elements/form-field';
 import { Card } from './card';
 
-export class OrderForm extends BaseComponent {
-  private modalOverlay: BaseComponent;
+export class OrderForm extends Component {
+  private modalOverlay: Component;
 
-  private modalContent: BaseComponent;
+  private modalContent: Component;
 
-  private modalForm: BaseComponent;
+  private modalForm: Component;
 
   private nameField: FormField;
 
@@ -32,9 +32,9 @@ export class OrderForm extends BaseComponent {
   constructor() {
     super({ className: 'modal' });
     this.loader = new Loader(true);
-    this.modalOverlay = new BaseComponent({ className: 'modal__overlay' });
-    this.modalContent = new BaseComponent({ className: 'modal__content' });
-    this.modalForm = new BaseComponent({ tag: 'form', className: 'modal__form' });
+    this.modalOverlay = new Component({ className: 'modal__overlay' });
+    this.modalContent = new Component({ className: 'modal__content' });
+    this.modalForm = new Component({ tag: 'form', className: 'modal__form' });
     this.nameField = new FormField({
       className: 'modal',
       text: 'Имя Фамилия',
@@ -95,17 +95,17 @@ export class OrderForm extends BaseComponent {
       return false;
     };
 
-    this.appendEl(this.modalOverlay);
-    this.modalOverlay.appendEl(this.modalContent);
-    this.modalContent.appendEl(this.modalForm);
-    this.modalForm.appendEl([
+    this.append(this.modalOverlay);
+    this.modalOverlay.append(this.modalContent);
+    this.modalContent.append(this.modalForm);
+    this.modalForm.append(
       this.nameField,
       this.phoneField,
       this.addressField,
       this.emailField,
       this.card,
       this.modalSubmit,
-    ]);
+    );
     this.modalOverlay.node.addEventListener('click', (e) => {
       const { target } = e;
       if (target === this.modalOverlay.node) {

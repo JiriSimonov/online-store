@@ -1,8 +1,8 @@
 import { CartPagination } from './cart-pagination';
 import { ActivePromo } from './active-promo';
 import { DB } from '../../services/db/database';
-import { BaseComponent } from '../elements/base-component';
-import { Button } from '../elements/button';
+import { Component } from '../elements/base-component';
+import { Button } from '../elements/button-component';
 import { CartItemElem } from './cart-item';
 import { CartList } from './cart-list';
 import { PromoForm } from './cart-promo';
@@ -13,13 +13,13 @@ import { emitter } from '../../services/event-emitter';
 import { getNoun } from '../../utils/utils';
 import { Pagination } from '../../services/db/pagination';
 
-export class Cart extends BaseComponent {
+export class Cart extends Component {
   private pagination = new Pagination(DB.cart, 1, 4, DB.filter);
 
-  private container = new BaseComponent({ className: 'container' });
-  private wrapper = new BaseComponent({ className: 'cart__wrapper' });
+  private container = new Component({ className: 'container' });
+  private wrapper = new Component({ className: 'cart__wrapper' });
 
-  private cartTitle = new BaseComponent({ tag: 'h2', className: 'cart__title', text: 'Корзина пока что пуста' });
+  private cartTitle = new Component({ tag: 'h2', className: 'cart__title', textContent: 'Корзина пока что пуста' });
 
   private cartButton = new Button({
     className: 'cart__btn',
@@ -35,7 +35,7 @@ export class Cart extends BaseComponent {
   private cartList = new CartList();
   private cartItems: CartItemElem[];
 
-  private pagBtn = new BaseComponent({ className: 'pagination-btn' });
+  private pagBtn = new Component({ className: 'pagination-btn' });
   private pagDec = new Button({
     className: 'pagination-btn__dec',
     onclick: () => {
@@ -66,10 +66,10 @@ export class Cart extends BaseComponent {
     },
   });
 
-  private cartPromoWrapper = new BaseComponent({ className: 'promo' });
+  private cartPromoWrapper = new Component({ className: 'promo' });
 
-  private cartPromoTitle = new BaseComponent({ tag: 'h3', text: 'Активные промокоды', className: 'promo__title' });
-  private cartPromoList = new BaseComponent({ tag: 'ul', className: 'promo-active' });
+  private cartPromoTitle = new Component({ tag: 'h3', textContent: 'Активные промокоды', className: 'promo__title' });
+  private cartPromoList = new Component({ tag: 'ul', className: 'promo-active' });
 
   private cartPromoForm = new PromoForm();
   private cartPromoBtn = new Button({
@@ -77,18 +77,18 @@ export class Cart extends BaseComponent {
     textContent: 'Есть промокод?',
     onclick: () => {
       this.cartPromoBtn.node.setAttribute('disabled', 'true');
-      this.cartPromoWrapper.appendEl(this.cartPromoForm);
+      this.cartPromoWrapper.append(this.cartPromoForm);
     },
   });
 
-  private cartPriceWrapper = new BaseComponent({ className: 'cart-price' });
-  private cartPriceText = new BaseComponent({ tag: 'span', className: 'cart-price__text', text: 'Итог' });
-  private cartPriceTotal = new BaseComponent({
+  private cartPriceWrapper = new Component({ className: 'cart-price' });
+  private cartPriceText = new Component({ tag: 'span', className: 'cart-price__text', textContent: 'Итог' });
+  private cartPriceTotal = new Component({
     tag: 'span',
     className: 'cart-price__total',
-    text: `${DB.cart.sumPrice}`,
+    textContent: `${DB.cart.sumPrice}`,
   });
-  private cartCurrentPrice = new BaseComponent({ tag: 'span', className: 'cart-price-current' });
+  private cartCurrentPrice = new Component({ tag: 'span', className: 'cart-price-current' });
 
   private orderBtn = new Button({
     className: 'cart__order',
@@ -100,8 +100,8 @@ export class Cart extends BaseComponent {
   constructor() {
     super({ tag: 'section', className: 'cart' });
     this.cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index, this.orderBtn));
-    this.appendEl(this.container);
-    this.container.appendEl(this.wrapper);
+    this.append(this.container);
+    this.container.append(this.wrapper);
     this.render();
     this.updateActivePromoList();
     this.updateTotalPrice();
@@ -139,7 +139,7 @@ export class Cart extends BaseComponent {
     if (promo.size && sumPrice) {
       cartCurrentPrice.setText(`${promo.getDiscounted(sumPrice)}`);
       classList.add('cart-price__total_is-disc');
-      cartPriceTotal.appendEl(cartCurrentPrice);
+      cartPriceTotal.append(cartCurrentPrice);
     } else {
       classList.remove('cart-price__total_is-disc');
     }
@@ -156,7 +156,7 @@ export class Cart extends BaseComponent {
     const [promoWrapper, promoTitle] = [this.cartPromoWrapper.node, this.cartPromoTitle.node];
     this.cartPromoList.clear();
     if (size) {
-      this.cartPromoList.appendEl(list.map((item) => new ActivePromo(item[0], `${item[1] * 100}%`)));
+      this.cartPromoList.append(...list.map((item) => new ActivePromo(item[0], `${item[1] * 100}%`)));
       promoWrapper.prepend(promoTitle, this.cartPromoList.node);
     } else {
       promoTitle.remove();
@@ -167,7 +167,7 @@ export class Cart extends BaseComponent {
   render() {
     if (DB.cart.list.length > 0) {
       this.cartTitle.destroy();
-      this.wrapper.appendEl([
+      this.wrapper.append(
         this.changeView,
         this.cartButton,
         this.cartList,
@@ -175,21 +175,21 @@ export class Cart extends BaseComponent {
         this.cartPromoWrapper,
         this.cartPriceWrapper,
         this.orderBtn,
-      ]);
-      this.pagBtn.appendEl([this.pagDec, this.pagCountField, this.pagInc]);
-      this.changeView.appendEl(this.cartPagination);
+      );
+      this.pagBtn.append(this.pagDec, this.pagCountField, this.pagInc);
+      this.changeView.append(this.cartPagination);
       this.cartList.clear();
-      this.cartList.appendEl(
-        this.pagination.chunk.map(
+      this.cartList.append(
+        ...this.pagination.chunk.map(
           (item, index) => new CartItemElem(item, index + this.pagination.firstindex, this.orderBtn),
         ),
       );
-      this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
-      this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
+      this.cartPriceWrapper.append(this.cartPriceText, this.cartPriceTotal);
+      this.cartPromoWrapper.append(this.cartPromoBtn);
     } else {
       this.wrapper.clear();
-      this.wrapper.appendEl(this.cartButton);
-      this.wrapper.appendEl(this.cartTitle);
+      this.wrapper.append(this.cartButton);
+      this.wrapper.append(this.cartTitle);
     }
   }
 

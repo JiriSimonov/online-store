@@ -1,4 +1,4 @@
-import { Component, ComponentProps } from './component';
+import { Component, ComponentProps } from './base-component';
 
 export class Input extends Component<HTMLInputElement> {
   constructor(props?: ComponentProps<HTMLInputElement>) {

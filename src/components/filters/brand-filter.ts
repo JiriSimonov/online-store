@@ -1,4 +1,4 @@
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { Filter } from './filter';
 import { DB } from '../../services/db/database';
 import { FormField } from '../elements/form-field';
@@ -6,7 +6,7 @@ import { FilterCategory } from '../../interfaces/enums';
 
 export class BrandFilter extends Filter {
   private category: keyof typeof FilterCategory = 'brand';
-  private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
+  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this.node });
 
   private brands = [...DB.getVariants(this.category)].map(
     (item) =>
@@ -30,7 +30,7 @@ export class BrandFilter extends Filter {
       else DB.filter.remove(this.category, target.value);
     };
 
-    this.filterWrapper.appendEl(this.brands);
+    this.filterWrapper.append(...this.brands);
   }
 
   getInputs() {

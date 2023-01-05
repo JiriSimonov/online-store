@@ -1,10 +1,10 @@
 import { DB } from '../../services/db/database';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { FormField } from '../elements/form-field';
 
-export class CartPagination extends BaseComponent {
+export class CartPagination extends Component {
   selected = new FormField({ className: 'dropdown', modificator: 'selected' });
-  private wrapper = new BaseComponent({ className: 'dropdown__wrapper' });
+  private wrapper = new Component({ className: 'dropdown__wrapper' });
   private options = ['4', '10', '16', '20'].map(
     (item) => new FormField({ className: 'dropdown', type: 'radio', name: 'pagination-size', value: item, text: item }),
   );
@@ -28,12 +28,12 @@ export class CartPagination extends BaseComponent {
       this.renderDropDown();
     };
 
-    this.appendEl(this.selected);
-    this.wrapper.appendEl(this.options);
+    this.append(this.selected);
+    this.wrapper.append(...this.options);
   }
 
   renderDropDown() {
     if (this.wrapper.node.parentElement) this.wrapper.destroy();
-    else this.appendEl(this.wrapper);
+    else this.append(this.wrapper);
   }
 }

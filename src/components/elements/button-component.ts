@@ -1,4 +1,4 @@
-import { Component, ComponentProps } from './component';
+import { Component, ComponentProps } from './base-component';
 
 export class Button extends Component<HTMLButtonElement> {
   constructor(props?: ComponentProps<HTMLButtonElement>) {

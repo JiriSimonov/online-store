@@ -1,9 +1,9 @@
-import { BaseComponent } from '../elements/base-component';
-import { Image } from '../elements/image';
+import { Component } from '../elements/base-component';
+import { Image } from '../elements/image-component';
 import { Loader } from '../store/loader';
 
-export class ProductImage extends BaseComponent {
-  private zones: BaseComponent[];
+export class ProductImage extends Component {
+  private zones: Component[];
   private images: string[] = [];
 
   private loader = new Loader(false);
@@ -17,7 +17,7 @@ export class ProductImage extends BaseComponent {
     };
 
     this.zones = imageList.map((_, i) => {
-      const component = new BaseComponent({ tag: 'span', className: 'store__img-item' });
+      const component = new Component({ tag: 'span', className: 'store__img-item' });
       const { node } = component;
 
       node.onmouseover = () => setImage(i);
@@ -26,7 +26,7 @@ export class ProductImage extends BaseComponent {
       return component;
     });
 
-    this.appendEl([this.loader, ...this.zones]);
+    this.append(this.loader, ...this.zones);
     this.getImageList(imageList).then(() => {
       this.loader.destroy();
       setImage(0);

@@ -1,28 +1,28 @@
 import { SwitchComponent } from '../switches/switch-component';
 import { FormField } from '../elements/form-field';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { ProductImage } from '../product/product-img';
-import { Button } from '../elements/button';
+import { Button } from '../elements/button-component';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
 import { emitter } from '../../services/event-emitter';
 
-export class CartItemElem extends BaseComponent {
+export class CartItemElem extends Component {
   private images: ProductImage;
 
-  private wrapper: BaseComponent;
+  private wrapper: Component;
 
-  private title: BaseComponent;
+  private title: Component;
 
-  private category: BaseComponent;
+  private category: Component;
 
-  private stockWrapper: BaseComponent;
+  private stockWrapper: Component;
 
-  private price: BaseComponent;
+  private price: Component;
 
-  private inStock: BaseComponent;
+  private inStock: Component;
 
-  private countBtn: BaseComponent;
+  private countBtn: Component;
 
   private countField: FormField;
 
@@ -32,11 +32,11 @@ export class CartItemElem extends BaseComponent {
 
   private cartDelete: Button;
 
-  private switchWrapper: BaseComponent;
+  private switchWrapper: Component;
 
   private keyboardSwitch: SwitchComponent;
 
-  private cartPosition: BaseComponent;
+  private cartPosition: Component;
 
   constructor(product: CartItem, index: number, orderBtn: Button) {
     super({ tag: 'li', className: 'cart__item' });
@@ -51,40 +51,40 @@ export class CartItemElem extends BaseComponent {
       pattern: '[0-9]{2}',
     });
     this.images = new ProductImage(keyboard.images);
-    this.wrapper = new BaseComponent({ className: 'cart__container' });
-    this.title = new BaseComponent({
+    this.wrapper = new Component({ className: 'cart__container' });
+    this.title = new Component({
       tag: 'h2',
       className: 'cart__title',
-      text: keyboard.title,
+      textContent: keyboard.title,
       parent: this.wrapper.node,
     });
-    this.switchWrapper = new BaseComponent({ className: 'switch' });
+    this.switchWrapper = new Component({ className: 'switch' });
     this.keyboardSwitch = new SwitchComponent(keyboardSwitch, product.key, 'div');
-    if (keyboardSwitch.title !== 'null') this.wrapper.appendEl(this.switchWrapper);
-    this.switchWrapper.appendEl(this.keyboardSwitch);
-    this.category = new BaseComponent({
+    if (keyboardSwitch.title !== 'null') this.wrapper.append(this.switchWrapper);
+    this.switchWrapper.append(this.keyboardSwitch);
+    this.category = new Component({
       className: 'cart__category',
-      text: `Размер: ${keyboard.size}`,
+      textContent: `Размер: ${keyboard.size}`,
     });
-    if (keyboard.size !== '') this.wrapper.appendEl(this.category);
-    this.price = new BaseComponent({
+    if (keyboard.size !== '') this.wrapper.append(this.category);
+    this.price = new Component({
       className: 'cart__price',
-      text: `${keyboardSwitch.price} ₽`,
+      textContent: `${keyboardSwitch.price} ₽`,
       parent: this.wrapper.node,
     });
-    this.stockWrapper = new BaseComponent({
+    this.stockWrapper = new Component({
       className: 'cart__stock-wrapper',
       parent: this.wrapper.node,
     });
-    this.inStock = new BaseComponent({
+    this.inStock = new Component({
       className: 'cart__stock',
-      text:
+      textContent:
         keyboardSwitch.quantity > 0
           ? `Осталось на складе: ${keyboardSwitch.quantity - +this.countField.getInputNode().value}`
           : 'Нет в наличии',
       parent: this.stockWrapper.node,
     });
-    this.countBtn = new BaseComponent({
+    this.countBtn = new Component({
       className: 'count-btn',
       parent: this.stockWrapper.node,
     });
@@ -102,8 +102,8 @@ export class CartItemElem extends BaseComponent {
         }
       },
     });
-    this.cartPosition = new BaseComponent({ className: 'cart__position', text: `${index}`, parent: this.node });
-    this.countBtn.appendEl(this.countField);
+    this.cartPosition = new Component({ className: 'cart__position', textContent: `${index}`, parent: this.node });
+    this.countBtn.append(this.countField);
     this.countField.getInputNode().oninput = (e) => {
       if (e.target && e.target instanceof HTMLInputElement) {
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
@@ -148,7 +148,7 @@ export class CartItemElem extends BaseComponent {
     if (+this.countField.getInputNode().value === +this.countField.getInputNode().max)
       this.cartInc.node.setAttribute('disabled', 'true');
     this.price.setText(`${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`);
-    this.appendEl(this.images);
-    this.appendEl(this.wrapper);
+    this.append(this.images);
+    this.append(this.wrapper);
   }
 }

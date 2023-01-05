@@ -1,13 +1,18 @@
 import { DescriptionFieldProps } from '../../interfaces/interfaces';
-import { BaseComponent } from './base-component';
+import { Component } from './base-component';
 
-export class DescriptionField extends BaseComponent {
-  private key: BaseComponent;
-  private value: BaseComponent;
+export class DescriptionField extends Component {
+  private key: Component;
+  private value: Component;
 
   constructor(props: DescriptionFieldProps) {
     super({ tag: 'li', className: 'product__item' });
-    this.key = new BaseComponent({ tag: 'h3', className: 'product__subtitle', text: props.key, parent: this.node }); 
-    this.value = new BaseComponent({ className: 'product__text', text: props.value, parent: this.node }); 
+    this.key = new Component({
+      tag: 'h3',
+      className: 'product__subtitle',
+      textContent: props.key,
+      parent: this.node,
+    });
+    this.value = new Component({ className: 'product__text', textContent: props.value, parent: this.node });
   }
 }

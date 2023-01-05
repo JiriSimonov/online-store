@@ -1,12 +1,12 @@
 import { FormField } from '../elements/form-field';
 import { DB } from '../../services/db/database';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { Filter } from './filter';
 import { FilterCategory } from '../../interfaces/enums';
 
 export class AvFilter extends Filter {
   private category: keyof typeof FilterCategory = 'available';
-  private filterWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
+  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this.node });
   private items = [...DB.getVariants(this.category)].map(
     (item, index) =>
       new FormField({
@@ -21,7 +21,7 @@ export class AvFilter extends Filter {
 
   constructor() {
     super('Наличие');
-    this.filterWrapper.appendEl(this.items);
+    this.filterWrapper.append(...this.items);
     this.items.forEach((item) => {
       item.getInputNode().addEventListener('change', (e) => {
         const { target } = e;

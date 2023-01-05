@@ -1,12 +1,12 @@
-import { Anchor } from './elements/anchor';
-import { BaseComponent } from './elements/base-component';
+import { Anchor } from './elements/anchor-component';
+import { Component } from './elements/base-component';
 
-export class Footer extends BaseComponent {
-  private wrapper = new BaseComponent({ className: 'container', parent: this.node });
+export class Footer extends Component {
+  private wrapper = new Component({ className: 'container', parent: this.node });
 
-  private contentWrapper = new BaseComponent({ className: 'footer__wrapper', parent: this.wrapper.node });
+  private contentWrapper = new Component({ className: 'footer__wrapper', parent: this.wrapper.node });
 
-  private linkWrapper = new BaseComponent({ className: 'footer__links', parent: this.contentWrapper.node });
+  private linkWrapper = new Component({ className: 'footer__links', parent: this.contentWrapper.node });
 
   private linkOne = new Anchor({
     className: 'footer__link',
@@ -24,7 +24,11 @@ export class Footer extends BaseComponent {
     parent: this.linkWrapper.node,
   });
 
-  private year = new BaseComponent({ className: 'footer__year', text: '2022', parent: this.contentWrapper.node });
+  private year = new Component({
+    className: 'footer__year',
+    textContent: '2022',
+    parent: this.contentWrapper.node,
+  });
 
   private logo = new Anchor({
     className: 'footer__logo',

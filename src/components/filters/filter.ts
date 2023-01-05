@@ -1,15 +1,15 @@
 import { SwitchComponent } from '../switches/switch-component';
 import { FormField } from '../elements/form-field';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { DB } from '../../services/db/database';
 
-export class Filter extends BaseComponent {
-  private filterTitle: BaseComponent;
+export class Filter extends Component {
+  private filterTitle: Component;
 
   constructor(title: string) {
     super({ tag: 'li', className: 'filter__item' });
-    this.filterTitle = new BaseComponent({ tag: 'h2', className: 'filter__title', text: title });
-    this.appendEl(this.filterTitle);
+    this.filterTitle = new Component({ tag: 'h2', className: 'filter__title', textContent: title });
+    this.append(this.filterTitle);
   }
 
   static uncheckAll(...elements: (FormField | SwitchComponent)[]) {

@@ -1,10 +1,10 @@
 import { DB } from '../../services/db/database';
-import { BaseComponent } from '../elements/base-component';
-import { Button } from '../elements/button';
+import { Component } from '../elements/base-component';
+import { Button } from '../elements/button-component';
 
-export class ActivePromo extends BaseComponent {
-  private promoName = new BaseComponent({ className: 'promo-active__text', parent: this.node });
-  private promoValue = new BaseComponent({ className: 'promo-active__text', parent: this.node });
+export class ActivePromo extends Component {
+  private promoName = new Component({ className: 'promo-active__text', parent: this.node });
+  private promoValue = new Component({ className: 'promo-active__text', parent: this.node });
   private promoDelete = new Button({
     className: 'cart__stock cart__delete',
     parent: this.node,

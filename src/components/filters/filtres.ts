@@ -1,6 +1,6 @@
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { DB } from '../../services/db/database';
-import { Button } from '../elements/button';
+import { Button } from '../elements/button-component';
 import { QuantityFilter } from './quantity-filter';
 import { PriceFilter } from './price-filter';
 import { AvFilter } from './av-filter';
@@ -10,7 +10,7 @@ import { SizeFilter } from './size-filter';
 import { FeaturesFilter } from './features-filter';
 import { Filter } from './filter';
 
-export class Filters extends BaseComponent {
+export class Filters extends Component {
   private closeFilterTop = new Button({
     className: 'modal__close',
     ariaLabel: 'Закрыть',
@@ -30,7 +30,7 @@ export class Filters extends BaseComponent {
   clearFilters: Button;
   copyFilters: Button;
 
-  constructor(elem: BaseComponent) {
+  constructor(elem: Component) {
     super({ tag: 'ul', className: 'filter' });
     this.closeFilterTop.node.onclick = () => {
       elem.node.classList.remove('store__wrapper_is-open');
@@ -80,7 +80,7 @@ export class Filters extends BaseComponent {
           .catch(() => renderCopyAnimation('fail'));
       },
     });
-    this.appendEl([
+    this.append(
       this.availableFilter,
       this.switchFilter,
       this.priceFilter,
@@ -91,7 +91,7 @@ export class Filters extends BaseComponent {
       this.copyFilters,
       this.clearFilters,
       this.closeFilterBottom,
-    ]);
+    );
 
     //?
     this.renderFilterNumbers();

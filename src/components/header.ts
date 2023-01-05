@@ -1,15 +1,15 @@
 import { Burger } from './elements/burger-menu';
 import { DB } from '../services/db/database';
-import { Anchor } from './elements/anchor';
-import { BaseComponent } from './elements/base-component';
+import { Anchor } from './elements/anchor-component';
+import { Component } from './elements/base-component';
 import { FormField } from './elements/form-field';
-import { Button } from './elements/button';
+import { Button } from './elements/button-component';
 import { emitter } from '../services/event-emitter';
 import { debounce } from '../utils/utils';
 
-export class Header extends BaseComponent {
-  private container = new BaseComponent({ className: 'container', parent: this.node });
-  private wrapper = new BaseComponent({ className: 'header__wrapper', parent: this.container.node });
+export class Header extends Component {
+  private container = new Component({ className: 'container', parent: this.node });
+  private wrapper = new Component({ className: 'header__wrapper', parent: this.container.node });
   private logo = new Anchor({
     parent: this.wrapper.node,
     className: 'header__logo',
@@ -20,7 +20,7 @@ export class Header extends BaseComponent {
       this.searchField.destroy();
     },
   });
-  private controls = new BaseComponent({ className: 'header__controls', parent: this.wrapper.node });
+  private controls = new Component({ className: 'header__controls', parent: this.wrapper.node });
   private burger = new Burger();
   private searchField = new FormField({
     className: 'header',
@@ -37,16 +37,16 @@ export class Header extends BaseComponent {
     ariaLabel: 'Перейти в корзину',
     parent: this.controls.node,
   });
-  private cartCount = new BaseComponent({
+  private cartCount = new Component({
     tag: 'span',
     className: 'header__count',
-    text: `${DB.cart.sumQuantity}`,
+    textContent: `${DB.cart.sumQuantity}`,
     parent: this.cart.node,
   });
-  private cartPrice = new BaseComponent({
+  private cartPrice = new Component({
     tag: 'span',
     className: 'header__price',
-    text: `${DB.cart.sumPrice}`,
+    textContent: `${DB.cart.sumPrice}`,
     parent: this.controls.node,
   });
 
@@ -67,7 +67,7 @@ export class Header extends BaseComponent {
       this.controls.node.classList.toggle('header__controls_is-open');
       this.burger.node.classList.toggle('burger_is-open');
     };
-    this.wrapper.appendEl(this.burger);
+    this.wrapper.append(this.burger);
     this.controls.node.prepend(this.searchField.node);
 
     const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value), 300);

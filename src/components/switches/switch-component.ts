@@ -1,8 +1,8 @@
 import { FormField } from '../elements/form-field';
 import { KeyboardSwitch } from '../../services/db/keyboard-switch';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 
-export class SwitchComponent extends BaseComponent {
+export class SwitchComponent extends Component {
   private switchField: FormField;
 
   constructor(private keyboardSwitch: KeyboardSwitch, keyboardId: string, elemTag?: keyof HTMLElementTagNameMap) {
@@ -18,7 +18,7 @@ export class SwitchComponent extends BaseComponent {
     this.switchField.node.classList.add(id, `switch__item_${isAvailable}`);
 
     if (!isAvailable) this.switchField.disabled = true;
-    this.appendEl(this.switchField);
+    this.append(this.switchField);
   }
 
   getInputNode() {

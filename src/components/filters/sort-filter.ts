@@ -1,9 +1,9 @@
-import { Button } from '../elements/button';
-import { BaseComponent } from '../elements/base-component';
+import { Button } from '../elements/button-component';
+import { Component } from '../elements/base-component';
 import { FormField } from '../elements/form-field';
 import { DB } from '../../services/db/database';
 
-export class SortFilter extends BaseComponent {
+export class SortFilter extends Component {
   private alphSortAsc = new FormField({
     className: 'sort',
     modificator: 'alph-asc',
@@ -67,10 +67,10 @@ export class SortFilter extends BaseComponent {
       input.title = title;
       input.addEventListener('change', () => DB.filter.setParam('sortType', type).setParam('sortOrder', order));
       input.checked = sortParams.type === type && sortParams.order === order;
-      this.appendEl(element);
+      this.append(element);
     });
 
-    this.appendEl(this.resetSort);
+    this.append(this.resetSort.node);
   }
 
   uncheckAll() {

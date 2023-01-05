@@ -5,20 +5,20 @@ import { Header } from './components/header';
 import { Home } from './components/home-page/home-page';
 import { Store } from './components/store';
 import { ProductPage } from './components/product-page/product-page';
-import { BaseComponent } from './components/elements/base-component';
+import { Component } from './components/elements/base-component';
 import { Cart } from './components/cart/cart';
 /* import { ProductsListState } from './states/goods-state'; */
 import { Footer } from './components/footer';
 import { Error as ErrorPage } from './utils/error';
 import './assets/styles/global/style.scss';
 
-class App extends BaseComponent {
+class App extends Component {
   private root = document.getElementById('root');
   private router?: Router;
-  private currentPage?: BaseComponent;
+  private currentPage?: Component;
 
   private errorPage = new ErrorPage();
-  private pages: Record<string, BaseComponent> = {
+  private pages: Record<string, Component> = {
     home: new Home(),
     store: new Store(),
     cart: new Cart(),
@@ -34,15 +34,15 @@ class App extends BaseComponent {
     this.root.append(this.header.node, this.node, this.footer.node);
   }
 
-  renderPage(page: BaseComponent): void {
+  renderPage(page: Component): void {
     this.currentPage?.destroy();
     this.currentPage = page;
-    this.appendEl(this.currentPage);
+    this.append(this.currentPage);
   }
 
   run() {
     const routes: Router['routes'] = new Map();
-    const pages: [string, BaseComponent][] = Object.entries(this.pages);
+    const pages: [string, Component][] = Object.entries(this.pages);
     const products: Keyboard[] = DB.keyboards;
 
     routes.set('', () => this.renderPage(this.pages.home));

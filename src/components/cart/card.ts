@@ -1,18 +1,18 @@
 import Imask from 'imask';
 import { FormField } from '../elements/form-field';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 
-export class Card extends BaseComponent {
-  cardWrapper: BaseComponent;
-  logo: BaseComponent;
+export class Card extends Component {
+  cardWrapper: Component;
+  logo: Component;
   cardNumber: FormField;
   cardExpires: FormField;
   cardCVV: FormField;
 
   constructor() {
     super({ className: 'card' });
-    this.logo = new BaseComponent({ className: 'card__logo', parent: this.node });
-    this.cardWrapper = new BaseComponent({ className: 'card__wrapper', parent: this.node });
+    this.logo = new Component({ className: 'card__logo', parent: this.node });
+    this.cardWrapper = new Component({ className: 'card__wrapper', parent: this.node });
     this.cardNumber = new FormField({
       className: 'card',
       modificator: 'number',
@@ -87,6 +87,6 @@ export class Card extends BaseComponent {
       mask: '000',
     };
     Imask(this.cardCVV.getInputNode(), cvvMaskOptions);
-    this.cardWrapper.appendEl([this.cardNumber, this.cardExpires, this.cardCVV]);
+    this.cardWrapper.append(this.cardNumber, this.cardExpires, this.cardCVV);
   }
 }

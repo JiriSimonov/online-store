@@ -1,16 +1,16 @@
 import { FormField } from './form-field';
-import { BaseComponent } from './base-component';
+import { Component } from './base-component';
 import { DB } from '../../services/db/database';
 import { debounce } from '../../utils/utils';
 // import { debounce } from '../../utils/utils';
 
-export class DualSlider extends BaseComponent {
-  private sliderWrapper = new BaseComponent({ className: 'dual-slider__wrapper', parent: this.node });
+export class DualSlider extends Component {
+  private sliderWrapper = new Component({ className: 'dual-slider__wrapper', parent: this.node });
   private minimumValue: FormField;
   private maximumValue: FormField;
-  private sliderLine = new BaseComponent({ className: 'dual-slider__line', parent: this.node });
-  private sliderProgress = new BaseComponent({ className: 'dual-slider__progress', parent: this.sliderLine.node });
-  private controls = new BaseComponent({ className: 'dual-slider__controls', parent: this.node });
+  private sliderLine = new Component({ className: 'dual-slider__line', parent: this.node });
+  private sliderProgress = new Component({ className: 'dual-slider__progress', parent: this.sliderLine.node });
+  private controls = new Component({ className: 'dual-slider__controls', parent: this.node });
   private sliderLeft: FormField;
   private sliderRight: FormField;
   private gap: number;
@@ -98,8 +98,8 @@ export class DualSlider extends BaseComponent {
       this.setLeftPos(this.minimumValue.value, this.minimumValue.input.max);
       this.setRightPos(this.maximumValue.value, this.maximumValue.input.max);
     });
-    this.sliderWrapper.appendEl([this.minimumValue, this.maximumValue]);
-    this.controls.appendEl([this.sliderLeft, this.sliderRight]);
+    this.sliderWrapper.append(this.minimumValue, this.maximumValue);
+    this.controls.append(this.sliderLeft, this.sliderRight);
   }
 
   setLeftPos(inputVal: string, limit: string): void {

@@ -1,9 +1,9 @@
 import { DB } from '../../services/db/database';
 import { FormField } from '../elements/form-field';
-import { BaseComponent } from '../elements/base-component';
-import { Button } from '../elements/button';
+import { Component } from '../elements/base-component';
+import { Button } from '../elements/button-component';
 
-export class PromoForm extends BaseComponent {
+export class PromoForm extends Component {
   private promoBtn = new Button({
     className: 'promo__submit-btn',
     textContent: 'Применить',
@@ -26,10 +26,10 @@ export class PromoForm extends BaseComponent {
       return false;
     };
     this.promoField.getInputNode().oninput = () => {
-      if (DB.cart.promo.isValid(this.promoField.getInputNode().value)) this.appendEl(this.promoBtn);
+      if (DB.cart.promo.isValid(this.promoField.getInputNode().value)) this.append(this.promoBtn);
       else this.promoBtn.destroy();
     };
-    this.appendEl(this.promoField);
+    this.append(this.promoField);
     this.node.onsubmit = () => false;
   }
 }

@@ -1,35 +1,35 @@
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { ProductImage } from './product-img';
 import { SwitchComponent } from '../switches/switch-component';
 import { SwitchModal } from '../switches/switch-modal';
-import { Button } from '../elements/button';
+import { Button } from '../elements/button-component';
 import { Keyboard } from '../../services/db/keyboard';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
 import { emitter } from '../../services/event-emitter';
 
-export class ProductCard extends BaseComponent {
-  private isAvialable: BaseComponent;
+export class ProductCard extends Component {
+  private isAvialable: Component;
   private productImage: ProductImage;
-  private storeDescr = new BaseComponent({ className: 'store__description' });
-  private cardTitle: BaseComponent;
+  private storeDescr = new Component({ className: 'store__description' });
+  private cardTitle: Component;
   private cardCopy = new Button({ className: 'store__card-copy', ariaLabel: 'Скопировать название' });
-  private switchList = new BaseComponent({ tag: 'ul', className: 'switch' });
+  private switchList = new Component({ tag: 'ul', className: 'switch' });
   private switchItems: SwitchComponent[];
-  private priceWrapper = new BaseComponent({ className: 'store__card-wrapper' });
-  private cardPrice = new BaseComponent({ className: 'store__card-price' });
+  private priceWrapper = new Component({ className: 'store__card-wrapper' });
+  private cardPrice = new Component({ className: 'store__card-price' });
   private buyNowBtn = new Button({ className: 'store__card-btn', textContent: 'Купить в 1 клик' });
   private cardBtn = new Button({ className: 'store__card-btn' });
   private switchModal: SwitchModal | null | undefined;
 
   constructor(private keyboard: Keyboard, elemTag?: keyof HTMLElementTagNameMap) {
     super({ tag: elemTag ?? 'li', className: 'store__item' });
-    this.isAvialable = new BaseComponent({
+    this.isAvialable = new Component({
       className: `store__card-av store__card-av_${keyboard.isAvailable}`,
-      text: `${keyboard.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
+      textContent: `${keyboard.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
     });
     this.productImage = new ProductImage(keyboard.images);
-    this.cardTitle = new BaseComponent({ tag: 'h2', className: 'store__card-title', text: keyboard.title });
+    this.cardTitle = new Component({ tag: 'h2', className: 'store__card-title', textContent: keyboard.title });
     this.switchItems = keyboard.switches.reduce((acc, keyboardSwitch) => {
       if (keyboardSwitch.id === 'null') return acc;
 
@@ -68,12 +68,12 @@ export class ProductCard extends BaseComponent {
       }
     };
 
-    this.appendEl([this.isAvialable, this.productImage, this.storeDescr]);
-    this.storeDescr.appendEl([this.cardTitle, this.switchList, this.priceWrapper]);
-    this.cardTitle.appendEl(this.cardCopy);
-    this.switchList.appendEl(this.switchItems);
-    this.priceWrapper.appendEl(this.cardPrice);
-    if (keyboard.isAvailable) this.priceWrapper.appendEl([this.buyNowBtn, this.cardBtn]);
+    this.append(this.isAvialable, this.productImage, this.storeDescr);
+    this.storeDescr.append(this.cardTitle, this.switchList, this.priceWrapper);
+    this.cardTitle.append(this.cardCopy);
+    this.switchList.append(...this.switchItems);
+    this.priceWrapper.append(this.cardPrice);
+    if (keyboard.isAvailable) this.priceWrapper.append(this.buyNowBtn, this.cardBtn);
 
     this.renderText();
   }
@@ -104,7 +104,7 @@ export class ProductCard extends BaseComponent {
     label.addEventListener('mouseout', mouseoutListener);
     this.switchModal = new SwitchModal(label.textContent ?? '', label.classList.contains('switch__item_true'));
     this.cardPrice.node.classList.add('store__card-price_is-open');
-    this.appendEl(this.switchModal);
+    this.append(this.switchModal);
   }
 
   private addToCart(): void {

@@ -1,6 +1,6 @@
 import { Filter } from './filter';
 import { SwitchComponent } from '../switches/switch-component';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { SwitchModal } from '../switches/switch-modal';
 import { DB } from '../../services/db/database';
 import { FormField } from '../elements/form-field';
@@ -9,9 +9,9 @@ import { FilterCategory } from '../../interfaces/enums';
 export class SwitchFilter extends Filter {
   private categoryA: keyof typeof FilterCategory = 'manufacturer';
   private categoryB: keyof typeof FilterCategory = 'switches';
-  private manufacturersWrapper = new BaseComponent({ className: 'filter__wrapper', parent: this.node });
+  private manufacturersWrapper = new Component({ className: 'filter__wrapper', parent: this.node });
 
-  private switchWrapper = new BaseComponent({ tag: 'ul', className: 'switch', parent: this.node });
+  private switchWrapper = new Component({ tag: 'ul', className: 'switch', parent: this.node });
 
   private manufacturers = [...DB.getVariants(this.categoryA)]
     .filter((elem) => elem !== 'null')
@@ -38,7 +38,7 @@ export class SwitchFilter extends Filter {
       return component;
     });
 
-  private modalWrapper: BaseComponent | null | undefined;
+  private modalWrapper: Component | null | undefined;
 
   private switchModal: SwitchModal | null | undefined;
 
@@ -60,16 +60,16 @@ export class SwitchFilter extends Filter {
           else DB.filter.remove(this.categoryB, target.value);
       });
     });
-    this.manufacturersWrapper.appendEl(this.manufacturers);
-    this.switchWrapper.appendEl(this.switches);
+    this.manufacturersWrapper.append(...this.manufacturers);
+    this.switchWrapper.append(...this.switches);
     this.switchWrapper.node.addEventListener('mouseover', (e) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('switch__label')) {
         target.setAttribute('id', 'open');
-        this.modalWrapper = new BaseComponent({ className: 'switch__modal' });
+        this.modalWrapper = new Component({ className: 'switch__modal' });
         this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
         target.append(this.modalWrapper.node);
-        this.modalWrapper.appendEl(this.switchModal);
+        this.modalWrapper.append(this.switchModal);
         target.addEventListener('mouseout', () => {
           target.removeAttribute('id');
           this.modalWrapper?.destroy();

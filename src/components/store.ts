@@ -1,5 +1,5 @@
-import { BaseComponent } from './elements/base-component';
-import { Button } from './elements/button';
+import { Component } from './elements/base-component';
+import { Button } from './elements/button-component';
 import { Filters } from './filters/filtres';
 import { ProductCard } from './product/product-card';
 import { Keyboard } from '../services/db/keyboard';
@@ -10,29 +10,29 @@ import { DB } from '../services/db/database';
 import { getChunk, getNoun } from '../utils/utils';
 import { Burger } from './elements/burger-menu';
 
-export class Store extends BaseComponent {
+export class Store extends Component {
   private chunkSize = 20;
   private chunkNumber = 0;
 
-  private container = new BaseComponent({ className: 'container' });
-  private wrapper = new BaseComponent({
+  private container = new Component({ className: 'container' });
+  private wrapper = new Component({
     className: `store__wrapper${DB.filter.getParam('filters') ? ' store__wrapper_is-open' : ''}`,
   });
-  private title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
+  private title = new Component({ tag: 'h1', className: 'store__title', textContent: 'Клавиатуры' });
   private showFiltersBtn = new Button({ className: 'store__filter', textContent: 'Фильтры' });
-  private contentWrapper = new BaseComponent({ className: 'store__content' });
+  private contentWrapper = new Component({ className: 'store__content' });
   private storeList = new StoreContent();
   private storeItems: ProductCard[] = [];
   private changeView = new ChangeView();
   private sortFilter = new SortFilter();
   private burger = new Burger();
-  private goodsCount = new BaseComponent({ className: 'store__goods-count' });
+  private goodsCount = new Component({ className: 'store__goods-count' });
   private filters = new Filters(this.wrapper);
   private nextButton = new Button({
     textContent: 'Показать еще',
     className: 'store__more',
     onclick: () => {
-      this.storeList.appendEl(this.chunk);
+      this.storeList.append(...this.chunk);
       this.renderBottomButton();
     },
   });
@@ -65,11 +65,11 @@ export class Store extends BaseComponent {
       this.burger.node.classList.toggle('burger_is-open');
       this.sortFilter.uncheckAll();
     };
-    this.appendEl(this.container);
-    this.container.appendEl(this.wrapper);
-    this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
-    this.contentWrapper.appendEl([this.storeList, this.changeView]);
-    this.changeView.appendEl([this.sortFilter, this.burger]);
+    this.append(this.container);
+    this.container.append(this.wrapper);
+    this.wrapper.append(this.title, this.showFiltersBtn, this.contentWrapper);
+    this.contentWrapper.append(this.storeList, this.changeView);
+    this.changeView.append(this.sortFilter, this.burger);
     if (DB.filter.getParam('filters')) this.contentWrapper.node.prepend(this.filters.node);
     window.addEventListener('hashchange', () => {
       this.update();
@@ -82,8 +82,8 @@ export class Store extends BaseComponent {
     this.chunkNumber = 0;
     this.storeItems = this.chunk;
     this.storeList.node.replaceChildren();
-    this.storeList.appendEl(this.storeItems);
-    this.contentWrapper.appendEl(this.goodsCount);
+    this.storeList.append(...this.storeItems);
+    this.contentWrapper.append(this.goodsCount);
     const num = DB.filter.list.length;
     let message = 'По вашему запросу ';
     switch (num) {
@@ -113,7 +113,7 @@ export class Store extends BaseComponent {
 
     next.remove();
 
-    if (length >= size) this.wrapper.appendEl(next);
+    if (length >= size) this.wrapper.append(next);
 
     if (number * size >= length) next.replaceWith(scroll);
     else scroll.replaceWith(next);

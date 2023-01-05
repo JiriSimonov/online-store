@@ -1,17 +1,17 @@
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 
-export class Loader extends BaseComponent {
-  private cube: BaseComponent;
+export class Loader extends Component {
+  private cube: Component;
 
-  private items: BaseComponent[];
+  private items: Component[];
 
-  private title: BaseComponent;
+  private title: Component;
 
   constructor(order: boolean) {
     super({ className: 'loader' });
-    this.title = new BaseComponent({ tag: 'h2', className: 'loader__title', text: 'Заказ оформлен' });
-    if (order) this.appendEl(this.title);
-    this.cube = new BaseComponent({ className: 'cube', parent: this.node });
-    this.items = new Array(5).fill(0).map(() => new BaseComponent({ parent: this.cube.node }));
+    this.title = new Component({ tag: 'h2', className: 'loader__title', textContent: 'Заказ оформлен' });
+    if (order) this.append(this.title);
+    this.cube = new Component({ className: 'cube', parent: this.node });
+    this.items = new Array(5).fill(0).map(() => new Component({ parent: this.cube.node }));
   }
 }

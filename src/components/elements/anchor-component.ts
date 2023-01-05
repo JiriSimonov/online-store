@@ -1,4 +1,4 @@
-import { Component, ComponentProps } from './component';
+import { Component, ComponentProps } from './base-component';
 
 export class Anchor extends Component<HTMLAnchorElement> {
   constructor(props?: Omit<ComponentProps<HTMLAnchorElement>, 'toString'>) {

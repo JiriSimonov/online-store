@@ -1,8 +1,8 @@
-import { BaseComponent } from './base-component';
-import { Button } from './button';
+import { Component } from './base-component';
+import { Button } from './button-component';
 import { DB } from '../../services/db/database';
 
-export class ChangeView extends BaseComponent {
+export class ChangeView extends Component {
   private table: Button;
 
   private list: Button;
