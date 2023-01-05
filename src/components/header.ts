@@ -1,5 +1,4 @@
 import { Burger } from './elements/burger-menu';
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { DB } from '../services/db/database';
 import { Anchor } from './elements/anchor';
 import { BaseComponent } from './elements/base-component';
@@ -67,18 +66,11 @@ export class Header extends BaseComponent {
     this.wrapper.appendEl(this.burger);
     this.controls.getNode().prepend(this.searchField.getNode());
 
-    // TODO refactor 👇
-    const TODOREFACTOR = debounce((el: HTMLInputElement) => {
-      DB.filter.clear('search');
-      if (el.value) DB.filter.add('search', el.value);
-    }, 300);
-
+    const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value), 300);
     this.searchField.getInputNode().oninput = (e) => {
       if (!window.location.hash.startsWith('#store')) window.location.hash = '#store';
-      const { target } = e;
-      if (target instanceof HTMLInputElement) TODOREFACTOR(target);
+      if (e.target instanceof HTMLInputElement) handleSearchInput(e.target.value);
     };
-    // TODO refactor ☝
     this.subscribe();
   }
 
