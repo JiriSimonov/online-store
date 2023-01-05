@@ -213,6 +213,12 @@ export class Cart extends BaseComponent {
       this.pagCountField.getInputNode().max = this.pagination.lastPage;
       this.pagination.setPage(`${Math.ceil(this.pagination.firstindex / this.pagination.pageSize)}`);
     });
+    emitter.subscribe('cart__change-quantity', () => {
+      this.orderBtn.getNode().disabled = true;
+    })
+    emitter.subscribe('cart__undisable', () => {
+      this.orderBtn.getNode().disabled = false;
+    })
     return this;
   }
 }

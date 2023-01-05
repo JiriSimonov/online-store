@@ -105,14 +105,24 @@ export class CartItemElem extends BaseComponent {
     this.countBtn.appendEl(this.countField);
     this.countField.getInputNode().oninput = (e) => {
       if (e.target && e.target instanceof HTMLInputElement) {
+        emitter.emit('cart__undisable');
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
-        if (+e.target.value < +e.target.min) e.target.value = e.target.min;
+        if (+e.target.value <= +e.target.min && e.target.value !== '') e.target.value = e.target.min;
+        if (e.target.value === '' || +e.target.value === 0) {
+          e.preventDefault();
+          emitter.emit('cart__change-quantity');
+        }; 
         product.set(+e.target.value);
         this.inStock.getNode().textContent = `Осталось на складе: ${keyboardSwitch.quantity - +e.target.value}`;
         this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
         this.cartInc.disabled = +e.target.value === keyboardSwitch.quantity;
       }
     };
+    if (this.countField.getInputNode().value === '0') {
+      this.countField.getInputNode().value = this.countField.getInputNode().min;
+      this.countField.getInputNode().dispatchEvent(new Event('input'));
+      emitter.emit('cart__save');
+    }
     this.cartInc = new Button({
       className: 'count-btn__inc',
       text: '+',
