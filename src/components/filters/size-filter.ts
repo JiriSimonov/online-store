@@ -6,7 +6,7 @@ import { FilterCategory } from '../../interfaces/enums';
 
 export class SizeFilter extends Filter {
   private category: keyof typeof FilterCategory = 'size';
-  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this.node });
+  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this });
 
   private size = [...DB.getVariants(this.category)]
     .filter((elem) => elem)

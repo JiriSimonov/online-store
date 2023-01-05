@@ -8,10 +8,10 @@ import { emitter } from '../services/event-emitter';
 import { debounce } from '../utils/utils';
 
 export class Header extends Component {
-  private container = new Component({ className: 'container', parent: this.node });
-  private wrapper = new Component({ className: 'header__wrapper', parent: this.container.node });
+  private container = new Component({ className: 'container', parent: this });
+  private wrapper = new Component({ className: 'header__wrapper', parent: this.container });
   private logo = new Anchor({
-    parent: this.wrapper.node,
+    parent: this.wrapper,
     className: 'header__logo',
     text: 'Keyboards Store',
     onclick: () => {
@@ -20,34 +20,29 @@ export class Header extends Component {
       this.searchField.destroy();
     },
   });
-  private controls = new Component({ className: 'header__controls', parent: this.wrapper.node });
+  private controls = new Component({ className: 'header__controls', parent: this.wrapper });
   private burger = new Burger();
-  private searchField = new FormField({
-    className: 'header',
-    type: 'search',
-    placeholder: 'Найти',
-    value: '',
-  });
-  private search = new Button({ className: 'header__search', ariaLabel: 'Поиск', parent: this.controls.node });
+  private searchField = new FormField({ className: 'header', type: 'search', placeholder: 'Найти', value: '' });
+  private search = new Button({ className: 'header__search', ariaLabel: 'Поиск', parent: this.controls });
   private cart = new Button({
     className: 'header__cart',
     onclick: () => {
       window.location.hash = '#cart';
     },
     ariaLabel: 'Перейти в корзину',
-    parent: this.controls.node,
+    parent: this.controls,
   });
   private cartCount = new Component({
     tag: 'span',
     className: 'header__count',
     textContent: `${DB.cart.sumQuantity}`,
-    parent: this.cart.node,
+    parent: this.cart,
   });
   private cartPrice = new Component({
     tag: 'span',
     className: 'header__price',
     textContent: `${DB.cart.sumPrice}`,
-    parent: this.controls.node,
+    parent: this.controls,
   });
 
   constructor() {
@@ -63,9 +58,9 @@ export class Header extends Component {
       else this.controls.prepend(this.searchField);
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
     });
-    this.burger.node.onclick = () => {
-      this.controls.node.classList.toggle('header__controls_is-open');
-      this.burger.node.classList.toggle('burger_is-open');
+    this.burger.onclick = () => {
+      this.controls.classList.toggle('header__controls_is-open');
+      this.burger.classList.toggle('burger_is-open');
     };
     this.wrapper.append(this.burger);
     this.controls.prepend(this.searchField);

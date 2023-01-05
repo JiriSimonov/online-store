@@ -6,7 +6,7 @@ import { FilterCategory } from '../../interfaces/enums';
 
 export class BrandFilter extends Filter {
   private category: keyof typeof FilterCategory = 'brand';
-  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this.node });
+  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this });
 
   private brands = [...DB.getVariants(this.category)].map(
     (item) =>
@@ -23,12 +23,12 @@ export class BrandFilter extends Filter {
   constructor() {
     super('Бренды');
 
-    this.filterWrapper.node.onchange = (e) => {
+    this.filterWrapper.node.addEventListener('change', (e) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
       if (target.checked) DB.filter.add(this.category, target.value);
       else DB.filter.remove(this.category, target.value);
-    };
+    });
 
     this.filterWrapper.append(...this.brands);
   }

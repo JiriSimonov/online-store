@@ -49,10 +49,7 @@ export class OrderForm extends Component {
       placeholder: '+7(982)-386-22-16',
       pattern: `\\+7\\(\\d{3}\\)-\\d{3}-\\d{2}-\\d{2}`,
     });
-    const phoneMaskOption = {
-      mask: '+{7}(000)-000-00-00',
-      lazy: false,
-    };
+    const phoneMaskOption = { mask: '+{7}(000)-000-00-00', lazy: false };
     Imask(this.phoneField.getInputNode(), phoneMaskOption);
     this.addressField = new FormField({
       className: 'modal',
@@ -69,20 +66,17 @@ export class OrderForm extends Component {
       pattern: '.+@.+\\..+',
     });
     this.card = new Card();
-    this.modalSubmit = new Button({
-      className: 'modal__submit',
-      textContent: 'Заказать',
-    });
+    this.modalSubmit = new Button({ className: 'modal__submit', textContent: 'Заказать' });
     this.modalClose = new Button({
       className: 'modal__close',
       ariaLabel: 'Закрыть',
-      parent: this.modalContent.node,
+      parent: this.modalContent,
       onclick: () => {
         this.destroy();
         document.body.classList.remove('no-scroll');
       },
     });
-    this.modalForm.node.onsubmit = () => {
+    this.modalForm.node.addEventListener('submit', () => {
       document.body.append(this.loader.node);
       setTimeout(() => {
         window.location.hash = '#store';
@@ -93,7 +87,7 @@ export class OrderForm extends Component {
         document.body.classList.remove('no-scroll');
       }, 3500);
       return false;
-    };
+    });
 
     this.append(this.modalOverlay);
     this.modalOverlay.append(this.modalContent);
@@ -107,8 +101,7 @@ export class OrderForm extends Component {
       this.modalSubmit,
     );
     this.modalOverlay.node.addEventListener('click', (e) => {
-      const { target } = e;
-      if (target === this.modalOverlay.node) {
+      if (e.target === this.modalOverlay.node) {
         this.destroy();
         document.body.classList.remove('no-scroll');
       }

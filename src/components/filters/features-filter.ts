@@ -6,7 +6,7 @@ import { FilterCategory } from '../../interfaces/enums';
 
 export class FeaturesFilter extends Filter {
   private category: keyof typeof FilterCategory = 'features';
-  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this.node });
+  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this });
 
   private features = [...DB.getVariants(this.category)].map(
     (item) =>

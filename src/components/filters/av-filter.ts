@@ -6,7 +6,7 @@ import { FilterCategory } from '../../interfaces/enums';
 
 export class AvFilter extends Filter {
   private category: keyof typeof FilterCategory = 'available';
-  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this.node });
+  private filterWrapper = new Component({ className: 'filter__wrapper', parent: this });
   private items = [...DB.getVariants(this.category)].map(
     (item, index) =>
       new FormField({

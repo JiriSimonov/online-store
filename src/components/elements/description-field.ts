@@ -8,7 +8,7 @@ export class DescriptionField extends Component {
 
   constructor(props: DescriptionFieldProps) {
     super({ tag: 'li', className: 'product__item' });
-    this.key = new Heading({ tag: 'h3', className: 'product__subtitle', textContent: props.key, parent: this.node });
-    this.value = new Component({ className: 'product__text', textContent: props.value, parent: this.node });
+    this.key = new Heading({ tag: 'h3', className: 'product__subtitle', textContent: props.key, parent: this });
+    this.value = new Component({ className: 'product__text', textContent: props.value, parent: this });
   }
 }

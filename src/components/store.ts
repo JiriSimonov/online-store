@@ -47,8 +47,8 @@ export class Store extends Section {
 
   constructor() {
     super({ className: 'store' });
-    this.showFiltersBtn.node.onclick = () => {
-      const { classList } = this.wrapper.node;
+    this.showFiltersBtn.onclick = () => {
+      const { classList } = this.wrapper;
       if (!classList.contains('store__wrapper_is-open')) {
         this.contentWrapper.prepend(this.filters);
         classList.add('store__wrapper_is-open');
@@ -59,13 +59,13 @@ export class Store extends Section {
         DB.filter.setParam('filters');
       }
     };
-    this.burger.node.onclick = () => {
-      this.sortFilter.node.classList.toggle('sort_is-open');
-      this.burger.node.classList.toggle('burger_is-open');
+    this.burger.onclick = () => {
+      this.sortFilter.classList.toggle('sort_is-open');
+      this.burger.classList.toggle('burger_is-open');
     };
-    this.sortFilter.getResertSortNode().onclick = () => {
-      this.sortFilter.node.classList.toggle('sort_is-open');
-      this.burger.node.classList.toggle('burger_is-open');
+    this.sortFilter.resetSortNode.onclick = () => {
+      this.sortFilter.classList.toggle('sort_is-open');
+      this.burger.classList.toggle('burger_is-open');
       this.sortFilter.uncheckAll();
     };
     this.append(this.container);
@@ -84,7 +84,7 @@ export class Store extends Section {
   update = () => {
     this.chunkNumber = 0;
     this.storeItems = this.chunk;
-    this.storeList.node.replaceChildren();
+    this.storeList.clear();
     this.storeList.append(...this.storeItems);
     this.contentWrapper.append(this.goodsCount);
     const num = DB.filter.list.length;
@@ -112,9 +112,9 @@ export class Store extends Section {
 
   private renderBottomButton() {
     const [length, number, size] = [DB.filter.list.length, this.chunkNumber, this.chunkSize];
-    const [next, scroll] = [this.nextButton.node, this.scrollButton.node];
+    const [next, scroll] = [this.nextButton, this.scrollButton];
 
-    next.remove();
+    next.destroy();
 
     if (length >= size) this.wrapper.append(next);
 

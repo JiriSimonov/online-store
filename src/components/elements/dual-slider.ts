@@ -5,12 +5,12 @@ import { debounce } from '../../utils/utils';
 // import { debounce } from '../../utils/utils';
 
 export class DualSlider extends Component {
-  private sliderWrapper = new Component({ className: 'dual-slider__wrapper', parent: this.node });
+  private sliderWrapper = new Component({ className: 'dual-slider__wrapper', parent: this });
   private minimumValue: FormField;
   private maximumValue: FormField;
-  private sliderLine = new Component({ className: 'dual-slider__line', parent: this.node });
-  private sliderProgress = new Component({ className: 'dual-slider__progress', parent: this.sliderLine.node });
-  private controls = new Component({ className: 'dual-slider__controls', parent: this.node });
+  private sliderLine = new Component({ className: 'dual-slider__line', parent: this });
+  private sliderProgress = new Component({ className: 'dual-slider__progress', parent: this.sliderLine });
+  private controls = new Component({ className: 'dual-slider__controls', parent: this });
   private sliderLeft: FormField;
   private sliderRight: FormField;
   private gap: number;
@@ -103,11 +103,11 @@ export class DualSlider extends Component {
   }
 
   setLeftPos(inputVal: string, limit: string): void {
-    this.sliderProgress.node.style.left = `${(+inputVal / +limit) * 100}%`;
+    this.sliderProgress.style.left = `${(+inputVal / +limit) * 100}%`;
   }
 
   setRightPos(inputVal: string, limit: string): void {
-    this.sliderProgress.node.style.right = `${100 - (+inputVal / +limit) * 100}%`;
+    this.sliderProgress.style.right = `${100 - (+inputVal / +limit) * 100}%`;
   }
 
   setValidMin(elem: HTMLInputElement): void {

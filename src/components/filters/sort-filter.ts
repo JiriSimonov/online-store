@@ -70,7 +70,7 @@ export class SortFilter extends Component {
       this.append(element);
     });
 
-    this.append(this.resetSort.node);
+    this.append(this.resetSort);
   }
 
   uncheckAll() {
@@ -85,7 +85,7 @@ export class SortFilter extends Component {
     DB.filter.setParam('sortType').setParam('sortOrder');
   }
 
-  getResertSortNode() {
+  get resetSortNode() {
     return this.resetSort.node;
   }
 }

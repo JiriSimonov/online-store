@@ -17,7 +17,7 @@ export class FormField extends Component<HTMLLabelElement> {
       className: props.modificator
         ? `${props.className}__input ${props.className}__input_${props.modificator}`
         : `${props.className}__input`,
-      parent: this.node,
+      parent: this,
       type: props.type,
       placeholder: props.placeholder,
       pattern: props.pattern,

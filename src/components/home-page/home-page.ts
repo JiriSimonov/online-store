@@ -4,8 +4,8 @@ import { Heading } from '../elements/heading-component';
 import { Section } from '../elements/section-component';
 
 export class Home extends Section {
-  private container = new Component({ className: 'container', parent: this.node });
-  private wrapper = new Component({ className: 'home__wrapper', parent: this.container.node });
+  private container = new Component({ className: 'container', parent: this });
+  private wrapper = new Component({ className: 'home__wrapper', parent: this.container });
   private title = new Heading({
     tag: 'h1',
     className: 'home__title',

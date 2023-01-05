@@ -14,7 +14,7 @@ export class Filters extends Component {
   private closeFilterTop = new Button({
     className: 'modal__close',
     ariaLabel: 'Закрыть',
-    parent: this.node,
+    parent: this,
   });
   private closeFilterBottom = new Button({
     className: 'filter__clear',
@@ -32,13 +32,13 @@ export class Filters extends Component {
 
   constructor(elem: Component) {
     super({ tag: 'ul', className: 'filter' });
-    this.closeFilterTop.node.onclick = () => {
-      elem.node.classList.remove('store__wrapper_is-open');
+    this.closeFilterTop.onclick = () => {
+      elem.classList.remove('store__wrapper_is-open');
       DB.filter.setParam('filters');
       this.destroy();
     };
-    this.closeFilterBottom.node.onclick = () => {
-      elem.node.classList.remove('store__wrapper_is-open');
+    this.closeFilterBottom.onclick = () => {
+      elem.classList.remove('store__wrapper_is-open');
       DB.filter.setParam('filters');
       this.destroy();
       window.scrollTo(0, 0);
@@ -65,13 +65,13 @@ export class Filters extends Component {
       textContent: 'Скопировать фильтры',
       onclick: () => {
         const renderCopyAnimation = (result: 'success' | 'fail') => {
-          const icon = this.copyFilters.node;
+          const icon = this.copyFilters;
           icon.classList.add(`filter__clear_${result}`);
-          icon.textContent = 'Скопировано!';
-          icon.ontransitionend = () => {
+          icon.text = 'Скопировано!';
+          icon.node.ontransitionend = () => {
             icon.classList.remove(`filter__clear_${result}`);
-            icon.textContent = 'Скопировать фильтры';
-            icon.ontransitionend = null;
+            icon.text = 'Скопировать фильтры';
+            icon.node.ontransitionend = null;
           };
         };
         navigator.clipboard
@@ -135,7 +135,7 @@ export class Filters extends Component {
 
       //? отключил дизейбл, т.к. это отменяет часть `||` фильтрации
       // input.disabled = !sample; //? возможно тут лучше поинтеривентс, но не уверен
-      Object.assign(v.node.style, { opacity: sample ? 1 : 1 / 3 });
+      Object.assign(v.style, { opacity: sample ? 1 : 1 / 3 });
 
       if (textNode) textNode.textContent = `${label}: (${sample}/${all})`;
     });

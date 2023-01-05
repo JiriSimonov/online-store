@@ -42,7 +42,7 @@ export class ProductCard extends Component {
     this.switchList.node.onmouseover = (e) => {
       if (e.target instanceof HTMLLabelElement) this.renderModal(e.target);
     };
-    this.node.onclick = (e) => {
+    this.onclick = (e) => {
       if (!(e.target instanceof HTMLElement) || e.target instanceof HTMLLabelElement) return;
       if (e.target.classList.contains('product__path-item')) return;
 
@@ -97,14 +97,14 @@ export class ProductCard extends Component {
     this.renderText(label);
     const mouseoutListener = () => {
       this.renderText();
-      this.cardPrice.node.classList.remove('store__card-price_is-open');
+      this.cardPrice.classList.remove('store__card-price_is-open');
       this.switchModal?.destroy();
       this.switchModal = null;
       label.removeEventListener('mouseout', mouseoutListener);
     };
     label.addEventListener('mouseout', mouseoutListener);
     this.switchModal = new SwitchModal(label.textContent ?? '', label.classList.contains('switch__item_true'));
-    this.cardPrice.node.classList.add('store__card-price_is-open');
+    this.cardPrice.classList.add('store__card-price_is-open');
     this.append(this.switchModal);
   }
 
@@ -120,11 +120,11 @@ export class ProductCard extends Component {
 
   private copyTitle(): void {
     const renderCopyAnimation = (result: 'success' | 'fail') => {
-      const icon = this.cardCopy.node;
+      const icon = this.cardCopy;
       icon.classList.add(`store__card-copy_${result}`);
-      icon.ontransitionend = () => {
+      icon.node.ontransitionend = () => {
         icon.classList.remove(`store__card-copy_${result}`);
-        icon.ontransitionend = null;
+        icon.node.ontransitionend = null;
       };
     };
     navigator.clipboard

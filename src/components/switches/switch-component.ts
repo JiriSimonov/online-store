@@ -15,7 +15,7 @@ export class SwitchComponent extends Component {
       value: id,
       name: keyboardId,
     });
-    this.switchField.node.classList.add(id, `switch__item_${isAvailable}`);
+    this.switchField.classList.add(id, `switch__item_${isAvailable}`);
 
     if (!isAvailable) this.switchField.disabled = true;
     this.append(this.switchField);

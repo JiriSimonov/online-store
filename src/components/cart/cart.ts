@@ -21,7 +21,7 @@ export class Cart extends Section {
   private container = new Component({ className: 'container' });
   private wrapper = new Component({ className: 'cart__wrapper' });
 
-  private cartTitle = new Heading({ className: 'cart__title', textContent: 'Корзина пока что пуста' });
+  private cartTitle = new Heading({ className: 'cart__title', textContent: 'Корзина пуста' });
 
   private cartButton = new Button({
     className: 'cart__btn',
@@ -78,7 +78,7 @@ export class Cart extends Section {
     className: 'promo__btn',
     textContent: 'Есть промокод?',
     onclick: () => {
-      this.cartPromoBtn.node.setAttribute('disabled', 'true');
+      this.cartPromoBtn.disabled = true;
       this.cartPromoWrapper.append(this.cartPromoForm);
     },
   });
@@ -135,7 +135,7 @@ export class Cart extends Section {
   private updateTotalPrice(): void {
     const { promo, sumPrice } = DB.cart;
     const { cartCurrentPrice, cartPriceTotal } = this;
-    const { classList } = cartPriceTotal.node;
+    const { classList } = cartPriceTotal;
 
     cartPriceTotal.setText(`${DB.cart.sumPrice}`);
     if (promo.size && sumPrice) {

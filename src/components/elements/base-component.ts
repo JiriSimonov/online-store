@@ -9,17 +9,21 @@ export class Component<T extends HTMLElement = HTMLElement> {
   constructor(props?: ComponentProps<T>) {
     this.#node = document.createElement(props?.tag ?? 'div') as T;
     if (props) Object.assign(this.#node, props);
-    if (props?.parent)
-      if (props.parent instanceof Component) props.parent.node.append(this.#node);
-      else props.parent.append(this.#node);
+    if (props?.parent) props.parent.append(this.#node);
   }
 
   get node(): T {
     return this.#node;
   }
+  get parent() {
+    return this.node.parentElement;
+  }
 
   destroy(): void {
     this.node.remove();
+  }
+  removeChild(child: Node | Component): Node {
+    return this.node.removeChild(Component.toNode(child));
   }
   clear(): void {
     this.node.replaceChildren();
@@ -46,7 +50,8 @@ export class Component<T extends HTMLElement = HTMLElement> {
     return this.node.style;
   }
 
-  private static toNode(component: string | Node | Component) {
+  private static toNode(component: string | Node | Component): Node {
+    if (typeof component === 'string') return document.createTextNode(component);
     return component instanceof Component ? component.node : component;
   }
   private insert(target: 'before' | 'prepend' | 'append' | 'after', children: (string | Node | Component)[]) {
@@ -74,5 +79,11 @@ export class Component<T extends HTMLElement = HTMLElement> {
 
   get addEventListener() {
     return this.node.addEventListener;
+  }
+  get classList() {
+    return this.node.classList;
+  }
+  replaceWith(...nodes: (string | Node | Component)[]) {
+    return this.node.replaceWith(...nodes.map(Component.toNode));
   }
 }

@@ -9,7 +9,7 @@ export class ThumbNails extends Component {
   constructor(keyboard: Keyboard) {
     super({ tag: 'ul', className: 'thumbnails' });
     this.thumbnailList = keyboard.images.map((image) => {
-      const item = new Component({ tag: 'li', className: 'thumbnails__item', parent: this.node });
+      const item = new Component({ tag: 'li', className: 'thumbnails__item', parent: this });
       const modal = new ProductModal(`url('assets/images/keyboards/${image}.webp')`);
       const button = new Button({
         parent: item,

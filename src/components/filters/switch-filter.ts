@@ -9,9 +9,9 @@ import { FilterCategory } from '../../interfaces/enums';
 export class SwitchFilter extends Filter {
   private categoryA: keyof typeof FilterCategory = 'manufacturer';
   private categoryB: keyof typeof FilterCategory = 'switches';
-  private manufacturersWrapper = new Component({ className: 'filter__wrapper', parent: this.node });
+  private manufacturersWrapper = new Component({ className: 'filter__wrapper', parent: this });
 
-  private switchWrapper = new Component({ tag: 'ul', className: 'switch', parent: this.node });
+  private switchWrapper = new Component({ tag: 'ul', className: 'switch', parent: this });
 
   private manufacturers = [...DB.getVariants(this.categoryA)]
     .filter((elem) => elem !== 'null')

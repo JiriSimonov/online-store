@@ -11,8 +11,8 @@ export class Card extends Component {
 
   constructor() {
     super({ className: 'card' });
-    this.logo = new Component({ className: 'card__logo', parent: this.node });
-    this.cardWrapper = new Component({ className: 'card__wrapper', parent: this.node });
+    this.logo = new Component({ className: 'card__logo', parent: this });
+    this.cardWrapper = new Component({ className: 'card__wrapper', parent: this });
     this.cardNumber = new FormField({
       className: 'card',
       modificator: 'number',
@@ -29,24 +29,24 @@ export class Card extends Component {
       if (target && target instanceof HTMLInputElement) {
         let re = /^4/;
         if (target.value.match(re) != null) {
-          this.logo.node.style.backgroundImage = `url('./assets/icons/cards/visa-logo.webp')`;
+          this.logo.style.backgroundImage = `url('./assets/icons/cards/visa-logo.webp')`;
           return 'visa';
         }
         re = /^5[1-5]/;
         if (target.value.match(re) != null) {
-          this.logo.node.style.backgroundImage = `url('./assets/icons/cards/mastercard.webp')`;
+          this.logo.style.backgroundImage = `url('./assets/icons/cards/mastercard.webp')`;
           return 'mastercard';
         }
 
         re = /^6011/;
         if (target.value.match(re) != null) {
-          this.logo.node.style.backgroundImage = `url('./assets/icons/cards/discover.webp')`;
+          this.logo.style.backgroundImage = `url('./assets/icons/cards/discover.webp')`;
           return 'discover';
         }
 
         re = /^9792/;
         if (target.value.match(re) != null) {
-          this.logo.node.style.backgroundImage = `url('./assets/icons/cards/troy.webp')`;
+          this.logo.style.backgroundImage = `url('./assets/icons/cards/troy.webp')`;
           return 'troy';
         }
       }

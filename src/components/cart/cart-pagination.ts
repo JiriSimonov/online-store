@@ -18,7 +18,7 @@ export class CartPagination extends Component {
       onclick: () => this.renderDropDown(),
     });
 
-    this.wrapper.node.onclick = (e) => {
+    this.wrapper.onclick = (e) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
 
@@ -33,7 +33,7 @@ export class CartPagination extends Component {
   }
 
   renderDropDown() {
-    if (this.wrapper.node.parentElement) this.wrapper.destroy();
+    if (this.wrapper.parent) this.wrapper.destroy();
     else this.append(this.wrapper);
   }
 }

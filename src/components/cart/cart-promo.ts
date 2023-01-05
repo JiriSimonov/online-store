@@ -21,7 +21,7 @@ export class PromoForm extends Component {
       if (DB.cart.promo.isValid(this.promoField.getInputNode().value)) {
         DB.cart.promo.add(this.promoField.getInputNode().value);
         this.promoField.getInputNode().value = '';
-        this.node.removeChild(this.promoBtn.node);
+        this.removeChild(this.promoBtn);
       }
       return false;
     };
@@ -30,6 +30,6 @@ export class PromoForm extends Component {
       else this.promoBtn.destroy();
     };
     this.append(this.promoField);
-    this.node.onsubmit = () => false;
+    this.node.addEventListener('submit', () => false)
   }
 }
