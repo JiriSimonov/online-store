@@ -31,10 +31,10 @@ export class Footer extends BaseComponent {
     href: 'https://rs.school/js/',
     target: '_blank',
     parent: this.contentWrapper.getNode(),
+    ariaLabel: 'Курсы RSS JS/FE',
   });
 
   constructor() {
     super({ tag: 'footer', className: 'footer' });
-    this.logo.getNode().setAttribute('aria-label', 'Курсы RSS JS/FE');
   }
 }

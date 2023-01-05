@@ -10,7 +10,16 @@ import { debounce } from '../utils/utils';
 export class Header extends BaseComponent {
   private container = new BaseComponent({ className: 'container', parent: this.node });
   private wrapper = new BaseComponent({ className: 'header__wrapper', parent: this.container.getNode() });
-  private logo = new Anchor({ className: 'header__logo', text: 'Keyboards Store', parent: this.wrapper.getNode() });
+  private logo = new Anchor({
+    parent: this.wrapper.getNode(),
+    className: 'header__logo',
+    text: 'Keyboards Store',
+    onclick: () => {
+      window.location.hash = '#home';
+      this.searchField.input.classList.remove('header__input_is-open');
+      this.searchField.destroy();
+    },
+  });
   private controls = new BaseComponent({ className: 'header__controls', parent: this.wrapper.getNode() });
   private burger = new Burger();
   private searchField = new FormField({
@@ -54,11 +63,6 @@ export class Header extends BaseComponent {
       else this.controls.getNode().prepend(this.searchField.getNode());
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
     });
-    this.logo.getNode().onclick = () => {
-      window.location.hash = '#home';
-      this.searchField.getInputNode().classList.remove('header__input_is-open');
-      this.searchField.destroy();
-    };
     this.burger.getNode().onclick = () => {
       this.controls.getNode().classList.toggle('header__controls_is-open');
       this.burger.getNode().classList.toggle('burger_is-open');
