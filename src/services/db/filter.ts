@@ -108,8 +108,7 @@ export class Filter {
   add(category: keyof typeof FilterCategory, value: string) {
     const param: string = this.usp.get(category) ?? '[]';
     const params: Set<string> = converter.stringToSet(param);
-    params.add(value);
-    this.usp.set(category, converter.setToString(params));
+    if (value) this.usp.set(category, converter.setToString(params.add(value)));
     Filter.query = this.usp.toString();
   }
   /** Удаляет фильтр из Query */
