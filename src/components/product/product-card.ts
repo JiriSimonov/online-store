@@ -7,6 +7,7 @@ import { Keyboard } from '../../services/db/keyboard';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
 import { emitter } from '../../services/event-emitter';
+import { Heading } from '../elements/heading-component';
 
 export class ProductCard extends Component {
   private isAvialable: Component;
@@ -29,7 +30,7 @@ export class ProductCard extends Component {
       textContent: `${keyboard.isAvailable ? 'В наличии' : 'Нет в наличии'}`,
     });
     this.productImage = new ProductImage(keyboard.images);
-    this.cardTitle = new Component({ tag: 'h2', className: 'store__card-title', textContent: keyboard.title });
+    this.cardTitle = new Heading({ className: 'store__card-title', textContent: keyboard.title });
     this.switchItems = keyboard.switches.reduce((acc, keyboardSwitch) => {
       if (keyboardSwitch.id === 'null') return acc;
 

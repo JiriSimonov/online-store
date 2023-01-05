@@ -13,6 +13,7 @@ import { emitter } from '../../services/event-emitter';
 import { getNoun } from '../../utils/utils';
 import { Pagination } from '../../services/db/pagination';
 import { Section } from '../elements/section-component';
+import { Heading } from '../elements/heading-component';
 
 export class Cart extends Section {
   private pagination = new Pagination(DB.cart, 1, 4, DB.filter);
@@ -20,7 +21,7 @@ export class Cart extends Section {
   private container = new Component({ className: 'container' });
   private wrapper = new Component({ className: 'cart__wrapper' });
 
-  private cartTitle = new Component({ tag: 'h2', className: 'cart__title', textContent: 'Корзина пока что пуста' });
+  private cartTitle = new Heading({ className: 'cart__title', textContent: 'Корзина пока что пуста' });
 
   private cartButton = new Button({
     className: 'cart__btn',
@@ -99,7 +100,7 @@ export class Cart extends Section {
   private orderForm = new OrderForm();
 
   constructor() {
-    super({  className: 'cart' });
+    super({ className: 'cart' });
     this.cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index, this.orderBtn));
     this.append(this.container);
     this.container.append(this.wrapper);

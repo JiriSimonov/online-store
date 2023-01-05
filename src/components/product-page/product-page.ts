@@ -5,13 +5,14 @@ import { Keyboard } from '../../services/db/keyboard';
 import { ProductCard } from '../product/product-card';
 import { Component } from '../elements/base-component';
 import { ThumbNails } from './product-thumbnails';
+import { Heading } from '../elements/heading-component';
 
 export class ProductPage extends Component {
   private container = new Component({ className: 'store product' });
   private card: ProductCard;
   private productPath: ProductPath;
   private thumbnails: ThumbNails;
-  private title = new Component({ tag: 'h2', className: 'product__title', textContent: 'Характеристики' });
+  private title = new Heading({ className: 'product__title', textContent: 'Характеристики' });
   private descrList = new Component({ tag: 'ul', className: 'product__list' });
 
   private descrFields: DescriptionField[];

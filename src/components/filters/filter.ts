@@ -2,13 +2,14 @@ import { SwitchComponent } from '../switches/switch-component';
 import { FormField } from '../elements/form-field';
 import { Component } from '../elements/base-component';
 import { DB } from '../../services/db/database';
+import { Heading } from '../elements/heading-component';
 
 export class Filter extends Component {
   private filterTitle: Component;
 
   constructor(title: string) {
     super({ tag: 'li', className: 'filter__item' });
-    this.filterTitle = new Component({ tag: 'h2', className: 'filter__title', textContent: title });
+    this.filterTitle = new Heading({ className: 'filter__title', textContent: title });
     this.append(this.filterTitle);
   }
 

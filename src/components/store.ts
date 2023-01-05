@@ -10,6 +10,7 @@ import { DB } from '../services/db/database';
 import { getChunk, getNoun } from '../utils/utils';
 import { Burger } from './elements/burger-menu';
 import { Section } from './elements/section-component';
+import { Heading } from './elements/heading-component';
 
 export class Store extends Section {
   private chunkSize = 20;
@@ -20,7 +21,7 @@ export class Store extends Section {
     className: `store__wrapper${DB.filter.getParam('filters') ? ' store__wrapper_is-open' : ''}`,
   });
 
-  private title = new Component({ tag: 'h1', className: 'store__title', textContent: 'Клавиатуры' });
+  private title = new Heading({ tag: 'h1', className: 'store__title', textContent: 'Клавиатуры' });
   private showFiltersBtn = new Button({ className: 'store__filter', textContent: 'Фильтры' });
   private contentWrapper = new Component({ className: 'store__content' });
   private storeList = new StoreContent();

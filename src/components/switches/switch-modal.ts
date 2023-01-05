@@ -1,5 +1,6 @@
 import { KeyboardSwitch } from '../../services/db/keyboard-switch';
 import { Component } from '../elements/base-component';
+import { Heading } from '../elements/heading-component';
 
 export class SwitchModal extends Component {
   private modalTitle: Component;
@@ -16,10 +17,9 @@ export class SwitchModal extends Component {
 
   constructor(id: string, isAvialable: boolean) {
     super({ className: 'modal' });
-    this.modalTitle = new Component({
-      tag: 'h2',
+    this.modalTitle = new Heading({
       className: 'modal__title',
-      parent: this.node,
+      parent: this,
       textContent: KeyboardSwitch.getDescription(id, 'title') as string,
     });
 

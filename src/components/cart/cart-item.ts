@@ -6,6 +6,7 @@ import { Button } from '../elements/button-component';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
 import { emitter } from '../../services/event-emitter';
+import { Heading } from '../elements/heading-component';
 
 export class CartItemElem extends Component {
   private images: ProductImage;
@@ -52,12 +53,7 @@ export class CartItemElem extends Component {
     });
     this.images = new ProductImage(keyboard.images);
     this.wrapper = new Component({ className: 'cart__container' });
-    this.title = new Component({
-      tag: 'h2',
-      className: 'cart__title',
-      textContent: keyboard.title,
-      parent: this.wrapper.node,
-    });
+    this.title = new Heading({ className: 'cart__title', textContent: keyboard.title, parent: this.wrapper.node });
     this.switchWrapper = new Component({ className: 'switch' });
     this.keyboardSwitch = new SwitchComponent(keyboardSwitch, product.key, 'div');
     if (keyboardSwitch.title !== 'null') this.wrapper.append(this.switchWrapper);
