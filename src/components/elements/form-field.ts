@@ -34,16 +34,28 @@ export class FormField extends BaseComponent<HTMLLabelElement> {
     return this.fieldInput.getNode();
   }
 
+  get input (){
+    return this.fieldInput.getNode()
+  }
+
+  get value() {
+    return this.input.value;
+  }
+
+  set value(value) {
+    this.input.value = value;
+  }
+
   get disabled(): boolean {
-    return this.getInputNode().disabled;
+    return this.input.disabled;
   }
   set disabled(value: boolean) {
-    this.getInputNode().disabled = value;
+    this.input.disabled = value;
   }
   get checked(): boolean {
-    return this.getInputNode().checked;
+    return this.input.checked;
   }
   set checked(value: boolean) {
-    this.getInputNode().checked = value;
+    this.input.checked = value;
   }
 }
