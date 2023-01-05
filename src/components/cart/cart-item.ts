@@ -38,9 +38,10 @@ export class CartItemElem extends BaseComponent {
 
   private cartPosition: BaseComponent;
 
-  constructor(product: CartItem, index: number) {
+  constructor(product: CartItem, index: number, orderBtn: Button) {
     super({ tag: 'li', className: 'cart__item' });
     const { keyboard, keyboardSwitch, quantity } = product;
+    const buttonOrder = orderBtn;
     this.countField = new FormField({
       className: 'count-btn',
       type: 'number',
@@ -105,12 +106,11 @@ export class CartItemElem extends BaseComponent {
     this.countBtn.appendEl(this.countField);
     this.countField.getInputNode().oninput = (e) => {
       if (e.target && e.target instanceof HTMLInputElement) {
-        emitter.emit('cart__undisable');
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
         if (+e.target.value <= +e.target.min && e.target.value !== '') e.target.value = e.target.min;
         if (e.target.value === '' || +e.target.value === 0) {
           e.preventDefault();
-          emitter.emit('cart__change-quantity');
+          buttonOrder.disabled = true;
         }; 
         product.set(+e.target.value);
         this.inStock.getNode().textContent = `Осталось на складе: ${keyboardSwitch.quantity - +e.target.value}`;
@@ -118,11 +118,15 @@ export class CartItemElem extends BaseComponent {
         this.cartInc.disabled = +e.target.value === keyboardSwitch.quantity;
       }
     };
-    if (this.countField.getInputNode().value === '0') {
+    this.countField.getInputNode().addEventListener('focusout', () => {
+      if (!this.countField.getInputNode().value) {
+        this.countField.getInputNode().value = '1';
+        buttonOrder.disabled = false;
+      }
+    });
+
+    if (this.countField.getInputNode().value === '0') 
       this.countField.getInputNode().value = this.countField.getInputNode().min;
-      this.countField.getInputNode().dispatchEvent(new Event('input'));
-      emitter.emit('cart__save');
-    }
     this.cartInc = new Button({
       className: 'count-btn__inc',
       text: '+',
