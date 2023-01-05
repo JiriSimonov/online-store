@@ -121,6 +121,11 @@
       color: $white;
       outline: none;
     }
+
+    &:disabled {
+      opacity: .6;
+      pointer-events: none;
+    }
   }
 
   &__price {
@@ -714,10 +719,16 @@
   &__input {
     all: unset;
     cursor: $hover;
+    border: 1px solid transparent;
+    border-radius: 5px;
 
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
       -webkit-appearance: none;
+    }
+
+    &:invalid {
+      border-color: $r;
     }
   }
 }

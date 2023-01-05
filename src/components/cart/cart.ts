@@ -33,7 +33,7 @@ export class Cart extends BaseComponent {
   private cartPagination = new CartPagination(`${this.pagination.pageSize}`);
 
   private cartList = new CartList();
-  private cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index));
+  private cartItems: CartItemElem[];
 
   private pagBtn = new BaseComponent({ className: 'pagination-btn' });
   private pagDec = new Button({
@@ -99,6 +99,7 @@ export class Cart extends BaseComponent {
 
   constructor() {
     super({ tag: 'section', className: 'cart' });
+    this.cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index, this.orderBtn));
     this.appendEl(this.container);
     this.container.appendEl(this.wrapper);
     this.render();
@@ -179,7 +180,8 @@ export class Cart extends BaseComponent {
       this.changeView.appendEl(this.cartPagination);
       this.cartList.clear();
       this.cartList.appendEl(
-        this.pagination.chunk.map((item, index) => new CartItemElem(item, index + this.pagination.firstindex)),
+        this.pagination.chunk.map((item, index) =>
+          new CartItemElem(item, index + this.pagination.firstindex, this.orderBtn)),
       );
       this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
       this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
