@@ -499,6 +499,14 @@
     &__list {
       grid-template-columns: 1fr;
     }
+
+    &__goods-count {
+      top: 50px
+    }
+
+    &__content {
+      padding-top: 80px;
+    }
   }
 
   .sort {
