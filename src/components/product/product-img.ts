@@ -11,7 +11,10 @@ export class ProductImage extends BaseComponent {
   constructor(imageList: string[]) {
     super({ className: 'store__img' });
 
-    const setImage = (index: number): void => this.setStyleAttr(['backgroundImage', `url(${this.images[index]})`]);
+    // const setImage = (index: number): void => this.setStyleAttr(['backgroundImage', `url(${this.images[index]})`]);
+    const setImage = (index: number): void => {
+      this.style.backgroundImage = `url(${this.images[index]})`;
+    };
 
     this.zones = imageList.map((_, i) => {
       const component = new BaseComponent({ tag: 'span', className: 'store__img-item' });
@@ -32,11 +35,9 @@ export class ProductImage extends BaseComponent {
 
   async getImageList(imageList: string[]): Promise<void> {
     const promises: Promise<string>[] = imageList.map(async (name) => {
-      const src = `assets/images/keyboards/${name}.webp`;
-      const img = new Image();
-      Object.assign(img.node, { src });
-      await img.node.decode();
-      return src;
+      const img = new Image({ src: `assets/images/keyboards/${name}.webp` });
+      await img.decode();
+      return img.src;
     });
     this.images = await Promise.all(promises);
   }

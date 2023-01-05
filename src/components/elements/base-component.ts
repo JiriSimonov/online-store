@@ -47,4 +47,7 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
   clear(): void {
     this.node.replaceChildren();
   }
+  get style(): CSSStyleDeclaration {
+    return this.node.style;
+  }
 }

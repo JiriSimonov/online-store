@@ -1,8 +1,18 @@
-import { BaseComponentProps } from '../../interfaces/interfaces';
-import { BaseComponent } from './base-component';
+import { Component, ComponentProps } from './component';
 
-export class Image extends BaseComponent<HTMLImageElement> {
-  constructor(props?: BaseComponentProps & HTMLImageElement) {
+export class Image extends Component<HTMLImageElement> {
+  constructor(props?: ComponentProps<HTMLImageElement>) {
     super({ ...props, tag: 'img' });
+  }
+
+  get src(): string {
+    return this.node.src;
+  }
+  set src(value: string) {
+    this.node.src = value;
+  }
+
+  get decode() {
+    return () => this.node.decode();
   }
 }
