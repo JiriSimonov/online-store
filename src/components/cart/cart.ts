@@ -41,11 +41,11 @@ export class Cart extends Section {
   private pagDec = new Button({
     className: 'pagination-btn__dec',
     onclick: () => {
-      const input = this.pagCountField.getInputNode();
+      const { input } = this.pagCountField;
 
-      input.stepDown();
-      /* input.dispatchEvent(new Event('input')); */
-      input.dispatchEvent(new Event('change'));
+      input.node.stepDown();
+      /* input.node.dispatchEvent(new Event('input')); */
+      input.node.dispatchEvent(new Event('change'));
       window.scrollTo(0, 0);
     },
   });
@@ -60,10 +60,10 @@ export class Cart extends Section {
   private pagInc = new Button({
     className: 'pagination-btn__inc',
     onclick: () => {
-      const input = this.pagCountField.getInputNode();
+      const { input } = this.pagCountField;
 
-      input.stepUp();
-      input.dispatchEvent(new Event('change'));
+      input.node.stepUp();
+      input.node.dispatchEvent(new Event('change'));
       window.scrollTo(0, 0);
     },
   });
@@ -109,7 +109,7 @@ export class Cart extends Section {
     this.updateTotalPrice();
     this.updateTotalQuantity();
     this.subscribe();
-    this.pagCountField.getInputNode().addEventListener('input', (e) => {
+    this.pagCountField.input.node.addEventListener('input', (e) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
 
@@ -117,18 +117,18 @@ export class Cart extends Section {
       if (+target.value > +target.max) target.value = target.max;
       if (+target.value < +target.min) target.value = target.min;
     });
-    this.pagCountField.getInputNode().addEventListener('change', (e) => {
+    this.pagCountField.input.node.addEventListener('change', (e) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
       this.pagination.setPage(target.value);
     });
     window.addEventListener('hashchange', () => this.render());
     window.addEventListener('hashchange', () => {
-      Object.assign(this.pagCountField.getInputNode(), {
+      Object.assign(this.pagCountField.input.node, {
         value: this.pagination.pageNumber,
         max: this.pagination.lastPage,
       });
-      this.cartPagination.selected.getInputNode().value = `${this.pagination.pageSize}`;
+      this.cartPagination.selected.input.value = `${this.pagination.pageSize}`;
     });
   }
 
@@ -214,7 +214,7 @@ export class Cart extends Section {
     });
     emitter.subscribe('cart__delete-item', () => {
       this.render();
-      this.pagCountField.getInputNode().max = this.pagination.lastPage;
+      this.pagCountField.input.node.max = this.pagination.lastPage;
       this.pagination.setPage(`${Math.ceil(this.pagination.firstindex / this.pagination.pageSize)}`);
     });
     return this;

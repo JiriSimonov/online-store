@@ -62,31 +62,31 @@ export class DualSlider extends Component {
     this.maxNum = +this.maximumValue.value;
     this.minRange = +this.sliderLeft.value;
     this.maxRange = +this.sliderRight.value;
-    this.setValidMin(this.minimumValue.input);
-    this.setValidMax(this.maximumValue.input);
+    this.setValidMin(this.minimumValue.input.node);
+    this.setValidMax(this.maximumValue.input.node);
     const handleMinInput = debounce((value: string) => DB.filter.clear(minParam).add(minParam, value), 350);
-    this.minimumValue.input.addEventListener('input', () => {
-      this.setValidMin(this.minimumValue.input);
+    this.minimumValue.input.node.addEventListener('input', () => {
+      this.setValidMin(this.minimumValue.input.node);
       handleMinInput(this.minimumValue.input.value);
     });
     const handleMaxInput = debounce((value: string) => DB.filter.clear(maxParam).add(maxParam, value), 350);
-    this.maximumValue.input.addEventListener('input', () => {
-      this.setValidMax(this.maximumValue.input);
+    this.maximumValue.input.node.addEventListener('input', () => {
+      this.setValidMax(this.maximumValue.input.node);
       handleMaxInput(this.maximumValue.input.value);
     });
-    this.sliderLeft.input.addEventListener('input', () =>
-      this.setLeftPos(this.sliderLeft.value, this.sliderLeft.input.max),
+    this.sliderLeft.input.node.addEventListener('input', () =>
+      this.setLeftPos(this.sliderLeft.value, this.sliderLeft.input.node.max),
     );
-    this.sliderLeft.input.addEventListener('change', () => {
-      this.setValidMin(this.sliderLeft.input);
+    this.sliderLeft.input.node.addEventListener('change', () => {
+      this.setValidMin(this.sliderLeft.input.node);
       this.minimumValue.value = this.sliderLeft.input.value;
       DB.filter.clear(minParam).add(minParam, this.sliderLeft.input.value);
     });
-    this.sliderRight.input.addEventListener('input', () =>
-      this.setRightPos(this.sliderRight.value, this.sliderRight.input.max),
+    this.sliderRight.input.node.addEventListener('input', () =>
+      this.setRightPos(this.sliderRight.value, this.sliderRight.input.node.max),
     );
-    this.sliderRight.input.addEventListener('change', () => {
-      this.setValidMax(this.sliderRight.input);
+    this.sliderRight.input.node.addEventListener('change', () => {
+      this.setValidMax(this.sliderRight.input.node);
       this.maximumValue.value = this.sliderRight.input.value;
       DB.filter.clear(maxParam).add(maxParam, this.sliderRight.input.value);
     });
@@ -95,8 +95,8 @@ export class DualSlider extends Component {
       this.maximumValue.value = this.getBasicValue('max');
       this.sliderLeft.value = this.minimumValue.value;
       this.sliderRight.value = this.maximumValue.value;
-      this.setLeftPos(this.minimumValue.value, this.minimumValue.input.max);
-      this.setRightPos(this.maximumValue.value, this.maximumValue.input.max);
+      this.setLeftPos(this.minimumValue.value, this.minimumValue.input.node.max);
+      this.setRightPos(this.maximumValue.value, this.maximumValue.input.node.max);
     });
     this.sliderWrapper.append(this.minimumValue, this.maximumValue);
     this.controls.append(this.sliderLeft, this.sliderRight);

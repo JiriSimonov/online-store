@@ -23,7 +23,7 @@ export class FeaturesFilter extends Filter {
   constructor() {
     super('Фичи');
     this.features.forEach((item) => {
-      item.getInputNode().addEventListener('change', (e) => {
+      item.input.node.addEventListener('change', (e) => {
         const { target } = e;
         if (target && target instanceof HTMLInputElement)
           if (target.checked) DB.filter.add(this.category, target.value);
@@ -33,7 +33,7 @@ export class FeaturesFilter extends Filter {
     this.filterWrapper.append(...this.features);
   }
 
-  getInputs() {
+  get inputs() {
     return this.features;
   }
 }

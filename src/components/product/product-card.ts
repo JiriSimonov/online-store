@@ -46,7 +46,7 @@ export class ProductCard extends Component {
       if (!(e.target instanceof HTMLElement) || e.target instanceof HTMLLabelElement) return;
       if (e.target.classList.contains('product__path-item')) return;
 
-      if (this.switchItems.some((item) => item.getInputNode() === e.target)) {
+      if (this.switchItems.some((item) => item.input.node === e.target)) {
         this.renderText();
         return;
       }
@@ -60,7 +60,7 @@ export class ProductCard extends Component {
           this.renderText();
           break;
         case this.buyNowBtn.node:
-          if (!DB.cart.isInCart(keyboard.id, this.getSelectedSwitch()?.getSwitch().id)) this.addToCart();
+          if (!DB.cart.isInCart(keyboard.id, this.selectedSwitch?.switch.id)) this.addToCart();
           window.location.hash = `#cart`;
           emitter.emit('product-card__buyNowBtn_clicked');
           break;
@@ -79,14 +79,12 @@ export class ProductCard extends Component {
     this.renderText();
   }
 
-  getSelectedSwitch(): SwitchComponent | undefined {
+  private get selectedSwitch(): SwitchComponent | undefined {
     return this.switchItems.find((item) => item.checked);
   }
 
   private renderText(target?: HTMLLabelElement): void {
-    const keyboardSwitch = target
-      ? this.keyboard.getSwitch(target.textContent ?? '')
-      : this.getSelectedSwitch()?.getSwitch();
+    const keyboardSwitch = target ? this.keyboard.getSwitch(target.textContent ?? '') : this.selectedSwitch?.switch;
     const isInCart = DB.cart.isInCart(this.keyboard.id, keyboardSwitch?.id);
     this.cardBtn.disabled = isInCart;
     this.cardBtn.setText(isInCart ? 'Уже в корзине' : 'Добавить в корзину');
@@ -109,9 +107,9 @@ export class ProductCard extends Component {
   }
 
   private addToCart(): void {
-    const selected = this.getSelectedSwitch();
+    const selected = this.selectedSwitch;
     if (selected) {
-      DB.cart.add([this.keyboard, selected.getSwitch()]);
+      DB.cart.add([this.keyboard, selected.switch]);
     } else {
       const availableSwitch = this.keyboard.switches.find((item) => item.isAvailable);
       if (availableSwitch) DB.cart.add(new CartItem(this.keyboard, availableSwitch));

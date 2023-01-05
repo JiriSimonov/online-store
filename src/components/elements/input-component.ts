@@ -11,4 +11,29 @@ export class Input extends Component<HTMLInputElement> {
         if (['e', 'E', '-', '+', '.', ','].includes(e.key)) e.preventDefault();
       };
   }
+
+  get value(): string {
+    return this.node.value;
+  }
+  set value(value: string) {
+    this.node.value = value;
+  }
+  get name(): string {
+    return this.node.name;
+  }
+/*   set name(value: string) {
+    this.node.name = value;
+  } */
+  get disabled(): boolean {
+    return this.node.disabled;
+  }
+  set disabled(value: boolean) {
+    this.node.disabled = value;
+  }
+  get checked(): boolean {
+    return this.node.checked;
+  }
+  set checked(value: boolean) {
+    this.node.checked = value;
+  }
 }

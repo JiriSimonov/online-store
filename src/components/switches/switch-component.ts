@@ -21,18 +21,18 @@ export class SwitchComponent extends Component {
     this.append(this.switchField);
   }
 
-  getInputNode() {
-    return this.switchField.getInputNode();
+  get input() {
+    return this.switchField.input;
   }
 
-  getSwitch() {
+  get switch() {
     return this.keyboardSwitch;
   }
 
   get checked(): boolean {
-    return this.switchField.getInputNode().checked;
+    return this.switchField.input.node.checked;
   }
   set checked(value: boolean) {
-    this.switchField.getInputNode().checked = value;
+    this.switchField.input.node.checked = value;
   }
 }

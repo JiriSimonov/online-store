@@ -7,6 +7,14 @@ export class PromoForm extends Component {
   private promoBtn = new Button({
     className: 'promo__submit-btn',
     textContent: 'Применить',
+    onclick: () => {
+      if (DB.cart.promo.isValid(this.promoField.input.value)) {
+        DB.cart.promo.add(this.promoField.input.value);
+        this.promoField.input.value = '';
+        this.removeChild(this.promoBtn);
+      }
+      return false;
+    },
   });
   private promoField = new FormField({
     className: 'promo',
@@ -17,19 +25,12 @@ export class PromoForm extends Component {
 
   constructor() {
     super({ tag: 'form', className: 'promo__form' });
-    this.promoBtn.onclick = () => {
-      if (DB.cart.promo.isValid(this.promoField.getInputNode().value)) {
-        DB.cart.promo.add(this.promoField.getInputNode().value);
-        this.promoField.getInputNode().value = '';
-        this.removeChild(this.promoBtn);
-      }
-      return false;
-    };
-    this.promoField.getInputNode().oninput = () => {
-      if (DB.cart.promo.isValid(this.promoField.getInputNode().value)) this.append(this.promoBtn);
+
+    this.promoField.input.node.oninput = () => {
+      if (DB.cart.promo.isValid(this.promoField.input.value)) this.append(this.promoBtn);
       else this.promoBtn.destroy();
     };
     this.append(this.promoField);
-    this.node.addEventListener('submit', () => false)
+    this.node.addEventListener('submit', () => false);
   }
 }

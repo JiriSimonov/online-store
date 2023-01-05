@@ -23,8 +23,8 @@ export class Card extends Component {
     const curdNumberOptions = {
       mask: '0000 0000 0000 0000',
     };
-    Imask(this.cardNumber.getInputNode(), curdNumberOptions);
-    this.cardNumber.getInputNode().oninput = (e) => {
+    Imask(this.cardNumber.input.node, curdNumberOptions);
+    this.cardNumber.input.node.oninput = (e) => {
       const { target } = e;
       if (target && target instanceof HTMLInputElement) {
         let re = /^4/;
@@ -59,7 +59,7 @@ export class Card extends Component {
       pattern: `\\d{2}\\/\\d{2}`,
       text: 'Срок действия',
     });
-    Imask(this.cardExpires.getInputNode(), {
+    Imask(this.cardExpires.input.node, {
       mask: 'MM/YY',
       blocks: {
         MM: {
@@ -83,10 +83,8 @@ export class Card extends Component {
       pattern: `[0-9]{3}`,
       text: 'CVV код',
     });
-    const cvvMaskOptions = {
-      mask: '000',
-    };
-    Imask(this.cardCVV.getInputNode(), cvvMaskOptions);
+    const cvvMaskOptions = { mask: '000' };
+    Imask(this.cardCVV.input.node, cvvMaskOptions);
     this.cardWrapper.append(this.cardNumber, this.cardExpires, this.cardCVV);
   }
 }

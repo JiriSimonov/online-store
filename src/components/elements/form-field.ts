@@ -11,7 +11,7 @@ export class FormField extends Component<HTMLLabelElement> {
       className: props.modificator
         ? `${props.className}__label ${props.className}__label_${props.modificator}`
         : `${props.className}__label`,
-        textContent: props.text,
+      textContent: props.text,
     });
     this.fieldInput = new Input({
       className: props.modificator
@@ -30,18 +30,13 @@ export class FormField extends Component<HTMLLabelElement> {
     });
   }
 
-  getInputNode() {
-    return this.fieldInput.node;
-  }
-
   get input() {
-    return this.fieldInput.node;
+    return this.fieldInput;
   }
 
   get value() {
     return this.input.value;
   }
-
   set value(value) {
     this.input.value = value;
   }

@@ -70,7 +70,7 @@ export class CartItemElem extends Component {
       className: 'cart__stock',
       textContent:
         keyboardSwitch.quantity > 0
-          ? `Осталось на складе: ${keyboardSwitch.quantity - +this.countField.getInputNode().value}`
+          ? `Осталось на складе: ${keyboardSwitch.quantity - +this.countField.input.value}`
           : 'Нет в наличии',
       parent: this.stockWrapper,
     });
@@ -80,18 +80,18 @@ export class CartItemElem extends Component {
       textContent: '-',
       parent: this.countBtn,
       onclick: () => {
-        if (+this.countField.getInputNode().value === 1) {
+        if (+this.countField.input.value === 1) {
           DB.cart.remove(product);
           emitter.emit('cart__delete-item');
         } else {
-          this.countField.getInputNode().stepDown();
-          this.countField.getInputNode().dispatchEvent(new Event('input'));
+          this.countField.input.node.stepDown();
+          this.countField.input.node.dispatchEvent(new Event('input'));
         }
       },
     });
     this.cartPosition = new Component({ className: 'cart__position', textContent: `${index}`, parent: this });
     this.countBtn.append(this.countField);
-    this.countField.getInputNode().oninput = (e) => {
+    this.countField.input.node.oninput = (e) => {
       if (e.target && e.target instanceof HTMLInputElement) {
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
         if (+e.target.value <= +e.target.min && e.target.value !== '') e.target.value = e.target.min;
@@ -105,22 +105,21 @@ export class CartItemElem extends Component {
         this.cartInc.disabled = +e.target.value === keyboardSwitch.quantity;
       }
     };
-    this.countField.getInputNode().addEventListener('focusout', () => {
-      if (!this.countField.getInputNode().value) {
-        this.countField.getInputNode().value = '1';
+    this.countField.input.node.addEventListener('focusout', () => {
+      if (!this.countField.input.value) {
+        this.countField.input.value = '1';
         buttonOrder.disabled = false;
       }
     });
 
-    if (this.countField.getInputNode().value === '0')
-      this.countField.getInputNode().value = this.countField.getInputNode().min;
+    if (this.countField.input.value === '0') this.countField.input.value = this.countField.input.node.min;
     this.cartInc = new Button({
       className: 'count-btn__inc',
       textContent: '+',
       parent: this.countBtn,
       onclick: () => {
-        this.countField.getInputNode().stepUp();
-        this.countField.getInputNode().dispatchEvent(new Event('input'));
+        this.countField.input.node.stepUp();
+        this.countField.input.node.dispatchEvent(new Event('input'));
       },
     });
     this.cartDelete = new Button({
@@ -132,8 +131,8 @@ export class CartItemElem extends Component {
         emitter.emit('cart__delete-item');
       },
     });
-    if (+this.countField.getInputNode().value === +this.countField.getInputNode().max) this.cartInc.disabled = true;
-    this.price.setText(`${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`);
+    if (+this.countField.input.value === +this.countField.input.node.max) this.cartInc.disabled = true;
+    this.price.setText(`${+this.countField.input.node.value * keyboardSwitch.price} ₽`);
     this.append(this.images);
     this.append(this.wrapper);
   }

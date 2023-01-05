@@ -31,10 +31,10 @@ export class SwitchFilter extends Filter {
     .filter((item) => item.id !== 'null')
     .map((item) => {
       const component = new SwitchComponent(item, this.categoryB);
-      component.getInputNode().type = 'checkbox';
-      component.getInputNode().disabled = false;
+      component.input.node.type = 'checkbox';
+      component.input.disabled = false;
       component.checked = !!DB.filter.params.get(this.categoryB)?.has(item.id);
-      component.getInputNode().parentElement?.classList.remove('switch__item_false');
+      component.input.parent?.classList.remove('switch__item_false');
       return component;
     });
 
@@ -45,7 +45,7 @@ export class SwitchFilter extends Filter {
   constructor() {
     super('Переключатели');
     this.manufacturers.forEach((item) => {
-      item.getInputNode().addEventListener('change', (e) => {
+      item.input.node.addEventListener('change', (e) => {
         const { target } = e;
         if (target && target instanceof HTMLInputElement)
           if (target.checked) DB.filter.add(this.categoryA, target.value);
@@ -53,7 +53,7 @@ export class SwitchFilter extends Filter {
       });
     });
     this.switches.forEach((item) => {
-      item.getInputNode().addEventListener('change', (e) => {
+      item.input.node.addEventListener('change', (e) => {
         const { target } = e;
         if (target && target instanceof HTMLInputElement)
           if (target.checked) DB.filter.add(this.categoryB, target.value);
@@ -63,27 +63,26 @@ export class SwitchFilter extends Filter {
     this.manufacturersWrapper.append(...this.manufacturers);
     this.switchWrapper.append(...this.switches);
     this.switchWrapper.node.addEventListener('mouseover', (e) => {
-      const target = e.target as HTMLElement;
-      if (target.classList.contains('switch__label')) {
-        target.setAttribute('id', 'open');
-        this.modalWrapper = new Component({ className: 'switch__modal' });
-        this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
-        target.append(this.modalWrapper.node);
-        this.modalWrapper.append(this.switchModal);
-        target.addEventListener('mouseout', () => {
-          target.removeAttribute('id');
-          this.modalWrapper?.destroy();
-          this.modalWrapper = null;
-        });
-      }
+      const { target } = e;
+      if (!(target instanceof HTMLElement && target.classList.contains('switch__label'))) return;
+      target.setAttribute('id', 'open');
+      this.modalWrapper = new Component({ className: 'switch__modal' });
+      this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
+      target.append(this.modalWrapper.node);
+      this.modalWrapper.append(this.switchModal);
+      target.addEventListener('mouseout', () => {
+        target.removeAttribute('id');
+        this.modalWrapper?.destroy();
+        this.modalWrapper = null;
+      });
     });
   }
 
-  getRadioInputs() {
+  get radioInputs() {
     return this.switches;
   }
 
-  getInputs() {
+  get inputs() {
     return this.manufacturers;
   }
 }

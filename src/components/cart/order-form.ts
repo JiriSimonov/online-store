@@ -50,7 +50,7 @@ export class OrderForm extends Component {
       pattern: `\\+7\\(\\d{3}\\)-\\d{3}-\\d{2}-\\d{2}`,
     });
     const phoneMaskOption = { mask: '+{7}(000)-000-00-00', lazy: false };
-    Imask(this.phoneField.getInputNode(), phoneMaskOption);
+    Imask(this.phoneField.input.node, phoneMaskOption);
     this.addressField = new FormField({
       className: 'modal',
       text: 'Адрес доставки',

@@ -11,15 +11,8 @@ import { FeaturesFilter } from './features-filter';
 import { Filter } from './filter';
 
 export class Filters extends Component {
-  private closeFilterTop = new Button({
-    className: 'modal__close',
-    ariaLabel: 'Закрыть',
-    parent: this,
-  });
-  private closeFilterBottom = new Button({
-    className: 'filter__clear',
-    textContent: 'Закрыть',
-  });
+  private closeFilterTop = new Button({ className: 'modal__close', ariaLabel: 'Закрыть', parent: this });
+  private closeFilterBottom = new Button({ className: 'filter__clear', textContent: 'Закрыть' });
   availableFilter = new AvFilter();
   switchFilter = new SwitchFilter();
   priceFilter = new PriceFilter();
@@ -49,14 +42,14 @@ export class Filters extends Component {
       onclick: () => {
         DB.filter.clearAll();
         Filter.uncheckAll(
-          ...this.availableFilter.getInputs(),
-          ...this.switchFilter.getInputs(),
-          ...this.switchFilter.getRadioInputs(),
-          ...this.manufacturerFiler.getInputs(),
-          ...this.sizeFilter.getInputs(),
-          ...this.featuresFilter.getInputs(),
+          ...this.availableFilter.inputs,
+          ...this.switchFilter.inputs,
+          ...this.switchFilter.radioInputs,
+          ...this.manufacturerFiler.inputs,
+          ...this.sizeFilter.inputs,
+          ...this.featuresFilter.inputs,
         );
-        this.availableFilter.getInputs()[0].checked = true;
+        this.availableFilter.inputs[0].checked = true;
         window.scrollTo(0, 0);
       },
     });
@@ -100,57 +93,33 @@ export class Filters extends Component {
 
   renderFilterNumbers() {
     [
-      ...this.availableFilter.getInputs(),
-      ...this.switchFilter.getInputs(),
-      ...this.manufacturerFiler.getInputs(),
-      ...this.sizeFilter.getInputs(),
-      ...this.featuresFilter.getInputs(),
+      ...this.availableFilter.inputs,
+      ...this.switchFilter.inputs,
+      ...this.manufacturerFiler.inputs,
+      ...this.sizeFilter.inputs,
+      ...this.featuresFilter.inputs,
     ].forEach((v) => {
-      const input = v.getInputNode();
+      const { name, value } = v.input;
       const textNode = v.node.firstChild;
 
-      //? не пойму че делать с текстами фильтра наличия
-      /* let label: string;
-      let sample: number;
-      let all: number;
+      if (name === 'available') return;
+      const label = value;
+      const [sample, all] = [Filter.getHead(name, value), Filter.getTail(name, value)];
 
-      if (input.name === 'available') {
-        if (input.value === 'true') {
-          label = 'В наличии';
-          [sample, all] = [Filter.getHead(input.name, input.value), Filter.getTail(input.name, input.value)];
-        } else {
-          label = 'Всё';
-          [sample, all] = [Filter.getHead('', ''), Filter.getTail('', '')];
-        }
-      } else {
-        label = input.value;
-        [sample, all] = [Filter.getHead(input.name, input.value), Filter.getTail(input.name, input.value)];
-      } */
-
-      //? вариант без обработки текста фильтров наличия
-      if (input.name === 'available') return;
-      const label = input.value;
-      const [sample, all] = [Filter.getHead(input.name, input.value), Filter.getTail(input.name, input.value)];
-      //?
-
-      //? отключил дизейбл, т.к. это отменяет часть `||` фильтрации
-      // input.disabled = !sample; //? возможно тут лучше поинтеривентс, но не уверен
       Object.assign(v.style, { opacity: sample ? 1 : 1 / 3 });
 
       if (textNode) textNode.textContent = `${label}: (${sample}/${all})`;
     });
 
-    this.switchFilter.getRadioInputs().forEach((v) => {
-      const { name, value } = v.getInputNode();
+    this.switchFilter.radioInputs.forEach((v) => {
+      const { parent, name, value } = v.input;
       const part = Filter.getHead(name, value);
 
-      const input = v.getInputNode();
-      const label = input.parentElement;
-      if (!label) return;
+      if (!parent) return;
 
-      Object.assign(label.style, { opacity: part ? 1 : 1 / 3 });
-      if (part) label.classList.remove('switch__item_false');
-      else label.classList.add('switch__item_false');
+      Object.assign(parent.style, { opacity: part ? 1 : 1 / 3 });
+      if (part) parent.classList.remove('switch__item_false');
+      else parent.classList.add('switch__item_false');
     });
   }
 }

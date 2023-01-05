@@ -11,7 +11,7 @@ export class CartPagination extends Component {
 
   constructor(currentValue: string) {
     super({ className: 'dropdown' });
-    Object.assign(this.selected.getInputNode(), {
+    Object.assign(this.selected.input.node, {
       value: currentValue,
       placeholder: currentValue,
       readOnly: true,
@@ -22,7 +22,7 @@ export class CartPagination extends Component {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
 
-      this.selected.getInputNode().value = target.value;
+      this.selected.input.value = target.value;
       DB.filter.setParam('cartPageSize', target.value);
 
       this.renderDropDown();

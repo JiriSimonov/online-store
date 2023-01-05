@@ -62,7 +62,7 @@ export class SortFilter extends Component {
       'Отсортировать по уменьшению остатка на складе': this.inStockSortDesc,
     }).forEach((entry) => {
       const [title, element] = entry;
-      const input = element.getInputNode();
+      const input = element.input.node;
       const [type, order] = input.value.split('-');
       input.title = title;
       input.addEventListener('change', () => DB.filter.setParam('sortType', type).setParam('sortOrder', order));
@@ -81,7 +81,7 @@ export class SortFilter extends Component {
       this.priceSortDesc,
       this.inStockSortAsc,
       this.inStockSortDesc,
-    ].forEach((item) => Object.assign(item.getInputNode(), { checked: false }));
+    ].forEach((item) => Object.assign(item.input.node, { checked: false }));
     DB.filter.setParam('sortType').setParam('sortOrder');
   }
 

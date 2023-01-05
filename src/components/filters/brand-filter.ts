@@ -33,7 +33,7 @@ export class BrandFilter extends Filter {
     this.filterWrapper.append(...this.brands);
   }
 
-  getInputs() {
+  get inputs() {
     return this.brands;
   }
 }

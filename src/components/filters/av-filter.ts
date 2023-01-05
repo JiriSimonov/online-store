@@ -23,7 +23,7 @@ export class AvFilter extends Filter {
     super('Наличие');
     this.filterWrapper.append(...this.items);
     this.items.forEach((item) => {
-      item.getInputNode().addEventListener('change', (e) => {
+      item.input.node.addEventListener('change', (e) => {
         const { target } = e;
         if (target && target instanceof HTMLInputElement)
           if (target.value === 'true') DB.filter.add(this.category, target.value);
@@ -32,7 +32,7 @@ export class AvFilter extends Filter {
     });
   }
 
-  getInputs() {
+  get inputs() {
     return this.items;
   }
 }
