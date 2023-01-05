@@ -811,7 +811,7 @@
       min-width: auto;
 
       &__wrapper {
-        min-width: auto;
+        min-width: 300px;
       }
 
       &__label_number {
@@ -819,7 +819,7 @@
       }
 
       &__input_number {
-        max-width: 30px;
+        max-width: 300px;
       }
     }
   }
@@ -881,7 +881,102 @@
 
   .modal {
     &__content {
-      padding-top: 60px;
+      padding: 60px 10px 20px 10px;
+      height: 450px;
+      overflow: auto;
     }
+    
+    &__form {
+      gap: 10px;
+    }
+
+    &__input {
+      padding: 8px 10px 8px 0;
+      font-size: 14px;
+    }
+
+    &__submit {
+      padding: 10px 15px;
+    }
+
+    .card {
+      margin: 0 auto;
+      padding: 0;
+      width: 100%;
+      min-width: auto;
+      max-width: none;
+      background: none;
+
+      &::before,
+      &__logo {
+        display: none;
+        visibility: hidden;
+      }      
+
+      &__wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 0 auto;
+        min-width: auto;
+        max-width: none;
+      }
+
+      &__label {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin: 0;
+        width: 100%;
+        max-width: 320px;
+        font-size: 18px;
+        color: $black;
+
+        &::after {
+          content: '*';
+          position: absolute;
+          top: 0;
+          right: 0;
+          font-size: 16px;
+          font-weight: 400;
+          color: $r;
+        }
+
+        &_cvv {
+          width: 100%;
+          max-width: 320px;
+        }
+      }
+
+      &__input {
+        margin-top: 0;
+        border: 1px solid $r;
+        width: 100%;
+        max-width: 246px;
+        min-width: auto;
+        color: $black;
+        font-size: 14px;
+
+        &::placeholder {
+          font-size: 14px;
+          color: $sw-disabled-txt;
+          text-align: initial;
+          text-indent: 10px;
+        }
+
+        &_number,
+        &_expires,
+        &_cvv {
+          padding: 8px 10px 8px 0;
+          width: 100%;
+          height: initial;
+          font-size: 14px;
+          text-align: initial;
+          text-indent: 10px;
+        }
+      }
+    }
+
   }
 }
