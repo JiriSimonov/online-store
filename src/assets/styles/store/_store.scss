@@ -422,6 +422,11 @@
     &__img {
       background-size: contain;
     }
+
+    &__card-wrapper {
+      flex-direction: column;
+      gap: 10px;
+    }
   }
 }
 
@@ -454,11 +459,6 @@
 
     &__card-price {
       font-size: 20px;
-    }
-
-    &__card-wrapper {
-      flex-direction: column;
-      gap: 10px;
     }
 
     &__card-btn {
