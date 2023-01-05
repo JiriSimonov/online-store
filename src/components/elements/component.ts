@@ -46,22 +46,22 @@ export class Component<T extends HTMLElement = HTMLElement> {
     return this.node.style;
   }
 
-  private static toNode(component: Node | Component) {
+  private static toNode(component: string | Node | Component) {
     return component instanceof Component ? component.node : component;
   }
-  private insert(target: 'before' | 'prepend' | 'append' | 'after', children: (Node | Component)[]) {
+  private insert(target: 'before' | 'prepend' | 'append' | 'after', children: (string | Node | Component)[]) {
     this.node[target](...children.map(Component.toNode));
   }
-  before(...children: (Node | Component)[]): void {
+  before(...children: (string | Node | Component)[]): void {
     this.insert('before', children);
   }
-  prepend(...children: (Node | Component)[]): void {
+  prepend(...children: (string | Node | Component)[]): void {
     this.insert('prepend', children);
   }
-  append(...children: (Node | Component)[]): void {
+  append(...children: (string | Node | Component)[]): void {
     this.insert('append', children);
   }
-  after(...children: (Node | Component)[]): void {
+  after(...children: (string | Node | Component)[]): void {
     this.insert('after', children);
   }
 
