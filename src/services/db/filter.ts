@@ -32,29 +32,29 @@ export class Filter {
     return Filter.getList(new Map([[category, new Set([value])]]), list);
   }
   /** Возвращает минимальный и максимальный порог цены/количества без учёта выбранного фильтра
-   * @param `excluded` категория фильтра
+   * @param `category` категория фильтра
    * @returns `{min: number, max: number}`
    */
-  getMinMaxValues(excluded: 'price' | 'quantity'): Record<'min' | 'max', number> {
-    const result = { min: Infinity, max: 0 };
+  getMinMaxValues(category: 'price' | 'quantity', list = this.source): Record<'min' | 'max', number | null> {
+    const [defaultMin, defaultMax] = [Infinity, 0];
     const { params } = this;
-    if (excluded === 'quantity') {
-      ['minQuantity', 'maxQuantity'].forEach((v) => params.delete(v));
-      Filter.getList(params, this.source).forEach((kb) => {
+
+    let [min, max] = [defaultMin, defaultMax];
+
+    if (category === 'quantity')
+      Filter.getList(params, list).forEach((kb) => {
         const { sumQuantity } = kb;
-        if (sumQuantity > result.max) result.max = sumQuantity;
-        if (sumQuantity < result.min) result.min = sumQuantity;
+        if (sumQuantity > max) max = sumQuantity;
+        if (sumQuantity < min) min = sumQuantity;
       });
-    }
-    if (excluded === 'price') {
-      ['minPrice', 'maxPrice'].forEach((v) => params.delete(v));
-      Filter.getList(params, this.source).forEach((kb) => {
+    if (category === 'price')
+      Filter.getList(params, list).forEach((kb) => {
         const { priceMax, priceMin } = kb;
-        if (priceMax > result.max) result.max = priceMax;
-        if (priceMin < result.min) result.min = priceMin;
+        if (priceMax > max) max = priceMax;
+        if (priceMin < min) min = priceMin;
       });
-    }
-    return result;
+
+    return { min: min === defaultMin ? null : min, max: max === defaultMax ? null : max };
   }
 
   private static getList(filters: Map<string, Set<string>>, keyboardList: Keyboard[]): Keyboard[] {
@@ -108,8 +108,7 @@ export class Filter {
   add(category: keyof typeof FilterCategory, value: string) {
     const param: string = this.usp.get(category) ?? '[]';
     const params: Set<string> = converter.stringToSet(param);
-    params.add(value);
-    this.usp.set(category, converter.setToString(params));
+    if (value) this.usp.set(category, converter.setToString(params.add(value)));
     Filter.query = this.usp.toString();
   }
   /** Удаляет фильтр из Query */

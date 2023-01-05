@@ -15,6 +15,7 @@ export class ThumbNails extends BaseComponent {
       const modal = new ProductModal(`url('assets/images/keyboards/${image}.webp')`);
       button.getNode().addEventListener('click', () => {
         item.appendEl(modal);
+        window.scrollTo(0,0);
       });
       item.appendEl(button);
       return item;

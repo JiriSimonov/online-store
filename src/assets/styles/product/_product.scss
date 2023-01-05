@@ -181,8 +181,10 @@
       margin-top: 0;
     }
 
-    &__modal {
-      height: 53%;
+    .modal {
+      top: 0;
+      height: calc(100% - 20px);
+      transform: none;
     }
   }
 }
@@ -202,6 +204,16 @@
       &__description {
         display: initial;
         visibility: initial;
+      }
+    }
+
+    .store__item {
+      .swtich {
+        &__item {
+          &__label {
+            padding: 8px;
+          }
+        }
       }
     }
   }
@@ -234,11 +246,11 @@
     &__content {
       background-size: 100%;
     }
-
     .modal {
-      top: 0;
-      height: 25%;
-      transform: none;
+      &__description {
+        display: none;
+        visibility: hidden;
+      }
     }
   }
 }

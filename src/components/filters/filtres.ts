@@ -36,12 +36,12 @@ export class Filters extends BaseComponent {
       elem.getNode().classList.remove('store__wrapper_is-open');
       DB.filter.setParam('filters');
       this.destroy();
-    }
+    };
     this.closeFilterBottom.getNode().onclick = () => {
       elem.getNode().classList.remove('store__wrapper_is-open');
       DB.filter.setParam('filters');
       this.destroy();
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     };
     this.clearFilters = new Button({
       className: 'filter__clear',
@@ -142,21 +142,17 @@ export class Filters extends BaseComponent {
       if (textNode) textNode.textContent = `${label}: (${sample}/${all})`;
     });
 
-    //? с этими хз. пока так (отключил, т.к. с ними тормозит)
-    /* this.switchFilter.getRadioInputs().forEach((v) => {
+    this.switchFilter.getRadioInputs().forEach((v) => {
       const { name, value } = v.getInputNode();
       const part = Filter.getHead(name, value);
-      // const all = Filter.getTail(name, value);
-      // const str = Filter.getHeadTail(name, value);
-      // console.info(part, all, str);
 
       const input = v.getInputNode();
       const label = input.parentElement;
       if (!label) return;
 
-      input.disabled = !part;
-      if (part) label.classList.remove('switch__item_false');
-      else label.classList.add('switch__item_false');
-    }); */
+      Object.assign(label.style, { opacity: part ? 1 : 1 / 3 });
+      if (part) label.classList.remove('switch__item_false')
+      else label.classList.add('switch__item_false')
+    });
   }
 }

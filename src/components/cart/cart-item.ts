@@ -38,9 +38,10 @@ export class CartItemElem extends BaseComponent {
 
   private cartPosition: BaseComponent;
 
-  constructor(product: CartItem, index: number) {
+  constructor(product: CartItem, index: number, orderBtn: Button) {
     super({ tag: 'li', className: 'cart__item' });
     const { keyboard, keyboardSwitch, quantity } = product;
+    const buttonOrder = orderBtn;
     this.countField = new FormField({
       className: 'count-btn',
       type: 'number',
@@ -57,14 +58,15 @@ export class CartItemElem extends BaseComponent {
       text: keyboard.title,
       parent: this.wrapper.getNode(),
     });
-    this.switchWrapper = new BaseComponent({ className: 'switch', parent: this.wrapper.getNode() });
+    this.switchWrapper = new BaseComponent({ className: 'switch' });
     this.keyboardSwitch = new SwitchComponent(keyboardSwitch, product.key, 'div');
+    if (keyboardSwitch.title !== 'null') this.wrapper.appendEl(this.switchWrapper);
     this.switchWrapper.appendEl(this.keyboardSwitch);
     this.category = new BaseComponent({
       className: 'cart__category',
       text: `Размер: ${keyboard.size}`,
-      parent: this.wrapper.getNode(),
     });
+    if (keyboard.size !== '') this.wrapper.appendEl(this.category);
     this.price = new BaseComponent({
       className: 'cart__price',
       text: `${keyboardSwitch.price} ₽`,
@@ -105,13 +107,26 @@ export class CartItemElem extends BaseComponent {
     this.countField.getInputNode().oninput = (e) => {
       if (e.target && e.target instanceof HTMLInputElement) {
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
-        if (+e.target.value < +e.target.min) e.target.value = e.target.min;
+        if (+e.target.value <= +e.target.min && e.target.value !== '') e.target.value = e.target.min;
+        if (e.target.value === '' || +e.target.value === 0) {
+          e.preventDefault();
+          buttonOrder.disabled = true;
+        }; 
         product.set(+e.target.value);
         this.inStock.getNode().textContent = `Осталось на складе: ${keyboardSwitch.quantity - +e.target.value}`;
         this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
         this.cartInc.disabled = +e.target.value === keyboardSwitch.quantity;
       }
     };
+    this.countField.getInputNode().addEventListener('focusout', () => {
+      if (!this.countField.getInputNode().value) {
+        this.countField.getInputNode().value = '1';
+        buttonOrder.disabled = false;
+      }
+    });
+
+    if (this.countField.getInputNode().value === '0') 
+      this.countField.getInputNode().value = this.countField.getInputNode().min;
     this.cartInc = new Button({
       className: 'count-btn__inc',
       text: '+',
