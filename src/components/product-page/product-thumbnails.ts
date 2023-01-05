@@ -14,12 +14,12 @@ export class ThumbNails extends Component {
       const button = new Button({
         parent: item,
         className: 'thumbnails__button',
-        style: { backgroundImage: `url('assets/images/keyboards/${image}.webp')` } as CSSStyleDeclaration,
         onclick: () => {
           item.append(modal);
           window.scrollTo(0, 0);
         },
       });
+      button.style.backgroundImage = `url('assets/images/keyboards/${image}.webp')`;
       item.append(button);
       return item;
     });
