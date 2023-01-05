@@ -57,8 +57,6 @@ export class Filters extends BaseComponent {
           ...this.featuresFilter.getInputs(),
         );
         this.availableFilter.getInputs()[0].checked = true;
-        this.priceFilter.setDefaultValues();
-        this.quantityFilter.setDefaultValues();
         window.scrollTo(0, 0);
       },
     });

@@ -35,19 +35,19 @@ export class Filter {
    * @param `category` категория фильтра
    * @returns `{min: number, max: number}`
    */
-  getMinMaxValues(category: 'price' | 'quantity', list = this.source): Record<'min' | 'max', number | null> {
+  getMinMaxValues(category: 'Price' | 'Quantity' | string, list = this.source): Record<'min' | 'max', number | null> {
     const [defaultMin, defaultMax] = [Infinity, 0];
     const { params } = this;
 
     let [min, max] = [defaultMin, defaultMax];
 
-    if (category === 'quantity')
+    if (category === 'Quantity')
       Filter.getList(params, list).forEach((kb) => {
         const { sumQuantity } = kb;
         if (sumQuantity > max) max = sumQuantity;
         if (sumQuantity < min) min = sumQuantity;
       });
-    if (category === 'price')
+    if (category === 'Price')
       Filter.getList(params, list).forEach((kb) => {
         const { priceMax, priceMin } = kb;
         if (priceMax > max) max = priceMax;

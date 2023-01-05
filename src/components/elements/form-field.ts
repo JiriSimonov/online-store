@@ -34,6 +34,14 @@ export class FormField extends BaseComponent<HTMLLabelElement> {
     return this.fieldInput.getNode();
   }
 
+  get value() {
+    return this.getInputNode().value;
+  }
+
+  set value(value) {
+    this.getInputNode().value = value;
+  }
+
   get disabled(): boolean {
     return this.getInputNode().disabled;
   }

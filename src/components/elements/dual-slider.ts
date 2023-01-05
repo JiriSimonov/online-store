@@ -1,5 +1,7 @@
 import { FormField } from './form-field';
 import { BaseComponent } from './base-component';
+import { DB } from '../../services/db/database';
+// import { debounce } from '../../utils/utils';
 
 export class DualSlider extends BaseComponent {
   private sliderWrapper = new BaseComponent({ className: 'dual-slider__wrapper', parent: this.node });
@@ -11,135 +13,99 @@ export class DualSlider extends BaseComponent {
   private sliderLeft: FormField;
   private sliderRight: FormField;
   private gap: number;
+  private minNum: number | string;
+  private maxNum: number | string;
+  private minRange: number | string;
+  private maxRange: number | string;
 
-  constructor(min: number, max: number, step: number, gap: number, paramMin: string, paramMax: string) {
+  constructor(
+    private min: number,
+    private max: number,
+    step: number,
+    gap: number,
+    private type: 'Price' | 'Quantity' | string) {
     super({ className: 'dual-slider' });
     this.minimumValue = new FormField({
       className: 'dual-slider',
       type: 'number',
-      min: `${min}`,
-      max: `${max}`,
-      value: `${paramMin}`,
+      min: `${this.min}`,
+      max: `${this.max}`,
+      value: `${this.getBasicValue('min', type)}`,
       text: 'От',
     });
     this.maximumValue = new FormField({
       className: 'dual-slider',
       type: 'number',
-      min: `${min}`,
-      max: `${max}`,
-      value: `${paramMax}`,
+      min: `${this.min}`,
+      max: `${this.max}`,
+      value: `${this.getBasicValue('max', type)}`,
       text: 'До',
     });
     this.sliderLeft = new FormField({
       className: 'dual-slider',
       modificator: 'range',
       type: 'range',
-      min: `${min}`,
-      max: `${max}`,
-      value: `${paramMin}`,
+      min: `${this.min}`,
+      max: `${this.max}`,
+      value: `${this.getBasicValue('min', type)}`,
       step: `${step}`,
     });
     this.sliderRight = new FormField({
       className: 'dual-slider',
       modificator: 'range',
       type: 'range',
-      min: `${min}`,
-      max: `${max}`,
-      value: `${paramMax}`,
+      min: `${this.min}`,
+      max: `${this.max}`,
+      value: `${this.getBasicValue('max', type)}`,
       step: `${step}`,
     });
     this.gap = gap;
-    this.sliderLeft.getInputNode().value = `${paramMin}`;
-    this.sliderRight.getInputNode().value = `${paramMax}`;
-    this.minimumValue.getInputNode().value = `${paramMin}`;
-    this.maximumValue.getInputNode().value = `${paramMax}`;
-    const [minInputNum, maxInputNum] = this.getNumbersNodes();
-    const [minRange, maxRange] = this.getRangesNodes();
-    if (+minInputNum.value >= +maxInputNum.value) {
-      minInputNum.value = `${+maxInputNum.value - this.gap}`;
-      maxInputNum.value = `${+minInputNum.value + this.gap}`;
-    };
-    if (+maxInputNum.value >= +maxInputNum.max) maxInputNum.value = maxInputNum.max;
-    if (+maxInputNum.value <= min && minInputNum.value !== '') {
-      maxInputNum.value = `${min + gap}`;
-      minInputNum.value = `${min}`;
-    }
-    if (+minInputNum.value < 0) minInputNum.value = `${min}`;
-    this.setLeftPos(minInputNum.value, minRange.max);
-    this.setRightPos(maxInputNum.value, maxRange.max);
-    this.getNumbersNodes().forEach((item) => item.addEventListener('input', (e) => {
-      const { target } = e;
-      const minValue = +minInputNum.value;
-      const maxValue = +maxInputNum.value;
-      if (target instanceof HTMLInputElement)
-        if ((maxValue - minValue >= this.gap) && maxValue <= +maxRange.max)
-          if (target === minInputNum) {
-            minRange.value = `${minValue}`;
-            this.setLeftPos(minValue, minRange.max);
-          } else {
-            maxRange.value = `${maxValue}`;
-            this.setRightPos(maxValue, maxRange.max);
-          }
-      if (+maxInputNum.value >= +maxInputNum.max) maxInputNum.value = maxInputNum.max;
-      if (+maxInputNum.value <= min && minInputNum.value !== '') {
-        maxInputNum.value = `${min + gap}`;
-        minInputNum.value = `${min}`;
-      }
-      if (+minInputNum.value >= +maxInputNum.value) {
-        minInputNum.value = `${+maxInputNum.value - this.gap}`;
-        maxInputNum.value = `${+minInputNum.value + this.gap}`;
-      };
-      if (minInputNum.value === '') minInputNum.value = minInputNum.min;
-    }));
-    this.getRangesNodes().forEach((item) => item.addEventListener('input', (e) => {
+    this.minNum = +this.minimumValue.value;
+    this.maxNum = +this.maximumValue.value;
+    this.minRange = +this.sliderLeft.value;
+    this.maxRange = +this.sliderRight.value;
+    console.warn(this.sliderProgress.getNode());
+    this.getValidMin(this.minimumValue.getInputNode(), this.minNum);
+    this.getValidMax(this.maximumValue.getInputNode(), this.maxNum);
+    this.minimumValue.getInputNode().addEventListener('input', (e) => {
       const { target } = e;
       if (target instanceof HTMLInputElement) {
-        const minValue = +minRange.value;
-        const maxValue = +maxRange.value;
-        if (target === minRange) minRange.classList.add('dual-slider__input_is-selected');
-        else maxRange.classList.add('dual-slider__input_is-selected');
-        if ((maxValue - minValue) < this.gap) {
-          if (target === minRange) minRange.value = `${maxValue - this.gap}`;
-          else maxRange.value = `${minValue + this.gap}`;
-        } else {
-          minInputNum.value = `${minValue}`;
-          maxInputNum.value = `${maxValue}`;
-          this.setLeftPos(minValue, minRange.max);
-          this.setRightPos(maxValue, maxRange.max);
-        }
+        this.getValidMin(target, target.value);
+        console.warn('input min')
       }
-    }));
+    });
+    this.maximumValue.getInputNode().addEventListener('input', (e) => {
+      const { target } = e;
+      if (target instanceof HTMLInputElement) {
+        this.getValidMax(target, target.value);
+        console.warn('input max')
+      }
+    });
+    this.sliderLeft.getInputNode().addEventListener('change', (e) => {
+      const { target } = e;
+      if (target instanceof HTMLInputElement) {
+        this.getValidMin(target, target.value);
+        this.minimumValue.value = target.value;
+        console.warn('input range min')
+      }
+    });
+    this.sliderRight.getInputNode().addEventListener('change', (e) => {
+      const { target } = e;
+      if (target instanceof HTMLInputElement) {
+        this.getValidMax(target, target.value);
+        this.maximumValue.value = target.value;
+      }
+    });
+    window.onhashchange = () => {
+      this.minimumValue.value = `${this.getBasicValue('min', type)}`;
+      this.maximumValue.value = `${this.getBasicValue('max', type)}`;
+      this.sliderLeft.value = this.minimumValue.value;
+      this.sliderRight.value = this.maximumValue.value;
+      this.setLeftPos(this.minimumValue.value, this.minimumValue.value);
+      this.setLeftPos(this.maximumValue.value, this.maximumValue.value);
+    }
     this.sliderWrapper.appendEl([this.minimumValue, this.maximumValue]);
     this.controls.appendEl([this.sliderLeft, this.sliderRight]);
-
-  }
-
-  getNumbersNodes() {
-    return [this.minimumValue.getInputNode(), this.maximumValue.getInputNode()];
-  }
-
-  get minValues(): HTMLInputElement[] {
-    return [this.minimumValue.getInputNode(), this.sliderLeft.getInputNode()];
-  }
-
-  getRangesNodes() {
-    return [this.sliderLeft.getInputNode(), this.sliderRight.getInputNode()];
-  }
-
-  getProgressNode() {
-    return this.sliderProgress.getNode();
-  }
-
-  setValues(min: number | string, max: number | string) {
-    let maxVal = max;
-    if ((+max - +min < this.gap) && +max <= +this.sliderRight.getInputNode().max) maxVal = +max + this.gap;
-    this.minimumValue.getInputNode().value = `${min}`;
-    this.maximumValue.getInputNode().value = `${maxVal}`;
-    this.sliderLeft.getInputNode().value = `${min}`;
-    this.sliderRight.getInputNode().value = `${maxVal}`;
-    const [minNum, maxNum, minRange, maxRange] = [...this.getNumbersNodes(), ...this.getRangesNodes()];
-    this.setLeftPos(minNum.value, minRange.max);
-    this.setRightPos(maxNum.value, maxRange.max);
   }
 
   setLeftPos(inputVal: string | number, limit: string | number) {
@@ -150,8 +116,37 @@ export class DualSlider extends BaseComponent {
     this.sliderProgress.getNode().style.right = `${100 - ((+inputVal / +limit) * 100)}%`;
   }
 
-  removeStyles() {
-    this.sliderLeft.getInputNode().classList.remove('dual-slider__input_is-selected');
-    this.sliderRight.getInputNode().classList.remove('dual-slider__input_is-selected');
+  getValidMin(elem: HTMLInputElement, value: number | string) {
+    const item = elem;
+    if (value >= +item.max) item.value = `${+item.max - this.gap}`;
+    if (value < +item.min) return;
+    DB.filter.clear(`min${this.type}` as 'minQuantity' | 'minPrice')
+      .add(`min${this.type}` as 'minQuantity' | 'minPrice', item.value);
+    this.sliderLeft.value = item.value;
+    this.setLeftPos(item.value, item.max);
   }
-}
+
+  getValidMax(elem: HTMLInputElement, value: number | string) {
+    const item = elem;
+    const minVal = +this.minimumValue.value;
+    if (value > +item.max) {
+      item.value = item.max;
+      return;
+    };
+    if (value <= minVal || value <= minVal + this.gap) item.value = `${minVal + this.gap}`;
+    DB.filter.clear(`max${this.type}` as 'maxQuantity' | 'maxPrice')
+      .add(`max${this.type}` as 'maxQuantity' | 'maxPrice', item.value);
+    this.sliderRight.value = item.value;
+    this.setRightPos(item.value, item.max);
+  }
+
+  getBasicValue(a: string, b: string) {
+    const param = DB.filter.params.get(`${a}${b}`);
+    const limits = DB.filter.getMinMaxValues(b);
+    const limit = a === 'min' ? limits.min : limits.max;
+    let current = this[a as keyof this] as number;
+    if (limit) current = limit;
+    if (param) current = +[...param];
+    return current;
+  }
+} // TODO? что-то не так с сетами QP, надо разобраться
