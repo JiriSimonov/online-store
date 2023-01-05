@@ -67,9 +67,9 @@ export class Header extends BaseComponent {
     this.controls.getNode().prepend(this.searchField.getNode());
 
     const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value), 300);
-    this.searchField.getInputNode().oninput = (e) => {
+    this.searchField.input.oninput = () => {
       if (!window.location.hash.startsWith('#store')) window.location.hash = '#store';
-      if (e.target instanceof HTMLInputElement) handleSearchInput(e.target.value);
+      handleSearchInput(this.searchField.input.value);
     };
     this.subscribe();
   }

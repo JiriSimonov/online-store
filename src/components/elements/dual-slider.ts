@@ -1,6 +1,7 @@
 import { FormField } from './form-field';
 import { BaseComponent } from './base-component';
 import { DB } from '../../services/db/database';
+import { debounce } from '../../utils/utils';
 // import { debounce } from '../../utils/utils';
 
 export class DualSlider extends BaseComponent {
@@ -18,45 +19,42 @@ export class DualSlider extends BaseComponent {
   private minRange: number | string;
   private maxRange: number | string;
 
-  constructor(
-    private min: number,
-    private max: number,
-    step: number,
-    gap: number,
-    private type: 'Price' | 'Quantity' | string) {
+  constructor(private min: number, private max: number, step: number, gap: number, private type: 'Price' | 'Quantity') {
     super({ className: 'dual-slider' });
+    const minParam: `min${typeof this.type}` = `min${this.type}`;
+    const maxParam: `max${typeof this.type}` = `max${this.type}`;
     this.minimumValue = new FormField({
       className: 'dual-slider',
       type: 'number',
-      min: `${this.min}`,
-      max: `${this.max}`,
-      value: `${this.getBasicValue('min', type)}`,
+      min: `${min}`,
+      max: `${max}`,
+      value: this.getBasicValue('min'),
       text: 'От',
     });
     this.maximumValue = new FormField({
       className: 'dual-slider',
       type: 'number',
-      min: `${this.min}`,
-      max: `${this.max}`,
-      value: `${this.getBasicValue('max', type)}`,
+      min: `${min}`,
+      max: `${max}`,
+      value: this.getBasicValue('max'),
       text: 'До',
     });
     this.sliderLeft = new FormField({
       className: 'dual-slider',
       modificator: 'range',
       type: 'range',
-      min: `${this.min}`,
-      max: `${this.max}`,
-      value: `${this.getBasicValue('min', type)}`,
+      min: `${min}`,
+      max: `${max}`,
+      value: this.getBasicValue('min'),
       step: `${step}`,
     });
     this.sliderRight = new FormField({
       className: 'dual-slider',
       modificator: 'range',
       type: 'range',
-      min: `${this.min}`,
-      max: `${this.max}`,
-      value: `${this.getBasicValue('max', type)}`,
+      min: `${min}`,
+      max: `${max}`,
+      value: this.getBasicValue('max'),
       step: `${step}`,
     });
     this.gap = gap;
@@ -64,100 +62,82 @@ export class DualSlider extends BaseComponent {
     this.maxNum = +this.maximumValue.value;
     this.minRange = +this.sliderLeft.value;
     this.maxRange = +this.sliderRight.value;
-    this.getValidMin(this.minimumValue.getInputNode());
-    this.getValidMax(this.maximumValue.getInputNode());
-    this.minimumValue.getInputNode().addEventListener('input', (e) => {
-      const { target } = e;
-      if (target instanceof HTMLInputElement) {
-        this.getValidMin(target);
-        DB.filter.clear(`min${this.type}` as 'minQuantity' | 'minPrice')
-        .add(`min${this.type}` as 'minQuantity' | 'minPrice', target.value);
-      }
+    this.setValidMin(this.minimumValue.input);
+    this.setValidMax(this.maximumValue.input);
+    const handleMinInput = debounce((value: string) => DB.filter.clear(minParam).add(minParam, value), 350);
+    this.minimumValue.input.addEventListener('input', () => {
+      this.setValidMin(this.minimumValue.input);
+      handleMinInput(this.minimumValue.input.value);
     });
-    this.maximumValue.getInputNode().addEventListener('input', (e) => {
-      const { target } = e;
-      if (target instanceof HTMLInputElement) {
-        this.getValidMax(target);
-        DB.filter.clear(`max${this.type}` as 'maxQuantity' | 'maxPrice')
-        .add(`max${this.type}` as 'maxQuantity' | 'maxPrice', target.value);
-      }
+    const handleMaxInput = debounce((value: string) => DB.filter.clear(maxParam).add(maxParam, value), 350);
+    this.maximumValue.input.addEventListener('input', () => {
+      this.setValidMax(this.maximumValue.input);
+      handleMaxInput(this.maximumValue.input.value);
     });
-    this.sliderLeft.getInputNode().addEventListener('change', (e) => {
-      const { target } = e;
-      if (target instanceof HTMLInputElement) {
-        this.getValidMin(target);
-        this.minimumValue.value = target.value;
-        DB.filter.clear(`min${this.type}` as 'minQuantity' | 'minPrice')
-        .add(`min${this.type}` as 'minQuantity' | 'minPrice', target.value);
-      }
+    this.sliderLeft.input.addEventListener('input', () =>
+      this.setLeftPos(this.sliderLeft.value, this.sliderLeft.input.max),
+    );
+    this.sliderLeft.input.addEventListener('change', () => {
+      this.setValidMin(this.sliderLeft.input);
+      this.minimumValue.value = this.sliderLeft.input.value;
+      DB.filter.clear(minParam).add(minParam, this.sliderLeft.input.value);
     });
-    this.sliderLeft.getInputNode().addEventListener('input', (e) => {
-      const { target } = e;
-      if (target instanceof HTMLInputElement)
-        this.setLeftPos(this.sliderLeft.value, this.sliderLeft.getInputNode().max);
-    })
-    this.sliderRight.getInputNode().addEventListener('change', (e) => {
-      const { target } = e;
-      if (target instanceof HTMLInputElement) {
-        this.getValidMax(target);
-        this.maximumValue.value = target.value;
-        DB.filter.clear(`max${this.type}` as 'maxQuantity' | 'maxPrice')
-        .add(`max${this.type}` as 'maxQuantity' | 'maxPrice', target.value);
-      }
+    this.sliderRight.input.addEventListener('input', () =>
+      this.setRightPos(this.sliderRight.value, this.sliderRight.input.max),
+    );
+    this.sliderRight.input.addEventListener('change', () => {
+      this.setValidMax(this.sliderRight.input);
+      this.maximumValue.value = this.sliderRight.input.value;
+      DB.filter.clear(maxParam).add(maxParam, this.sliderRight.input.value);
     });
-    this.sliderRight.getInputNode().addEventListener('input', (e) => {
-      const { target } = e;
-      if (target instanceof HTMLInputElement)
-        this.setRightPos(this.sliderRight.value, this.sliderRight.getInputNode().max);
-    })
-    window.onhashchange = () => {
-      this.minimumValue.value = `${this.getBasicValue('min', type)}`;
-      this.maximumValue.value = `${this.getBasicValue('max', type)}`;
+    window.addEventListener('hashchange', () => {
+      this.minimumValue.value = this.getBasicValue('min');
+      this.maximumValue.value = this.getBasicValue('max');
       this.sliderLeft.value = this.minimumValue.value;
       this.sliderRight.value = this.maximumValue.value;
-      this.setLeftPos(this.minimumValue.value, this.minimumValue.getInputNode().max);
-      this.setRightPos(this.maximumValue.value, this.maximumValue.getInputNode().max);
-    }
+      this.setLeftPos(this.minimumValue.value, this.minimumValue.input.max);
+      this.setRightPos(this.maximumValue.value, this.maximumValue.input.max);
+    });
     this.sliderWrapper.appendEl([this.minimumValue, this.maximumValue]);
     this.controls.appendEl([this.sliderLeft, this.sliderRight]);
   }
 
-  setLeftPos(inputVal: string | number, limit: string | number) {
-    this.sliderProgress.getNode().style.left = `${((+inputVal / +limit) * 100)}%`;
+  setLeftPos(inputVal: string, limit: string): void {
+    this.sliderProgress.getNode().style.left = `${(+inputVal / +limit) * 100}%`;
   }
 
-  setRightPos(inputVal: string | number, limit: string | number) {
-    this.sliderProgress.getNode().style.right = `${100 - ((+inputVal / +limit) * 100)}%`;
+  setRightPos(inputVal: string, limit: string): void {
+    this.sliderProgress.getNode().style.right = `${100 - (+inputVal / +limit) * 100}%`;
   }
 
-  getValidMin(elem: HTMLInputElement) {
-    const item = elem;
-    if (+elem.value >= +item.max) item.value = `${+item.max - this.gap}`;
-    if (+elem.value < +item.min) return;
-    this.sliderLeft.value = item.value;
-    this.setLeftPos(item.value, item.max);
+  setValidMin(elem: HTMLInputElement): void {
+    if (+elem.value >= +elem.max) Object.assign(elem, { value: `${+elem.max - this.gap}` });
+    if (+elem.value < +elem.min) return;
+    this.sliderLeft.value = elem.value;
+    this.setLeftPos(elem.value, elem.max);
   }
 
-  getValidMax(elem: HTMLInputElement) {
-    const item = elem;
+  setValidMax(elem: HTMLInputElement): void {
     const minVal = +this.minimumValue.value;
-    if (+elem.value > +item.max) {
-      item.value = item.max;
+    if (+elem.value > +elem.max) {
+      Object.assign(elem, { value: elem.max });
       return;
-    };
-    if (+elem.value <= minVal || +elem.value <= minVal + this.gap) item.value = `${minVal + this.gap}`;
-    this.sliderRight.value = item.value;
-    this.setRightPos(item.value, item.max);
+    }
+    if (+elem.value <= minVal || +elem.value <= minVal + this.gap)
+      Object.assign(elem, { value: `${minVal + this.gap}` });
+    this.sliderRight.value = elem.value;
+    this.setRightPos(elem.value, elem.max);
   }
 
-  
-  getBasicValue(filterParam: string, filterType: string) {
-    const param = DB.filter.params.get(`${filterParam}${filterType}`);
-    const limits = DB.filter.getMinMaxValues(filterType);
-    const limit = filterParam === 'min' ? limits.min : limits.max;
-    let current = this[filterParam as keyof this] as number;
+  getBasicValue(edge: 'min' | 'max'): string {
+    /*     const param = DB.filter.params.get(`${edge}${this.type}`);
+    const limit = DB.filter.getMinMaxValues(this.type)[edge];
+    let current = this[edge];
     if (limit) current = limit;
-    if (param) current = +[...param];
-    return current;
+    if (param) current = +[...param]; */
+    const param = DB.filter.params.get(`${edge}${this.type}`);
+    const limit = DB.filter.getMinMaxValues(this.type)[edge];
+    const current = param ? +[...param] : limit;
+    return `${current ?? this[edge]}`;
   }
 }

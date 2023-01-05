@@ -35,7 +35,7 @@ export class Filter {
    * @param `category` категория фильтра
    * @returns `{min: number, max: number}`
    */
-  getMinMaxValues(category: 'Price' | 'Quantity' | string, list = this.source): Record<'min' | 'max', number | null> {
+  getMinMaxValues(category: 'Price' | 'Quantity', list = this.source): Record<'min' | 'max', number | null> {
     const [defaultMin, defaultMax] = [Infinity, 0];
     const { params } = this;
 
