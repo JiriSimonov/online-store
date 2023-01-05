@@ -12,8 +12,9 @@ import { FormField } from '../elements/form-field';
 import { emitter } from '../../services/event-emitter';
 import { getNoun } from '../../utils/utils';
 import { Pagination } from '../../services/db/pagination';
+import { Section } from '../elements/section-component';
 
-export class Cart extends Component {
+export class Cart extends Section {
   private pagination = new Pagination(DB.cart, 1, 4, DB.filter);
 
   private container = new Component({ className: 'container' });
@@ -98,7 +99,7 @@ export class Cart extends Component {
   private orderForm = new OrderForm();
 
   constructor() {
-    super({ tag: 'section', className: 'cart' });
+    super({  className: 'cart' });
     this.cartItems = DB.cart.list.map((item, index) => new CartItemElem(item, index, this.orderBtn));
     this.append(this.container);
     this.container.append(this.wrapper);

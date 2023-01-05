@@ -9,8 +9,9 @@ import { SortFilter } from './filters/sort-filter';
 import { DB } from '../services/db/database';
 import { getChunk, getNoun } from '../utils/utils';
 import { Burger } from './elements/burger-menu';
+import { Section } from './elements/section-component';
 
-export class Store extends Component {
+export class Store extends Section {
   private chunkSize = 20;
   private chunkNumber = 0;
 
@@ -18,6 +19,7 @@ export class Store extends Component {
   private wrapper = new Component({
     className: `store__wrapper${DB.filter.getParam('filters') ? ' store__wrapper_is-open' : ''}`,
   });
+
   private title = new Component({ tag: 'h1', className: 'store__title', textContent: 'Клавиатуры' });
   private showFiltersBtn = new Button({ className: 'store__filter', textContent: 'Фильтры' });
   private contentWrapper = new Component({ className: 'store__content' });
@@ -43,7 +45,7 @@ export class Store extends Component {
   });
 
   constructor() {
-    super({ tag: 'section', className: 'store' });
+    super({ className: 'store' });
     this.showFiltersBtn.node.onclick = () => {
       const { classList } = this.wrapper.node;
       if (!classList.contains('store__wrapper_is-open')) {

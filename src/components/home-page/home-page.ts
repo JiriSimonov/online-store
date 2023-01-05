@@ -1,7 +1,8 @@
 import { Component } from '../elements/base-component';
 import { Button } from '../elements/button-component';
+import { Section } from '../elements/section-component';
 
-export class Home extends Component {
+export class Home extends Section {
   private container = new Component({ className: 'container', parent: this.node });
   private wrapper = new Component({ className: 'home__wrapper', parent: this.container.node });
   private title = new Component({
@@ -36,6 +37,6 @@ export class Home extends Component {
   });
 
   constructor() {
-    super({ tag: 'section', className: 'home' });
+    super({  className: 'home' });
   }
 }
