@@ -1,18 +1,18 @@
 import { DB } from './services/db/database';
-import { Keyboard } from './services/db/keyboard';
-import { Router } from './utils/router';
+import { Component } from './components/elements/base-component';
 import { Header } from './components/header';
+import { Main } from './components/elements/main-component';
+import { Footer } from './components/footer';
 import { Home } from './components/home-page/home-page';
 import { Store } from './components/store';
-import { ProductPage } from './components/product-page/product-page';
-import { Component } from './components/elements/base-component';
 import { Cart } from './components/cart/cart';
-/* import { ProductsListState } from './states/goods-state'; */
-import { Footer } from './components/footer';
+import { ProductPage } from './components/product-page/product-page';
+import { Router } from './utils/router';
 import { Error as ErrorPage } from './utils/error';
+import { Keyboard } from './services/db/keyboard';
 import './assets/styles/global/style.scss';
 
-class App extends Component {
+class App extends Main {
   private root = document.getElementById('root');
   private router?: Router;
   private currentPage?: Component;
@@ -28,7 +28,7 @@ class App extends Component {
   private footer = new Footer();
 
   constructor() {
-    super({ tag: 'main', className: 'main' });
+    super();
     if (!this.root) throw new Error('no root element');
 
     this.root.append(this.header.node, this.node, this.footer.node);
