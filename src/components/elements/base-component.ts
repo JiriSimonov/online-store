@@ -1,4 +1,5 @@
 import { BaseComponentProps } from '../../interfaces/interfaces';
+import { Component } from './component';
 
 export class BaseComponent<T extends HTMLElement = HTMLElement> {
   node: T;
@@ -19,10 +20,15 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     return this.node;
   }
 
-  appendEl(children: HTMLElement | BaseComponent | BaseComponent[]) {
+  appendEl(children: HTMLElement | BaseComponent | Component | (HTMLElement | BaseComponent | Component)[]) {
     if (children instanceof HTMLElement) this.node.append(children);
-    if (children instanceof BaseComponent) this.node.append(children.getNode());
-    if (Array.isArray(children)) this.node.append(...children.map((e) => e.getNode()));
+    if (children instanceof BaseComponent) this.node.append(children.node);
+    if (Array.isArray(children))
+      this.node.append(
+        ...children.map((component) =>
+          component instanceof Component || component instanceof BaseComponent ? component.node : component,
+        ),
+      );
   }
 
   destroy(): void {

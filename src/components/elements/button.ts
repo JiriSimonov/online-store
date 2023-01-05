@@ -1,22 +1,8 @@
-import { BaseComponent } from './base-component';
-import { ButtonProps } from '../../interfaces/interfaces';
+import { Component, ComponentProps } from './component';
 
-export class Button extends BaseComponent<HTMLButtonElement> {
-  constructor(props: ButtonProps) {
-    super(Object.assign(props, { tag: 'button' }));
-    const { value, onclick, aria } = props;
-    const { node } = this;
-
-    if (value) node.value = value;
-    if (onclick) node.onclick = onclick;
-    if (aria) node.ariaLabel = aria;
-  }
-
-  get onclick() {
-    return this.node.onclick;
-  }
-  set onclick(value) {
-    this.node.onclick = value;
+export class Button extends Component<HTMLButtonElement> {
+  constructor(props?: ComponentProps<HTMLButtonElement>) {
+    super({ ...props, tag: 'button' });
   }
 
   get disabled(): boolean {

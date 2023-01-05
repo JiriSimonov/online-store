@@ -34,16 +34,16 @@ export class SwitchModal extends BaseComponent {
     });
     this.modalImg = new BaseComponent({
       className: 'modal__img',
-      parent: this.modalInfo.getNode(),
+      parent: this.modalInfo.node,
     });
-    this.modalImg.getNode().style.backgroundImage = `url('assets/images/switches/${id}.webp')`;
+    this.modalImg.node.style.backgroundImage = `url('assets/images/switches/${id}.webp')`;
 
     this.modalStats = (KeyboardSwitch.getDescription(id, 'props') as string[]).map(
       (item) =>
         new BaseComponent({
           className: 'modal__stats',
           text: item,
-          parent: this.modalInfo.getNode(),
+          parent: this.modalInfo.node,
         }),
     );
     this.modalDescription = new BaseComponent({

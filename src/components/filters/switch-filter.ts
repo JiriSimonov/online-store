@@ -62,13 +62,13 @@ export class SwitchFilter extends Filter {
     });
     this.manufacturersWrapper.appendEl(this.manufacturers);
     this.switchWrapper.appendEl(this.switches);
-    this.switchWrapper.getNode().addEventListener('mouseover', (e) => {
+    this.switchWrapper.node.addEventListener('mouseover', (e) => {
       const target = e.target as HTMLElement;
       if (target.classList.contains('switch__label')) {
         target.setAttribute('id', 'open');
         this.modalWrapper = new BaseComponent({ className: 'switch__modal' });
         this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
-        target.append(this.modalWrapper.getNode());
+        target.append(this.modalWrapper.node);
         this.modalWrapper.appendEl(this.switchModal);
         target.addEventListener('mouseout', () => {
           target.removeAttribute('id');

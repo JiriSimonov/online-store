@@ -71,19 +71,19 @@ export class OrderForm extends BaseComponent {
     this.card = new Card();
     this.modalSubmit = new Button({
       className: 'modal__submit',
-      text: 'Заказать',
+      textContent: 'Заказать',
     });
     this.modalClose = new Button({
       className: 'modal__close',
-      aria: 'Закрыть',
-      parent: this.modalContent.getNode(),
+      ariaLabel: 'Закрыть',
+      parent: this.modalContent.node,
       onclick: () => {
         this.destroy();
         document.body.classList.remove('no-scroll');
       },
     });
-    this.modalForm.getNode().onsubmit = () => {
-      document.body.append(this.loader.getNode());
+    this.modalForm.node.onsubmit = () => {
+      document.body.append(this.loader.node);
       setTimeout(() => {
         window.location.hash = '#store';
         this.destroy();
@@ -93,7 +93,7 @@ export class OrderForm extends BaseComponent {
         document.body.classList.remove('no-scroll');
       }, 3500);
       return false;
-    }
+    };
 
     this.appendEl(this.modalOverlay);
     this.modalOverlay.appendEl(this.modalContent);
@@ -106,9 +106,9 @@ export class OrderForm extends BaseComponent {
       this.card,
       this.modalSubmit,
     ]);
-    this.modalOverlay.getNode().addEventListener('click', (e) => {
+    this.modalOverlay.node.addEventListener('click', (e) => {
       const { target } = e;
-      if (target === this.modalOverlay.getNode()) {
+      if (target === this.modalOverlay.node) {
         this.destroy();
         document.body.classList.remove('no-scroll');
       }

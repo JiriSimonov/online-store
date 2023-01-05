@@ -19,7 +19,7 @@ export class Store extends BaseComponent {
     className: `store__wrapper${DB.filter.getParam('filters') ? ' store__wrapper_is-open' : ''}`,
   });
   private title = new BaseComponent({ tag: 'h1', className: 'store__title', text: 'Клавиатуры' });
-  private showFiltersBtn = new Button({ className: 'store__filter', text: 'Фильтры' });
+  private showFiltersBtn = new Button({ className: 'store__filter', textContent: 'Фильтры' });
   private contentWrapper = new BaseComponent({ className: 'store__content' });
   private storeList = new StoreContent();
   private storeItems: ProductCard[] = [];
@@ -29,7 +29,7 @@ export class Store extends BaseComponent {
   private goodsCount = new BaseComponent({ className: 'store__goods-count' });
   private filters = new Filters(this.wrapper);
   private nextButton = new Button({
-    text: 'Показать еще',
+    textContent: 'Показать еще',
     className: 'store__more',
     onclick: () => {
       this.storeList.appendEl(this.chunk);
@@ -37,17 +37,17 @@ export class Store extends BaseComponent {
     },
   });
   private scrollButton = new Button({
-    text: 'Наверх',
+    textContent: 'Наверх',
     className: 'store__more',
     onclick: () => window.scrollTo({ behavior: 'smooth', top: 0 }),
   });
 
   constructor() {
     super({ tag: 'section', className: 'store' });
-    this.showFiltersBtn.getNode().onclick = () => {
-      const { classList } = this.wrapper.getNode();
+    this.showFiltersBtn.node.onclick = () => {
+      const { classList } = this.wrapper.node;
       if (!classList.contains('store__wrapper_is-open')) {
-        this.contentWrapper.getNode().prepend(this.filters.getNode());
+        this.contentWrapper.node.prepend(this.filters.node);
         classList.add('store__wrapper_is-open');
         DB.filter.setParam('filters', 'true');
       } else {
@@ -56,13 +56,13 @@ export class Store extends BaseComponent {
         DB.filter.setParam('filters');
       }
     };
-    this.burger.getNode().onclick = () => {
-      this.sortFilter.getNode().classList.toggle('sort_is-open');
-      this.burger.getNode().classList.toggle('burger_is-open');
+    this.burger.node.onclick = () => {
+      this.sortFilter.node.classList.toggle('sort_is-open');
+      this.burger.node.classList.toggle('burger_is-open');
     };
     this.sortFilter.getResertSortNode().onclick = () => {
-      this.sortFilter.getNode().classList.toggle('sort_is-open');
-      this.burger.getNode().classList.toggle('burger_is-open');
+      this.sortFilter.node.classList.toggle('sort_is-open');
+      this.burger.node.classList.toggle('burger_is-open');
       this.sortFilter.uncheckAll();
     };
     this.appendEl(this.container);
@@ -70,7 +70,7 @@ export class Store extends BaseComponent {
     this.wrapper.appendEl([this.title, this.showFiltersBtn, this.contentWrapper]);
     this.contentWrapper.appendEl([this.storeList, this.changeView]);
     this.changeView.appendEl([this.sortFilter, this.burger]);
-    if (DB.filter.getParam('filters')) this.contentWrapper.getNode().prepend(this.filters.getNode());
+    if (DB.filter.getParam('filters')) this.contentWrapper.node.prepend(this.filters.node);
     window.addEventListener('hashchange', () => {
       this.update();
       if (!DB.filter.getParam('sortType')) this.sortFilter.uncheckAll();
@@ -81,7 +81,7 @@ export class Store extends BaseComponent {
   update = () => {
     this.chunkNumber = 0;
     this.storeItems = this.chunk;
-    this.storeList.getNode().replaceChildren();
+    this.storeList.node.replaceChildren();
     this.storeList.appendEl(this.storeItems);
     this.contentWrapper.appendEl(this.goodsCount);
     const num = DB.filter.list.length;
@@ -109,7 +109,7 @@ export class Store extends BaseComponent {
 
   private renderBottomButton() {
     const [length, number, size] = [DB.filter.list.length, this.chunkNumber, this.chunkSize];
-    const [next, scroll] = [this.nextButton.getNode(), this.scrollButton.getNode()];
+    const [next, scroll] = [this.nextButton.node, this.scrollButton.node];
 
     next.remove();
 

@@ -13,12 +13,12 @@ import { Filter } from './filter';
 export class Filters extends BaseComponent {
   private closeFilterTop = new Button({
     className: 'modal__close',
-    aria: 'Закрыть',
+    ariaLabel: 'Закрыть',
     parent: this.node,
   });
   private closeFilterBottom = new Button({
     className: 'filter__clear',
-    text: 'Закрыть',
+    textContent: 'Закрыть',
   });
   availableFilter = new AvFilter();
   switchFilter = new SwitchFilter();
@@ -32,20 +32,20 @@ export class Filters extends BaseComponent {
 
   constructor(elem: BaseComponent) {
     super({ tag: 'ul', className: 'filter' });
-    this.closeFilterTop.getNode().onclick = () => {
-      elem.getNode().classList.remove('store__wrapper_is-open');
+    this.closeFilterTop.node.onclick = () => {
+      elem.node.classList.remove('store__wrapper_is-open');
       DB.filter.setParam('filters');
       this.destroy();
     };
-    this.closeFilterBottom.getNode().onclick = () => {
-      elem.getNode().classList.remove('store__wrapper_is-open');
+    this.closeFilterBottom.node.onclick = () => {
+      elem.node.classList.remove('store__wrapper_is-open');
       DB.filter.setParam('filters');
       this.destroy();
       window.scrollTo(0, 0);
     };
     this.clearFilters = new Button({
       className: 'filter__clear',
-      text: 'Очистить фильтры',
+      textContent: 'Очистить фильтры',
       onclick: () => {
         DB.filter.clearAll();
         Filter.uncheckAll(
@@ -62,10 +62,10 @@ export class Filters extends BaseComponent {
     });
     this.copyFilters = new Button({
       className: 'filter__clear',
-      text: 'Скопировать фильтры',
+      textContent: 'Скопировать фильтры',
       onclick: () => {
         const renderCopyAnimation = (result: 'success' | 'fail') => {
-          const icon = this.copyFilters.getNode();
+          const icon = this.copyFilters.node;
           icon.classList.add(`filter__clear_${result}`);
           icon.textContent = 'Скопировано!';
           icon.ontransitionend = () => {
@@ -149,8 +149,8 @@ export class Filters extends BaseComponent {
       if (!label) return;
 
       Object.assign(label.style, { opacity: part ? 1 : 1 / 3 });
-      if (part) label.classList.remove('switch__item_false')
-      else label.classList.add('switch__item_false')
+      if (part) label.classList.remove('switch__item_false');
+      else label.classList.add('switch__item_false');
     });
   }
 }

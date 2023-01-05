@@ -46,7 +46,7 @@ export class SortFilter extends BaseComponent {
     name: 'sort',
     value: 'sumQuantity-descending',
   });
-  private resetSort = new Button({ className: 'sort__clear', text: 'Очистить сортировку' });
+  private resetSort = new Button({ className: 'sort__clear', textContent: 'Очистить сортировку' });
 
   constructor() {
     super({ className: 'sort' });
@@ -86,6 +86,6 @@ export class SortFilter extends BaseComponent {
   }
 
   getResertSortNode() {
-    return this.resetSort.getNode();
+    return this.resetSort.node;
   }
 }

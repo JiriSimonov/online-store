@@ -19,14 +19,14 @@ export class ProductPage extends BaseComponent {
   private btnWrapper = new BaseComponent({ className: 'product__wrapper' });
   private backBtn = new Button({
     className: 'cart__btn',
-    text: 'Назад',
+    textContent: 'Назад',
     onclick: () => {
       window.location.hash = '#store';
     },
   });
   private cartBtn = new Button({
     className: 'cart__btn',
-    text: 'Оформить заказ',
+    textContent: 'Оформить заказ',
     onclick: () => {
       window.location.hash = '#cart';
     },
@@ -44,7 +44,7 @@ export class ProductPage extends BaseComponent {
 
     this.appendEl(this.container);
     this.container.appendEl([this.card, this.btnWrapper]);
-    this.card.getNode().prepend(this.productPath.getNode());
+    this.card.node.prepend(this.productPath.node);
     this.card.appendEl([this.thumbnails, this.title, this.descrList]);
     this.descrList.appendEl(this.descrFields);
     this.btnWrapper.appendEl(this.backBtn);

@@ -15,7 +15,7 @@ export class ProductImage extends BaseComponent {
 
     this.zones = imageList.map((_, i) => {
       const component = new BaseComponent({ tag: 'span', className: 'store__img-item' });
-      const node = component.getNode();
+      const { node } = component;
 
       node.onmouseover = () => setImage(i);
       node.onmouseout = () => setImage(0);
@@ -34,8 +34,8 @@ export class ProductImage extends BaseComponent {
     const promises: Promise<string>[] = imageList.map(async (name) => {
       const src = `assets/images/keyboards/${name}.webp`;
       const img = new Image();
-      Object.assign(img.getNode(), { src });
-      await img.getNode().decode();
+      Object.assign(img.node, { src });
+      await img.node.decode();
       return src;
     });
     this.images = await Promise.all(promises);

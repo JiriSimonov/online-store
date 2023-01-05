@@ -13,12 +13,12 @@ export class ProductCard extends BaseComponent {
   private productImage: ProductImage;
   private storeDescr = new BaseComponent({ className: 'store__description' });
   private cardTitle: BaseComponent;
-  private cardCopy = new Button({ className: 'store__card-copy', aria: 'Скопировать название' });
+  private cardCopy = new Button({ className: 'store__card-copy', ariaLabel: 'Скопировать название' });
   private switchList = new BaseComponent({ tag: 'ul', className: 'switch' });
   private switchItems: SwitchComponent[];
   private priceWrapper = new BaseComponent({ className: 'store__card-wrapper' });
   private cardPrice = new BaseComponent({ className: 'store__card-price' });
-  private buyNowBtn = new Button({ className: 'store__card-btn', text: 'Купить в 1 клик' });
+  private buyNowBtn = new Button({ className: 'store__card-btn', textContent: 'Купить в 1 клик' });
   private cardBtn = new Button({ className: 'store__card-btn' });
   private switchModal: SwitchModal | null | undefined;
 
@@ -38,7 +38,7 @@ export class ProductCard extends BaseComponent {
       return [...acc, switchComponent];
     }, [] as SwitchComponent[]);
 
-    this.switchList.getNode().onmouseover = (e) => {
+    this.switchList.node.onmouseover = (e) => {
       if (e.target instanceof HTMLLabelElement) this.renderModal(e.target);
     };
     this.node.onclick = (e) => {
@@ -51,14 +51,14 @@ export class ProductCard extends BaseComponent {
       }
 
       switch (e.target) {
-        case this.cardCopy.getNode():
+        case this.cardCopy.node:
           this.copyTitle();
           break;
-        case this.cardBtn.getNode():
+        case this.cardBtn.node:
           this.addToCart();
           this.renderText();
           break;
-        case this.buyNowBtn.getNode():
+        case this.buyNowBtn.node:
           if (!DB.cart.isInCart(keyboard.id, this.getSelectedSwitch()?.getSwitch().id)) this.addToCart();
           window.location.hash = `#cart`;
           emitter.emit('product-card__buyNowBtn_clicked');
@@ -96,14 +96,14 @@ export class ProductCard extends BaseComponent {
     this.renderText(label);
     const mouseoutListener = () => {
       this.renderText();
-      this.cardPrice.getNode().classList.remove('store__card-price_is-open');
+      this.cardPrice.node.classList.remove('store__card-price_is-open');
       this.switchModal?.destroy();
       this.switchModal = null;
       label.removeEventListener('mouseout', mouseoutListener);
     };
     label.addEventListener('mouseout', mouseoutListener);
     this.switchModal = new SwitchModal(label.textContent ?? '', label.classList.contains('switch__item_true'));
-    this.cardPrice.getNode().classList.add('store__card-price_is-open');
+    this.cardPrice.node.classList.add('store__card-price_is-open');
     this.appendEl(this.switchModal);
   }
 
@@ -119,7 +119,7 @@ export class ProductCard extends BaseComponent {
 
   private copyTitle(): void {
     const renderCopyAnimation = (result: 'success' | 'fail') => {
-      const icon = this.cardCopy.getNode();
+      const icon = this.cardCopy.node;
       icon.classList.add(`store__card-copy_${result}`);
       icon.ontransitionend = () => {
         icon.classList.remove(`store__card-copy_${result}`);

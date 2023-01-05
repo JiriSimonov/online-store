@@ -56,7 +56,7 @@ export class CartItemElem extends BaseComponent {
       tag: 'h2',
       className: 'cart__title',
       text: keyboard.title,
-      parent: this.wrapper.getNode(),
+      parent: this.wrapper.node,
     });
     this.switchWrapper = new BaseComponent({ className: 'switch' });
     this.keyboardSwitch = new SwitchComponent(keyboardSwitch, product.key, 'div');
@@ -70,11 +70,11 @@ export class CartItemElem extends BaseComponent {
     this.price = new BaseComponent({
       className: 'cart__price',
       text: `${keyboardSwitch.price} ₽`,
-      parent: this.wrapper.getNode(),
+      parent: this.wrapper.node,
     });
     this.stockWrapper = new BaseComponent({
       className: 'cart__stock-wrapper',
-      parent: this.wrapper.getNode(),
+      parent: this.wrapper.node,
     });
     this.inStock = new BaseComponent({
       className: 'cart__stock',
@@ -82,16 +82,16 @@ export class CartItemElem extends BaseComponent {
         keyboardSwitch.quantity > 0
           ? `Осталось на складе: ${keyboardSwitch.quantity - +this.countField.getInputNode().value}`
           : 'Нет в наличии',
-      parent: this.stockWrapper.getNode(),
+      parent: this.stockWrapper.node,
     });
     this.countBtn = new BaseComponent({
       className: 'count-btn',
-      parent: this.stockWrapper.getNode(),
+      parent: this.stockWrapper.node,
     });
     this.cartDec = new Button({
       className: 'count-btn__dec',
-      text: '-',
-      parent: this.countBtn.getNode(),
+      textContent: '-',
+      parent: this.countBtn.node,
       onclick: () => {
         if (+this.countField.getInputNode().value === 1) {
           DB.cart.remove(product);
@@ -111,10 +111,10 @@ export class CartItemElem extends BaseComponent {
         if (e.target.value === '' || +e.target.value === 0) {
           e.preventDefault();
           buttonOrder.disabled = true;
-        }; 
+        }
         product.set(+e.target.value);
-        this.inStock.getNode().textContent = `Осталось на складе: ${keyboardSwitch.quantity - +e.target.value}`;
-        this.price.getNode().textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
+        this.inStock.node.textContent = `Осталось на складе: ${keyboardSwitch.quantity - +e.target.value}`;
+        this.price.node.textContent = `${+e.target.value * keyboardSwitch.price} ₽`;
         this.cartInc.disabled = +e.target.value === keyboardSwitch.quantity;
       }
     };
@@ -125,12 +125,12 @@ export class CartItemElem extends BaseComponent {
       }
     });
 
-    if (this.countField.getInputNode().value === '0') 
+    if (this.countField.getInputNode().value === '0')
       this.countField.getInputNode().value = this.countField.getInputNode().min;
     this.cartInc = new Button({
       className: 'count-btn__inc',
-      text: '+',
-      parent: this.countBtn.getNode(),
+      textContent: '+',
+      parent: this.countBtn.node,
       onclick: () => {
         this.countField.getInputNode().stepUp();
         this.countField.getInputNode().dispatchEvent(new Event('input'));
@@ -138,15 +138,15 @@ export class CartItemElem extends BaseComponent {
     });
     this.cartDelete = new Button({
       className: 'cart__stock cart__delete',
-      text: 'Удалить',
-      parent: this.stockWrapper.getNode(),
+      textContent: 'Удалить',
+      parent: this.stockWrapper.node,
       onclick: () => {
         DB.cart.remove(product);
         emitter.emit('cart__delete-item');
       },
     });
     if (+this.countField.getInputNode().value === +this.countField.getInputNode().max)
-      this.cartInc.getNode().setAttribute('disabled', 'true');
+      this.cartInc.node.setAttribute('disabled', 'true');
     this.price.setText(`${+this.countField.getInputNode().value * keyboardSwitch.price} ₽`);
     this.appendEl(this.images);
     this.appendEl(this.wrapper);

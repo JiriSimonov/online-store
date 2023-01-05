@@ -23,7 +23,7 @@ export class Cart extends BaseComponent {
 
   private cartButton = new Button({
     className: 'cart__btn',
-    text: 'Продолжить покупки',
+    textContent: 'Продолжить покупки',
     onclick: () => {
       window.location.hash = '#store';
     },
@@ -74,9 +74,9 @@ export class Cart extends BaseComponent {
   private cartPromoForm = new PromoForm();
   private cartPromoBtn = new Button({
     className: 'promo__btn',
-    text: 'Есть промокод?',
+    textContent: 'Есть промокод?',
     onclick: () => {
-      this.cartPromoBtn.getNode().setAttribute('disabled', 'true');
+      this.cartPromoBtn.node.setAttribute('disabled', 'true');
       this.cartPromoWrapper.appendEl(this.cartPromoForm);
     },
   });
@@ -92,7 +92,7 @@ export class Cart extends BaseComponent {
 
   private orderBtn = new Button({
     className: 'cart__order',
-    text: 'Продолжить оформление',
+    textContent: 'Продолжить оформление',
     onclick: () => this.openOrderForm(),
   });
   private orderForm = new OrderForm();
@@ -133,7 +133,7 @@ export class Cart extends BaseComponent {
   private updateTotalPrice(): void {
     const { promo, sumPrice } = DB.cart;
     const { cartCurrentPrice, cartPriceTotal } = this;
-    const { classList } = cartPriceTotal.getNode();
+    const { classList } = cartPriceTotal.node;
 
     cartPriceTotal.setText(`${DB.cart.sumPrice}`);
     if (promo.size && sumPrice) {
@@ -153,11 +153,11 @@ export class Cart extends BaseComponent {
 
   private updateActivePromoList(): void {
     const { list, size } = DB.cart.promo;
-    const [promoWrapper, promoTitle] = [this.cartPromoWrapper.getNode(), this.cartPromoTitle.getNode()];
+    const [promoWrapper, promoTitle] = [this.cartPromoWrapper.node, this.cartPromoTitle.node];
     this.cartPromoList.clear();
     if (size) {
       this.cartPromoList.appendEl(list.map((item) => new ActivePromo(item[0], `${item[1] * 100}%`)));
-      promoWrapper.prepend(promoTitle, this.cartPromoList.getNode());
+      promoWrapper.prepend(promoTitle, this.cartPromoList.node);
     } else {
       promoTitle.remove();
       this.cartPromoList.destroy();
@@ -180,8 +180,9 @@ export class Cart extends BaseComponent {
       this.changeView.appendEl(this.cartPagination);
       this.cartList.clear();
       this.cartList.appendEl(
-        this.pagination.chunk.map((item, index) =>
-          new CartItemElem(item, index + this.pagination.firstindex, this.orderBtn)),
+        this.pagination.chunk.map(
+          (item, index) => new CartItemElem(item, index + this.pagination.firstindex, this.orderBtn),
+        ),
       );
       this.cartPriceWrapper.appendEl([this.cartPriceText, this.cartPriceTotal]);
       this.cartPromoWrapper.appendEl([this.cartPromoBtn]);
@@ -194,7 +195,7 @@ export class Cart extends BaseComponent {
 
   private openOrderForm(): void {
     this.orderForm = new OrderForm();
-    document.body.append(this.orderForm.getNode());
+    document.body.append(this.orderForm.node);
     document.body.classList.add('no-scroll');
   }
 

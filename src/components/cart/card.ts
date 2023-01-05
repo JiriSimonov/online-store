@@ -5,7 +5,7 @@ import { BaseComponent } from '../elements/base-component';
 export class Card extends BaseComponent {
   cardWrapper: BaseComponent;
   logo: BaseComponent;
-  cardNumber: FormField
+  cardNumber: FormField;
   cardExpires: FormField;
   cardCVV: FormField;
 
@@ -18,7 +18,7 @@ export class Card extends BaseComponent {
       modificator: 'number',
       placeholder: '#### #### #### ####',
       pattern: `(\\d{4} ){3}\\d{4}`,
-      text: 'Номер карты'
+      text: 'Номер карты',
     });
     const curdNumberOptions = {
       mask: '0000 0000 0000 0000',
@@ -29,38 +29,35 @@ export class Card extends BaseComponent {
       if (target && target instanceof HTMLInputElement) {
         let re = /^4/;
         if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage = `url('./assets/icons/cards/visa-logo.webp')`;
-          return "visa"
+          this.logo.node.style.backgroundImage = `url('./assets/icons/cards/visa-logo.webp')`;
+          return 'visa';
         }
         re = /^5[1-5]/;
         if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage
-          = `url('./assets/icons/cards/mastercard.webp')`;
-          return "mastercard";
-        };
-  
+          this.logo.node.style.backgroundImage = `url('./assets/icons/cards/mastercard.webp')`;
+          return 'mastercard';
+        }
+
         re = /^6011/;
         if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage
-          = `url('./assets/icons/cards/discover.webp')`;
-          return "discover"
-        };
-        
+          this.logo.node.style.backgroundImage = `url('./assets/icons/cards/discover.webp')`;
+          return 'discover';
+        }
+
         re = /^9792/;
         if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage
-          = `url('./assets/icons/cards/troy.webp')`;
+          this.logo.node.style.backgroundImage = `url('./assets/icons/cards/troy.webp')`;
           return 'troy';
         }
       }
-      return "visa";
-    } // TODO! посмотреть в сторону оптимизации
+      return 'visa';
+    }; // TODO! посмотреть в сторону оптимизации
     this.cardExpires = new FormField({
       className: 'card',
       modificator: 'expires',
       placeholder: 'ММ/ГГ',
       pattern: `\\d{2}\\/\\d{2}`,
-      text: 'Срок действия'
+      text: 'Срок действия',
     });
     Imask(this.cardExpires.getInputNode(), {
       mask: 'MM/YY',
@@ -76,19 +73,19 @@ export class Card extends BaseComponent {
           from: 23,
           to: 50,
           maxLength: 2,
-        }
-      }
+        },
+      },
     });
     this.cardCVV = new FormField({
       className: 'card',
       modificator: 'cvv',
       placeholder: 'CVV',
       pattern: `[0-9]{3}`,
-      text: 'CVV код'
+      text: 'CVV код',
     });
     const cvvMaskOptions = {
       mask: '000',
-    }
+    };
     Imask(this.cardCVV.getInputNode(), cvvMaskOptions);
     this.cardWrapper.appendEl([this.cardNumber, this.cardExpires, this.cardCVV]);
   }

@@ -9,7 +9,7 @@ export class DualSlider extends BaseComponent {
   private minimumValue: FormField;
   private maximumValue: FormField;
   private sliderLine = new BaseComponent({ className: 'dual-slider__line', parent: this.node });
-  private sliderProgress = new BaseComponent({ className: 'dual-slider__progress', parent: this.sliderLine.getNode() });
+  private sliderProgress = new BaseComponent({ className: 'dual-slider__progress', parent: this.sliderLine.node });
   private controls = new BaseComponent({ className: 'dual-slider__controls', parent: this.node });
   private sliderLeft: FormField;
   private sliderRight: FormField;
@@ -103,11 +103,11 @@ export class DualSlider extends BaseComponent {
   }
 
   setLeftPos(inputVal: string, limit: string): void {
-    this.sliderProgress.getNode().style.left = `${(+inputVal / +limit) * 100}%`;
+    this.sliderProgress.node.style.left = `${(+inputVal / +limit) * 100}%`;
   }
 
   setRightPos(inputVal: string, limit: string): void {
-    this.sliderProgress.getNode().style.right = `${100 - (+inputVal / +limit) * 100}%`;
+    this.sliderProgress.node.style.right = `${100 - (+inputVal / +limit) * 100}%`;
   }
 
   setValidMin(elem: HTMLInputElement): void {

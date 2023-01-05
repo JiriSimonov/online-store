@@ -4,16 +4,16 @@ import { BaseComponent } from './elements/base-component';
 export class Footer extends BaseComponent {
   private wrapper = new BaseComponent({ className: 'container', parent: this.node });
 
-  private contentWrapper = new BaseComponent({ className: 'footer__wrapper', parent: this.wrapper.getNode() });
+  private contentWrapper = new BaseComponent({ className: 'footer__wrapper', parent: this.wrapper.node });
 
-  private linkWrapper = new BaseComponent({ className: 'footer__links', parent: this.contentWrapper.getNode() });
+  private linkWrapper = new BaseComponent({ className: 'footer__links', parent: this.contentWrapper.node });
 
   private linkOne = new Anchor({
     className: 'footer__link',
     text: '@EternalRival',
     href: 'https://github.com/EternalRival',
     target: '_blank',
-    parent: this.linkWrapper.getNode(),
+    parent: this.linkWrapper.node,
   });
 
   private linkTwo = new Anchor({
@@ -21,16 +21,16 @@ export class Footer extends BaseComponent {
     text: '@JiriSimonov',
     href: 'https://github.com/JiriSimonov',
     target: '_blank',
-    parent: this.linkWrapper.getNode(),
+    parent: this.linkWrapper.node,
   });
 
-  private year = new BaseComponent({ className: 'footer__year', text: '2022', parent: this.contentWrapper.getNode() });
+  private year = new BaseComponent({ className: 'footer__year', text: '2022', parent: this.contentWrapper.node });
 
   private logo = new Anchor({
     className: 'footer__logo',
     href: 'https://rs.school/js/',
     target: '_blank',
-    parent: this.contentWrapper.getNode(),
+    parent: this.contentWrapper.node,
     ariaLabel: 'Курсы RSS JS/FE',
   });
 
