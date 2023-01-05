@@ -45,7 +45,7 @@ export class ProductPage extends Component {
 
     this.append(this.container);
     this.container.append(this.card, this.btnWrapper);
-    this.card.node.prepend(this.productPath.node);
+    this.card.prepend(this.productPath);
     this.card.append(this.thumbnails, this.title, this.descrList);
     this.descrList.append(...this.descrFields);
     this.btnWrapper.append(this.backBtn);

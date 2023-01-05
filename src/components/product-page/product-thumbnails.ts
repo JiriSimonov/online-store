@@ -20,7 +20,7 @@ export class ThumbNails extends Component {
           window.scrollTo(0, 0);
         },
       });
-      item.append(button.node);
+      item.append(button);
       return item;
     });
   }

@@ -50,7 +50,7 @@ export class Store extends Section {
     this.showFiltersBtn.node.onclick = () => {
       const { classList } = this.wrapper.node;
       if (!classList.contains('store__wrapper_is-open')) {
-        this.contentWrapper.node.prepend(this.filters.node);
+        this.contentWrapper.prepend(this.filters);
         classList.add('store__wrapper_is-open');
         DB.filter.setParam('filters', 'true');
       } else {
@@ -73,7 +73,7 @@ export class Store extends Section {
     this.wrapper.append(this.title, this.showFiltersBtn, this.contentWrapper);
     this.contentWrapper.append(this.storeList, this.changeView);
     this.changeView.append(this.sortFilter, this.burger);
-    if (DB.filter.getParam('filters')) this.contentWrapper.node.prepend(this.filters.node);
+    if (DB.filter.getParam('filters')) this.contentWrapper.prepend(this.filters);
     window.addEventListener('hashchange', () => {
       this.update();
       if (!DB.filter.getParam('sortType')) this.sortFilter.uncheckAll();

@@ -56,11 +56,11 @@ export class Header extends Component {
     if (searchParam) {
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
       this.searchField.getInputNode().value = `${[...searchParam]}`;
-      this.controls.node.prepend(this.searchField.node);
+      this.controls.prepend(this.searchField);
     }
     this.search.node.addEventListener('click', () => {
       if (this.searchField.getInputNode().classList.contains('header__input_is-open')) this.searchField.destroy();
-      else this.controls.node.prepend(this.searchField.node);
+      else this.controls.prepend(this.searchField);
       this.searchField.getInputNode().classList.toggle('header__input_is-open');
     });
     this.burger.node.onclick = () => {
@@ -68,7 +68,7 @@ export class Header extends Component {
       this.burger.node.classList.toggle('burger_is-open');
     };
     this.wrapper.append(this.burger);
-    this.controls.node.prepend(this.searchField.node);
+    this.controls.prepend(this.searchField);
 
     const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value), 300);
     this.searchField.input.oninput = () => {

@@ -155,13 +155,12 @@ export class Cart extends Section {
 
   private updateActivePromoList(): void {
     const { list, size } = DB.cart.promo;
-    const [promoWrapper, promoTitle] = [this.cartPromoWrapper.node, this.cartPromoTitle.node];
     this.cartPromoList.clear();
     if (size) {
       this.cartPromoList.append(...list.map((item) => new ActivePromo(item[0], `${item[1] * 100}%`)));
-      promoWrapper.prepend(promoTitle, this.cartPromoList.node);
+      this.cartPromoWrapper.prepend(this.cartPromoTitle, this.cartPromoList);
     } else {
-      promoTitle.remove();
+      this.cartPromoTitle.destroy();
       this.cartPromoList.destroy();
     }
   }
