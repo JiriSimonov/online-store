@@ -31,7 +31,10 @@ export class SwitchFilter extends Filter {
     .filter((item) => item.id !== 'null')
     .map((item) => {
       const component = new SwitchComponent(item, this.categoryB);
+      component.getInputNode().type = 'checkbox';
+      component.getInputNode().disabled = false;
       component.checked = !!DB.filter.params.get(this.categoryB)?.has(item.id);
+      component.getInputNode().parentElement?.classList.remove('switch__item_false');
       return component;
     });
 
@@ -52,10 +55,9 @@ export class SwitchFilter extends Filter {
     this.switches.forEach((item) => {
       item.getInputNode().addEventListener('change', (e) => {
         const { target } = e;
-        if (target && target instanceof HTMLInputElement) {
-          DB.filter.clear(this.categoryB);
+        if (target && target instanceof HTMLInputElement)
           if (target.checked) DB.filter.add(this.categoryB, target.value);
-        }
+          else DB.filter.remove(this.categoryB, target.value);
       });
     });
     this.manufacturersWrapper.appendEl(this.manufacturers);
