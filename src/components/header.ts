@@ -65,7 +65,7 @@ export class Header extends Component {
     this.wrapper.append(this.burger);
     this.controls.prepend(this.searchField);
 
-    const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value), 300);
+    const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value));
     this.searchField.input.node.oninput = () => {
       if (!window.location.hash.startsWith('#store')) window.location.hash = '#store';
       handleSearchInput(this.searchField.input.value);
