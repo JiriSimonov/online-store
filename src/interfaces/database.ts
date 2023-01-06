@@ -58,6 +58,4 @@ export interface SwitchDescription {
   description: string;
 }
 
-export interface SwitchDescriptionList {
-  [id: string]: SwitchDescription;
-}
+export type SwitchDescriptionList = Record<string, SwitchDescription>;

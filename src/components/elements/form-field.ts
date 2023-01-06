@@ -1,17 +1,16 @@
-import { FormFieldProps } from '../../interfaces/interfaces';
-import { Component } from './base-component';
+import { Component, ComponentProps } from './base-component';
 import { Input } from './input-component';
 
 export class FormField extends Component<HTMLLabelElement> {
   private fieldInput: Input;
 
-  constructor(props: FormFieldProps) {
+  constructor(props: ComponentProps<HTMLLabelElement & HTMLInputElement> & { modificator?: string }) {
     super({
       tag: 'label',
       className: props.modificator
         ? `${props.className}__label ${props.className}__label_${props.modificator}`
         : `${props.className}__label`,
-      textContent: props.text,
+      textContent: props.textContent,
     });
     this.fieldInput = new Input({
       className: props.modificator

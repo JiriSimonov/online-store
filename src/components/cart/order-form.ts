@@ -37,14 +37,14 @@ export class OrderForm extends Component {
     this.modalForm = new Component({ tag: 'form', className: 'modal__form' });
     this.nameField = new FormField({
       className: 'modal',
-      text: 'Имя Фамилия',
+      textContent: 'Имя Фамилия',
       placeholder: 'Василий Клаб',
       type: 'text',
       pattern: '[а-яА-Я]{3,}(\\s[а-яА-Я]{3,})+',
     });
     this.phoneField = new FormField({
       className: 'modal',
-      text: 'Телефон',
+      textContent: 'Телефон',
       type: 'tel',
       placeholder: '+7(982)-386-22-16',
       pattern: `\\+7\\(\\d{3}\\)-\\d{3}-\\d{2}-\\d{2}`,
@@ -53,14 +53,14 @@ export class OrderForm extends Component {
     Imask(this.phoneField.input.node, phoneMaskOption);
     this.addressField = new FormField({
       className: 'modal',
-      text: 'Адрес доставки',
+      textContent: 'Адрес доставки',
       type: 'text',
       placeholder: 'Пенза, Кукушкина 5, квартира 1',
       pattern: '[а-яА-Я]{5,}(\\s[а-яА-Я]{5,})(\\s[а-яА-Я]{5,})+',
     });
     this.emailField = new FormField({
       className: 'modal',
-      text: 'E-mail',
+      textContent: 'E-mail',
       type: 'email',
       placeholder: 'kotopes@mail.ru',
       pattern: '.+@.+\\..+',

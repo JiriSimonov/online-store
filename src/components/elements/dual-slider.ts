@@ -28,7 +28,7 @@ export class DualSlider extends Component {
       min: `${min}`,
       max: `${max}`,
       value: this.getBasicValue('min'),
-      text: 'От',
+      textContent: 'От',
     });
     this.maximumValue = new FormField({
       className: 'dual-slider',
@@ -36,7 +36,7 @@ export class DualSlider extends Component {
       min: `${min}`,
       max: `${max}`,
       value: this.getBasicValue('max'),
-      text: 'До',
+      textContent: 'До',
     });
     this.sliderLeft = new FormField({
       className: 'dual-slider',

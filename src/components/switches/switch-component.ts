@@ -11,7 +11,7 @@ export class SwitchComponent extends Component {
     this.switchField = new FormField({
       className: `switch`,
       type: 'radio',
-      text: id,
+      textContent: id,
       value: id,
       name: keyboardId,
     });

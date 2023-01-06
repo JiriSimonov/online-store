@@ -6,7 +6,8 @@ export class CartPagination extends Component {
   selected = new FormField({ className: 'dropdown', modificator: 'selected' });
   private wrapper = new Component({ className: 'dropdown__wrapper' });
   private options = ['4', '10', '16', '20'].map(
-    (item) => new FormField({ className: 'dropdown', type: 'radio', name: 'pagination-size', value: item, text: item }),
+    (item) =>
+      new FormField({ className: 'dropdown', type: 'radio', name: 'pagination-size', value: item, textContent: item }),
   );
 
   constructor(currentValue: string) {

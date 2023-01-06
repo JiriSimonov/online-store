@@ -20,7 +20,7 @@ export class SwitchFilter extends Filter {
         new FormField({
           className: 'filter',
           type: 'checkbox',
-          text: item,
+          textContent: item,
           name: this.categoryA,
           value: item,
           checked: DB.filter.params.get(this.categoryA)?.has(item),

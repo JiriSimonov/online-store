@@ -20,7 +20,7 @@ export class PromoForm extends Component {
     className: 'promo',
     type: 'text',
     placeholder: 'KEK',
-    text: `Промокоды: ${DB.cart.promo.available.join(', ')}`,
+    textContent: `Промокоды: ${DB.cart.promo.available.join(', ')}`,
   });
 
   constructor() {

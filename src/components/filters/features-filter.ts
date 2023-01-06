@@ -13,7 +13,7 @@ export class FeaturesFilter extends Filter {
       new FormField({
         className: 'filter',
         type: 'checkbox',
-        text: item,
+        textContent: item,
         name: this.category,
         value: item,
         checked: DB.filter.params.get(this.category)?.has(item),

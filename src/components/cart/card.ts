@@ -18,7 +18,7 @@ export class Card extends Component {
       modificator: 'number',
       placeholder: '#### #### #### ####',
       pattern: `(\\d{4} ){3}\\d{4}`,
-      text: 'Номер карты',
+      textContent: 'Номер карты',
     });
     const curdNumberOptions = {
       mask: '0000 0000 0000 0000',
@@ -57,7 +57,7 @@ export class Card extends Component {
       modificator: 'expires',
       placeholder: 'ММ/ГГ',
       pattern: `\\d{2}\\/\\d{2}`,
-      text: 'Срок действия',
+      textContent: 'Срок действия',
     });
     Imask(this.cardExpires.input.node, {
       mask: 'MM/YY',
@@ -81,7 +81,7 @@ export class Card extends Component {
       modificator: 'cvv',
       placeholder: 'CVV',
       pattern: `[0-9]{3}`,
-      text: 'CVV код',
+      textContent: 'CVV код',
     });
     const cvvMaskOptions = { mask: '000' };
     Imask(this.cardCVV.input.node, cvvMaskOptions);

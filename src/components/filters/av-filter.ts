@@ -13,7 +13,7 @@ export class AvFilter extends Filter {
         className: 'filter',
         type: 'radio',
         name: this.category,
-        text: item === 'true' ? 'В наличии' : 'Всё',
+        textContent: item === 'true' ? 'В наличии' : 'Всё',
         value: item,
         checked: index ? DB.filter.params.has(this.category) : true,
       }),
