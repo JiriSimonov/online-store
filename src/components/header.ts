@@ -41,7 +41,7 @@ export class Header extends Component {
   private cartPrice = new Component({
     tag: 'span',
     className: 'header__price',
-    textContent: `${DB.cart.sumPrice}`,
+    textContent: `${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`,
     parent: this.controls,
   });
 
@@ -83,4 +83,4 @@ export class Header extends Component {
     });
     return this;
   }
-} 
+}
