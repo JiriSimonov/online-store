@@ -91,7 +91,7 @@ export class CartItemElem extends Component {
     });
     this.cartPosition = new Component({ className: 'cart__position', textContent: `${index}`, parent: this });
     this.countBtn.append(this.countField);
-    this.countField.input.node.oninput = (e) => {
+    this.countField.input.addEventListener('input', (e) => {
       if (e.target && e.target instanceof HTMLInputElement) {
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
         if (+e.target.value <= +e.target.min && e.target.value !== '') e.target.value = e.target.min;
@@ -104,8 +104,8 @@ export class CartItemElem extends Component {
         this.price.text = `${+e.target.value * keyboardSwitch.price} ₽`;
         this.cartInc.disabled = +e.target.value === keyboardSwitch.quantity;
       }
-    };
-    this.countField.input.node.addEventListener('focusout', () => {
+    });
+    this.countField.input.addEventListener('focusout', () => {
       if (!this.countField.input.value) {
         this.countField.input.value = '1';
         buttonOrder.disabled = false;

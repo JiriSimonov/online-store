@@ -24,7 +24,7 @@ export class Card extends Component {
       mask: '0000 0000 0000 0000',
     };
     Imask(this.cardNumber.input.node, curdNumberOptions);
-    this.cardNumber.input.node.oninput = (e) => {
+    this.cardNumber.input.addEventListener('input', (e) => {
       const { target } = e;
       if (target && target instanceof HTMLInputElement) {
         let re = /^4/;
@@ -51,7 +51,7 @@ export class Card extends Component {
         }
       }
       return 'visa';
-    }; // TODO! посмотреть в сторону оптимизации
+    }); // TODO! посмотреть в сторону оптимизации
     this.cardExpires = new FormField({
       className: 'card',
       modificator: 'expires',

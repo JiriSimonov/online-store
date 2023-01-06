@@ -53,23 +53,23 @@ export class Header extends Component {
       this.searchField.input.value = `${[...searchParam]}`;
       this.controls.prepend(this.searchField);
     }
-    this.search.node.addEventListener('click', () => {
+    this.search.addEventListener('click', () => {
       if (this.searchField.input.classList.contains('header__input_is-open')) this.searchField.destroy();
       else this.controls.prepend(this.searchField);
       this.searchField.input.classList.toggle('header__input_is-open');
     });
-    this.burger.onclick = () => {
+    this.burger.addEventListener('click', () => {
       this.controls.classList.toggle('header__controls_is-open');
       this.burger.classList.toggle('burger_is-open');
-    };
+    });
     this.wrapper.append(this.burger);
     this.controls.prepend(this.searchField);
 
     const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value));
-    this.searchField.input.node.oninput = () => {
+    this.searchField.input.addEventListener('input', () => {
       if (!window.location.hash.startsWith('#store')) window.location.hash = '#store';
       handleSearchInput(this.searchField.input.value);
-    };
+    });
     this.subscribe();
   }
 

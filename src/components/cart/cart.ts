@@ -109,7 +109,7 @@ export class Cart extends Section {
     this.updateTotalPrice();
     this.updateTotalQuantity();
     this.subscribe();
-    this.pagCountField.input.node.addEventListener('input', (e) => {
+    this.pagCountField.input.addEventListener('input', (e) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
 
@@ -117,7 +117,7 @@ export class Cart extends Section {
       if (+target.value > +target.max) target.value = target.max;
       if (+target.value < +target.min) target.value = target.min;
     });
-    this.pagCountField.input.node.addEventListener('change', (e) => {
+    this.pagCountField.input.addEventListener('change', (e) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
       this.pagination.setPage(target.value);

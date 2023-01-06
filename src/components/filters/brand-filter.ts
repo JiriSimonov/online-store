@@ -23,7 +23,7 @@ export class BrandFilter extends Filter {
   constructor() {
     super('Бренды');
 
-    this.filterWrapper.node.addEventListener('change', (e) => {
+    this.filterWrapper.addEventListener('change', (e) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
       if (target.checked) DB.filter.add(this.category, target.value);

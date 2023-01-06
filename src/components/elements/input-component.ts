@@ -7,9 +7,9 @@ export class Input extends Component<HTMLInputElement> {
     this.node.required = true;
 
     if (this.node.type === 'number')
-      this.node.onkeydown = (e) => {
+      this.addEventListener('keydown', (e) => {
         if (['e', 'E', '-', '+', '.', ','].includes(e.key)) e.preventDefault();
-      };
+      });
   }
 
   get value(): string {
@@ -21,7 +21,7 @@ export class Input extends Component<HTMLInputElement> {
   get name(): string {
     return this.node.name;
   }
-/*   set name(value: string) {
+  /*   set name(value: string) {
     this.node.name = value;
   } */
   get disabled(): boolean {

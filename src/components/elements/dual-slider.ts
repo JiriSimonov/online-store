@@ -64,27 +64,27 @@ export class DualSlider extends Component {
     this.setValidMin(this.minimumValue.input.node);
     this.setValidMax(this.maximumValue.input.node);
     const handleMinInput = debounce((value: string) => DB.filter.clear(minParam).add(minParam, value));
-    this.minimumValue.input.node.addEventListener('input', () => {
+    this.minimumValue.input.addEventListener('input', () => {
       this.setValidMin(this.minimumValue.input.node);
       handleMinInput(this.minimumValue.input.value);
     });
     const handleMaxInput = debounce((value: string) => DB.filter.clear(maxParam).add(maxParam, value));
-    this.maximumValue.input.node.addEventListener('input', () => {
+    this.maximumValue.input.addEventListener('input', () => {
       this.setValidMax(this.maximumValue.input.node);
       handleMaxInput(this.maximumValue.input.value);
     });
-    this.sliderLeft.input.node.addEventListener('input', () =>
+    this.sliderLeft.input.addEventListener('input', () =>
       this.setLeftPos(this.sliderLeft.value, this.sliderLeft.input.node.max),
     );
-    this.sliderLeft.input.node.addEventListener('change', () => {
+    this.sliderLeft.input.addEventListener('change', () => {
       this.setValidMin(this.sliderLeft.input.node);
       this.minimumValue.value = this.sliderLeft.input.value;
       DB.filter.clear(minParam).add(minParam, this.sliderLeft.input.value);
     });
-    this.sliderRight.input.node.addEventListener('input', () =>
+    this.sliderRight.input.addEventListener('input', () =>
       this.setRightPos(this.sliderRight.value, this.sliderRight.input.node.max),
     );
-    this.sliderRight.input.node.addEventListener('change', () => {
+    this.sliderRight.input.addEventListener('change', () => {
       this.setValidMax(this.sliderRight.input.node);
       this.maximumValue.value = this.sliderRight.input.value;
       DB.filter.clear(maxParam).add(maxParam, this.sliderRight.input.value);

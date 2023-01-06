@@ -78,7 +78,7 @@ export class Component<T extends HTMLElement = HTMLElement> {
   }
 
   get addEventListener() {
-    return this.node.addEventListener;
+    return this.node.addEventListener.bind(this.node);
   }
   get classList() {
     return this.node.classList;

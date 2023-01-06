@@ -39,9 +39,9 @@ export class ProductCard extends Component {
       return [...acc, switchComponent];
     }, [] as SwitchComponent[]);
 
-    this.switchList.node.onmouseover = (e) => {
+    this.switchList.addEventListener('mouseover', (e) => {
       if (e.target instanceof HTMLLabelElement) this.renderModal(e.target);
-    };
+    });
     this.onclick = (e) => {
       if (!(e.target instanceof HTMLElement) || e.target instanceof HTMLLabelElement) return;
       if (e.target.classList.contains('product__path-item')) return;

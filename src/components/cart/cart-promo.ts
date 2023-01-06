@@ -26,11 +26,11 @@ export class PromoForm extends Component {
   constructor() {
     super({ tag: 'form', className: 'promo__form' });
 
-    this.promoField.input.node.oninput = () => {
+    this.promoField.input.addEventListener('input', () => {
       if (DB.cart.promo.isValid(this.promoField.input.value)) this.append(this.promoBtn);
       else this.promoBtn.destroy();
-    };
+    });
     this.append(this.promoField);
-    this.node.addEventListener('submit', () => false);
+    this.addEventListener('submit', () => false);
   }
 }

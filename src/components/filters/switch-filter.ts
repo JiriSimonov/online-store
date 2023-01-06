@@ -45,7 +45,7 @@ export class SwitchFilter extends Filter {
   constructor() {
     super('Переключатели');
     this.manufacturers.forEach((item) => {
-      item.input.node.addEventListener('change', (e) => {
+      item.input.addEventListener('change', (e) => {
         const { target } = e;
         if (target && target instanceof HTMLInputElement)
           if (target.checked) DB.filter.add(this.categoryA, target.value);
@@ -53,7 +53,7 @@ export class SwitchFilter extends Filter {
       });
     });
     this.switches.forEach((item) => {
-      item.input.node.addEventListener('change', (e) => {
+      item.input.addEventListener('change', (e) => {
         const { target } = e;
         if (target && target instanceof HTMLInputElement)
           if (target.checked) DB.filter.add(this.categoryB, target.value);
@@ -62,7 +62,7 @@ export class SwitchFilter extends Filter {
     });
     this.manufacturersWrapper.append(...this.manufacturers);
     this.switchWrapper.append(...this.switches);
-    this.switchWrapper.node.addEventListener('mouseover', (e) => {
+    this.switchWrapper.addEventListener('mouseover', (e) => {
       const { target } = e;
       if (!(target instanceof HTMLElement && target.classList.contains('switch__label'))) return;
       target.setAttribute('id', 'open');

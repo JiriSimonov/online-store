@@ -26,7 +26,7 @@ export class SizeFilter extends Filter {
   constructor() {
     super('Размер');
     this.size.forEach((item) => {
-      item.input.node.addEventListener('change', (e) => {
+      item.input.addEventListener('change', (e) => {
         const { target } = e;
         if (target && target instanceof HTMLInputElement)
           if (target.checked) DB.filter.add(this.category, target.value);

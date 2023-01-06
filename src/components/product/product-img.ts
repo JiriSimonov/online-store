@@ -18,10 +18,9 @@ export class ProductImage extends Component {
 
     this.zones = imageList.map((_, i) => {
       const component = new Component({ tag: 'span', className: 'store__img-item' });
-      const { node } = component;
 
-      node.onmouseover = () => setImage(i);
-      node.onmouseout = () => setImage(0);
+      component.addEventListener('mouseover', () => setImage(i));
+      component.addEventListener('mouseout', () => setImage(0));
 
       return component;
     });

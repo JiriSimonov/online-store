@@ -76,7 +76,7 @@ export class OrderForm extends Component {
         document.body.classList.remove('no-scroll');
       },
     });
-    this.modalForm.node.addEventListener('submit', () => {
+    this.modalForm.addEventListener('submit', () => {
       document.body.append(this.loader.node);
       setTimeout(() => {
         window.location.hash = '#store';
@@ -100,7 +100,7 @@ export class OrderForm extends Component {
       this.card,
       this.modalSubmit,
     );
-    this.modalOverlay.node.addEventListener('click', (e) => {
+    this.modalOverlay.addEventListener('click', (e) => {
       if (e.target === this.modalOverlay.node) {
         this.destroy();
         document.body.classList.remove('no-scroll');
