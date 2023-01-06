@@ -1,68 +1,65 @@
 import Imask from 'imask';
 import { FormField } from '../elements/form-field';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 
-export class Card extends BaseComponent {
-  cardWrapper: BaseComponent;
-  logo: BaseComponent;
-  cardNumber: FormField
+export class Card extends Component {
+  cardWrapper: Component;
+  logo: Component;
+  cardNumber: FormField;
   cardExpires: FormField;
   cardCVV: FormField;
 
   constructor() {
     super({ className: 'card' });
-    this.logo = new BaseComponent({ className: 'card__logo', parent: this.node });
-    this.cardWrapper = new BaseComponent({ className: 'card__wrapper', parent: this.node });
+    this.logo = new Component({ className: 'card__logo', parent: this });
+    this.cardWrapper = new Component({ className: 'card__wrapper', parent: this });
     this.cardNumber = new FormField({
       className: 'card',
       modificator: 'number',
       placeholder: '#### #### #### ####',
       pattern: `(\\d{4} ){3}\\d{4}`,
-      text: 'Номер карты'
+      textContent: 'Номер карты',
     });
     const curdNumberOptions = {
       mask: '0000 0000 0000 0000',
     };
-    Imask(this.cardNumber.getInputNode(), curdNumberOptions);
-    this.cardNumber.getInputNode().oninput = (e) => {
+    Imask(this.cardNumber.input.node, curdNumberOptions);
+    this.cardNumber.input.addEventListener('input', (e) => {
       const { target } = e;
       if (target && target instanceof HTMLInputElement) {
         let re = /^4/;
         if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage = `url('./assets/icons/cards/visa-logo.webp')`;
-          return "visa"
+          this.logo.style.backgroundImage = `url('./assets/icons/cards/visa-logo.webp')`;
+          return 'visa';
         }
         re = /^5[1-5]/;
         if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage
-          = `url('./assets/icons/cards/mastercard.webp')`;
-          return "mastercard";
-        };
-  
+          this.logo.style.backgroundImage = `url('./assets/icons/cards/mastercard.webp')`;
+          return 'mastercard';
+        }
+
         re = /^6011/;
         if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage
-          = `url('./assets/icons/cards/discover.webp')`;
-          return "discover"
-        };
-        
+          this.logo.style.backgroundImage = `url('./assets/icons/cards/discover.webp')`;
+          return 'discover';
+        }
+
         re = /^9792/;
         if (target.value.match(re) != null) {
-          this.logo.getNode().style.backgroundImage
-          = `url('./assets/icons/cards/troy.webp')`;
+          this.logo.style.backgroundImage = `url('./assets/icons/cards/troy.webp')`;
           return 'troy';
         }
       }
-      return "visa";
-    } // TODO! посмотреть в сторону оптимизации
+      return 'visa';
+    }); // TODO! посмотреть в сторону оптимизации
     this.cardExpires = new FormField({
       className: 'card',
       modificator: 'expires',
       placeholder: 'ММ/ГГ',
       pattern: `\\d{2}\\/\\d{2}`,
-      text: 'Срок действия'
+      textContent: 'Срок действия',
     });
-    Imask(this.cardExpires.getInputNode(), {
+    Imask(this.cardExpires.input.node, {
       mask: 'MM/YY',
       blocks: {
         MM: {
@@ -76,20 +73,18 @@ export class Card extends BaseComponent {
           from: 23,
           to: 50,
           maxLength: 2,
-        }
-      }
+        },
+      },
     });
     this.cardCVV = new FormField({
       className: 'card',
       modificator: 'cvv',
       placeholder: 'CVV',
       pattern: `[0-9]{3}`,
-      text: 'CVV код'
+      textContent: 'CVV код',
     });
-    const cvvMaskOptions = {
-      mask: '000',
-    }
-    Imask(this.cardCVV.getInputNode(), cvvMaskOptions);
-    this.cardWrapper.appendEl([this.cardNumber, this.cardExpires, this.cardCVV]);
+    const cvvMaskOptions = { mask: '000' };
+    Imask(this.cardCVV.input.node, cvvMaskOptions);
+    this.cardWrapper.append(this.cardNumber, this.cardExpires, this.cardCVV);
   }
 }

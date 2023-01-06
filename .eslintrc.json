@@ -20,20 +20,22 @@
   "plugins": ["@typescript-eslint"],
   "root": true,
   "rules": {
+    "@typescript-eslint/lines-between-class-members": 0,
     "@typescript-eslint/no-explicit-any": 2,
+    "@typescript-eslint/no-unused-vars": 0,
+    "curly": ["warn", "multi", "consistent"],
     "eol-last": "error",
     "import/prefer-default-export": 0,
-    "@typescript-eslint/lines-between-class-members": 0,
-    "max-len": ["error", { "code": 120, "tabWidth": 2, "ignoreComments": true }],
-    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1, "maxBOF": 0 }],
-    "spaced-comment": ["error", "always", { "markers": ["!", "?", "//", "todo", "*"] }],
+    "max-len": ["error", { "code": 120, "ignoreComments": true, "tabWidth": 2 }],
     "no-console": ["warn", { "allow": ["warn", "info"] }],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 1 }],
+    "no-param-reassign": 1,
     "no-plusplus": 0,
     "no-return-assign": 1,
-    "no-param-reassign": 1,
-    "curly": ["warn", "multi", "consistent"],
     "no-template-curly-in-string": "warn",
-    "object-curly-spacing": ["warn", "always"]
+    "no-unused-vars": 0,
+    "object-curly-spacing": ["warn", "always"],
+    "spaced-comment": ["error", "always", { "markers": ["!", "?", "//", "todo", "*"] }]
   },
   "ignorePatterns": ["*.js"]
 }

@@ -1,49 +1,55 @@
-import { FormFieldProps } from '../../interfaces/interfaces';
-import { BaseComponent } from './base-component';
-import { Input } from './input';
+import { Component, ComponentProps } from './base-component';
+import { Input } from './input-component';
 
-export class FormField extends BaseComponent<HTMLLabelElement> {
+export class FormField extends Component<HTMLLabelElement> {
   private fieldInput: Input;
 
-  constructor(props: FormFieldProps) {
+  constructor(props: ComponentProps<HTMLLabelElement & HTMLInputElement> & { modificator?: string }) {
     super({
-      tag: 'label', className: props.modificator
+      tag: 'label',
+      className: props.modificator
         ? `${props.className}__label ${props.className}__label_${props.modificator}`
-        : `${props.className}__label`, text: props.text
+        : `${props.className}__label`,
+      textContent: props.textContent,
     });
-    this.fieldInput = new Input(
-      {
-        className: props.modificator
-          ? `${props.className}__input ${props.className}__input_${props.modificator}`
-          : `${props.className}__input`,
-        parent: this.node,
-        type: props.type,
-        placeholder: props.placeholder,
-        pattern: props.pattern,
-        value: props.value,
-        min: props.min,
-        max: props.max,
-        name: props.name,
-        step: props.step,
-        checked: props.checked,
-      },
-    );
+    this.fieldInput = new Input({
+      className: props.modificator
+        ? `${props.className}__input ${props.className}__input_${props.modificator}`
+        : `${props.className}__input`,
+      parent: this,
+      type: props.type,
+      placeholder: props.placeholder,
+      pattern: props.pattern,
+      value: props.value,
+      min: props.min,
+      max: props.max,
+      name: props.name,
+      step: props.step,
+      checked: props.checked,
+    });
   }
 
-  getInputNode() {
-    return this.fieldInput.getNode();
+  get input() {
+    return this.fieldInput;
+  }
+
+  get value() {
+    return this.input.value;
+  }
+  set value(value) {
+    this.input.value = value;
   }
 
   get disabled(): boolean {
-    return this.getInputNode().disabled;
+    return this.input.disabled;
   }
   set disabled(value: boolean) {
-    this.getInputNode().disabled = value;
+    this.input.disabled = value;
   }
   get checked(): boolean {
-    return this.getInputNode().checked;
+    return this.input.checked;
   }
   set checked(value: boolean) {
-    this.getInputNode().checked = value;
+    this.input.checked = value;
   }
 }

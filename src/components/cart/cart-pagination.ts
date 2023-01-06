@@ -1,39 +1,40 @@
 import { DB } from '../../services/db/database';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { FormField } from '../elements/form-field';
 
-export class CartPagination extends BaseComponent {
+export class CartPagination extends Component {
   selected = new FormField({ className: 'dropdown', modificator: 'selected' });
-  private wrapper = new BaseComponent({ className: 'dropdown__wrapper' });
+  private wrapper = new Component({ className: 'dropdown__wrapper' });
   private options = ['4', '10', '16', '20'].map(
-    (item) => new FormField({ className: 'dropdown', type: 'radio', name: 'pagination-size', value: item, text: item }),
+    (item) =>
+      new FormField({ className: 'dropdown', type: 'radio', name: 'pagination-size', value: item, textContent: item }),
   );
 
   constructor(currentValue: string) {
     super({ className: 'dropdown' });
-    Object.assign(this.selected.getInputNode(), {
+    Object.assign(this.selected.input.node, {
       value: currentValue,
       placeholder: currentValue,
       readOnly: true,
       onclick: () => this.renderDropDown(),
     });
 
-    this.wrapper.node.onclick = (e) => {
+    this.wrapper.onclick = (e) => {
       const { target } = e;
       if (!(target instanceof HTMLInputElement)) return;
 
-      this.selected.getInputNode().value = target.value;
+      this.selected.input.value = target.value;
       DB.filter.setParam('cartPageSize', target.value);
 
       this.renderDropDown();
     };
 
-    this.appendEl(this.selected);
-    this.wrapper.appendEl(this.options);
+    this.append(this.selected);
+    this.wrapper.append(...this.options);
   }
 
   renderDropDown() {
-    if (this.wrapper.node.parentElement) this.wrapper.destroy();
-    else this.appendEl(this.wrapper);
+    if (this.wrapper.parent) this.wrapper.destroy();
+    else this.append(this.wrapper);
   }
 }

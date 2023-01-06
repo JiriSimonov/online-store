@@ -1,6 +1,6 @@
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
 import { DB } from '../../services/db/database';
-import { Button } from '../elements/button';
+import { Button } from '../elements/button-component';
 import { QuantityFilter } from './quantity-filter';
 import { PriceFilter } from './price-filter';
 import { AvFilter } from './av-filter';
@@ -10,16 +10,9 @@ import { SizeFilter } from './size-filter';
 import { FeaturesFilter } from './features-filter';
 import { Filter } from './filter';
 
-export class Filters extends BaseComponent {
-  private closeFilterTop = new Button({
-    className: 'modal__close',
-    aria: 'Закрыть',
-    parent: this.node,
-  });
-  private closeFilterBottom = new Button({
-    className: 'filter__clear',
-    text: 'Закрыть',
-  });
+export class Filters extends Component {
+  private closeFilterTop = new Button({ className: 'modal__close', ariaLabel: 'Закрыть', parent: this });
+  private closeFilterBottom = new Button({ className: 'filter__clear', textContent: 'Закрыть' });
   availableFilter = new AvFilter();
   switchFilter = new SwitchFilter();
   priceFilter = new PriceFilter();
@@ -30,50 +23,48 @@ export class Filters extends BaseComponent {
   clearFilters: Button;
   copyFilters: Button;
 
-  constructor(elem: BaseComponent) {
+  constructor(elem: Component) {
     super({ tag: 'ul', className: 'filter' });
-    this.closeFilterTop.getNode().onclick = () => {
-      elem.getNode().classList.remove('store__wrapper_is-open');
+    this.closeFilterTop.onclick = () => {
+      elem.classList.remove('store__wrapper_is-open');
       DB.filter.setParam('filters');
       this.destroy();
     };
-    this.closeFilterBottom.getNode().onclick = () => {
-      elem.getNode().classList.remove('store__wrapper_is-open');
+    this.closeFilterBottom.onclick = () => {
+      elem.classList.remove('store__wrapper_is-open');
       DB.filter.setParam('filters');
       this.destroy();
       window.scrollTo(0, 0);
     };
     this.clearFilters = new Button({
       className: 'filter__clear',
-      text: 'Очистить фильтры',
+      textContent: 'Очистить фильтры',
       onclick: () => {
         DB.filter.clearAll();
         Filter.uncheckAll(
-          ...this.availableFilter.getInputs(),
-          ...this.switchFilter.getInputs(),
-          ...this.switchFilter.getRadioInputs(),
-          ...this.manufacturerFiler.getInputs(),
-          ...this.sizeFilter.getInputs(),
-          ...this.featuresFilter.getInputs(),
+          ...this.availableFilter.inputs,
+          ...this.switchFilter.inputs,
+          ...this.switchFilter.radioInputs,
+          ...this.manufacturerFiler.inputs,
+          ...this.sizeFilter.inputs,
+          ...this.featuresFilter.inputs,
         );
-        this.availableFilter.getInputs()[0].checked = true;
-        this.priceFilter.setDefaultValues();
-        this.quantityFilter.setDefaultValues();
+        this.availableFilter.inputs[0].checked = true;
         window.scrollTo(0, 0);
       },
     });
     this.copyFilters = new Button({
       className: 'filter__clear',
-      text: 'Скопировать фильтры',
+      textContent: 'Скопировать фильтры',
       onclick: () => {
         const renderCopyAnimation = (result: 'success' | 'fail') => {
-          const icon = this.copyFilters.getNode();
+          const icon = this.copyFilters;
           icon.classList.add(`filter__clear_${result}`);
-          icon.textContent = 'Скопировано!';
-          icon.ontransitionend = () => {
+          icon.text = 'Скопировано!';
+          icon.node.ontransitionend = () => {
             icon.classList.remove(`filter__clear_${result}`);
-            icon.textContent = 'Скопировать фильтры';
-            icon.ontransitionend = null;
+            icon.text = 'Скопировать фильтры';
+            icon.node.ontransitionend = null;
           };
         };
         navigator.clipboard
@@ -82,7 +73,7 @@ export class Filters extends BaseComponent {
           .catch(() => renderCopyAnimation('fail'));
       },
     });
-    this.appendEl([
+    this.append(
       this.availableFilter,
       this.switchFilter,
       this.priceFilter,
@@ -93,7 +84,7 @@ export class Filters extends BaseComponent {
       this.copyFilters,
       this.clearFilters,
       this.closeFilterBottom,
-    ]);
+    );
 
     //?
     this.renderFilterNumbers();
@@ -102,57 +93,33 @@ export class Filters extends BaseComponent {
 
   renderFilterNumbers() {
     [
-      ...this.availableFilter.getInputs(),
-      ...this.switchFilter.getInputs(),
-      ...this.manufacturerFiler.getInputs(),
-      ...this.sizeFilter.getInputs(),
-      ...this.featuresFilter.getInputs(),
+      ...this.availableFilter.inputs,
+      ...this.switchFilter.inputs,
+      ...this.manufacturerFiler.inputs,
+      ...this.sizeFilter.inputs,
+      ...this.featuresFilter.inputs,
     ].forEach((v) => {
-      const input = v.getInputNode();
+      const { name, value } = v.input;
       const textNode = v.node.firstChild;
 
-      //? не пойму че делать с текстами фильтра наличия
-      /* let label: string;
-      let sample: number;
-      let all: number;
+      if (name === 'available') return;
+      const label = value;
+      const [sample, all] = [Filter.getHead(name, value), Filter.getTail(name, value)];
 
-      if (input.name === 'available') {
-        if (input.value === 'true') {
-          label = 'В наличии';
-          [sample, all] = [Filter.getHead(input.name, input.value), Filter.getTail(input.name, input.value)];
-        } else {
-          label = 'Всё';
-          [sample, all] = [Filter.getHead('', ''), Filter.getTail('', '')];
-        }
-      } else {
-        label = input.value;
-        [sample, all] = [Filter.getHead(input.name, input.value), Filter.getTail(input.name, input.value)];
-      } */
-
-      //? вариант без обработки текста фильтров наличия
-      if (input.name === 'available') return;
-      const label = input.value;
-      const [sample, all] = [Filter.getHead(input.name, input.value), Filter.getTail(input.name, input.value)];
-      //?
-
-      //? отключил дизейбл, т.к. это отменяет часть `||` фильтрации
-      // input.disabled = !sample; //? возможно тут лучше поинтеривентс, но не уверен
-      Object.assign(v.node.style, { opacity: sample ? 1 : 1 / 3 });
+      Object.assign(v.style, { opacity: sample ? 1 : 1 / 3 });
 
       if (textNode) textNode.textContent = `${label}: (${sample}/${all})`;
     });
 
-    this.switchFilter.getRadioInputs().forEach((v) => {
-      const { name, value } = v.getInputNode();
+    this.switchFilter.radioInputs.forEach((v) => {
+      const { parent, name, value } = v.input;
       const part = Filter.getHead(name, value);
 
-      const input = v.getInputNode();
-      const label = input.parentElement;
-      if (!label) return;
+      if (!parent) return;
 
-      Object.assign(label.style, { opacity: part ? 1 : 1 / 3 });
-      if (part) label.classList.remove('switch__item_false')
-      else label.classList.add('switch__item_false')
+      Object.assign(parent.style, { opacity: part ? 1 : 1 / 3 });
+      if (part) parent.classList.remove('switch__item_false');
+      else parent.classList.add('switch__item_false');
     });
   }
 }

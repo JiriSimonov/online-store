@@ -1,7 +1,7 @@
-import { BaseComponent } from "../elements/base-component";
+import { Component } from '../elements/base-component';
 
-export class ProductDescription extends BaseComponent {
+export class ProductDescription extends Component {
   constructor() {
-    super({ tag:'ul', className: 'description' });
+    super({ tag: 'ul', className: 'description' });
   }
 }

@@ -1,7 +1,8 @@
-import { BaseComponent } from "../components/elements/base-component";
+import { Component } from '../components/elements/base-component';
+import { Heading } from '../components/elements/heading-component';
 
-export class Error extends BaseComponent {
-  private title = new BaseComponent({ tag: 'h1', className: 'error', text: 'Страница не найдена', parent: this.node });
+export class Error extends Component {
+  private title = new Heading({ tag: 'h1', className: 'error', textContent: 'Страница не найдена', parent: this });
   constructor() {
     super({ className: 'container' });
   }

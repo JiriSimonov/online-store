@@ -1,9 +1,9 @@
-import { BaseComponent } from '../elements/base-component';
-import { Image } from '../elements/image';
+import { Component } from '../elements/base-component';
+import { Image } from '../elements/image-component';
 import { Loader } from '../store/loader';
 
-export class ProductImage extends BaseComponent {
-  private zones: BaseComponent[];
+export class ProductImage extends Component {
+  private zones: Component[];
   private images: string[] = [];
 
   private loader = new Loader(false);
@@ -11,19 +11,21 @@ export class ProductImage extends BaseComponent {
   constructor(imageList: string[]) {
     super({ className: 'store__img' });
 
-    const setImage = (index: number): void => this.setStyleAttr(['backgroundImage', `url(${this.images[index]})`]);
+    // const setImage = (index: number): void => this.setStyleAttr(['backgroundImage', `url(${this.images[index]})`]);
+    const setImage = (index: number): void => {
+      this.style.backgroundImage = `url(${this.images[index]})`;
+    };
 
     this.zones = imageList.map((_, i) => {
-      const component = new BaseComponent({ tag: 'span', className: 'store__img-item' });
-      const node = component.getNode();
+      const component = new Component({ tag: 'span', className: 'store__img-item' });
 
-      node.onmouseover = () => setImage(i);
-      node.onmouseout = () => setImage(0);
+      component.addEventListener('mouseover', () => setImage(i));
+      component.addEventListener('mouseout', () => setImage(0));
 
       return component;
     });
 
-    this.appendEl([this.loader, ...this.zones]);
+    this.append(this.loader, ...this.zones);
     this.getImageList(imageList).then(() => {
       this.loader.destroy();
       setImage(0);
@@ -32,11 +34,9 @@ export class ProductImage extends BaseComponent {
 
   async getImageList(imageList: string[]): Promise<void> {
     const promises: Promise<string>[] = imageList.map(async (name) => {
-      const src = `assets/images/keyboards/${name}.webp`;
-      const img = new Image();
-      Object.assign(img.getNode(), { src });
-      await img.getNode().decode();
-      return src;
+      const img = new Image({ src: `assets/images/keyboards/${name}.webp` });
+      await img.decode();
+      return img.src;
     });
     this.images = await Promise.all(promises);
   }

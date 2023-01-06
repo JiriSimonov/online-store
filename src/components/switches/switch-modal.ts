@@ -1,56 +1,50 @@
 import { KeyboardSwitch } from '../../services/db/keyboard-switch';
-import { BaseComponent } from '../elements/base-component';
+import { Component } from '../elements/base-component';
+import { Heading } from '../elements/heading-component';
 
-export class SwitchModal extends BaseComponent {
-  private modalTitle: BaseComponent;
+export class SwitchModal extends Component {
+  private modalTitle: Component;
 
-  private modalAvialable: BaseComponent;
+  private modalAvialable: Component;
 
-  private modalInfo: BaseComponent;
+  private modalInfo: Component;
 
-  private modalDescription: BaseComponent;
+  private modalDescription: Component;
 
-  private modalImg: BaseComponent;
+  private modalImg: Component;
 
-  private modalStats: BaseComponent[];
+  private modalStats: Component[];
 
   constructor(id: string, isAvialable: boolean) {
     super({ className: 'modal' });
-    this.modalTitle = new BaseComponent({
-      tag: 'h2',
+    this.modalTitle = new Heading({
       className: 'modal__title',
-      parent: this.node,
-      text: KeyboardSwitch.getDescription(id, 'title') as string,
+      parent: this,
+      textContent: KeyboardSwitch.getDescription(id, 'title') as string,
     });
 
-    this.modalAvialable = new BaseComponent({
+    this.modalAvialable = new Component({
       className: `${isAvialable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
-      text: `${isAvialable ? 'В наличии' : 'Нет в наличии'}`,
-      parent: this.node,
+      textContent: `${isAvialable ? 'В наличии' : 'Нет в наличии'}`,
+      parent: this,
     });
-    this.modalInfo = new BaseComponent({
-      className: 'modal__info',
-      parent: this.node,
-    });
-    this.modalImg = new BaseComponent({
-      className: 'modal__img',
-      parent: this.modalInfo.getNode(),
-    });
-    this.modalImg.getNode().style.backgroundImage = `url('assets/images/switches/${id}.webp')`;
+    this.modalInfo = new Component({ className: 'modal__info', parent: this });
+    this.modalImg = new Component({ className: 'modal__img', parent: this.modalInfo });
+    this.modalImg.style.backgroundImage = `url('assets/images/switches/${id}.webp')`;
 
     this.modalStats = (KeyboardSwitch.getDescription(id, 'props') as string[]).map(
       (item) =>
-        new BaseComponent({
+        new Component({
           className: 'modal__stats',
-          text: item,
-          parent: this.modalInfo.getNode(),
+          textContent: item,
+          parent: this.modalInfo,
         }),
     );
-    this.modalDescription = new BaseComponent({
+    this.modalDescription = new Component({
       tag: 'p',
       className: 'modal__description',
-      parent: this.node,
-      text: KeyboardSwitch.getDescription(id, 'description') as string,
+      parent: this,
+      textContent: KeyboardSwitch.getDescription(id, 'description') as string,
     });
   }
 }

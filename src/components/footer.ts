@@ -1,40 +1,34 @@
-import { Anchor } from './elements/anchor';
-import { BaseComponent } from './elements/base-component';
+import { Anchor } from './elements/anchor-component';
+import { Component } from './elements/base-component';
 
-export class Footer extends BaseComponent {
-  private wrapper = new BaseComponent({ className: 'container', parent: this.node });
-
-  private contentWrapper = new BaseComponent({ className: 'footer__wrapper', parent: this.wrapper.getNode() });
-
-  private linkWrapper = new BaseComponent({ className: 'footer__links', parent: this.contentWrapper.getNode() });
-
-  private linkOne = new Anchor({
+export class Footer extends Component {
+  private wrapper = new Component({ className: 'container', parent: this });
+  private contentWrapper = new Component({ className: 'footer__wrapper', parent: this.wrapper });
+  private linkWrapper = new Component({ className: 'footer__links', parent: this.contentWrapper });
+  private rival = new Anchor({
     className: 'footer__link',
     text: '@EternalRival',
     href: 'https://github.com/EternalRival',
     target: '_blank',
-    parent: this.linkWrapper.getNode(),
+    parent: this.linkWrapper,
   });
-
-  private linkTwo = new Anchor({
+  private jiri = new Anchor({
     className: 'footer__link',
     text: '@JiriSimonov',
     href: 'https://github.com/JiriSimonov',
     target: '_blank',
-    parent: this.linkWrapper.getNode(),
+    parent: this.linkWrapper,
   });
-
-  private year = new BaseComponent({ className: 'footer__year', text: '2022', parent: this.contentWrapper.getNode() });
-
+  private year = new Component({ className: 'footer__year', textContent: '2022', parent: this.contentWrapper });
   private logo = new Anchor({
     className: 'footer__logo',
     href: 'https://rs.school/js/',
     target: '_blank',
-    parent: this.contentWrapper.getNode(),
+    parent: this.contentWrapper,
+    ariaLabel: 'Курсы RSS JS/FE',
   });
 
   constructor() {
     super({ tag: 'footer', className: 'footer' });
-    this.logo.getNode().setAttribute('aria-label', 'Курсы RSS JS/FE');
   }
 }
