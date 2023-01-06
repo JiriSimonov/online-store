@@ -76,7 +76,8 @@ export class OrderForm extends Component {
         document.body.classList.remove('no-scroll');
       },
     });
-    this.modalForm.addEventListener('submit', () => {
+    this.modalForm.addEventListener('submit', (e) => {
+      e.preventDefault()
       document.body.append(this.loader.node);
       setTimeout(() => {
         window.location.hash = '#store';
