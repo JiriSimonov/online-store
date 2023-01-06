@@ -63,19 +63,17 @@ export class DualSlider extends Component {
     this.maxRange = +this.sliderRight.value;
     this.setValidMin(this.minimumValue.input.node);
     this.setValidMax(this.maximumValue.input.node);
-    // const handleMinInput = debounce((value: string) => DB.filter.clear(minParam).add(minParam, value));
+    const handleMinInput = debounce((value: string) => DB.filter.clear(minParam).add(minParam, value));
     this.minimumValue.input.addEventListener('input', () => {
       if (+this.minimumValue.input.value < +this.minimumValue.input.node.min
         || this.minimumValue.input.value === '') return;
       this.setValidMin(this.minimumValue.input.node);
-      DB.filter.clear(minParam).add(minParam, this.minimumValue.input.value);
-      // handleMinInput(this.minimumValue.input.value);
+      handleMinInput(this.minimumValue.input.value);
     });
-    // const handleMaxInput = debounce((value: string) => DB.filter.clear(maxParam).add(maxParam, value));
+    const handleMaxInput = debounce((value: string) => DB.filter.clear(maxParam).add(maxParam, value));
     this.maximumValue.input.addEventListener('input', () => {
       this.setValidMax(this.maximumValue.input.node);
-      DB.filter.clear(maxParam).add(maxParam, this.maximumValue.input.value);
-      // handleMaxInput(this.maximumValue.input.value);
+      handleMaxInput(this.maximumValue.input.value);
     });
     this.sliderLeft.input.addEventListener('input', () => {
       this.minimumValue.value = this.sliderLeft.value;
@@ -102,6 +100,8 @@ export class DualSlider extends Component {
       this.maximumValue.value = this.getBasicValue('max');
       this.sliderLeft.value = this.minimumValue.value;
       this.sliderRight.value = this.maximumValue.value;
+      this.setValidMin(this.minimumValue.input.node);
+      this.setValidMax(this.maximumValue.input.node);
       this.setLeftPos(this.minimumValue.value, this.minimumValue.input.node.max);
       this.setRightPos(this.maximumValue.value, this.maximumValue.input.node.max);
     });
@@ -139,13 +139,7 @@ export class DualSlider extends Component {
   getBasicValue(edge: 'min' | 'max'): string {
     const param = DB.filter.params.get(`${edge}${this.type}`);
     const limit = DB.filter.getMinMaxValues(this.type)[edge];
-    let current = this[edge];
-    if (limit) current = limit;
-    if (param) current = +[...param];
-    // const param = DB.filter.params.get(`${edge}${this.type}`);
-    // const limit = DB.filter.getMinMaxValues(this.type)[edge];
-    // const current = param ? +[...param] : limit;
-    // return `${current ?? this[edge]}`;
-    return `${current}`;
-  } // TODO? сетается андефайнд при пустой строке мин инпута!
+    const current = param ? +[...param] : limit;
+    return `${current ?? this[edge]}`;
+  }
 }
