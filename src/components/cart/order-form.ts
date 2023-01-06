@@ -34,7 +34,7 @@ export class OrderForm extends Component {
     this.loader = new Loader(true);
     this.modalOverlay = new Component({ className: 'modal__overlay' });
     this.modalContent = new Component({ className: 'modal__content' });
-    this.modalForm = new Component({ tag: 'form', className: 'modal__form' });
+    this.modalForm = new Component<HTMLFormElement>({ tag: 'form', className: 'modal__form' });
     this.nameField = new FormField({
       className: 'modal',
       textContent: 'Имя Фамилия',
@@ -76,7 +76,8 @@ export class OrderForm extends Component {
         document.body.classList.remove('no-scroll');
       },
     });
-    this.modalForm.addEventListener('submit', () => {
+    this.modalForm.addEventListener('submit', (e) => {
+      e.preventDefault()
       document.body.append(this.loader.node);
       setTimeout(() => {
         window.location.hash = '#store';
@@ -86,7 +87,6 @@ export class OrderForm extends Component {
         this.loader.destroy();
         document.body.classList.remove('no-scroll');
       }, 3500);
-      return false;
     });
 
     this.append(this.modalOverlay);

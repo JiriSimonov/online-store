@@ -33,12 +33,7 @@ export class SwitchModal extends Component {
     this.modalImg.style.backgroundImage = `url('assets/images/switches/${id}.webp')`;
 
     this.modalStats = (KeyboardSwitch.getDescription(id, 'props') as string[]).map(
-      (item) =>
-        new Component({
-          className: 'modal__stats',
-          textContent: item,
-          parent: this.modalInfo,
-        }),
+      (item) => new Component({ className: 'modal__stats', textContent: item, parent: this.modalInfo }),
     );
     this.modalDescription = new Component({
       tag: 'p',

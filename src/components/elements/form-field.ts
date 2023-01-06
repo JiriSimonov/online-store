@@ -4,29 +4,30 @@ import { Input } from './input-component';
 export class FormField extends Component<HTMLLabelElement> {
   private fieldInput: Input;
 
-  constructor(props: ComponentProps<HTMLLabelElement & HTMLInputElement> & { modificator?: string }) {
-    super({
-      tag: 'label',
-      className: props.modificator
-        ? `${props.className}__label ${props.className}__label_${props.modificator}`
-        : `${props.className}__label`,
-      textContent: props.textContent,
-    });
-    this.fieldInput = new Input({
-      className: props.modificator
-        ? `${props.className}__input ${props.className}__input_${props.modificator}`
-        : `${props.className}__input`,
-      parent: this,
-      type: props.type,
-      placeholder: props.placeholder,
-      pattern: props.pattern,
-      value: props.value,
-      min: props.min,
-      max: props.max,
-      name: props.name,
-      step: props.step,
-      checked: props.checked,
-    });
+  constructor(props?: ComponentProps<HTMLInputElement> & { modificator?: string }) {
+    super({ tag: 'label' });
+
+    const propList = { ...props };
+
+    const name = propList.className ?? '';
+    const { modificator } = propList;
+    delete propList.className;
+    delete propList.modificator;
+
+    if (propList?.textContent) {
+      this.text = propList.textContent;
+      delete propList.textContent;
+    }
+    if (propList?.parent) {
+      propList.parent.append(this.node);
+      delete propList.parent;
+    }
+
+    this.fieldInput = new Input({ parent: this, ...propList });
+
+    const getClassName = (tag: string) => `${name}__${tag}${modificator ? ` ${name}__${tag}_${modificator}` : ''}`;
+    this.node.className = getClassName('label');
+    this.fieldInput.node.className = getClassName('input');
   }
 
   get input() {

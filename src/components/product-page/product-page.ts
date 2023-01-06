@@ -22,7 +22,7 @@ export class ProductPage extends Component {
     className: 'cart__btn',
     textContent: 'Назад',
     onclick: () => {
-      window.location.hash = '#store';
+      window.history.back();
     },
   });
   private cartBtn = new Button({
