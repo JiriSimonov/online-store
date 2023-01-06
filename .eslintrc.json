@@ -28,6 +28,7 @@
     "import/prefer-default-export": 0,
     "max-len": ["error", { "code": 120, "ignoreComments": true, "tabWidth": 2 }],
     "no-console": ["warn", { "allow": ["warn", "info"] }],
+    "no-debugger": 0,
     "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 1 }],
     "no-param-reassign": 1,
     "no-plusplus": 0,

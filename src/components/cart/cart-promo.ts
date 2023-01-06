@@ -3,7 +3,7 @@ import { FormField } from '../elements/form-field';
 import { Component } from '../elements/base-component';
 import { Button } from '../elements/button-component';
 
-export class PromoForm extends Component {
+export class PromoForm extends Component<HTMLFormElement> {
   private promoBtn = new Button({
     className: 'promo__submit-btn',
     textContent: 'Применить',

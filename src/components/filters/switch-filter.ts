@@ -38,9 +38,9 @@ export class SwitchFilter extends Filter {
       return component;
     });
 
-  private modalWrapper: Component | null | undefined;
+  private modalWrapper?: Component | null;
 
-  private switchModal: SwitchModal | null | undefined;
+  private switchModal?: SwitchModal;
 
   constructor() {
     super('Переключатели');
@@ -64,8 +64,9 @@ export class SwitchFilter extends Filter {
     this.switchWrapper.append(...this.switches);
     this.switchWrapper.addEventListener('mouseover', (e) => {
       const { target } = e;
-      if (!(target instanceof HTMLElement && target.classList.contains('switch__label'))) return;
-      target.setAttribute('id', 'open');
+      if (!(target instanceof HTMLLabelElement)) return;
+
+      target.id = 'open';
       this.modalWrapper = new Component({ className: 'switch__modal' });
       this.switchModal = new SwitchModal(target.textContent || '', !target.classList.contains('switch__item_false'));
       target.append(this.modalWrapper.node);
