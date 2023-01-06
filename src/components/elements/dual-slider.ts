@@ -65,6 +65,8 @@ export class DualSlider extends Component {
     this.setValidMax(this.maximumValue.input.node);
     // const handleMinInput = debounce((value: string) => DB.filter.clear(minParam).add(minParam, value));
     this.minimumValue.input.addEventListener('input', () => {
+      if (+this.minimumValue.input.value < +this.minimumValue.input.node.min
+        || this.minimumValue.input.value === '') return;
       this.setValidMin(this.minimumValue.input.node);
       DB.filter.clear(minParam).add(minParam, this.minimumValue.input.value);
       // handleMinInput(this.minimumValue.input.value);
@@ -116,8 +118,8 @@ export class DualSlider extends Component {
   }
 
   setValidMin(elem: HTMLInputElement): void {
+    if (+elem.value < +elem.min|| elem.value === '') return;
     if (+elem.value >= +elem.max) Object.assign(elem, { value: `${+elem.max - this.gap}` });
-    if (+elem.value < +elem.min) return;
     this.sliderLeft.value = elem.value;
     this.setLeftPos(elem.value, elem.max);
   }
