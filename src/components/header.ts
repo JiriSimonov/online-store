@@ -76,11 +76,9 @@ export class Header extends Component {
   subscribe() {
     emitter.subscribe('cart__save', () => {
       this.cartCount.setText(`${DB.cart.sumQuantity}`);
-      this.cartPrice.setText(`${DB.cart.sumPrice}`);
       this.cartPrice.setText(`${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`);
     });
     emitter.subscribe('promo__save', () => {
-      this.cartCount.setText(`${DB.cart.sumQuantity}`);
       this.cartPrice.setText(`${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`);
     });
     return this;
