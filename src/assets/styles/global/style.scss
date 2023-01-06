@@ -60,6 +60,17 @@ ul {
 
 .no-scroll {
   overflow: hidden;
+  .modal {
+    &__overlay {
+      z-index: 6;
+    }
+  }
+  .loader {
+    .cube {
+      top: 44%;
+      left: 49%;
+    }
+  }
 }
 
 #root {
@@ -134,13 +145,13 @@ ul {
 
   &__title {
     position: absolute;
-    top: 60%;
+    top: 50%;
     left: 50%;
     font-family: 'Nunito', monospace;
     font-size: 32px;
     font-weight: 700;
     color: $black;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     z-index: 12;
   }
 

@@ -77,6 +77,7 @@ export class OrderForm extends Component {
       },
     });
     this.modalForm.addEventListener('submit', (e) => {
+      e.preventDefault()
       document.body.append(this.loader.node);
       setTimeout(() => {
         window.location.hash = '#store';
@@ -86,7 +87,6 @@ export class OrderForm extends Component {
         this.loader.destroy();
         document.body.classList.remove('no-scroll');
       }, 3500);
-      e.preventDefault();
     });
 
     this.append(this.modalOverlay);

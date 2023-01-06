@@ -8,7 +8,7 @@ export class Loader extends Component {
 
   constructor(order: boolean) {
     super({ className: 'loader' });
-    this.title = new Heading({ className: 'loader__title', textContent: 'Заказ оформлен' });
+    this.title = new Heading({ className: 'loader__title', textContent: 'Заказ оформляется' });
     if (order) this.append(this.title);
     this.cube = new Component({ className: 'cube', parent: this });
     this.items = new Array(5).fill(0).map(() => new Component({ parent: this.cube }));
