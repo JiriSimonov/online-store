@@ -82,6 +82,7 @@
     position: absolute;
     width: 1px;
     height: 1px;
+    opacity: 0;
   }
 
   &__label:has(.filter__input:checked) {

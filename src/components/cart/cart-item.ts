@@ -51,6 +51,7 @@ export class CartItemElem extends Component {
       max: `${keyboardSwitch.quantity}`,
       pattern: '[0-9]{2}',
     });
+    if (this.countField.input.value === '0') product.set(+this.countField.input.value + 1);
     this.images = new ProductImage(keyboard.images);
     this.wrapper = new Component({ className: 'cart__container' });
     this.title = new Heading({ className: 'cart__title', textContent: keyboard.title, parent: this.wrapper });
@@ -92,6 +93,7 @@ export class CartItemElem extends Component {
     this.cartPosition = new Component({ className: 'cart__position', textContent: `${index}`, parent: this });
     this.countBtn.append(this.countField);
     this.countField.input.addEventListener('input', (e) => {
+      buttonOrder.disabled = false;
       if (e.target && e.target instanceof HTMLInputElement) {
         if (+e.target.value > +e.target.max) e.target.value = e.target.max;
         if (+e.target.value <= +e.target.min && e.target.value !== '') e.target.value = e.target.min;
@@ -108,6 +110,8 @@ export class CartItemElem extends Component {
     this.countField.input.addEventListener('focusout', () => {
       if (!this.countField.input.value) {
         this.countField.input.value = '1';
+        product.set(+this.countField.input.value);
+        this.countField.input.node.dispatchEvent(new Event('input'));
         buttonOrder.disabled = false;
       }
     });

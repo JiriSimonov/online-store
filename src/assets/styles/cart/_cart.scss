@@ -92,6 +92,7 @@
     color: $white;
     font-weight: 400;
     user-select: none;
+    z-index: 2;
   }
 
 
@@ -641,6 +642,7 @@
     width: 1px;
     height: 1px;
     cursor: $hover;
+    opacity: 1;
     transition: .3s linear;
   }
 
