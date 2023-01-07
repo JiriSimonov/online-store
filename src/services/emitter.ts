@@ -1,5 +1,5 @@
 class EventEmitter<Callback extends (...args: Parameters<Callback>) => void> {
-  events: Record<string, Callback[]> = {};
+  private events: Record<string, Callback[]> = {};
   subscribe(eventName: string, callback: Callback) {
     if (eventName in this.events) this.events[eventName].push(callback);
     else this.events[eventName] = [callback];
@@ -12,6 +12,6 @@ class EventEmitter<Callback extends (...args: Parameters<Callback>) => void> {
   }
 }
 
-export const emitter = new EventEmitter();
+export const Emitter = new EventEmitter();
 
-console.info(emitter);
+console.info(Emitter);

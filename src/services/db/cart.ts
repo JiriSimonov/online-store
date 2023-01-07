@@ -1,5 +1,5 @@
 import { ls } from '../../utils/utils';
-import { emitter } from '../event-emitter';
+import { Emitter } from '../emitter';
 import { CartItem } from './cart-item';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
@@ -43,7 +43,7 @@ export class Cart {
   }
   private save(cart: CartMap): void {
     ls.saveMap(this.#CART_KEY, cart);
-    emitter.emit('cart__save');
+    Emitter.emit('cart__save');
   }
 
   private convertList(cart: CartItem[]): CartMap;

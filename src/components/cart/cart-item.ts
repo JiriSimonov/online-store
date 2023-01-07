@@ -5,7 +5,7 @@ import { ProductImage } from '../product/product-img';
 import { Button } from '../elements/button-component';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
-import { emitter } from '../../services/event-emitter';
+import { Emitter } from '../../services/emitter';
 import { Heading } from '../elements/heading-component';
 
 export class CartItemElem extends Component {
@@ -82,7 +82,7 @@ export class CartItemElem extends Component {
       onclick: () => {
         if (+this.countField.input.value === 1) {
           DB.cart.remove(product);
-          emitter.emit('cart__delete-item');
+          Emitter.emit('cart__delete-item');
         } else {
           this.countField.input.node.stepDown();
           this.countField.input.node.dispatchEvent(new Event('input'));
@@ -128,7 +128,7 @@ export class CartItemElem extends Component {
       parent: this.stockWrapper,
       onclick: () => {
         DB.cart.remove(product);
-        emitter.emit('cart__delete-item');
+        Emitter.emit('cart__delete-item');
       },
     });
     if (+this.countField.input.value === +this.countField.input.node.max) this.cartInc.disabled = true;

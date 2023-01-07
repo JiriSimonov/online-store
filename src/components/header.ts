@@ -4,7 +4,7 @@ import { Anchor } from './elements/anchor-component';
 import { Component } from './elements/base-component';
 import { FormField } from './elements/form-field';
 import { Button } from './elements/button-component';
-import { emitter } from '../services/event-emitter';
+import { Emitter } from '../services/emitter';
 import { debounce } from '../utils/utils';
 
 export class Header extends Component {
@@ -74,11 +74,11 @@ export class Header extends Component {
   }
 
   subscribe() {
-    emitter.subscribe('cart__save', () => {
+    Emitter.subscribe('cart__save', () => {
       this.cartCount.setText(`${DB.cart.sumQuantity}`);
       this.cartPrice.setText(`${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`);
     });
-    emitter.subscribe('promo__save', () => {
+    Emitter.subscribe('promo__save', () => {
       this.cartPrice.setText(`${DB.cart.promo.getDiscounted(DB.cart.sumPrice)}`);
     });
     return this;

@@ -2,7 +2,7 @@ import { KeyboardData } from '../../interfaces/database';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
 import { Cart } from './cart';
-import { emitter } from '../event-emitter';
+import { Emitter } from '../emitter';
 import { CartItem } from './cart-item';
 import { Filter } from './filter';
 import { FilterCategory } from '../../interfaces/enums';
@@ -17,7 +17,7 @@ class Database {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
     Object.seal(this.keyboards);
     this.filter = new Filter(this.keyboards);
-    emitter.subscribe('cart__update-item', (item: CartItem) => this.cart.add(item));
+    Emitter.subscribe('cart__update-item', (item: CartItem) => this.cart.add(item));
   }
 
   get switches(): KeyboardSwitch[] {

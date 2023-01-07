@@ -6,7 +6,7 @@ import { Button } from '../elements/button-component';
 import { Keyboard } from '../../services/db/keyboard';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
-import { emitter } from '../../services/event-emitter';
+import { Emitter } from '../../services/emitter';
 import { Heading } from '../elements/heading-component';
 
 export class ProductCard extends Component {
@@ -62,7 +62,7 @@ export class ProductCard extends Component {
         case this.buyNowBtn.node:
           if (!DB.cart.isInCart(keyboard.id, this.selectedSwitch?.switch.id)) this.addToCart();
           window.location.hash = `/cart`;
-          emitter.emit('product-card__buyNowBtn_clicked');
+          Emitter.emit('product-card__buyNowBtn_clicked');
           break;
         default:
           window.location.hash = `/${keyboard.id}`;

@@ -9,7 +9,7 @@ import { PromoForm } from './cart-promo';
 import { OrderForm } from './order-form';
 import { ChangeView } from '../elements/change-view';
 import { FormField } from '../elements/form-field';
-import { emitter } from '../../services/event-emitter';
+import { Emitter } from '../../services/emitter';
 import { getNoun } from '../../utils/utils';
 import { Pagination } from '../../services/db/pagination';
 import { Section } from '../elements/section-component';
@@ -201,18 +201,18 @@ export class Cart extends Section {
   }
 
   subscribe() {
-    emitter.subscribe('product-card__buyNowBtn_clicked', () => {
+    Emitter.subscribe('product-card__buyNowBtn_clicked', () => {
       this.openOrderForm();
     });
-    emitter.subscribe('cart__save', () => {
+    Emitter.subscribe('cart__save', () => {
       this.updateTotalPrice();
       this.updateTotalQuantity();
     });
-    emitter.subscribe('promo__save', () => {
+    Emitter.subscribe('promo__save', () => {
       this.updateActivePromoList();
       this.updateTotalPrice();
     });
-    emitter.subscribe('cart__delete-item', () => {
+    Emitter.subscribe('cart__delete-item', () => {
       this.render();
       this.pagCountField.input.node.max = this.pagination.lastPage;
       this.pagination.setPage(`${Math.ceil(this.pagination.firstindex / this.pagination.pageSize)}`);
