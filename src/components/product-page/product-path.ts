@@ -7,7 +7,7 @@ export class ProductPath extends Component {
     textContent: 'store',
     parent: this,
     onclick: () => {
-      window.location.hash = '#store';
+      window.location.hash = '/store';
     },
   });
   private brands = new Component({ tag: 'li', className: 'product__path-item', textContent: 'бренды', parent: this });

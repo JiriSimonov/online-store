@@ -27,7 +27,7 @@ export class Cart extends Section {
     className: 'cart__btn',
     textContent: 'Продолжить покупки',
     onclick: () => {
-      window.location.hash = '#store';
+      window.location.hash = '/store';
     },
   });
   private changeView = new ChangeView();

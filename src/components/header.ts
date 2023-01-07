@@ -15,7 +15,7 @@ export class Header extends Component {
     className: 'header__logo',
     text: 'Keyboards Store',
     onclick: () => {
-      window.location.hash = '#home';
+      window.location.hash = '/home';
       this.searchField.input.classList.remove('header__input_is-open');
       this.searchField.destroy();
     },
@@ -27,7 +27,7 @@ export class Header extends Component {
   private cart = new Button({
     className: 'header__cart',
     onclick: () => {
-      window.location.hash = '#cart';
+      window.location.hash = '/cart';
     },
     ariaLabel: 'Перейти в корзину',
     parent: this.controls,
@@ -67,7 +67,7 @@ export class Header extends Component {
 
     const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value));
     this.searchField.input.addEventListener('input', () => {
-      if (!window.location.hash.startsWith('#store')) window.location.hash = '#store';
+      if (!window.location.hash.startsWith('/store')) window.location.hash = '/store';
       handleSearchInput(this.searchField.input.value);
     });
     this.subscribe();

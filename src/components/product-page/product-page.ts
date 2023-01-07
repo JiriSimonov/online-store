@@ -29,7 +29,7 @@ export class ProductPage extends Component {
     className: 'cart__btn',
     textContent: 'Оформить заказ',
     onclick: () => {
-      window.location.hash = '#cart';
+      window.location.hash = '/cart';
     },
   });
 

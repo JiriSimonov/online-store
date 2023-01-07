@@ -49,11 +49,11 @@ class App extends Main {
 
     pages.forEach((page) => {
       const [hash, node] = page;
-      routes.set(`#${hash}`, () => this.renderPage(node));
+      routes.set(`#/${hash}`, () => this.renderPage(node));
     });
 
     products.forEach((keyboard) => {
-      routes.set(`#${keyboard.id}`, () => this.renderPage(new ProductPage(keyboard)));
+      routes.set(`#/${keyboard.id}`, () => this.renderPage(new ProductPage(keyboard)));
     });
 
     this.router = new Router(routes, () => this.renderPage(this.errorPage));
