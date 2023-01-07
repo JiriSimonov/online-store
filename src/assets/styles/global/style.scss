@@ -60,6 +60,9 @@ ul {
 
 .no-scroll {
   overflow: hidden;
+  .header {
+    z-index: 6;
+  }
   .modal {
     &__overlay {
       z-index: 6;
