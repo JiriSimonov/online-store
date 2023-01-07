@@ -31,6 +31,6 @@ export class PromoForm extends Component<HTMLFormElement> {
       else this.promoBtn.destroy();
     });
     this.append(this.promoField);
-    this.addEventListener('submit', () => false);
+    this.addEventListener('submit', (e) => e.preventDefault());
   }
-}
+} 

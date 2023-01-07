@@ -68,7 +68,7 @@ export class Filters extends Component {
           };
         };
         navigator.clipboard
-          .writeText(encodeURI(window.location.href))
+          .writeText(window.location.href)
           .then(() => renderCopyAnimation('success'))
           .catch(() => renderCopyAnimation('fail'));
       },
