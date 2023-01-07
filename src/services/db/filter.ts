@@ -3,11 +3,11 @@ import { converter } from '../../utils/utils';
 import { Keyboard } from './keyboard';
 
 export class Filter {
-  private usp = new URLSearchParams(Filter.query);
+  private searchParams = new URLSearchParams(Filter.query);
 
   constructor(private source: Keyboard[]) {
     window.addEventListener('hashchange', () => {
-      this.usp = new URLSearchParams(Filter.query);
+      this.searchParams = new URLSearchParams(Filter.query);
     });
   }
 
@@ -18,8 +18,7 @@ export class Filter {
   }
   private static set query(str: string) {
     const [currentHash] = window.location.hash.split('?');
-    const query: string = str ? `?${decodeURIComponent(str)}` : '';
-    window.location.hash = currentHash + query;
+    window.location.hash = `${currentHash}?${decodeURIComponent(str)}`;
   }
 
   /** Возвращает отфильтрованный по конкретным `category=[value]` список
@@ -28,8 +27,9 @@ export class Filter {
    * @param `list` список клавиатур для фильтрации
    * @returns список отфильтрованных клавиатур
    */
-  getSearchSample(category: string, value: string, list = this.source): Keyboard[] {
-    return Filter.getList(new Map([[category, new Set([value])]]), list);
+  getSearchSample(category: string, value: string, list?: Keyboard[]): Keyboard[] {
+    const defaultList = this.source;
+    return Filter.getList(new Map([[category, new Set([value])]]), list ?? defaultList);
   }
   /** Возвращает минимальный и максимальный порог цены/количества без учёта выбранного фильтра
    * @param `category` категория фильтра
@@ -42,14 +42,14 @@ export class Filter {
     let [min, max] = [defaultMin, defaultMax];
 
     if (category === 'Quantity')
-      Filter.getList(params, list).forEach((kb) => {
-        const { sumQuantity } = kb;
+      Filter.getList(params, list).forEach((keyboard) => {
+        const { sumQuantity } = keyboard;
         if (sumQuantity > max) max = sumQuantity;
         if (sumQuantity < min) min = sumQuantity;
       });
     if (category === 'Price')
-      Filter.getList(params, list).forEach((kb) => {
-        const { priceMax, priceMin } = kb;
+      Filter.getList(params, list).forEach((keyboard) => {
+        const { priceMax, priceMin } = keyboard;
         if (priceMax > max) max = priceMax;
         if (priceMin < min) min = priceMin;
       });
@@ -70,8 +70,8 @@ export class Filter {
     };
 
     return [...keyboardList].filter((keyboard) => {
-      const switchesIdList: string[] = keyboard.switches.map((v) => v.id);
-      const switchesManufacturerList: string[] = keyboard.switches.map((v) => v.manufacturer);
+      const switchesIdList: string[] = keyboard.switches.map((keyboardSwitch) => keyboardSwitch.id);
+      const switchesManufacturerList: string[] = keyboard.switches.map((keyboardSwitch) => keyboardSwitch.manufacturer);
       const fullSearchList: string[] = [
         keyboard.brands,
         keyboard.minPrice,
@@ -106,24 +106,24 @@ export class Filter {
 
   /** Добавляет фильтр в Query */
   add(category: keyof typeof FilterCategory, value: string) {
-    const param: string = this.usp.get(category) ?? '[]';
+    const param: string = this.searchParams.get(category) ?? '[]';
     const params: Set<string> = converter.stringToSet(param);
-    if (value) this.usp.set(category, converter.setToString(params.add(value)));
-    Filter.query = this.usp.toString();
+    if (value) this.searchParams.set(category, converter.setToString(params.add(value)));
+    Filter.query = `${this.searchParams}`;
   }
   /** Удаляет фильтр из Query */
   remove(category: string, value: string) {
-    const param: string = this.usp.get(category) ?? '[]';
+    const param: string = this.searchParams.get(category) ?? '[]';
     const params: Set<string> = converter.stringToSet(param);
     params.delete(value);
-    this.usp.set(category, converter.setToString(params));
+    this.searchParams.set(category, converter.setToString(params));
     if (!params.size) this.clear(category);
-    Filter.query = this.usp.toString();
+    Filter.query = `${this.searchParams}`;
   }
   /** Очищает категорию фильтра в Query */
   clear(category: string): this {
-    this.usp.delete(category);
-    Filter.query = this.usp.toString();
+    this.searchParams.delete(category);
+    Filter.query = `${this.searchParams}`;
     return this;
   }
   /** Очищает Query полностью */
@@ -140,7 +140,7 @@ export class Filter {
       return [category, converter.stringToSet(values)];
     };
     return new Map(
-      Array.from(this.usp.entries(), (entry) => {
+      Array.from(this.searchParams.entries(), (entry) => {
         try {
           return convert(entry);
         } catch {
@@ -152,13 +152,13 @@ export class Filter {
 
   /** Возвращает значение одиночного Query параметра */
   getParam(type: string): string {
-    return this.usp.get(type) ?? '';
+    return this.searchParams.get(type) ?? '';
   }
   /** Устанавливает/удаляет значение одиночного Query параметра */
   setParam(type: string, value?: string): this {
-    if (value) this.usp.set(type, value);
-    else this.usp.delete(type);
-    Filter.query = this.usp.toString();
+    if (value) this.searchParams.set(type, value);
+    else this.searchParams.delete(type);
+    Filter.query = `${this.searchParams}`;
     return this;
   }
 }

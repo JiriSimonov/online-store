@@ -14,7 +14,7 @@ export const converter = {
   },
 };
 
-export const ls = {
+export const LS = {
   saveMap<T>(key: string, map: Map<string, T>) {
     localStorage.setItem(key, converter.mapToString(map));
   },

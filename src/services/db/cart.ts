@@ -1,4 +1,4 @@
-import { ls } from '../../utils/utils';
+import { LS } from '../../utils/utils';
 import { Emitter } from '../emitter';
 import { CartItem } from './cart-item';
 import { Keyboard } from './keyboard';
@@ -39,10 +39,10 @@ export class Cart {
   }
 
   private load(): CartMap {
-    return ls.loadMap(this.#CART_KEY);
+    return LS.loadMap(this.#CART_KEY);
   }
   private save(cart: CartMap): void {
-    ls.saveMap(this.#CART_KEY, cart);
+    LS.saveMap(this.#CART_KEY, cart);
     Emitter.emit('cart__save');
   }
 
@@ -51,15 +51,15 @@ export class Cart {
   private convertList(cart: CartItem[] | CartMap): CartMap | CartItem[] {
     if (cart instanceof Map)
       return Array.from(cart, (item) => {
-        const [kId, sId] = item[0].split('-');
-        return new CartItem(...this.getProduct(+kId, sId), item[1]);
+        const [keyboardId, keyboardSwitchId] = item[0].split('-');
+        return new CartItem(...this.getProduct(+keyboardId, keyboardSwitchId), item[1]);
       });
     return new Map(cart.map((item: CartItem): [string, number] => item.entries));
   }
 
   /** @param `input` экземпляр `CartItem` или кортеж `[Keyboard, KeyboardSwitch]` */
-  add(item: CartItem): void;
-  add(item: [Keyboard, KeyboardSwitch]): void;
+  add(cartItem: CartItem): void;
+  add(cartItemTuple: [Keyboard, KeyboardSwitch]): void;
   add(input: CartItem | [Keyboard, KeyboardSwitch]): void {
     const { cartMap } = this;
     const item = input instanceof CartItem ? input : new CartItem(...input);
@@ -68,9 +68,9 @@ export class Cart {
   }
 
   /** Удаление экземпляра `CartItem` из корзины */
-  remove(item: CartItem): void {
+  remove(cartItem: CartItem): void {
     const { cartMap } = this;
-    cartMap.delete(item.key);
+    cartMap.delete(cartItem.key);
     this.save(cartMap);
   }
 
