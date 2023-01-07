@@ -17,7 +17,7 @@ export class CartItem {
     return this.#quantity;
   }
   set quantity(n: number) {
-    this.#quantity = n;
+    this.#quantity = n > 0 ? n : 1;
     Emitter.emit('cart__update-item', this);
   }
   set(n: number) {
