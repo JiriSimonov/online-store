@@ -340,15 +340,6 @@ ul {
       box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
     }
   }
-
-  &__input_is-selected {
-    z-index: 8;
-
-    &::-webkit-slider-thumb {
-      background-color: $klb;
-      border-color: $gpb;
-    }
-  }
 }
 
 @media (max-width: 1601px) {

@@ -13,10 +13,6 @@ export class DualSlider extends Component {
   private sliderLeft: FormField;
   private sliderRight: FormField;
   private gap: number;
-  private minNum: number | string;
-  private maxNum: number | string;
-  private minRange: number | string;
-  private maxRange: number | string;
 
   constructor(private min: number, private max: number, step: number, gap: number, private type: 'Price' | 'Quantity') {
     super({ className: 'dual-slider' });
@@ -57,20 +53,15 @@ export class DualSlider extends Component {
       step: `${step}`,
     });
     this.gap = gap;
-    this.minNum = +this.minimumValue.value;
-    this.maxNum = +this.maximumValue.value;
-    this.minRange = +this.sliderLeft.value;
-    this.maxRange = +this.sliderRight.value;
     this.setValidMin(this.minimumValue.input.node);
     this.setValidMax(this.maximumValue.input.node);
     const handleMinInput = debounce((node: HTMLInputElement) => {
-      if (+node.value < +node.min || node.value === '') return; //? либо это удаляй
       this.setValidMin(node);
       DB.filter.clear(minParam).add(minParam, node.value);
     });
     this.minimumValue.input.addEventListener('input', () => {
       const { node } = this.minimumValue.input;
-      if (+node.value < +node.min || node.value === '') return; //? либо это удаляй
+      if (+node.value < +node.min || node.value === '') return;
       handleMinInput(node);
     });
     const handleMaxInput = debounce((node: HTMLInputElement) => {
@@ -81,6 +72,7 @@ export class DualSlider extends Component {
       handleMaxInput(this.maximumValue.input.node);
     });
     this.sliderLeft.input.addEventListener('input', () => {
+      this.setValidMin(this.sliderLeft.input.node);
       this.minimumValue.value = this.sliderLeft.value;
       this.setLeftPos(this.sliderLeft.value, this.sliderLeft.input.node.max);
     });
@@ -90,6 +82,7 @@ export class DualSlider extends Component {
       DB.filter.clear(minParam).add(minParam, this.sliderLeft.input.value);
     });
     this.sliderRight.input.addEventListener('input', () => {
+      this.setValidMax(this.sliderRight.input.node);
       this.maximumValue.value = this.sliderRight.input.value;
       this.setRightPos(this.sliderRight.value, this.sliderRight.input.node.max);
     });
@@ -121,8 +114,10 @@ export class DualSlider extends Component {
   }
 
   setValidMin(elem: HTMLInputElement): void {
+    const maxVal = +this.maximumValue.value;
     if (+elem.value < +elem.min || elem.value === '') return;
     if (+elem.value >= +elem.max) Object.assign(elem, { value: `${+elem.max - this.gap}` });
+    if (+elem.value >= maxVal) Object.assign(elem, { value: `${maxVal - this.gap}` });
     this.sliderLeft.value = elem.value;
     this.setLeftPos(elem.value, elem.max);
   }
@@ -133,7 +128,7 @@ export class DualSlider extends Component {
       Object.assign(elem, { value: elem.max });
       return;
     }
-    if (+elem.value <= minVal || +elem.value <= minVal + this.gap)
+    if (+elem.value <= minVal || +elem.value <= minVal + this.gap && +elem.value + this.gap <= +elem.max)
       Object.assign(elem, { value: `${minVal + this.gap}` });
     this.sliderRight.value = elem.value;
     this.setRightPos(elem.value, elem.max);
