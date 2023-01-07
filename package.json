@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "backend": "npx tsc backend/index.ts && node backend",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "npm run build && npx gh-pages -d dist",
     "clean": "rmdir /s /q dist",
