@@ -106,7 +106,8 @@ export class Filters extends Component {
       const label = value;
       const [sample, all] = [Filter.getHead(name, value), Filter.getTail(name, value)];
 
-      Object.assign(v.style, { opacity: sample ? 1 : 1 / 3 });
+      if (sample) v.classList.remove('shadowed');
+      else v.classList.add('shadowed');
 
       if (textNode) textNode.textContent = `${label}: (${sample}/${all})`;
     });
@@ -117,9 +118,8 @@ export class Filters extends Component {
 
       if (!parent) return;
 
-      Object.assign(parent.style, { opacity: part ? 1 : 1 / 3 });
-      if (part) parent.classList.remove('switch__item_false');
-      else parent.classList.add('switch__item_false');
+      if (part) parent.classList.remove('switch__item_false', 'shadowed');
+      else parent.classList.add('switch__item_false', 'shadowed');
     });
   }
 }
