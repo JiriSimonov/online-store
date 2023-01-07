@@ -80,7 +80,7 @@ export class OrderForm extends Component {
       e.preventDefault()
       document.body.append(this.loader.node);
       setTimeout(() => {
-        window.location.hash = '#store';
+        window.location.hash = '/store';
         this.destroy();
         DB.cart.clear();
         DB.cart.promo.clear();

@@ -31,7 +31,7 @@ export class Home extends Section {
   private button = new Button({
     className: 'home__button',
     onclick: () => {
-      window.location.hash = '#store';
+      window.location.hash = '/store';
     },
     textContent: 'Выбрать клавиатуру',
     parent: this.wrapper,

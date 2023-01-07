@@ -61,11 +61,11 @@ export class ProductCard extends Component {
           break;
         case this.buyNowBtn.node:
           if (!DB.cart.isInCart(keyboard.id, this.selectedSwitch?.switch.id)) this.addToCart();
-          window.location.hash = `#cart`;
+          window.location.hash = `/cart`;
           emitter.emit('product-card__buyNowBtn_clicked');
           break;
         default:
-          window.location.hash = `${keyboard.id}`;
+          window.location.hash = `/${keyboard.id}`;
       }
     };
 
