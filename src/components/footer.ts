@@ -19,7 +19,7 @@ export class Footer extends Component {
     target: '_blank',
     parent: this.linkWrapper,
   });
-  private year = new Component({ className: 'footer__year', textContent: '2022', parent: this.contentWrapper });
+  private year = new Component({ className: 'footer__year', textContent: '2023', parent: this.contentWrapper });
   private logo = new Anchor({
     className: 'footer__logo',
     href: 'https://rs.school/js/',
