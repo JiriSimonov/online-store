@@ -11,7 +11,7 @@ export class QuantityFilter extends Filter {
 
   constructor() {
     super('Остаток на складе');
-    this.slider = new DualSlider(this.filteredMin, this.filteredMax, 6, 16, 'Quantity');
+    this.slider = new DualSlider(this.filteredMin, this.filteredMax, 6, 18, 'Quantity');
     this.filterWrapper.append(this.slider);
   }
 }

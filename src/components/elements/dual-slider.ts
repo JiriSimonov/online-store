@@ -117,7 +117,8 @@ export class DualSlider extends Component {
     const maxVal = +this.maximumValue.value;
     if (+elem.value < +elem.min || elem.value === '') return;
     if (+elem.value >= +elem.max) Object.assign(elem, { value: `${+elem.max - this.gap}` });
-    if (+elem.value >= maxVal) Object.assign(elem, { value: `${maxVal - this.gap}` });
+    if (+elem.value >= maxVal
+      && +elem.value - this.gap > +elem.min) Object.assign(elem, { value: `${maxVal - this.gap}` });
     this.sliderLeft.value = elem.value;
     this.setLeftPos(elem.value, elem.max);
   }
