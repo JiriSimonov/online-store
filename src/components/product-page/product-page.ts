@@ -36,7 +36,7 @@ export class ProductPage extends Component {
   constructor(keyboard: Keyboard) {
     super({ className: 'container' });
     this.card = new ProductCard(keyboard, 'div');
-    this.productPath = new ProductPath(keyboard.title);
+    this.productPath = new ProductPath(keyboard);
     this.thumbnails = new ThumbNails(keyboard);
     this.descrFields = Object.entries(keyboard.properties).map((prop) => {
       const [title, list] = prop;
