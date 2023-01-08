@@ -18,7 +18,9 @@ export class Filter {
   }
   private static set query(str: string) {
     const [currentHash] = window.location.hash.split('?');
-    window.location.hash = `${currentHash}?${decodeURIComponent(str)}`;
+    let query = `?${decodeURIComponent(str)}`;
+    if (query.includes('filters=true&')) query = query.replace(/filters=true&/i, '').concat('&filters=true');
+    window.location.hash = `${currentHash}${str ? `${query}` : ''}`;
   }
 
   /** Возвращает отфильтрованный по конкретным `category=[value]` список
