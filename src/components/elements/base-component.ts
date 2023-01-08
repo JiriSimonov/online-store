@@ -8,8 +8,12 @@ export class Component<T extends HTMLElement = HTMLElement> {
   readonly #node: T;
   constructor(props?: ComponentProps<T>) {
     this.#node = document.createElement(props?.tag ?? 'div') as T;
-    if (props) Object.assign(this.#node, props);
-    if (props?.parent) props.parent.append(this.#node);
+    if (props) {
+      Object.assign(this.#node, props);
+    }
+    if (props?.parent) {
+      props.parent.append(this.#node);
+    }
   }
 
   get node(): T {
@@ -42,8 +46,11 @@ export class Component<T extends HTMLElement = HTMLElement> {
     this.node.innerText = value;
   }
   setText(value: string | null): void {
-    if (value?.includes('\n')) this.innerText = value;
-    else this.text = value;
+    if (value?.includes('\n')) {
+      this.innerText = value;
+    } else {
+      this.text = value;
+    }
   }
 
   get style(): CSSStyleDeclaration {
@@ -51,7 +58,9 @@ export class Component<T extends HTMLElement = HTMLElement> {
   }
 
   private static toNode(component: string | Node | Component): Node {
-    if (typeof component === 'string') return document.createTextNode(component);
+    if (typeof component === 'string') {
+      return document.createTextNode(component);
+    }
     return component instanceof Component ? component.node : component;
   }
   private insert(target: 'before' | 'prepend' | 'append' | 'after', children: (string | Node | Component)[]) {

@@ -54,7 +54,9 @@ export class Keyboard {
 
   getSwitch(id: string): KeyboardSwitch {
     const value: KeyboardSwitch | undefined = this.switches.find((item) => item.id === id);
-    if (!value) throw new Error(`Switch ${id} not found in ${this.title}'s switches!`);
+    if (!value) {
+      throw new Error(`Switch ${id} not found in ${this.title}'s switches!`);
+    }
     return value;
   }
 }

@@ -1,8 +1,11 @@
 class EventEmitter<Callback extends (...args: Parameters<Callback>) => void> {
   private events: Record<string, Callback[]> = {};
   subscribe(eventName: string, callback: Callback) {
-    if (eventName in this.events) this.events[eventName].push(callback);
-    else this.events[eventName] = [callback];
+    if (eventName in this.events) {
+      this.events[eventName].push(callback);
+    } else {
+      this.events[eventName] = [callback];
+    }
   }
   unsubscribe(eventName: string, callback: Callback) {
     this.events[eventName] = this.events[eventName].filter((listener) => listener !== callback);

@@ -47,24 +47,34 @@ export class SwitchFilter extends Filter {
     this.manufacturers.forEach((item) => {
       item.input.addEventListener('change', (e) => {
         const { target } = e;
-        if (target && target instanceof HTMLInputElement)
-          if (target.checked) DB.filter.add(this.categoryA, target.value);
-          else DB.filter.remove(this.categoryA, target.value);
+        if (target && target instanceof HTMLInputElement) {
+          if (target.checked) {
+            DB.filter.add(this.categoryA, target.value);
+          } else {
+            DB.filter.remove(this.categoryA, target.value);
+          }
+        }
       });
     });
     this.switches.forEach((item) => {
       item.input.addEventListener('change', (e) => {
         const { target } = e;
-        if (target && target instanceof HTMLInputElement)
-          if (target.checked) DB.filter.add(this.categoryB, target.value);
-          else DB.filter.remove(this.categoryB, target.value);
+        if (target && target instanceof HTMLInputElement) {
+          if (target.checked) {
+            DB.filter.add(this.categoryB, target.value);
+          } else {
+            DB.filter.remove(this.categoryB, target.value);
+          }
+        }
       });
     });
     this.manufacturersWrapper.append(...this.manufacturers);
     this.switchWrapper.append(...this.switches);
     this.switchWrapper.addEventListener('mouseover', (e) => {
       const { target } = e;
-      if (!(target instanceof HTMLLabelElement)) return;
+      if (!(target instanceof HTMLLabelElement)) {
+        return;
+      }
 
       target.id = 'open';
       this.modalWrapper = new Component({ className: 'switch__modal' });

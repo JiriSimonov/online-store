@@ -83,10 +83,3 @@ export class Promo {
     Emitter.emit('promo__save');
   }
 }
-/*
-const a = new Promo();
-a.add('idkfa');
-a.add('hesoyam');
-a.isValid('hesoyam');
-console.warn(a.isValid('hesoyam') ,a.list);
-*/

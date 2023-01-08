@@ -73,10 +73,14 @@ export class Store extends Section {
     this.wrapper.append(this.title, this.showFiltersBtn, this.contentWrapper);
     this.contentWrapper.append(this.storeList, this.changeView);
     this.changeView.append(this.sortFilter, this.burger);
-    if (DB.filter.getParam('filters')) this.contentWrapper.prepend(this.filters);
+    if (DB.filter.getParam('filters')) {
+      this.contentWrapper.prepend(this.filters);
+    }
     window.addEventListener('hashchange', () => {
       this.update();
-      if (!DB.filter.getParam('sortType')) this.sortFilter.uncheckAll();
+      if (!DB.filter.getParam('sortType')) {
+        this.sortFilter.uncheckAll();
+      }
     });
     this.update();
   }
@@ -116,9 +120,14 @@ export class Store extends Section {
 
     next.destroy();
 
-    if (length >= size) this.wrapper.append(next);
+    if (length >= size) {
+      this.wrapper.append(next);
+    }
 
-    if (number * size >= length) next.replaceWith(scroll);
-    else scroll.replaceWith(next);
+    if (number * size >= length) {
+      next.replaceWith(scroll);
+    } else {
+      scroll.replaceWith(next);
+    }
   }
 }

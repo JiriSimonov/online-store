@@ -6,10 +6,13 @@ export class Input extends Component<HTMLInputElement> {
 
     this.node.required = true;
 
-    if (this.node.type === 'number')
+    if (this.node.type === 'number') {
       this.addEventListener('keydown', (e) => {
-        if (['e', 'E', '-', '+', '.', ','].includes(e.key)) e.preventDefault();
+        if (['e', 'E', '-', '+', '.', ','].includes(e.key)) {
+          e.preventDefault();
+        }
       });
+    }
   }
 
   get value(): string {

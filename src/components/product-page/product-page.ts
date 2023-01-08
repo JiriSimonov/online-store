@@ -49,6 +49,8 @@ export class ProductPage extends Component {
     this.card.append(this.thumbnails, this.title, this.descrList);
     this.descrList.append(...this.descrFields);
     this.btnWrapper.append(this.backBtn);
-    if (keyboard.isAvailable) this.btnWrapper.append(this.cartBtn);
+    if (keyboard.isAvailable) {
+      this.btnWrapper.append(this.cartBtn);
+    }
   }
 }

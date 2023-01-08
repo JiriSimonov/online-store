@@ -27,10 +27,13 @@ export class PromoForm extends Component<HTMLFormElement> {
     super({ tag: 'form', className: 'promo__form' });
 
     this.promoField.input.addEventListener('input', () => {
-      if (DB.cart.promo.isValid(this.promoField.input.value)) this.append(this.promoBtn);
-      else this.promoBtn.destroy();
+      if (DB.cart.promo.isValid(this.promoField.input.value)) {
+        this.append(this.promoBtn);
+      } else {
+        this.promoBtn.destroy();
+      }
     });
     this.append(this.promoField);
     this.addEventListener('submit', (e) => e.preventDefault());
   }
-} 
+}

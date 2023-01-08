@@ -25,9 +25,14 @@ export class BrandFilter extends Filter {
 
     this.filterWrapper.addEventListener('change', (e) => {
       const { target } = e;
-      if (!(target instanceof HTMLInputElement)) return;
-      if (target.checked) DB.filter.add(this.category, target.value);
-      else DB.filter.remove(this.category, target.value);
+      if (!(target instanceof HTMLInputElement)) {
+        return;
+      }
+      if (target.checked) {
+        DB.filter.add(this.category, target.value);
+      } else {
+        DB.filter.remove(this.category, target.value);
+      }
     });
 
     this.filterWrapper.append(...this.brands);

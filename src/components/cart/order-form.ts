@@ -8,25 +8,15 @@ import { Card } from './card';
 
 export class OrderForm extends Component {
   private modalOverlay: Component;
-
   private modalContent: Component;
-
   private modalForm: Component;
-
   private nameField: FormField;
-
   private phoneField: FormField;
-
   private addressField: FormField;
-
   private emailField: FormField;
-
   private card: Card;
-
   private modalSubmit: Button;
-
   private modalClose: Button;
-
   private loader?: Loader;
 
   constructor() {

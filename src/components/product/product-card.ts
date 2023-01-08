@@ -32,19 +32,29 @@ export class ProductCard extends Component {
     this.productImage = new ProductImage(keyboard.images);
     this.cardTitle = new Heading({ className: 'store__card-title', textContent: keyboard.title });
     this.switchItems = keyboard.switches.reduce((acc, keyboardSwitch) => {
-      if (keyboardSwitch.id === 'null') return acc;
+      if (keyboardSwitch.id === 'null') {
+        return acc;
+      }
 
       const switchComponent = new SwitchComponent(keyboardSwitch, `${keyboard.id}`);
-      if (!acc.some((item) => item.checked)) switchComponent.checked = keyboardSwitch.isAvailable;
+      if (!acc.some((item) => item.checked)) {
+        switchComponent.checked = keyboardSwitch.isAvailable;
+      }
       return [...acc, switchComponent];
     }, [] as SwitchComponent[]);
 
     this.switchList.addEventListener('mouseover', (e) => {
-      if (e.target instanceof HTMLLabelElement) this.renderModal(e.target);
+      if (e.target instanceof HTMLLabelElement) {
+        this.renderModal(e.target);
+      }
     });
     this.onclick = (e) => {
-      if (!(e.target instanceof HTMLElement) || e.target instanceof HTMLLabelElement) return;
-      if (e.target.classList.contains('product__path-item')) return;
+      if (!(e.target instanceof HTMLElement) || e.target instanceof HTMLLabelElement) {
+        return;
+      }
+      if (e.target.classList.contains('product__path-item')) {
+        return;
+      }
 
       if (this.switchItems.some((item) => item.input.node === e.target)) {
         this.renderText();
@@ -60,7 +70,9 @@ export class ProductCard extends Component {
           this.renderText();
           break;
         case this.buyNowBtn.node:
-          if (!DB.cart.isInCart(keyboard.id, this.selectedSwitch?.switch.id)) this.addToCart();
+          if (!DB.cart.isInCart(keyboard.id, this.selectedSwitch?.switch.id)) {
+            this.addToCart();
+          }
           window.location.hash = `/cart`;
           Emitter.emit('product-card__buyNowBtn_clicked');
           break;
@@ -74,7 +86,9 @@ export class ProductCard extends Component {
     this.cardTitle.append(this.cardCopy);
     this.switchList.append(...this.switchItems);
     this.priceWrapper.append(this.cardPrice);
-    if (keyboard.isAvailable) this.priceWrapper.append(this.buyNowBtn, this.cardBtn);
+    if (keyboard.isAvailable) {
+      this.priceWrapper.append(this.buyNowBtn, this.cardBtn);
+    }
 
     this.renderText();
   }
@@ -112,7 +126,9 @@ export class ProductCard extends Component {
       DB.cart.add([this.keyboard, selected.switch]);
     } else {
       const availableSwitch = this.keyboard.switches.find((item) => item.isAvailable);
-      if (availableSwitch) DB.cart.add(new CartItem(this.keyboard, availableSwitch));
+      if (availableSwitch) {
+        DB.cart.add(new CartItem(this.keyboard, availableSwitch));
+      }
     }
   }
 

@@ -25,9 +25,13 @@ export class AvFilter extends Filter {
     this.items.forEach((item) => {
       item.input.addEventListener('change', (e) => {
         const { target } = e;
-        if (target && target instanceof HTMLInputElement)
-          if (target.value === 'true') DB.filter.add(this.category, target.value);
-          else DB.filter.clear(this.category);
+        if (target && target instanceof HTMLInputElement) {
+          if (target.value === 'true') {
+            DB.filter.add(this.category, target.value);
+          } else {
+            DB.filter.clear(this.category);
+          }
+        }
       });
     });
   }
