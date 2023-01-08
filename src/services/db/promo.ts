@@ -1,5 +1,5 @@
-import { ls } from '../../utils/utils';
-import { emitter } from '../event-emitter';
+import { LS } from '../../utils/utils';
+import { Emitter } from '../emitter';
 
 type PromoMap = Map<string, number>;
 
@@ -76,11 +76,11 @@ export class Promo {
   }
 
   private load(): PromoMap {
-    return ls.loadMap(this.#PROMO_KEY);
+    return LS.loadMap(this.#PROMO_KEY);
   }
   private save(list: PromoMap): void {
-    ls.saveMap(this.#PROMO_KEY, list);
-    emitter.emit('promo__save');
+    LS.saveMap(this.#PROMO_KEY, list);
+    Emitter.emit('promo__save');
   }
 }
 /*

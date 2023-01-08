@@ -14,7 +14,7 @@ export const converter = {
   },
 };
 
-export const ls = {
+export const LS = {
   saveMap<T>(key: string, map: Map<string, T>) {
     localStorage.setItem(key, converter.mapToString(map));
   },
@@ -39,6 +39,8 @@ export function getNoun(number: number, one: string, two: string, five: string) 
 export function getChunk<T>(number: number, length: number, list: T[]): T[] {
   return list.slice(number * length, (number + 1) * length);
 }
+
+export const xor = (a: boolean, b: boolean): boolean => (a && b) || (!a && !b);
 
 export function debounce<T extends (...args: Parameters<T>) => void>(callback: T, ms = 350) {
   let timeout: ReturnType<typeof setTimeout>;

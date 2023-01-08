@@ -24,11 +24,11 @@ export class Keyboard {
   }
 
   get isAvailable() {
-    return this.switches.some((v) => v.isAvailable);
+    return this.switches.some((keyboardSwitch) => keyboardSwitch.isAvailable);
   }
 
   get features() {
-    return this.properties.Фичи || [];
+    return this.properties['Фичи'] || [];
   }
 
   get brands() {

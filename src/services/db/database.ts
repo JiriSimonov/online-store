@@ -2,13 +2,15 @@ import { KeyboardData } from '../../interfaces/database';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
 import { Cart } from './cart';
-import { emitter } from '../event-emitter';
+import { Emitter } from '../emitter';
 import { CartItem } from './cart-item';
 import { Filter } from './filter';
 import { FilterCategory } from '../../interfaces/enums';
+import { xor } from '../../utils/utils';
+
 import keyboardsJson = require('../../data/keyboards.json');
 
-class Database {
+class DatabaseAPI {
   readonly keyboards: Keyboard[];
   readonly cart: Cart = new Cart((...args) => this.getProduct(...args));
   readonly filter: Filter;
@@ -17,32 +19,32 @@ class Database {
     this.keyboards = keyboards.map((keyboard) => new Keyboard(keyboard));
     Object.seal(this.keyboards);
     this.filter = new Filter(this.keyboards);
-    emitter.subscribe('cart__update-item', (item: CartItem) => this.cart.add(item));
+    Emitter.subscribe('cart__update-item', (item: CartItem) => this.cart.add(item));
   }
 
   get switches(): KeyboardSwitch[] {
     const result = this.keyboards
-      .flatMap((v): KeyboardSwitch[] => v.switches)
-      .reduce((list, _switch) => {
-        const { id, quantity } = _switch;
+      .flatMap((keyboard): KeyboardSwitch[] => keyboard.switches)
+      .reduce((list, keyboardSwitch) => {
+        const { id, quantity } = keyboardSwitch;
 
         if (id in list) list[id].changeQuantity(quantity);
-        else Object.assign(list, { [id]: new KeyboardSwitch(_switch) });
+        else Object.assign(list, { [id]: new KeyboardSwitch(keyboardSwitch) });
 
         return list;
-      }, {} as { [key: string]: KeyboardSwitch });
+      }, {} as Record<string, KeyboardSwitch>);
 
     return Object.values(result);
   }
 
   get switchesMap(): Map<string, KeyboardSwitch> {
     return this.keyboards
-      .flatMap((v): KeyboardSwitch[] => v.switches)
-      .reduce((list, _switch) => {
-        const { id, quantity } = _switch;
+      .flatMap((keyboard): KeyboardSwitch[] => keyboard.switches)
+      .reduce((list, keyboardSwitch) => {
+        const { id, quantity } = keyboardSwitch;
 
         if (list.has(id)) list.get(id).changeQuantity(quantity);
-        else list.set(id, new KeyboardSwitch(_switch));
+        else list.set(id, new KeyboardSwitch(keyboardSwitch));
 
         return list;
       }, new Map());
@@ -72,44 +74,45 @@ class Database {
   getVariants(category: keyof typeof FilterCategory): Set<string> {
     switch (category) {
       case 'available':
-        return new Set(this.keyboards.map((k) => `${k.isAvailable}`));
+        return new Set(this.keyboards.map((keyboard) => `${keyboard.isAvailable}`));
       case 'manufacturer':
-        return new Set(this.keyboards.flatMap((k) => k.switches.map((s) => s.manufacturer)));
+        return new Set(this.keyboards.flatMap((keyboard) => keyboard.switches.map((s) => s.manufacturer)));
       case 'switches':
-        return new Set(this.keyboards.flatMap((k) => k.switches.map((s) => s.id)));
+        return new Set(this.keyboards.flatMap((keyboard) => keyboard.switches.map((s) => s.id)));
       case 'brand':
-        return new Set(this.keyboards.flatMap((k) => k.brands));
+        return new Set(this.keyboards.flatMap((keyboard) => keyboard.brands));
       case 'size':
-        return new Set(this.keyboards.map((k) => k.size));
+        return new Set(this.keyboards.map((keyboard) => keyboard.size));
       case 'features':
-        return new Set(this.keyboards.flatMap((k) => k.features));
+        return new Set(this.keyboards.flatMap((keyboard) => keyboard.features));
       default:
         return new Set();
     }
   }
 
-  getSortedKeyboards(sortType: string, sortOrder: string, list: Keyboard[] = this.keyboards): Keyboard[] {
-    const options = ['sumQuantity', 'priceMin', 'title'] as (keyof Keyboard)[];
+  getSortedKeyboards(sortType: string, sortOrder: string, keyboardList?: Keyboard[]): Keyboard[] {
+    const options: (keyof Keyboard)[] = ['sumQuantity', 'priceMin', 'title'];
+    const defaultList = this.keyboards;
     const defaultOrder = 'ascending';
 
+    const list = keyboardList ?? defaultList;
     const type = options.find((v) => v === sortType);
-    const order = sortOrder || defaultOrder;
+    const order = sortOrder ?? defaultOrder;
 
     if (!type) return list;
-    const xor = (a: boolean, b: boolean): boolean => (a && b) || (!a && !b);
 
     return [...list].sort((a, b) => (xor(a[type] < b[type], order !== 'descending') ? -1 : 1));
   }
 
   buyAll() {
-    this.keyboards.forEach((kb) =>
-      kb.switches.forEach((sw) => {
-        if (sw.isAvailable) this.cart.add([kb, sw]);
+    this.keyboards.forEach((keyboard) =>
+      keyboard.switches.forEach((keyboardSwitch) => {
+        if (keyboardSwitch.isAvailable) this.cart.add([keyboard, keyboardSwitch]);
       }),
     );
   }
 }
 
-export const DB = new Database(keyboardsJson as KeyboardData[]);
+export const DB = new DatabaseAPI(keyboardsJson as KeyboardData[]);
 
 console.info(DB);
