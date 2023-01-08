@@ -27,11 +27,10 @@ export class OrderForm extends Component {
 
   private modalClose: Button;
 
-  private loader: Loader;
+  private loader?: Loader;
 
   constructor() {
     super({ className: 'modal' });
-    this.loader = new Loader(true);
     this.modalOverlay = new Component({ className: 'modal__overlay' });
     this.modalContent = new Component({ className: 'modal__content' });
     this.modalForm = new Component<HTMLFormElement>({ tag: 'form', className: 'modal__form' });
@@ -73,20 +72,21 @@ export class OrderForm extends Component {
       parent: this.modalContent,
       onclick: () => {
         this.destroy();
-        document.body.classList.remove('no-scroll');
+        document.body.classList.remove('no-scroll', 'is-modal-open');
       },
     });
     this.modalForm.addEventListener('submit', (e) => {
-      e.preventDefault()
+      e.preventDefault();
+      this.loader ??= new Loader(true);
       document.body.append(this.loader.node);
       setTimeout(() => {
-        window.location.hash = '/store';
         this.destroy();
         DB.cart.clear();
         DB.cart.promo.clear();
-        this.loader.destroy();
-        document.body.classList.remove('no-scroll');
-      }, 3500);
+        this.loader?.destroy();
+        document.body.classList.remove('no-scroll', 'is-modal-open');
+        window.location.hash = '/store';
+      }, 5500);
     });
 
     this.append(this.modalOverlay);
@@ -103,7 +103,7 @@ export class OrderForm extends Component {
     this.modalOverlay.addEventListener('click', (e) => {
       if (e.target === this.modalOverlay.node) {
         this.destroy();
-        document.body.classList.remove('no-scroll');
+        document.body.classList.remove('no-scroll', 'is-modal-open');
       }
     });
   }
