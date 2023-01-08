@@ -9,6 +9,7 @@ import { BrandFilter } from './brand-filter';
 import { SizeFilter } from './size-filter';
 import { FeaturesFilter } from './features-filter';
 import { Filter } from './filter';
+import { FilterCategory } from '../../interfaces/enums';
 
 export class Filters extends Component {
   private closeFilterTop = new Button({ className: 'modal__close', ariaLabel: 'Закрыть', parent: this });
@@ -106,7 +107,8 @@ export class Filters extends Component {
         return;
       }
       const label = value;
-      const [sample, all] = [Filter.getHead(name, value), Filter.getTail(name, value)];
+      const sample = Filter.getHead(name as FilterCategory, value);
+      const all = Filter.getTail(name as FilterCategory, value);
 
       if (sample) {
         v.classList.remove('shadowed');
@@ -121,7 +123,7 @@ export class Filters extends Component {
 
     this.switchFilter.radioInputs.forEach((v) => {
       const { parent, name, value } = v.input;
-      const part = Filter.getHead(name, value);
+      const part = Filter.getHead(name as FilterCategory, value);
 
       if (!parent) {
         return;

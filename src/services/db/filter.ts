@@ -31,7 +31,7 @@ export class Filter {
    * @param `list` список клавиатур для фильтрации
    * @returns список отфильтрованных клавиатур
    */
-  getSearchSample(category: string, value: string, list?: Keyboard[]): Keyboard[] {
+  getSearchSample(category: FilterCategory, value: string, list?: Keyboard[]): Keyboard[] {
     const defaultList = this.source;
     return Filter.getList(new Map([[category, new Set([value])]]), list ?? defaultList);
   }
@@ -72,7 +72,7 @@ export class Filter {
   }
 
   private static getList(filters: Map<string, Set<string>>, keyboardList: Keyboard[]): Keyboard[] {
-    const isInList = (key: keyof typeof FilterCategory, list: string[]): boolean => {
+    const isInList = (key: FilterCategory, list: string[]): boolean => {
       const query = filters.get(key);
       if (!query) {
         return true;
@@ -80,7 +80,7 @@ export class Filter {
       return list.flat().some((string) => [...query].some((value) => new RegExp(value, 'i').test(string)));
     };
 
-    const isInRange = (minKey: string, maxKey: string, minValue: number, maxValue: number) => {
+    const isInRange = (minKey: FilterCategory, maxKey: FilterCategory, minValue: number, maxValue: number) => {
       const [min, max] = [filters.get(minKey) ?? [-Infinity], filters.get(maxKey) ?? [Infinity]];
       return +[...min] <= minValue && maxValue <= +[...max];
     };
@@ -102,15 +102,15 @@ export class Filter {
       ].flat(Infinity);
 
       const result: boolean =
-        isInList('available', [`${keyboard.isAvailable}`]) &&
-        isInList('brand', keyboard.brands) &&
-        isInList('features', keyboard.features) &&
-        isInRange('minPrice', 'maxPrice', keyboard.priceMin, keyboard.priceMax) &&
-        isInRange('minQuantity', 'maxQuantity', keyboard.sumQuantity, keyboard.sumQuantity) &&
-        isInList('switches', switchesIdList) &&
-        isInList('size', [keyboard.size]) &&
-        isInList('manufacturer', switchesManufacturerList) &&
-        isInList('search', fullSearchList);
+        isInList(FilterCategory.available, [`${keyboard.isAvailable}`]) &&
+        isInList(FilterCategory.brand, keyboard.brands) &&
+        isInList(FilterCategory.features, keyboard.features) &&
+        isInRange(FilterCategory.minPrice, FilterCategory.maxPrice, keyboard.priceMin, keyboard.priceMax) &&
+        isInRange(FilterCategory.minQuantity, FilterCategory.maxQuantity, keyboard.sumQuantity, keyboard.sumQuantity) &&
+        isInList(FilterCategory.switches, switchesIdList) &&
+        isInList(FilterCategory.size, [keyboard.size]) &&
+        isInList(FilterCategory.manufacturer, switchesManufacturerList) &&
+        isInList(FilterCategory.search, fullSearchList);
       return result;
     });
   }
@@ -121,7 +121,7 @@ export class Filter {
   }
 
   /** Добавляет фильтр в Query */
-  add(category: keyof typeof FilterCategory, value: string) {
+  add(category: FilterCategory, value: string) {
     const param: string = this.searchParams.get(category) ?? '[]';
     const params: Set<string> = converter.stringToSet(param);
     if (value) {
@@ -130,7 +130,7 @@ export class Filter {
     Filter.query = `${this.searchParams}`;
   }
   /** Удаляет фильтр из Query */
-  remove(category: string, value: string) {
+  remove(category: FilterCategory, value: string) {
     const param: string = this.searchParams.get(category) ?? '[]';
     const params: Set<string> = converter.stringToSet(param);
     params.delete(value);
@@ -141,15 +141,17 @@ export class Filter {
     Filter.query = `${this.searchParams}`;
   }
   /** Очищает категорию фильтра в Query */
-  clear(category: string): this {
+  clear(category: FilterCategory): this {
     this.searchParams.delete(category);
     Filter.query = `${this.searchParams}`;
     return this;
   }
   /** Очищает Query полностью */
   clearAll() {
-    const categories = Object.keys(FilterCategory);
-    categories.slice(categories.length / 2).forEach((category) => this.clear(category));
+    const keys = Object.keys(FilterCategory);
+    const categories = keys.slice(keys.length / 2) as FilterCategory[];
+
+    categories.forEach((category) => this.clear(FilterCategory[category]));
   }
 
   /** Возвращает содержимое Query строки

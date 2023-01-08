@@ -6,8 +6,10 @@ import { FormField } from './elements/form-field';
 import { Button } from './elements/button-component';
 import { Emitter } from '../services/emitter';
 import { debounce } from '../utils/utils';
+import { FilterCategory } from '../interfaces/enums';
 
 export class Header extends Component {
+  private category = FilterCategory.search;
   private container = new Component({ className: 'container', parent: this });
   private wrapper = new Component({ className: 'header__wrapper', parent: this.container });
   private logo = new Anchor({
@@ -68,7 +70,7 @@ export class Header extends Component {
     this.wrapper.append(this.burger);
     this.controls.prepend(this.searchField);
 
-    const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value));
+    const handleSearchInput = debounce((value: string) => DB.filter.clear(this.category).add(this.category, value));
     this.searchField.input.addEventListener('input', () => {
       if (!window.location.hash.startsWith('/store')) {
         window.location.hash = '/store';
