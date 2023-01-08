@@ -86,7 +86,7 @@ export class OrderForm extends Component {
         this.loader?.destroy();
         document.body.classList.remove('no-scroll', 'is-modal-open');
         window.location.hash = '/store';
-      }, 5500);
+      }, 3500);
     });
 
     this.append(this.modalOverlay);
