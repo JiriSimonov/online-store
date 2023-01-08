@@ -69,6 +69,8 @@ ul {
     }
   }
   .loader {
+    position: fixed;
+
     .cube {
       top: 44%;
       left: 49%;
@@ -136,7 +138,7 @@ ul {
 }
 
 .loader {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;

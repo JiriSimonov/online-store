@@ -197,7 +197,7 @@ export class Cart extends Section {
   private openOrderForm(): void {
     this.orderForm = new OrderForm();
     document.body.append(this.orderForm.node);
-    document.body.classList.add('no-scroll');
+    document.body.classList.add('no-scroll', 'is-modal-open');
   }
 
   subscribe() {
