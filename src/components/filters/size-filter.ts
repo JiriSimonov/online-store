@@ -28,9 +28,13 @@ export class SizeFilter extends Filter {
     this.size.forEach((item) => {
       item.input.addEventListener('change', (e) => {
         const { target } = e;
-        if (target && target instanceof HTMLInputElement)
-          if (target.checked) DB.filter.add(this.category, target.value);
-          else DB.filter.remove(this.category, target.value);
+        if (target && target instanceof HTMLInputElement) {
+          if (target.checked) {
+            DB.filter.add(this.category, target.value);
+          } else {
+            DB.filter.remove(this.category, target.value);
+          }
+        }
       });
     });
     this.filterWrapper.append(...this.size);

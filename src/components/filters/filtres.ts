@@ -102,24 +102,36 @@ export class Filters extends Component {
       const { name, value } = v.input;
       const textNode = v.node.firstChild;
 
-      if (name === 'available') return;
+      if (name === 'available') {
+        return;
+      }
       const label = value;
       const [sample, all] = [Filter.getHead(name, value), Filter.getTail(name, value)];
 
-      if (sample) v.classList.remove('shadowed');
-      else v.classList.add('shadowed');
+      if (sample) {
+        v.classList.remove('shadowed');
+      } else {
+        v.classList.add('shadowed');
+      }
 
-      if (textNode) textNode.textContent = `${label}: (${sample}/${all})`;
+      if (textNode) {
+        textNode.textContent = `${label}: (${sample}/${all})`;
+      }
     });
 
     this.switchFilter.radioInputs.forEach((v) => {
       const { parent, name, value } = v.input;
       const part = Filter.getHead(name, value);
 
-      if (!parent) return;
+      if (!parent) {
+        return;
+      }
 
-      if (part) parent.classList.remove('switch__item_false', 'shadowed');
-      else parent.classList.add('switch__item_false', 'shadowed');
+      if (part) {
+        parent.classList.remove('switch__item_false', 'shadowed');
+      } else {
+        parent.classList.add('switch__item_false', 'shadowed');
+      }
     });
   }
 }

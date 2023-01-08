@@ -17,7 +17,9 @@ export class KeyboardSwitch {
     this.quantity = keyboardSwitch.quantity;
     this.manufacturer = keyboardSwitch.manufacturer;
     this.price = keyboardSwitch.price;
-    if (keyboardSwitch.eid) this.eid = keyboardSwitch.eid;
+    if (keyboardSwitch.eid) {
+      this.eid = keyboardSwitch.eid;
+    }
   }
 
   get isAvailable() {
@@ -29,7 +31,9 @@ export class KeyboardSwitch {
   }
 
   static getDescription(id: string, prop: keyof SwitchDescription): string | string[] {
-    if (!(id in KeyboardSwitch.descriptions)) throw new Error('❌Wrong id in getSwitchData');
+    if (!(id in KeyboardSwitch.descriptions)) {
+      throw new Error('❌Wrong id in getSwitchData');
+    }
     return KeyboardSwitch.descriptions[id][prop];
   }
 }

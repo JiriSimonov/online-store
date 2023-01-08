@@ -10,33 +10,19 @@ import { Heading } from '../elements/heading-component';
 
 export class CartItemElem extends Component {
   private images: ProductImage;
-
   private wrapper: Component;
-
   private title: Component;
-
   private category: Component;
-
   private stockWrapper: Component;
-
   private price: Component;
-
   private inStock: Component;
-
   private countBtn: Component;
-
   private countField: FormField;
-
   private cartDec: Button;
-
   private cartInc: Button;
-
   private cartDelete: Button;
-
   private switchWrapper: Component;
-
   private keyboardSwitch: SwitchComponent;
-
   private cartPosition: Component;
 
   constructor(product: CartItem, index: number, orderBtn: Button) {
@@ -51,16 +37,22 @@ export class CartItemElem extends Component {
       max: `${keyboardSwitch.quantity}`,
       pattern: '[0-9]{2}',
     });
-    if (this.countField.input.value === '0') product.set(+this.countField.input.value + 1);
+    if (this.countField.input.value === '0') {
+      product.set(+this.countField.input.value + 1);
+    }
     this.images = new ProductImage(keyboard.images);
     this.wrapper = new Component({ className: 'cart__container' });
     this.title = new Heading({ className: 'cart__title', textContent: keyboard.title, parent: this.wrapper });
     this.switchWrapper = new Component({ className: 'switch' });
     this.keyboardSwitch = new SwitchComponent(keyboardSwitch, product.key, 'div');
-    if (keyboardSwitch.title !== 'null') this.wrapper.append(this.switchWrapper);
+    if (keyboardSwitch.title !== 'null') {
+      this.wrapper.append(this.switchWrapper);
+    }
     this.switchWrapper.append(this.keyboardSwitch);
     this.category = new Component({ className: 'cart__category', textContent: `Размер: ${keyboard.size}` });
-    if (keyboard.size !== '') this.wrapper.append(this.category);
+    if (keyboard.size !== '') {
+      this.wrapper.append(this.category);
+    }
     this.price = new Component({
       className: 'cart__price',
       textContent: `${keyboardSwitch.price} ₽`,
@@ -95,8 +87,12 @@ export class CartItemElem extends Component {
     this.countField.input.addEventListener('input', (e) => {
       buttonOrder.disabled = false;
       if (e.target && e.target instanceof HTMLInputElement) {
-        if (+e.target.value > +e.target.max) e.target.value = e.target.max;
-        if (+e.target.value <= +e.target.min && e.target.value !== '') e.target.value = e.target.min;
+        if (+e.target.value > +e.target.max) {
+          e.target.value = e.target.max;
+        }
+        if (+e.target.value <= +e.target.min && e.target.value !== '') {
+          e.target.value = e.target.min;
+        }
         if (e.target.value === '' || +e.target.value === 0) {
           e.preventDefault();
           buttonOrder.disabled = true;
@@ -116,7 +112,9 @@ export class CartItemElem extends Component {
       }
     });
 
-    if (this.countField.input.value === '0') this.countField.input.value = this.countField.input.node.min;
+    if (this.countField.input.value === '0') {
+      this.countField.input.value = this.countField.input.node.min;
+    }
     this.cartInc = new Button({
       className: 'count-btn__inc',
       textContent: '+',
@@ -135,7 +133,9 @@ export class CartItemElem extends Component {
         Emitter.emit('cart__delete-item');
       },
     });
-    if (+this.countField.input.value === +this.countField.input.node.max) this.cartInc.disabled = true;
+    if (+this.countField.input.value === +this.countField.input.node.max) {
+      this.cartInc.disabled = true;
+    }
     this.price.setText(`${+this.countField.input.node.value * keyboardSwitch.price} ₽`);
     this.append(this.images);
     this.append(this.wrapper);

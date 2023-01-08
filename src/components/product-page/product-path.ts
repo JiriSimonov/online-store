@@ -26,7 +26,9 @@ export class ProductPath extends Component {
   constructor(productProps: Keyboard) {
     super({ tag: 'ul', className: 'product__path' });
     [this.brands.text] = productProps.manufacturer;
-    if (!productProps.manufacturer.length) this.brands.text = 'Brand';
+    if (!productProps.manufacturer.length) {
+      this.brands.text = 'Brand';
+    }
     this.product.text = productProps.title;
   }
 }

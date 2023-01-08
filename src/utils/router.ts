@@ -8,10 +8,16 @@ export class Router {
 
   onHashChangeHandler = () => {
     const [hashPath] = window.location.hash.split('?');
-    if (this.lashHashPath === hashPath) return;
+    if (this.lashHashPath === hashPath) {
+      return;
+    }
+
     const callback = this.routes.get(hashPath);
-    if (callback) callback();
-    else this.errorPage();
+    if (callback) {
+      callback();
+    } else {
+      this.errorPage();
+    }
     this.lashHashPath = hashPath;
   };
 

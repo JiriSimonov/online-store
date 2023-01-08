@@ -21,7 +21,9 @@ export class CartPagination extends Component {
 
     this.wrapper.onclick = (e) => {
       const { target } = e;
-      if (!(target instanceof HTMLInputElement)) return;
+      if (!(target instanceof HTMLInputElement)) {
+        return;
+      }
 
       this.selected.input.value = target.value;
       DB.filter.setParam('cartPageSize', target.value);
@@ -34,7 +36,10 @@ export class CartPagination extends Component {
   }
 
   renderDropDown() {
-    if (this.wrapper.parent) this.wrapper.destroy();
-    else this.append(this.wrapper);
+    if (this.wrapper.parent) {
+      this.wrapper.destroy();
+    } else {
+      this.append(this.wrapper);
+    }
   }
 }

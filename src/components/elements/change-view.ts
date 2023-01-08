@@ -33,7 +33,9 @@ export class ChangeView extends Component {
     });
 
     window.addEventListener('DOMContentLoaded', () => {
-      if (DB.filter.getParam('view') === 'list') this.list.click();
+      if (DB.filter.getParam('view') === 'list') {
+        this.list.click();
+      }
     });
   }
 }

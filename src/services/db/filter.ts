@@ -19,7 +19,9 @@ export class Filter {
   private static set query(str: string) {
     const [currentHash] = window.location.hash.split('?');
     let query = `?${decodeURIComponent(str)}`;
-    if (query.includes('filters=true&')) query = query.replace(/filters=true&/i, '').concat('&filters=true');
+    if (query.includes('filters=true&')) {
+      query = query.replace(/filters=true&/i, '').concat('&filters=true');
+    }
     window.location.hash = `${currentHash}${str ? `${query}` : ''}`;
   }
 
@@ -43,18 +45,28 @@ export class Filter {
 
     let [min, max] = [defaultMin, defaultMax];
 
-    if (category === 'Quantity')
+    if (category === 'Quantity') {
       Filter.getList(params, list).forEach((keyboard) => {
         const { sumQuantity } = keyboard;
-        if (sumQuantity > max) max = sumQuantity;
-        if (sumQuantity < min) min = sumQuantity;
+        if (sumQuantity > max) {
+          max = sumQuantity;
+        }
+        if (sumQuantity < min) {
+          min = sumQuantity;
+        }
       });
-    if (category === 'Price')
+    }
+    if (category === 'Price') {
       Filter.getList(params, list).forEach((keyboard) => {
         const { priceMax, priceMin } = keyboard;
-        if (priceMax > max) max = priceMax;
-        if (priceMin < min) min = priceMin;
+        if (priceMax > max) {
+          max = priceMax;
+        }
+        if (priceMin < min) {
+          min = priceMin;
+        }
       });
+    }
 
     return { min: min === defaultMin ? null : min, max: max === defaultMax ? null : max };
   }
@@ -62,7 +74,9 @@ export class Filter {
   private static getList(filters: Map<string, Set<string>>, keyboardList: Keyboard[]): Keyboard[] {
     const isInList = (key: keyof typeof FilterCategory, list: string[]): boolean => {
       const query = filters.get(key);
-      if (!query) return true;
+      if (!query) {
+        return true;
+      }
       return list.flat().some((string) => [...query].some((value) => new RegExp(value, 'i').test(string)));
     };
 
@@ -110,7 +124,9 @@ export class Filter {
   add(category: keyof typeof FilterCategory, value: string) {
     const param: string = this.searchParams.get(category) ?? '[]';
     const params: Set<string> = converter.stringToSet(param);
-    if (value) this.searchParams.set(category, converter.setToString(params.add(value)));
+    if (value) {
+      this.searchParams.set(category, converter.setToString(params.add(value)));
+    }
     Filter.query = `${this.searchParams}`;
   }
   /** Удаляет фильтр из Query */
@@ -119,7 +135,9 @@ export class Filter {
     const params: Set<string> = converter.stringToSet(param);
     params.delete(value);
     this.searchParams.set(category, converter.setToString(params));
-    if (!params.size) this.clear(category);
+    if (!params.size) {
+      this.clear(category);
+    }
     Filter.query = `${this.searchParams}`;
   }
   /** Очищает категорию фильтра в Query */
@@ -158,8 +176,11 @@ export class Filter {
   }
   /** Устанавливает/удаляет значение одиночного Query параметра */
   setParam(type: string, value?: string): this {
-    if (value) this.searchParams.set(type, value);
-    else this.searchParams.delete(type);
+    if (value) {
+      this.searchParams.set(type, value);
+    } else {
+      this.searchParams.delete(type);
+    }
     Filter.query = `${this.searchParams}`;
     return this;
   }

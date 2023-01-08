@@ -28,8 +28,11 @@ class DatabaseAPI {
       .reduce((list, keyboardSwitch) => {
         const { id, quantity } = keyboardSwitch;
 
-        if (id in list) list[id].changeQuantity(quantity);
-        else Object.assign(list, { [id]: new KeyboardSwitch(keyboardSwitch) });
+        if (id in list) {
+          list[id].changeQuantity(quantity);
+        } else {
+          Object.assign(list, { [id]: new KeyboardSwitch(keyboardSwitch) });
+        }
 
         return list;
       }, {} as Record<string, KeyboardSwitch>);
@@ -43,8 +46,11 @@ class DatabaseAPI {
       .reduce((list, keyboardSwitch) => {
         const { id, quantity } = keyboardSwitch;
 
-        if (list.has(id)) list.get(id).changeQuantity(quantity);
-        else list.set(id, new KeyboardSwitch(keyboardSwitch));
+        if (list.has(id)) {
+          list.get(id).changeQuantity(quantity);
+        } else {
+          list.set(id, new KeyboardSwitch(keyboardSwitch));
+        }
 
         return list;
       }, new Map());
@@ -52,13 +58,17 @@ class DatabaseAPI {
 
   getKeyboard(id: number, list: Keyboard[] = this.keyboards): Keyboard {
     const value: Keyboard | undefined = list.find((item) => item.id === id);
-    if (!value) throw new Error(`Keyboard ${id} not found in this list!`);
+    if (!value) {
+      throw new Error(`Keyboard ${id} not found in this list!`);
+    }
     return value;
   }
 
   getSwitch(id: string, list: KeyboardSwitch[] = this.switches): KeyboardSwitch {
     const value: KeyboardSwitch | undefined = list.find((item) => item.id === id);
-    if (!value) throw new Error(`Switch ${id} not found in this list!`);
+    if (!value) {
+      throw new Error(`Switch ${id} not found in this list!`);
+    }
     return value;
   }
 
@@ -99,7 +109,9 @@ class DatabaseAPI {
     const type = options.find((v) => v === sortType);
     const order = sortOrder ?? defaultOrder;
 
-    if (!type) return list;
+    if (!type) {
+      return list;
+    }
 
     return [...list].sort((a, b) => (xor(a[type] < b[type], order !== 'descending') ? -1 : 1));
   }
@@ -107,7 +119,9 @@ class DatabaseAPI {
   buyAll() {
     this.keyboards.forEach((keyboard) =>
       keyboard.switches.forEach((keyboardSwitch) => {
-        if (keyboardSwitch.isAvailable) this.cart.add([keyboard, keyboardSwitch]);
+        if (keyboardSwitch.isAvailable) {
+          this.cart.add([keyboard, keyboardSwitch]);
+        }
       }),
     );
   }

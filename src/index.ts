@@ -29,7 +29,9 @@ class App extends Main {
 
   constructor() {
     super();
-    if (!this.root) throw new Error('no root element');
+    if (!this.root) {
+      throw new Error('no root element');
+    }
 
     this.root.append(this.header.node, this.node, this.footer.node);
   }

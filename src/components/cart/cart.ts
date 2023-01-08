@@ -111,15 +111,25 @@ export class Cart extends Section {
     this.subscribe();
     this.pagCountField.input.addEventListener('input', (e) => {
       const { target } = e;
-      if (!(target instanceof HTMLInputElement)) return;
+      if (!(target instanceof HTMLInputElement)) {
+        return;
+      }
 
-      if (target.value === '') return;
-      if (+target.value > +target.max) target.value = target.max;
-      if (+target.value < +target.min) target.value = target.min;
+      if (target.value === '') {
+        return;
+      }
+      if (+target.value > +target.max) {
+        target.value = target.max;
+      }
+      if (+target.value < +target.min) {
+        target.value = target.min;
+      }
     });
     this.pagCountField.input.addEventListener('change', (e) => {
       const { target } = e;
-      if (!(target instanceof HTMLInputElement)) return;
+      if (!(target instanceof HTMLInputElement)) {
+        return;
+      }
       this.pagination.setPage(target.value);
     });
     window.addEventListener('hashchange', () => this.render());

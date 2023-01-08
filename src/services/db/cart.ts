@@ -49,11 +49,12 @@ export class Cart {
   private convertList(cart: CartItem[]): CartMap;
   private convertList(cart: CartMap): CartItem[];
   private convertList(cart: CartItem[] | CartMap): CartMap | CartItem[] {
-    if (cart instanceof Map)
+    if (cart instanceof Map) {
       return Array.from(cart, (item) => {
         const [keyboardId, keyboardSwitchId] = item[0].split('-');
         return new CartItem(...this.getProduct(+keyboardId, keyboardSwitchId), item[1]);
       });
+    }
     return new Map(cart.map((item: CartItem): [string, number] => item.entries));
   }
 
@@ -86,7 +87,9 @@ export class Cart {
    * @param `keyboardSwitchId` `KeyboardSwitch.id`
    */
   isInCart(keyboardId: number, keyboardSwitchId?: string): boolean {
-    if (keyboardSwitchId) return this.cartMap.has(`${keyboardId}-${keyboardSwitchId}`);
+    if (keyboardSwitchId) {
+      return this.cartMap.has(`${keyboardId}-${keyboardSwitchId}`);
+    }
     return [...this.cartMap.keys()].some((key) => key.startsWith(`${keyboardId}`));
     /* for (const key of this.cartMap.keys()) {
       if (key.startsWith(`${keyboardId}`)) return true;

@@ -54,8 +54,11 @@ export class Header extends Component {
       this.controls.prepend(this.searchField);
     }
     this.search.addEventListener('click', () => {
-      if (this.searchField.input.classList.contains('header__input_is-open')) this.searchField.destroy();
-      else this.controls.prepend(this.searchField);
+      if (this.searchField.input.classList.contains('header__input_is-open')) {
+        this.searchField.destroy();
+      } else {
+        this.controls.prepend(this.searchField);
+      }
       this.searchField.input.classList.toggle('header__input_is-open');
     });
     this.burger.addEventListener('click', () => {
@@ -67,7 +70,9 @@ export class Header extends Component {
 
     const handleSearchInput = debounce((value: string) => DB.filter.clear('search').add('search', value));
     this.searchField.input.addEventListener('input', () => {
-      if (!window.location.hash.startsWith('/store')) window.location.hash = '/store';
+      if (!window.location.hash.startsWith('/store')) {
+        window.location.hash = '/store';
+      }
       handleSearchInput(this.searchField.input.value);
     });
     this.subscribe();
