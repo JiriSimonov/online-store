@@ -38,20 +38,20 @@ export class Card extends Component {
           return 'mastercard';
         }
 
-        re = /^6011/;
+        re = /^6/;
         if (target.value.match(re) != null) {
           this.logo.style.backgroundImage = `url('./assets/icons/cards/discover.webp')`;
           return 'discover';
         }
 
-        re = /^9792/;
+        re = /^9/;
         if (target.value.match(re) != null) {
           this.logo.style.backgroundImage = `url('./assets/icons/cards/troy.webp')`;
           return 'troy';
         }
       }
       return 'visa';
-    }); // TODO! посмотреть в сторону оптимизации
+    });
     this.cardExpires = new FormField({
       className: 'card',
       modificator: 'expires',

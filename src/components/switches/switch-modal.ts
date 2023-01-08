@@ -1,6 +1,8 @@
+import { Keyboard } from '../../services/db/keyboard';
 import { KeyboardSwitch } from '../../services/db/keyboard-switch';
 import { Component } from '../elements/base-component';
 import { Heading } from '../elements/heading-component';
+import { DB } from '../../services/db/database';
 
 export class SwitchModal extends Component {
   private modalTitle: Component;
@@ -15,7 +17,7 @@ export class SwitchModal extends Component {
 
   private modalStats: Component[];
 
-  constructor(id: string, isAvialable: boolean) {
+  constructor(id: string, isAvialable: boolean, keyboard?: Keyboard) {
     super({ className: 'modal' });
     this.modalTitle = new Heading({
       className: 'modal__title',
@@ -25,7 +27,7 @@ export class SwitchModal extends Component {
 
     this.modalAvialable = new Component({
       className: `${isAvialable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
-      textContent: `${isAvialable ? 'В наличии' : 'Нет в наличии'}`,
+      textContent: `${isAvialable ? `В наличии ${keyboard?.getSwitch(id).quantity} шт.` : 'Нет в наличии'}`,
       parent: this,
     });
     this.modalInfo = new Component({ className: 'modal__info', parent: this });

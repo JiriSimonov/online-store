@@ -115,7 +115,9 @@ export class ProductCard extends Component {
       label.removeEventListener('mouseout', mouseoutListener);
     };
     label.addEventListener('mouseout', mouseoutListener);
-    this.switchModal = new SwitchModal(label.textContent ?? '', label.classList.contains('switch__item_true'));
+    this.switchModal = new SwitchModal(label.textContent ?? '',
+    label.classList.contains('switch__item_true'),
+    this.keyboard);
     this.cardPrice.classList.add('store__card-price_is-open');
     this.append(this.switchModal);
   }
