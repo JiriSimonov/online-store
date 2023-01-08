@@ -374,27 +374,27 @@
   }
 
   &__label_alph-asc {
-    background-image: url('../../icons/sort/sort-alpha-up.png');
+    background-image: url('../../icons/sort/sort-a-up.svg');
   }
 
   &__label_alph-desc {
-    background-image: url('../../icons/sort/sort-alpha-down.png');
+    background-image: url('../../icons/sort/sort-a-down.svg');
   }
 
   &__label_price-asc {
-    background-image: url('../../icons/sort/sort-price-up.png');
+    background-image: url('../../icons/sort/sort-price-up.svg');
   }
 
   &__label_price-desc {
-    background-image: url('../../icons/sort/sort-price-down.png');
+    background-image: url('../../icons/sort/sort-price-down.svg');
   }
 
   &__label_stock-asc {
-    background-image: url('../../icons/sort/sort-amount-up.png');
+    background-image: url('../../icons/sort/sort-q-up.svg');
   }
 
   &__label_stock-desc {
-    background-image: url('../../icons/sort/sort-amount-down.png');
+    background-image: url('../../icons/sort/sort-q-down.svg');
   }
 
   &__label:has(&__input:checked) {

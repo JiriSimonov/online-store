@@ -32,7 +32,7 @@ export class Card extends Component {
           this.logo.style.backgroundImage = `url('./assets/icons/cards/visa-logo.webp')`;
           return 'visa';
         }
-        re = /^5[1-5]/;
+        re = /^5/;
         if (target.value.match(re) != null) {
           this.logo.style.backgroundImage = `url('./assets/icons/cards/mastercard.webp')`;
           return 'mastercard';
