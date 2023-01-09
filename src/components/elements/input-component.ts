@@ -24,9 +24,6 @@ export class Input extends Component<HTMLInputElement> {
   get name(): string {
     return this.node.name;
   }
-  /*   set name(value: string) {
-    this.node.name = value;
-  } */
   get disabled(): boolean {
     return this.node.disabled;
   }

@@ -42,9 +42,7 @@ export class Cart extends Section {
     className: 'pagination-btn__dec',
     onclick: () => {
       const { input } = this.pagCountField;
-
       input.node.stepDown();
-      /* input.node.dispatchEvent(new Event('input')); */
       input.node.dispatchEvent(new Event('change'));
       window.scrollTo(0, 0);
     },
@@ -147,14 +145,6 @@ export class Cart extends Section {
       this.cartPagination.selected.input.value = `${this.pagination.pageSize}`;
       this.orderForm.destroy();
     });
-    // window.addEventListener('hashchange', () => {
-    //   Object.assign(this.pagCountField.input.node, {
-    //     value: this.pagination.pageNumber,
-    //     max: this.pagination.lastPage,
-    //   });
-    //   this.cartPagination.selected.input.value = `${this.pagination.pageSize}`;
-    // });
-    // было два хэшченджа, сделал 1
   }
 
   private updateTotalPrice(): void {

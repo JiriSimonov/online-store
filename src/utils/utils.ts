@@ -6,7 +6,6 @@ export const converter = {
     return JSON.parse(str, (k, v) => (k === '' ? new Map(v) : v));
   },
   setToString<T>(set: Set<T>): string {
-    //?
     return JSON.stringify(set, (_, v) => (v instanceof Set ? Array.from(v) : v));
   },
   stringToSet<T>(str = '[]'): Set<T> {
