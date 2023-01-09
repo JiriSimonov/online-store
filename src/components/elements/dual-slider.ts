@@ -2,6 +2,7 @@ import { FormField } from './form-field';
 import { Component } from './base-component';
 import { DB } from '../../services/db/database';
 import { debounce } from '../../utils/utils';
+import { FilterCategory } from '../../interfaces/enums';
 
 export class DualSlider extends Component {
   private sliderWrapper = new Component({ className: 'dual-slider__wrapper', parent: this });
@@ -16,8 +17,8 @@ export class DualSlider extends Component {
 
   constructor(private min: number, private max: number, step: number, gap: number, private type: 'Price' | 'Quantity') {
     super({ className: 'dual-slider' });
-    const minParam: `min${typeof this.type}` = `min${this.type}`;
-    const maxParam: `max${typeof this.type}` = `max${this.type}`;
+    const minParam = `min${this.type}` as FilterCategory;
+    const maxParam = `max${this.type}` as FilterCategory;
     this.minimumValue = new FormField({
       className: 'dual-slider',
       type: 'number',

@@ -5,7 +5,7 @@ import { Cart } from './cart';
 import { Emitter } from '../emitter';
 import { CartItem } from './cart-item';
 import { Filter } from './filter';
-import { FilterCategory } from '../../interfaces/enums';
+import { FilterCategory, SortType, SortOrder } from '../../interfaces/enums';
 import { xor } from '../../utils/utils';
 
 import keyboardsJson = require('../../data/keyboards.json');
@@ -81,29 +81,29 @@ class DatabaseAPI {
     return list.slice(number * length, number * length + length);
   }
 
-  getVariants(category: keyof typeof FilterCategory): Set<string> {
+  getVariants(category: FilterCategory): Set<string> {
     switch (category) {
-      case 'available':
+      case FilterCategory.available:
         return new Set(this.keyboards.map((keyboard) => `${keyboard.isAvailable}`));
-      case 'manufacturer':
+      case FilterCategory.manufacturer:
         return new Set(this.keyboards.flatMap((keyboard) => keyboard.switches.map((s) => s.manufacturer)));
-      case 'switches':
+      case FilterCategory.switches:
         return new Set(this.keyboards.flatMap((keyboard) => keyboard.switches.map((s) => s.id)));
-      case 'brand':
+      case FilterCategory.brand:
         return new Set(this.keyboards.flatMap((keyboard) => keyboard.brands));
-      case 'size':
+      case FilterCategory.size:
         return new Set(this.keyboards.map((keyboard) => keyboard.size));
-      case 'features':
+      case FilterCategory.features:
         return new Set(this.keyboards.flatMap((keyboard) => keyboard.features));
       default:
         return new Set();
     }
   }
 
-  getSortedKeyboards(sortType: string, sortOrder: string, keyboardList?: Keyboard[]): Keyboard[] {
+  getSortedKeyboards(sortType: SortType, sortOrder: SortOrder, keyboardList?: Keyboard[]): Keyboard[] {
     const options: (keyof Keyboard)[] = ['sumQuantity', 'priceMin', 'title'];
     const defaultList = this.keyboards;
-    const defaultOrder = 'ascending';
+    const defaultOrder = SortOrder.ascending;
 
     const list = keyboardList ?? defaultList;
     const type = options.find((v) => v === sortType);
@@ -113,7 +113,7 @@ class DatabaseAPI {
       return list;
     }
 
-    return [...list].sort((a, b) => (xor(a[type] < b[type], order !== 'descending') ? -1 : 1));
+    return [...list].sort((a, b) => (xor(a[type] < b[type], order !== SortOrder.descending) ? -1 : 1));
   }
 
   buyAll() {

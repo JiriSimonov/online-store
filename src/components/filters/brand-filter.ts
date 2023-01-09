@@ -5,7 +5,7 @@ import { FormField } from '../elements/form-field';
 import { FilterCategory } from '../../interfaces/enums';
 
 export class BrandFilter extends Filter {
-  private category: keyof typeof FilterCategory = 'brand';
+  private category = FilterCategory.brand;
   private filterWrapper = new Component({ className: 'filter__wrapper', parent: this });
 
   private brands = [...DB.getVariants(this.category)].map(

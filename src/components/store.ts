@@ -11,6 +11,7 @@ import { getChunk, getNoun } from '../utils/utils';
 import { Burger } from './elements/burger-menu';
 import { Section } from './elements/section-component';
 import { Heading } from './elements/heading-component';
+import { SortOrder, SortType } from '../interfaces/enums';
 
 export class Store extends Section {
   private chunkSize = 20;
@@ -109,8 +110,8 @@ export class Store extends Section {
   };
 
   private get chunk(): ProductCard[] {
-    const [type, direction] = [DB.filter.getParam('sortType'), DB.filter.getParam('sortOrder')];
-    const sorted = DB.getSortedKeyboards(type, direction, DB.filter.list);
+    const [type, order] = [DB.filter.getParam('sortType'), DB.filter.getParam('sortOrder')];
+    const sorted = DB.getSortedKeyboards(type as SortType, order as SortOrder, DB.filter.list);
     return getChunk(this.chunkNumber++, this.chunkSize, sorted).map((item: Keyboard) => new ProductCard(item));
   }
 

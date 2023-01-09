@@ -91,9 +91,5 @@ export class Cart {
       return this.cartMap.has(`${keyboardId}-${keyboardSwitchId}`);
     }
     return [...this.cartMap.keys()].some((key) => key.startsWith(`${keyboardId}`));
-    /* for (const key of this.cartMap.keys()) {
-      if (key.startsWith(`${keyboardId}`)) return true;
-    }
-    return false; */
   }
 }

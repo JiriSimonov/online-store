@@ -64,15 +64,25 @@ export enum SwitchShorts {
 }
 
 export enum FilterCategory {
-  available,
-  manufacturer,
-  switches,
-  minPrice,
-  maxPrice,
-  minQuantity,
-  maxQuantity,
-  brand,
-  size,
-  features,
-  search,
+  available = 'available',
+  manufacturer = 'manufacturer',
+  switches = 'switches',
+  minPrice = 'minPrice',
+  maxPrice = 'maxPrice',
+  minQuantity = 'minQuantity',
+  maxQuantity = 'maxQuantity',
+  brand = 'brand',
+  size = 'size',
+  features = 'features',
+  search = 'search',
+}
+
+export enum SortType {
+  sumQuantity = 'sumQuantity',
+  priceMin = 'priceMin',
+  title = 'title',
+}
+export enum SortOrder {
+  ascending = 'ascending',
+  descending = 'descending',
 }
