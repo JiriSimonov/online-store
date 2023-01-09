@@ -66,8 +66,12 @@ export class ProductCard extends Component {
           this.copyTitle();
           break;
         case this.cardBtn.node:
-          this.addToCart();
-          this.renderText();
+          if (DB.cart.isInCart(keyboard.id, this.selectedSwitch?.switch.id)) {
+            window.location.hash = `/cart`;
+          } else {
+            this.addToCart();
+            this.renderText();
+          }
           break;
         case this.buyNowBtn.node:
           if (!DB.cart.isInCart(keyboard.id, this.selectedSwitch?.switch.id)) {
@@ -87,7 +91,7 @@ export class ProductCard extends Component {
     this.switchList.append(...this.switchItems);
     this.priceWrapper.append(this.cardPrice);
     if (keyboard.isAvailable) {
-      this.priceWrapper.append(this.buyNowBtn, this.cardBtn);
+      this.priceWrapper.append(this.cardBtn, this.buyNowBtn);
     }
 
     this.renderText();
@@ -100,8 +104,7 @@ export class ProductCard extends Component {
   private renderText(target?: HTMLLabelElement): void {
     const keyboardSwitch = target ? this.keyboard.getSwitch(target.textContent ?? '') : this.selectedSwitch?.switch;
     const isInCart = DB.cart.isInCart(this.keyboard.id, keyboardSwitch?.id);
-    this.cardBtn.disabled = isInCart;
-    this.cardBtn.setText(isInCart ? 'Уже в корзине' : 'Добавить в корзину');
+    this.cardBtn.setText(isInCart ? 'Перейти в корзину' : 'Добавить в корзину');
     this.cardPrice.setText(`от ${keyboardSwitch?.price ?? this.keyboard.minPrice} ₽`);
   }
 
