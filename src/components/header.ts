@@ -72,7 +72,7 @@ export class Header extends Component {
 
     const handleSearchInput = debounce((value: string) => DB.filter.clear(this.category).add(this.category, value));
     this.searchField.input.addEventListener('input', () => {
-      if (!window.location.hash.startsWith('/store')) {
+      if (!window.location.hash.startsWith('#/store')) {
         window.location.hash = '/store';
       }
       handleSearchInput(this.searchField.input.value);
