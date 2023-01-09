@@ -42,15 +42,7 @@ export class Filters extends Component {
       textContent: 'Очистить фильтры',
       onclick: () => {
         DB.filter.clearAll();
-        Filter.uncheckAll(
-          ...this.availableFilter.inputs,
-          ...this.switchFilter.inputs,
-          ...this.switchFilter.radioInputs,
-          ...this.manufacturerFiler.inputs,
-          ...this.sizeFilter.inputs,
-          ...this.featuresFilter.inputs,
-        );
-        this.availableFilter.inputs[0].checked = true;
+        this.uncheckAllFilters();
         window.scrollTo(0, 0);
       },
     });
@@ -88,7 +80,10 @@ export class Filters extends Component {
     );
 
     this.renderFilterNumbers();
-    window.addEventListener('hashchange', () => this.renderFilterNumbers());
+    window.addEventListener('hashchange', () => {
+      this.updateAllChecks();
+      this.renderFilterNumbers();
+    });
   }
 
   renderFilterNumbers() {
@@ -134,5 +129,26 @@ export class Filters extends Component {
         parent.classList.add('switch__item_false', 'shadowed');
       }
     });
+  }
+
+  uncheckAllFilters() {
+    Filter.uncheckAll(
+      ...this.availableFilter.inputs,
+      ...this.switchFilter.inputs,
+      ...this.switchFilter.radioInputs,
+      ...this.manufacturerFiler.inputs,
+      ...this.sizeFilter.inputs,
+      ...this.featuresFilter.inputs,
+    );
+    this.availableFilter.inputs[0].checked = true;
+  }
+  updateAllChecks() {
+    Filter.updateChecks(this.availableFilter.category, ...this.availableFilter.inputs);
+    Filter.updateChecks(this.switchFilter.categoryA, ...this.switchFilter.inputs);
+    Filter.updateChecks(this.switchFilter.categoryB, ...this.switchFilter.radioInputs);
+    Filter.updateChecks(this.manufacturerFiler.category, ...this.manufacturerFiler.inputs);
+    Filter.updateChecks(this.sizeFilter.category, ...this.sizeFilter.inputs);
+    Filter.updateChecks(this.featuresFilter.category, ...this.featuresFilter.inputs);
+    this.availableFilter.inputs[0].checked = !this.availableFilter.inputs[1].checked;
   }
 }

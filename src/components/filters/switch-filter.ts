@@ -7,8 +7,8 @@ import { FormField } from '../elements/form-field';
 import { FilterCategory } from '../../interfaces/enums';
 
 export class SwitchFilter extends Filter {
-  private categoryA = FilterCategory.manufacturer;
-  private categoryB = FilterCategory.switches;
+  public categoryA = FilterCategory.manufacturer;
+  public categoryB = FilterCategory.switches;
   private manufacturersWrapper = new Component({ className: 'filter__wrapper', parent: this });
 
   private switchWrapper = new Component({ tag: 'ul', className: 'switch', parent: this });
