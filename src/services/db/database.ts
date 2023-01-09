@@ -128,5 +128,3 @@ class DatabaseAPI {
 }
 
 export const DB = new DatabaseAPI(keyboardsJson as KeyboardData[]);
-
-console.info(DB);

@@ -29,5 +29,3 @@ class EventEmitter<Callback extends (...args: Parameters<Callback>) => void> {
 }
 
 export const Emitter = new EventEmitter();
-
-console.info(Emitter);
