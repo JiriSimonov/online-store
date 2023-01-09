@@ -6,7 +6,7 @@ import { Button } from '../elements/button-component';
 import { Keyboard } from '../../services/db/keyboard';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
-import { Emitter } from '../../services/emitter';
+import { Emitter, EventName } from '../../services/emitter';
 import { Heading } from '../elements/heading-component';
 
 export class ProductCard extends Component {
@@ -74,7 +74,7 @@ export class ProductCard extends Component {
             this.addToCart();
           }
           window.location.hash = `/cart`;
-          Emitter.emit('product-card__buyNowBtn_clicked');
+          Emitter.emit(EventName.productCard__buyNowBtnClicked);
           break;
         default:
           window.location.hash = `/${keyboard.id}`;
@@ -115,9 +115,11 @@ export class ProductCard extends Component {
       label.removeEventListener('mouseout', mouseoutListener);
     };
     label.addEventListener('mouseout', mouseoutListener);
-    this.switchModal = new SwitchModal(label.textContent ?? '',
-    label.classList.contains('switch__item_true'),
-    this.keyboard);
+    this.switchModal = new SwitchModal(
+      label.textContent ?? '',
+      label.classList.contains('switch__item_true'),
+      this.keyboard,
+    );
     this.cardPrice.classList.add('store__card-price_is-open');
     this.append(this.switchModal);
   }

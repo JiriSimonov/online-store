@@ -5,7 +5,7 @@ import { ProductImage } from '../product/product-img';
 import { Button } from '../elements/button-component';
 import { DB } from '../../services/db/database';
 import { CartItem } from '../../services/db/cart-item';
-import { Emitter } from '../../services/emitter';
+import { Emitter, EventName } from '../../services/emitter';
 import { Heading } from '../elements/heading-component';
 
 export class CartItemElem extends Component {
@@ -72,7 +72,6 @@ export class CartItemElem extends Component {
   private switchWrapper = new Component({ className: 'switch' });
   private keyboardSwitch = new SwitchComponent(this.product.keyboardSwitch, this.product.key, 'div');
   private cartPosition = new Component({ className: 'cart__position', textContent: `${this.index}` });
-
   constructor(private product: CartItem, private index: number, private orderBtn: Button) {
     super({ tag: 'li', className: 'cart__item' });
     const { keyboard, keyboardSwitch } = product;

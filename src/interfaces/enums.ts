@@ -1,3 +1,5 @@
+import { EventName as EvemtMame } from "../services/emitter"
+
 export enum SwitchShorts {
   'akko cs jelly pink' = 'AJP',
   'akko cs jelly purple' = 'AJR',
@@ -86,3 +88,4 @@ export enum SortOrder {
   ascending = 'ascending',
   descending = 'descending',
 }
+

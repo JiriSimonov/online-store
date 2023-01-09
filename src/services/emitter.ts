@@ -1,17 +1,30 @@
+export enum EventName {
+  'cart__save' = 'cart__save',
+  'cart__itemUpdate' = 'cart__item-update',
+  'cart__itemDelete' = 'cart__item-delete',
+  'promo__save' = 'promo__save',
+  'productCard__buyNowBtnClicked' = 'product-card__buy-now-btn_clicked',
+}
+
 class EventEmitter<Callback extends (...args: Parameters<Callback>) => void> {
-  private events: Record<string, Callback[]> = {};
-  subscribe(eventName: string, callback: Callback) {
-    if (eventName in this.events) {
-      this.events[eventName].push(callback);
+  private events: Map<EventName, Callback[]> = new Map();
+  subscribe(eventName: EventName, callback: Callback) {
+    const eventList = this.events.get(eventName);
+    if (eventList) {
+      eventList.push(callback);
     } else {
-      this.events[eventName] = [callback];
+      this.events.set(eventName, [callback]);
     }
   }
-  unsubscribe(eventName: string, callback: Callback) {
-    this.events[eventName] = this.events[eventName].filter((listener) => listener !== callback);
+  unsubscribe(eventName: EventName, callback: Callback) {
+    const eventList = this.events.get(eventName);
+    if (eventList) {
+      const filteredList = eventList.filter((listener) => listener !== callback);
+      this.events.set(eventName, filteredList);
+    }
   }
-  emit(eventName: string, ...args: unknown[]) {
-    this.events[eventName]?.forEach((listener) => listener(...(args as Parameters<Callback>)));
+  emit(eventName: EventName, ...args: unknown[]) {
+    this.events.get(eventName)?.forEach((listener) => listener(...(args as Parameters<Callback>)));
   }
 }
 

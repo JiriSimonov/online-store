@@ -1,4 +1,4 @@
-import { Emitter } from '../emitter';
+import { Emitter, EventName } from '../emitter';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
 
@@ -18,7 +18,7 @@ export class CartItem {
   }
   set quantity(n: number) {
     this.#quantity = n > 0 ? n : 1;
-    Emitter.emit('cart__update-item', this);
+    Emitter.emit(EventName.cart__itemUpdate, this);
   }
   set(n: number) {
     this.quantity = n;
