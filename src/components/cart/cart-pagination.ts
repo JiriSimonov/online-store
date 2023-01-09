@@ -30,7 +30,7 @@ export class CartPagination extends Component {
 
       this.renderDropDown();
     };
-
+    this.node.addEventListener('focusout', () => {this.wrapper.destroy()});
     this.append(this.selected);
     this.wrapper.append(...this.options);
   }

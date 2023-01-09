@@ -132,14 +132,29 @@ export class Cart extends Section {
       }
       this.pagination.setPage(target.value);
     });
-    window.addEventListener('hashchange', () => this.render());
+    this.pagCountField.input.addEventListener('focusout', () => {
+      if (!this.pagCountField.input.value) {
+        this.pagCountField.input.value = '1';
+        this.pagCountField.input.node.dispatchEvent(new Event('input'));
+      }
+    });
     window.addEventListener('hashchange', () => {
+      this.render();
       Object.assign(this.pagCountField.input.node, {
         value: this.pagination.pageNumber,
         max: this.pagination.lastPage,
       });
       this.cartPagination.selected.input.value = `${this.pagination.pageSize}`;
+      this.orderForm.destroy();
     });
+    // window.addEventListener('hashchange', () => {
+    //   Object.assign(this.pagCountField.input.node, {
+    //     value: this.pagination.pageNumber,
+    //     max: this.pagination.lastPage,
+    //   });
+    //   this.cartPagination.selected.input.value = `${this.pagination.pageSize}`;
+    // });
+    // было два хэшченджа, сделал 1
   }
 
   private updateTotalPrice(): void {
