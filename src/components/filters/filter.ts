@@ -18,7 +18,6 @@ export class Filter extends Component {
     elements.flat().forEach((item) => Object.assign(item, { checked: false }));
   }
 
-  //?
   static getHeadTail(category: FilterCategory, value: string) {
     return `${this.getHead(category, value)}/${this.getTail(category, value)}`;
   }

@@ -1,6 +1,3 @@
-// * интерфейсы для классов Database, Keyboard, KeyboardSwitch
-// * по возможности не изменять. лучше используй Partial/Pick и т.п.
-
 export interface KeyboardData {
   id: number;
   title: string;

@@ -87,7 +87,6 @@ export class Filters extends Component {
       this.closeFilterBottom,
     );
 
-    //?
     this.renderFilterNumbers();
     window.addEventListener('hashchange', () => this.renderFilterNumbers());
   }

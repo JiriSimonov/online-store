@@ -11,7 +11,6 @@ export class ProductImage extends Component {
   constructor(imageList: string[]) {
     super({ className: 'store__img' });
 
-    // const setImage = (index: number): void => this.setStyleAttr(['backgroundImage', `url(${this.images[index]})`]);
     const setImage = (index: number): void => {
       this.style.backgroundImage = `url(${this.images[index]})`;
     };
