@@ -67,6 +67,10 @@ ul {
     &__overlay {
       z-index: 6;
     }
+    &__content {
+      overflow-y: auto;
+      max-height: 85vh;
+    }
   }
   .loader {
     position: fixed;
