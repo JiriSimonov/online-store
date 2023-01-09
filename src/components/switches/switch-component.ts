@@ -1,26 +1,26 @@
+import { Component } from '../elements/base-component';
 import { FormField } from '../elements/form-field';
 import { KeyboardSwitch } from '../../services/db/keyboard-switch';
-import { Component } from '../elements/base-component';
 
 export class SwitchComponent extends Component {
-  private switchField: FormField;
+  private switchField = new FormField({
+    className: 'switch',
+    type: 'radio',
+    textContent: this.keyboardSwitch.id,
+    value: this.keyboardSwitch.id,
+    name: this.keyboardId,
+    parent: this,
+  });
 
-  constructor(private keyboardSwitch: KeyboardSwitch, keyboardId: string, elemTag?: keyof HTMLElementTagNameMap) {
+  constructor(
+    private keyboardSwitch: KeyboardSwitch,
+    private keyboardId: string,
+    elemTag?: keyof HTMLElementTagNameMap
+  ) {
     super({ tag: elemTag ?? 'li', className: 'switch__item' });
     const { id, isAvailable } = keyboardSwitch;
-    this.switchField = new FormField({
-      className: `switch`,
-      type: 'radio',
-      textContent: id,
-      value: id,
-      name: keyboardId,
-    });
     this.switchField.classList.add(id, `switch__item_${isAvailable}`);
-
-    if (!isAvailable) {
-      this.switchField.disabled = true;
-    }
-    this.append(this.switchField);
+    if (!isAvailable) { this.switchField.disabled = true };
   }
 
   get input() {
