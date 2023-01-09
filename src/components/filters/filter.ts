@@ -15,7 +15,15 @@ export class Filter extends Component {
   }
 
   static uncheckAll(...elements: (FormField | SwitchComponent)[]) {
-    elements.flat().forEach((item) => Object.assign(item, { checked: false }));
+    elements.flat().forEach((element) => Object.assign(element, { checked: false }));
+  }
+  static updateChecks(category: FilterCategory, ...elements: (FormField | SwitchComponent)[]) {
+    const params = DB.filter.params.get(category);
+    if (params) {
+      elements.flat().forEach((element) => Object.assign(element, { checked: params.has(element.input.value) }));
+    } else {
+      this.uncheckAll(...elements);
+    }
   }
 
   static getHeadTail(category: FilterCategory, value: string) {

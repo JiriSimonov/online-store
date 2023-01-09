@@ -5,7 +5,7 @@ import { Filter } from './filter';
 import { FilterCategory } from '../../interfaces/enums';
 
 export class AvFilter extends Filter {
-  private category = FilterCategory.available;
+  public category = FilterCategory.available;
   private filterWrapper = new Component({ className: 'filter__wrapper', parent: this });
   private items = [...DB.getVariants(this.category)].map(
     (item, index) =>

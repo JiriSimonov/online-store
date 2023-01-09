@@ -5,7 +5,7 @@ import { DB } from '../../services/db/database';
 import { FilterCategory } from '../../interfaces/enums';
 
 export class SizeFilter extends Filter {
-  private category= FilterCategory.size;
+  public category= FilterCategory.size;
   private filterWrapper = new Component({ className: 'filter__wrapper', parent: this });
 
   private size = [...DB.getVariants(this.category)]

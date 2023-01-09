@@ -18,9 +18,7 @@ export class Store extends Section {
   private chunkNumber = 0;
 
   private container = new Component({ className: 'container' });
-  private wrapper = new Component({
-    className: `store__wrapper${DB.filter.getParam('filters') ? ' store__wrapper_is-open' : ''}`,
-  });
+  private wrapper = new Component({ className: 'store__wrapper' });
 
   private title = new Heading({ tag: 'h1', className: 'store__title', textContent: 'Клавиатуры' });
   private showFiltersBtn = new Button({ className: 'store__filter', textContent: 'Фильтры' });
@@ -107,6 +105,7 @@ export class Store extends Section {
     }
     this.goodsCount.setText(message);
     this.renderBottomButton();
+    this.renderFiltersBlock();
   };
 
   private get chunk(): ProductCard[] {
@@ -129,6 +128,16 @@ export class Store extends Section {
       next.replaceWith(scroll);
     } else {
       scroll.replaceWith(next);
+    }
+  }
+
+  private renderFiltersBlock() {
+    if (DB.filter.getParam('filters')) {
+      this.contentWrapper.prepend(this.filters);
+      this.wrapper.classList.add('store__wrapper_is-open');
+    } else {
+      this.filters.destroy();
+      this.wrapper.classList.remove('store__wrapper_is-open');
     }
   }
 }
