@@ -140,7 +140,7 @@ export class Filters extends Component {
       ...this.sizeFilter.inputs,
       ...this.featuresFilter.inputs,
     );
-    this.availableFilter.inputs[0].checked = true;
+    this.availableFilter.inputs[0].checked = !this.availableFilter.inputs[1].checked;
   }
   updateAllChecks() {
     Filter.updateChecks(this.availableFilter.category, ...this.availableFilter.inputs);

@@ -149,7 +149,7 @@ export class Filter {
   /** Очищает Query полностью */
   clearAll() {
     const keys = Object.keys(FilterCategory);
-    const categories = keys.slice(keys.length / 2) as FilterCategory[];
+    const categories = keys.slice(0, keys.length / 2) as FilterCategory[];
 
     categories.forEach((category) => this.clear(FilterCategory[category]));
   }
