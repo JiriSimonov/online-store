@@ -28,9 +28,9 @@ export class CartItemElem extends Component {
   private inStock = new Component({
     className: 'cart__stock',
     textContent:
-    this.product.keyboardSwitch.quantity > 0
-    ? `Осталось на складе: ${this.product.keyboardSwitch.quantity - +this.countField.input.value}`
-    : 'Нет в наличии',
+      this.product.keyboardSwitch.quantity > 0
+        ? `Осталось на складе: ${this.product.keyboardSwitch.quantity - +this.countField.input.value}`
+        : 'Нет в наличии',
   });
   private category = new Component({
     className: 'cart__category',
@@ -42,7 +42,7 @@ export class CartItemElem extends Component {
     onclick: () => {
       if (+this.countField.input.value === 1) {
         DB.cart.remove(this.product);
-        Emitter.emit('cart__delete-item');
+        Emitter.emit(EventName.cart__itemDelete);
       } else {
         this.countField.input.node.stepDown();
         this.countField.input.node.dispatchEvent(new Event('input'));
@@ -66,7 +66,7 @@ export class CartItemElem extends Component {
     textContent: 'Удалить',
     onclick: () => {
       DB.cart.remove(this.product);
-      Emitter.emit('cart__delete-item');
+      Emitter.emit(EventName.cart__itemDelete);
     },
   });
   private switchWrapper = new Component({ className: 'switch' });
@@ -77,10 +77,14 @@ export class CartItemElem extends Component {
     const { keyboard, keyboardSwitch } = product;
     const buttonOrder = orderBtn;
     this.append(this.images, this.wrapper, this.cartPosition);
-    this.wrapper.append(this.title)
+    this.wrapper.append(this.title);
     this.switchWrapper.append(this.keyboardSwitch);
-    if (keyboardSwitch.title !== 'null') {this.wrapper.append(this.switchWrapper)};
-    if (keyboard.size !== '') {this.wrapper.append(this.category)};
+    if (keyboardSwitch.title !== 'null') {
+      this.wrapper.append(this.switchWrapper);
+    }
+    if (keyboard.size !== '') {
+      this.wrapper.append(this.category);
+    }
     this.wrapper.append(this.price, this.stockWrapper);
     this.stockWrapper.append(this.inStock, this.countBtn, this.cartDelete);
     this.countBtn.append(this.cartDec, this.countField, this.cartInc);
@@ -89,10 +93,10 @@ export class CartItemElem extends Component {
       if (e.target instanceof HTMLInputElement) {
         if (+e.target.value > +e.target.max) {
           e.target.value = e.target.max;
-        };
+        }
         if (+e.target.value <= +e.target.min && e.target.value !== '') {
           e.target.value = e.target.min;
-        };
+        }
         if (e.target.value === '' || +e.target.value === 0) {
           e.preventDefault();
           buttonOrder.disabled = true;
@@ -113,13 +117,13 @@ export class CartItemElem extends Component {
     });
     if (this.countField.input.value === '0') {
       this.countField.input.value = this.countField.input.node.min;
-    };
+    }
     if (+this.countField.input.value === +this.countField.input.node.max) {
       this.cartInc.disabled = true;
-    };
+    }
     if (this.countField.input.value === '0') {
       product.set(+this.countField.input.value + 1);
-    };
+    }
     this.price.setText(`${+this.countField.input.node.value * keyboardSwitch.price} ₽`);
   }
 }
