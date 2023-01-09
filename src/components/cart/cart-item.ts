@@ -125,5 +125,16 @@ export class CartItemElem extends Component {
       product.set(+this.countField.input.value + 1);
     }
     this.price.setText(`${+this.countField.input.node.value * keyboardSwitch.price} ₽`);
+    this.onclick = (e) => {
+      if (
+        !(e.target instanceof HTMLElement) ||
+        e.target instanceof HTMLLabelElement ||
+        e.target instanceof HTMLButtonElement ||
+        e.target instanceof HTMLInputElement
+      ) {
+        return;
+      }
+      window.location.hash = `/${keyboard.id}`;
+    };
   }
 }
