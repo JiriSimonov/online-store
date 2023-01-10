@@ -143,7 +143,10 @@ export class Cart extends Section {
         max: this.pagination.lastPage,
       });
       this.cartPagination.selected.input.value = `${this.pagination.pageSize}`;
-      this.orderForm.destroy();
+      if (!window.location.hash.startsWith('#/cart')) {
+        this.orderForm.destroy();
+        document.body.classList.remove('no-scroll', 'is-modal-open');
+      }
     });
   }
 
