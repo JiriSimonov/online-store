@@ -1,0 +1,1 @@
+{"version":3,"file":"404.js","mappings":"mBACAA,OAAOC,SAASC,KAAOF,OAAOC,SAASC,KAAKC,QAAQ,gBAAiBC,UAAU,mB","sources":["webpack://online-store/./src/404.ts"],"sourcesContent":["\"use strict\";\r\nwindow.location.href = window.location.href.replace('online-store/', encodeURI('online-store/#/'));\r\n"],"names":["window","location","href","replace","encodeURI"],"sourceRoot":""}
