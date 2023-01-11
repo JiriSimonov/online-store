@@ -20,20 +20,28 @@ const getTemplate = (title, lang) => `<!DOCTYPE html>
 module.exports = {
   entry: {
     app: path.resolve(__dirname, 'src', 'index.ts'),
+    404: path.resolve(__dirname, 'src', '404.ts'),
   },
 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    assetModuleFilename: 'assets/[name][ext]',
     clean: true,
+    assetModuleFilename: 'assets/[name][ext]',
   },
 
   plugins: [
     new ESLintPlugin({ extensions: ['ts'] }),
     new HtmlWebpackPlugin({
       templateContent: getTemplate('Keyboards Store', 'ru-RU'),
-      fileName: 'index.html',
+      filename: 'index.html',
       favicon: path.resolve('src', 'assets', 'icons', 'k-button.svg'),
+      chunks: ['app'],
+    }),
+    new HtmlWebpackPlugin({
+      templateContent: getTemplate('Keyboards Store', 'ru-RU'),
+      filename: '404.html',
+      favicon: path.resolve('src', 'assets', 'icons', 'k-button.svg'),
+      chunks: ['404'],
     }),
     new CopyPlugin({
       patterns: [
