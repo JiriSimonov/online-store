@@ -1,0 +1,42 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "project": "./tsconfig.json",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "root": true,
+  "rules": {
+    "@typescript-eslint/lines-between-class-members": 0,
+    "@typescript-eslint/no-explicit-any": 2,
+    "@typescript-eslint/no-unused-vars": 0,
+    "curly": ["warn", "all"],
+    "eol-last": "error",
+    "import/prefer-default-export": 0,
+    "max-len": ["error", { "code": 120, "ignoreComments": true, "tabWidth": 2 }],
+    "no-console": ["warn", { "allow": ["warn", "info"] }],
+    "no-debugger": 0,
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxBOF": 0, "maxEOF": 1 }],
+    "no-param-reassign": 1,
+    "no-plusplus": 0,
+    "no-return-assign": 1,
+    "no-template-curly-in-string": "warn",
+    "no-unused-vars": 0,
+    "object-curly-spacing": ["warn", "always"],
+    "spaced-comment": ["error", "always", { "markers": ["!", "?", "//", "todo", "*"] }]
+  },
+  "ignorePatterns": ["*.js"]
+}

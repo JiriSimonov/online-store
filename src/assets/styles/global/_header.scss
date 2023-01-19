@@ -1,0 +1,130 @@
+.header {
+  position: sticky;
+  top: 0;
+  background-color: $white;
+  box-shadow: 0 4px 16px rgb(20 20 21/ 50%);
+  z-index: 20;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    user-select: none;
+  }
+
+  &__logo {
+    font-size: 36px;
+    font-weight: 500;
+    text-decoration: none;
+    color: $black;
+    cursor: $hover;
+  }
+
+  &__controls {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__search,
+  &__cart {
+    padding: 15px;
+    border: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: $hover;
+    transition: .3s linear;
+    &:hover,
+    &:focus {
+      opacity: .6;
+    }
+  }
+
+  &__search {
+    background-image: url('../../icons/search.svg');
+  }
+
+  &__cart {
+    position: relative;
+    background-image: url('../../icons/cart.svg');
+  }
+
+  &__input {
+    display: none;
+    visibility: hidden;
+    transition: .3s linear;
+  }
+
+  &__input_is-open {
+    display: initial;
+    padding: 5px;
+    border: 2px solid $grey;
+    border-radius: 5px;
+    font-size: 16px;
+    visibility: visible;
+
+    &::placeholder {
+      font-family: 'Nunito', monospace;
+      font-size: 16px;
+    }
+
+    &:focus {
+      border-color: $blue;
+    }
+  }
+
+  &__count {
+    position: absolute;
+    top: -10px;
+    left: 25px;
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 16px;
+    color: $white;
+    background-color: $blue;
+  }
+
+  &__price {
+    position: relative;
+    margin-left: 20px;
+    padding-right: 15px;
+    font-size: 20px;
+    font-weight: 500;
+
+    &::before {
+      content: '₽';
+      position: absolute;
+      right: 0;
+    }
+  }
+}
+
+@media (max-width: 770px) {
+  .header {
+    &__logo {
+      font-size: 28px;
+    }
+
+    &__controls {
+      position: fixed;
+      display: none;
+      top: 70px;
+      right: 0;
+      flex-direction: column;
+      padding: 20px;
+      border: 2px solid $blue;
+      border-radius: 13px;
+      background-color: $white;
+      z-index: 15;
+      transform: translateX(100%);
+      transition: .6s linear;
+    }
+
+    &__controls_is-open {
+      display: flex;
+      transform: none;
+    }
+  }
+}

@@ -1,0 +1,402 @@
+@import 'fonts';
+@import 'vars';
+@import 'header';
+@import '../home';
+@import '../filtres/filters';
+@import '../store/store';
+@import '../cart/cart';
+@import '../product/product';
+@import '../product/switches';
+@import 'footer';
+@import 'load';
+
+* {
+  cursor: $cursor;
+}
+
+html {
+  font-family: 'Nunito', monospace;
+  scroll-behavior: smooth;
+}
+
+button {
+  user-select: none;
+  outline: none;
+}
+
+input {
+  outline: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.body {
+  position: relative;
+  margin: 0;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    opacity: 0;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $grey;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px 2px rgb(20 20 21 / 25%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    width: initial;
+    height: initial;
+    background-color: $blue;
+  }
+}
+
+.no-scroll {
+  overflow: hidden;
+  .header {
+    z-index: 6;
+  }
+  .modal {
+    &__overlay {
+      z-index: 6;
+    }
+    &__content {
+      overflow-y: auto;
+      max-height: 85vh;
+    }
+  }
+  .loader {
+    position: fixed;
+
+    .cube {
+      top: 44%;
+      left: 49%;
+    }
+  }
+
+  .cart__position {
+    z-index: 4;
+  }
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  background-color: $grey;
+  font-family: 'Nunito', monospace;
+}
+
+
+.container {
+  margin: 0 auto;
+  padding: 0 40px;
+  width: 100%;
+  max-width: 1520px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.view {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  top: 20px;
+
+  &__table,
+  &__list {
+    width: 40px;
+    height: 40px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+    cursor: $hover;
+    transition: .3s linear;
+  }
+
+  &__table {
+    background-image: url('../../icons/table.svg');
+  }
+
+  &__list {
+    background-image: url('../../icons/list.svg');
+  }
+
+  &__table_active,
+  &__list_active {
+    border-color: $blue;
+  }
+
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $loader-grey;
+  backdrop-filter: blur(5px);
+  animation: cube;
+  z-index: 7;
+
+  &__title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-family: 'Nunito', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: $black;
+    transform: translate(-50%, -50%);
+    z-index: 12;
+  }
+
+  .cube {
+    position: absolute;
+    top: 40%;
+    left: 46%;
+    z-index: 8;
+  }
+}
+
+.burger {
+  position: relative;
+  display: none;
+  border: none;
+  padding: 8px 15px;
+  background-color: transparent;
+  cursor: $hover;
+  visibility: hidden;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    border-radius: 1px;
+    width: 100%;
+    height: 2px;
+    background-color: $black;
+    transition: .3s linear;
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  &__line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    background-color: $black;
+    transform: translateY(-50%);
+    transition: .2s linear;
+  }
+}
+
+.burger_is-open {
+  &::before {
+    top: 50%;
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    top: 50%;
+    bottom: auto;
+    transform: rotate(-45deg);
+  }
+
+  .burger__line {
+    opacity: 0;
+  }
+}
+
+.dual-slider {
+  text-align: center;
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 16px;
+    font-weight: 400;
+    color: $black;
+    user-select: none;
+  }
+
+  &__input {
+    all: unset;
+    padding: 5px 6px;
+    border: 2px solid $white;
+    border-radius: 5px;
+    width: 70px;
+    user-select: none;
+    transition: .3s linear;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    &::placeholder {
+      font-family: 'Nunito', monospace;
+      font-size: 16px;
+      font-weight: 400;
+      color: $black;
+    }
+
+    &:focus {
+      border-color: $blue;
+    }
+
+    &:invalid {
+      border-color: $r;
+    }
+  }
+
+  &__line {
+    position: relative;
+    margin-top: 20px;
+    height: 8px;
+    border-radius: 5px;
+    background-color: $white;
+  }
+
+  &__progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-radius: 5px;
+    height: 100%;
+    background: $blue;
+  }
+
+  &__controls {
+    position: relative;
+    width: 100%;
+    height: 8px;
+  }
+
+  &__label_range {
+    position: absolute;
+    top: -8px;
+    width: 100%;
+    height: 8px;
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  &__input_range {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 8px;
+    padding: 0;
+    border: none;
+    background: none;
+    pointer-events: none;
+    z-index: 3;
+
+
+    &::-webkit-slider-thumb {
+      border-radius: 50%;
+      border: 5px solid $blue;
+      height: 25px;
+      width: 25px;
+      background-color: $white;
+      pointer-events: auto;
+      -webkit-appearance: none;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+      cursor: $hover;
+    }
+
+    &::-moz-range-thumb {
+      border: none;
+      border-radius: 50%;
+      border: 5px solid $blue;
+      height: 25px;
+      width: 25px;
+      background-color: $white;
+      pointer-events: auto;
+      -moz-appearance: none;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+.shadowed {
+  opacity: .333333
+}
+
+@media (max-width: 1601px) {
+  .container {
+    padding: 10px;
+    max-width: 980px;
+  }
+}
+
+
+@media (max-width: 1201px) {
+  .container {
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 770px) {
+  .body {
+    overflow-x: hidden;
+  }
+
+  .view__table,
+  .view__list {
+    display: none;
+    visibility: hidden;
+  }
+
+  .container {
+    max-width: 480px;
+  }
+
+  .burger {
+    display: block;
+    margin-left: auto;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 501px) {
+  .container {
+    max-width: 300px;
+  }
+}
