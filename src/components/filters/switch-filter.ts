@@ -2,9 +2,9 @@ import { Filter } from './filter';
 import { SwitchComponent } from '../switches/switch-component';
 import { Component } from '../elements/base-component';
 import { SwitchModal } from '../switches/switch-modal';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 import { FormField } from '../elements/form-field';
-import { FilterCategory } from '../../interfaces/enums';
+import { FilterCategory } from '../../types/enums';
 
 export class SwitchFilter extends Filter {
   public categoryA = FilterCategory.manufacturer;

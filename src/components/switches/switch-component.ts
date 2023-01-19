@@ -1,6 +1,6 @@
 import { Component } from '../elements/base-component';
 import { FormField } from '../elements/form-field';
-import { KeyboardSwitch } from '../../services/db/keyboard-switch';
+import { KeyboardSwitch } from '../../services/database-api/keyboard-switch';
 
 export class SwitchComponent extends Component {
   private switchField = new FormField({
@@ -15,12 +15,14 @@ export class SwitchComponent extends Component {
   constructor(
     private keyboardSwitch: KeyboardSwitch,
     private keyboardId: string,
-    elemTag?: keyof HTMLElementTagNameMap
+    elemTag?: keyof HTMLElementTagNameMap,
   ) {
     super({ tag: elemTag ?? 'li', className: 'switch__item' });
     const { id, isAvailable } = keyboardSwitch;
     this.switchField.classList.add(id, `switch__item_${isAvailable}`);
-    if (!isAvailable) { this.switchField.disabled = true };
+    if (!isAvailable) {
+      this.switchField.disabled = true;
+    }
   }
 
   get input() {

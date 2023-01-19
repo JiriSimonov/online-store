@@ -1,8 +1,8 @@
 import { FormField } from './form-field';
 import { Component } from './base-component';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 import { debounce } from '../../utils/utils';
-import { FilterCategory } from '../../interfaces/enums';
+import { FilterCategory } from '../../types/enums';
 
 export class DualSlider extends Component {
   private sliderWrapper = new Component({ className: 'dual-slider__wrapper', parent: this });

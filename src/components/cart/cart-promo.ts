@@ -1,4 +1,4 @@
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 import { FormField } from '../elements/form-field';
 import { Component } from '../elements/base-component';
 import { Button } from '../elements/button-component';

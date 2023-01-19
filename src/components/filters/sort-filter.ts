@@ -1,7 +1,7 @@
 import { Button } from '../elements/button-component';
 import { Component } from '../elements/base-component';
 import { FormField } from '../elements/form-field';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 
 export class SortFilter extends Component {
   private alphSortAsc = new FormField({

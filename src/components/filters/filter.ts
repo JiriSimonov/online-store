@@ -1,9 +1,9 @@
 import { SwitchComponent } from '../switches/switch-component';
 import { FormField } from '../elements/form-field';
 import { Component } from '../elements/base-component';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 import { Heading } from '../elements/heading-component';
-import { FilterCategory } from '../../interfaces/enums';
+import { FilterCategory } from '../../types/enums';
 
 export class Filter extends Component {
   private filterTitle: Component;

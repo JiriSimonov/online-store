@@ -1,7 +1,7 @@
 import { Emitter } from '../../services/emitter';
 import { Component } from '../elements/base-component';
-import { DB } from '../../services/db/database';
-import { Keyboard } from '../../services/db/keyboard';
+import { DB } from '../../services/database-api/database';
+import { Keyboard } from '../../services/database-api/keyboard';
 
 export class ProductPath extends Component {
   private store = new Component({

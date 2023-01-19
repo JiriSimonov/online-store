@@ -1,4 +1,4 @@
-import { FilterCategory } from '../../interfaces/enums';
+import { FilterCategory } from '../../types/enums';
 import { converter } from '../../utils/utils';
 import { Keyboard } from './keyboard';
 

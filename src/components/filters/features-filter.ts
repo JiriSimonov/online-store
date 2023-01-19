@@ -1,8 +1,8 @@
 import { Component } from '../elements/base-component';
 import { Filter } from './filter';
 import { FormField } from '../elements/form-field';
-import { DB } from '../../services/db/database';
-import { FilterCategory } from '../../interfaces/enums';
+import { DB } from '../../services/database-api/database';
+import { FilterCategory } from '../../types/enums';
 
 export class FeaturesFilter extends Filter {
   public category = FilterCategory.features;

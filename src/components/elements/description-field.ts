@@ -1,4 +1,4 @@
-import { DescriptionFieldProps } from '../../interfaces/interfaces';
+import { DescriptionFieldProps } from '../../types/interfaces';
 import { Component } from './base-component';
 import { Heading } from './heading-component';
 

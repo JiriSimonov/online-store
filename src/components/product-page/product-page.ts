@@ -1,7 +1,7 @@
 import { ProductPath } from './product-path';
 import { Button } from '../elements/button-component';
 import { DescriptionField } from '../elements/description-field';
-import { Keyboard } from '../../services/db/keyboard';
+import { Keyboard } from '../../services/database-api/keyboard';
 import { ProductCard } from '../product/product-card';
 import { Component } from '../elements/base-component';
 import { ThumbNails } from './product-thumbnails';

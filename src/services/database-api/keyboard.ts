@@ -1,4 +1,4 @@
-import { KeyboardData, KeyboardProperties } from '../../interfaces/database';
+import { KeyboardData, KeyboardProperties } from '../../types/database-api';
 import { KeyboardSwitch } from './keyboard-switch';
 
 export class Keyboard {

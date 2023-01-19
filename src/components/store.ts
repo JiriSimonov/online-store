@@ -2,16 +2,16 @@ import { Component } from './elements/base-component';
 import { Button } from './elements/button-component';
 import { Filters } from './filters/filtres';
 import { ProductCard } from './product/product-card';
-import { Keyboard } from '../services/db/keyboard';
+import { Keyboard } from '../services/database-api/keyboard';
 import { StoreContent } from './store-content';
 import { ChangeView } from './elements/change-view';
 import { SortFilter } from './filters/sort-filter';
-import { DB } from '../services/db/database';
+import { DB } from '../services/database-api/database';
 import { getChunk, getNoun } from '../utils/utils';
 import { Burger } from './elements/burger-menu';
 import { Section } from './elements/section-component';
 import { Heading } from './elements/heading-component';
-import { SortOrder, SortType } from '../interfaces/enums';
+import { SortOrder, SortType } from '../types/enums';
 
 export class Store extends Section {
   private chunkSize = 20;

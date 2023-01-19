@@ -3,9 +3,9 @@ import { ProductImage } from './product-img';
 import { SwitchComponent } from '../switches/switch-component';
 import { SwitchModal } from '../switches/switch-modal';
 import { Button } from '../elements/button-component';
-import { Keyboard } from '../../services/db/keyboard';
-import { DB } from '../../services/db/database';
-import { CartItem } from '../../services/db/cart-item';
+import { Keyboard } from '../../services/database-api/keyboard';
+import { DB } from '../../services/database-api/database';
+import { CartItem } from '../../services/database-api/cart-item';
 import { Emitter, EventName } from '../../services/emitter';
 import { Heading } from '../elements/heading-component';
 

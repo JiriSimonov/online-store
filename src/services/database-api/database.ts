@@ -1,11 +1,11 @@
-import { KeyboardData } from '../../interfaces/database';
+import { KeyboardData } from '../../types/database-api';
 import { Keyboard } from './keyboard';
 import { KeyboardSwitch } from './keyboard-switch';
 import { Cart } from './cart';
 import { Emitter, EventName } from '../emitter';
 import { CartItem } from './cart-item';
 import { Filter } from './filter';
-import { FilterCategory, SortType, SortOrder } from '../../interfaces/enums';
+import { FilterCategory, SortType, SortOrder } from '../../types/enums';
 import { xor } from '../../utils/utils';
 
 import keyboardsJson = require('../../data/keyboards.json');

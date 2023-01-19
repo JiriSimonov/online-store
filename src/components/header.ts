@@ -1,12 +1,12 @@
 import { Burger } from './elements/burger-menu';
-import { DB } from '../services/db/database';
+import { DB } from '../services/database-api/database';
 import { Anchor } from './elements/anchor-component';
 import { Component } from './elements/base-component';
 import { FormField } from './elements/form-field';
 import { Button } from './elements/button-component';
 import { Emitter, EventName } from '../services/emitter';
 import { debounce } from '../utils/utils';
-import { FilterCategory } from '../interfaces/enums';
+import { FilterCategory } from '../types/enums';
 
 export class Header extends Component {
   private category = FilterCategory.search;

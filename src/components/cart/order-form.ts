@@ -1,6 +1,6 @@
 import Imask from 'imask';
 import { Loader } from '../store/loader';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 import { Component } from '../elements/base-component';
 import { Button } from '../elements/button-component';
 import { FormField } from '../elements/form-field';

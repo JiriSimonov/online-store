@@ -1,4 +1,4 @@
-import { DB } from './services/db/database';
+import { DB } from './services/database-api/database';
 import { Component } from './components/elements/base-component';
 import { Header } from './components/header';
 import { Main } from './components/elements/main-component';
@@ -9,7 +9,7 @@ import { Cart } from './components/cart/cart';
 import { ProductPage } from './components/product-page/product-page';
 import { Router } from './utils/router';
 import { Error as ErrorPage } from './utils/error';
-import { Keyboard } from './services/db/keyboard';
+import { Keyboard } from './services/database-api/keyboard';
 import './assets/styles/global/style.scss';
 
 class App extends Main {

@@ -1,5 +1,5 @@
 import { Component } from '../elements/base-component';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 import { Button } from '../elements/button-component';
 import { QuantityFilter } from './quantity-filter';
 import { PriceFilter } from './price-filter';
@@ -9,7 +9,7 @@ import { BrandFilter } from './brand-filter';
 import { SizeFilter } from './size-filter';
 import { FeaturesFilter } from './features-filter';
 import { Filter } from './filter';
-import { FilterCategory } from '../../interfaces/enums';
+import { FilterCategory } from '../../types/enums';
 
 export class Filters extends Component {
   private closeFilterTop = new Button({ className: 'modal__close', ariaLabel: 'Закрыть', parent: this });

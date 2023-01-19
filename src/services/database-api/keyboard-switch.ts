@@ -1,4 +1,4 @@
-import { KeyboardSwitchData, SwitchDescription, SwitchDescriptionList } from '../../interfaces/database';
+import { KeyboardSwitchData, SwitchDescription, SwitchDescriptionList } from '../../types/database-api';
 import switchesJson = require('../../data/switches.json');
 
 export class KeyboardSwitch {

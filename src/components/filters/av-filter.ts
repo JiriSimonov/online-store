@@ -1,8 +1,8 @@
 import { FormField } from '../elements/form-field';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 import { Component } from '../elements/base-component';
 import { Filter } from './filter';
-import { FilterCategory } from '../../interfaces/enums';
+import { FilterCategory } from '../../types/enums';
 
 export class AvFilter extends Filter {
   public category = FilterCategory.available;

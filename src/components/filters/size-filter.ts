@@ -1,11 +1,11 @@
 import { Component } from '../elements/base-component';
 import { Filter } from './filter';
 import { FormField } from '../elements/form-field';
-import { DB } from '../../services/db/database';
-import { FilterCategory } from '../../interfaces/enums';
+import { DB } from '../../services/database-api/database';
+import { FilterCategory } from '../../types/enums';
 
 export class SizeFilter extends Filter {
-  public category= FilterCategory.size;
+  public category = FilterCategory.size;
   private filterWrapper = new Component({ className: 'filter__wrapper', parent: this });
 
   private size = [...DB.getVariants(this.category)]
@@ -28,9 +28,13 @@ export class SizeFilter extends Filter {
     this.size.forEach((item) => {
       item.input.addEventListener('change', (e) => {
         const { target } = e;
-        if (target && target instanceof HTMLInputElement)
-          {if (target.checked) {DB.filter.add(this.category, target.value);}
-          else {DB.filter.remove(this.category, target.value);}}
+        if (target && target instanceof HTMLInputElement) {
+          if (target.checked) {
+            DB.filter.add(this.category, target.value);
+          } else {
+            DB.filter.remove(this.category, target.value);
+          }
+        }
       });
     });
     this.filterWrapper.append(...this.size);

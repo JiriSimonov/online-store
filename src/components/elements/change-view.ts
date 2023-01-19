@@ -1,6 +1,6 @@
 import { Component } from './base-component';
 import { Button } from './button-component';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 
 export class ChangeView extends Component {
   private table: Button;

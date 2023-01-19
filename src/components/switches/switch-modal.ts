@@ -1,5 +1,5 @@
-import { Keyboard } from '../../services/db/keyboard';
-import { KeyboardSwitch } from '../../services/db/keyboard-switch';
+import { Keyboard } from '../../services/database-api/keyboard';
+import { KeyboardSwitch } from '../../services/database-api/keyboard-switch';
 import { Component } from '../elements/base-component';
 import { Heading } from '../elements/heading-component';
 
@@ -11,20 +11,21 @@ export class SwitchModal extends Component {
   });
   private modalAvialable = new Component({
     className: `${this.isAvialable ? 'store__card-av store__card-av_true' : 'store__card-av store__card-av_false'}`,
-    textContent: `${this.isAvialable
-      ? `В наличии ${this.keyboard?.getSwitch(this.id).quantity} шт.`
-      : 'Нет в наличии'}`,
+    textContent: `${
+      this.isAvialable ? `В наличии ${this.keyboard?.getSwitch(this.id).quantity} шт.` : 'Нет в наличии'
+    }`,
     parent: this,
   });
   private modalInfo = new Component({ className: 'modal__info', parent: this });
   private modalImg = new Component({
     className: 'modal__img',
-    parent: this.modalInfo });
+    parent: this.modalInfo,
+  });
   private modalStats = (KeyboardSwitch.getDescription(this.id, 'props') as string[]).map(
     (item) => new Component({ className: 'modal__stats', textContent: item, parent: this.modalInfo }),
   );
   private modalDescription = new Component({
-    tag: 'p', 
+    tag: 'p',
     className: 'modal__description',
     parent: this,
     textContent: KeyboardSwitch.getDescription(this.id, 'description') as string,

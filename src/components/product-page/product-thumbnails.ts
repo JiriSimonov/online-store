@@ -1,4 +1,4 @@
-import { Keyboard } from '../../services/db/keyboard';
+import { Keyboard } from '../../services/database-api/keyboard';
 import { Button } from '../elements/button-component';
 import { Component } from '../elements/base-component';
 import { ProductModal } from './product-modal';

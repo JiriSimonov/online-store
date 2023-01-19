@@ -1,4 +1,4 @@
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 import { Filter } from './filter';
 import { DualSlider } from '../elements/dual-slider';
 import { Component } from '../elements/base-component';

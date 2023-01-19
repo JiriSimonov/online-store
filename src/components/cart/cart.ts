@@ -1,6 +1,6 @@
 import { CartPagination } from './cart-pagination';
 import { ActivePromo } from './active-promo';
-import { DB } from '../../services/db/database';
+import { DB } from '../../services/database-api/database';
 import { Component } from '../elements/base-component';
 import { Button } from '../elements/button-component';
 import { CartItemElem } from './cart-item';
@@ -11,7 +11,7 @@ import { ChangeView } from '../elements/change-view';
 import { FormField } from '../elements/form-field';
 import { Emitter, EventName } from '../../services/emitter';
 import { getNoun } from '../../utils/utils';
-import { Pagination } from '../../services/db/pagination';
+import { Pagination } from '../../services/database-api/pagination';
 import { Section } from '../elements/section-component';
 import { Heading } from '../elements/heading-component';
 
